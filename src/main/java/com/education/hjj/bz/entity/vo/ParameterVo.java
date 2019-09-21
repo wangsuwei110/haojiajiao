@@ -18,6 +18,8 @@ public class ParameterVo extends BaseVo implements Serializable{
 	private String name;
 	
 	private String englishName;
+	
+	private boolean flag ;
 
 	public Integer getParameterId() {
 		return parameterId;
@@ -49,6 +51,14 @@ public class ParameterVo extends BaseVo implements Serializable{
 
 	public void setEnglishName(String englishName) {
 		this.englishName = englishName;
+	}
+
+	public boolean isFlag() {
+		return flag;
+	}
+
+	public void setFlag(boolean flag) {
+		this.flag = flag;
 	}
 	
 }

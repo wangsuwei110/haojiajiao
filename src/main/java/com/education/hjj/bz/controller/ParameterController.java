@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.education.hjj.bz.entity.vo.ParameterVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.formBean.ParameterForm;
@@ -59,9 +60,19 @@ public class ParameterController {
 			pVoList = parameterService.queryParameterListsByTypes(tv.getTeacherTag());
 		}
 		
-		Map<String, List<ParameterVo>>  map = parameterService.queryParameterListsByParentId(parent_Ids);
-		map.put("chooseTags", pVoList);
+		List<ParameterVo>  list = parameterService.queryParameterListsByParentId(parent_Ids);
 		
-		return ApiResponse.success(map);
+		for(int i=0 ; i< list.size();i++) {
+			for(int j=0; j<pVoList.size();j++) {
+				
+				if(list.get(i).getParameterId() == pVoList.get(j).getParameterId()) {
+					list.get(i).setFlag(true);
+				}
+				
+			}
+		}
+		
+		
+		return ApiResponse.success("操作成功" ,JSON.toJSON(list));
 	}
 }

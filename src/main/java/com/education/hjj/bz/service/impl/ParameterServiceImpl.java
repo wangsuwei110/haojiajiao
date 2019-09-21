@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSON;
 import com.education.hjj.bz.entity.ParameterPo;
 import com.education.hjj.bz.entity.vo.ParameterVo;
 import com.education.hjj.bz.mapper.ParameterMapper;
@@ -26,10 +27,9 @@ public class ParameterServiceImpl implements ParameterService{
 
 	@Override
 	@Transactional
-	public Map<String , List<ParameterVo>> queryParameterListsByParentId(String parent_Ids) {
+	public List<ParameterVo> queryParameterListsByParentId(String parent_Ids) {
 		// TODO Auto-generated method stub
 		
-		Map<String , List<ParameterVo>> map = new HashMap<String , List<ParameterVo>>();
 		
 		if(parent_Ids != null && StringUtils.isNotBlank(parent_Ids)) {
 			
@@ -37,32 +37,44 @@ public class ParameterServiceImpl implements ParameterService{
 
 			for(String s : parentIds) {
 				
-				ParameterVo parameter = parameterMapper.queryParameterById(Integer.valueOf(s));
+				//ParameterVo parameter = parameterMapper.queryParameterById(Integer.valueOf(s));
 				
-				String parameterKey = parameter.getEnglishName();
+				//String parameterKey = parameter.getEnglishName();
 				
-				String parameters = (String)JedisUtil.getObject("parameter_"+parameterKey);
+				String parameters = null;
+				
+				try {
+					parameters = (String)JedisUtil.getObject("parameter_"+s);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				List<ParameterVo>  list = null;
 				
 				if(parameters == null || StringUtils.isBlank(parameters)) {
-					List<ParameterVo>  list = parameterMapper.queryParameterListsByParentId(Integer.valueOf(s));
+					list = parameterMapper.queryParameterListsByParentId(Integer.valueOf(s));
 					
-					map.put(parameterKey, list);
+					if(list !=null && list.size() > 0) {
+						try {
+							//存进redis
+							JedisUtil.setObject("parameter_"+s, JSON.toJSON(list) , 60*60*24);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+					}
 					
-					//存进redis
-					JedisUtil.setObject("parameter_"+parameterKey, UtilTools.map2jsonstr(map) , 60*60*24);
+					return list;
+					
 				}else {
 					
-					Map<String, ?> map1 = UtilTools.jsonstr2map(parameters);
-					Object object = map1.get(parameterKey);
-					
-					map.put(parameterKey, (List<ParameterVo>)object);
+					list = JSON.parseArray(parameters, ParameterVo.class);
+					return list;
 				}
 				
 			}
-			
-			
-			
-			return map;
 		}
 		
 		return null;
