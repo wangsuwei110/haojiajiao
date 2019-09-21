@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSON;
 import com.education.hjj.bz.entity.ParameterPo;
 import com.education.hjj.bz.entity.PicturePo;
 import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
@@ -44,7 +45,7 @@ import com.education.hjj.bz.util.UploadFile;
 public class UserInfoServiceImpl implements UserInfoService {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+
 	@Value("${picture_url}")
 	private String picture_url;
 
@@ -106,15 +107,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 			PicturePo picture = new PicturePo();
 			picture.setTeacherId(Integer.valueOf(teacherId));
 			picture.setPictureTitle(pictureTitle);
-			
-			if(pictureUrl.contains(File.separator)) {
+
+			if (pictureUrl.contains(File.separator)) {
 				picture.setPictureUrl(pictureUrl);
-			}else {
+			} else {
 				picture.setPictureUrl(picture_url + File.separator + pictureUrl);
 			}
-			
-			
-			
+
 			picture.setPictureDesc(pictureDesc);
 			picture.setStatus(1);
 
@@ -211,7 +210,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 				count = 0;
 			}
 
-			if ((count == 0 && tag == null) || (count == 0 && StringUtils.isBlank(tag)) ) {
+			if ((count == 0 && tag == null) || (count == 0 && StringUtils.isBlank(tag))) {
 
 				picture.setCreateTime(new Date());
 				picture.setCreateUser("admin");
@@ -220,9 +219,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 				userPictureInfoMapper.insertUserOnePictureInfo(picture);
 
-			} 
-			
-			if((count != 0 && tag == null) || (count != 0 && StringUtils.isBlank(tag))){
+			}
+
+			if ((count != 0 && tag == null) || (count != 0 && StringUtils.isBlank(tag))) {
 				picture.setStatus(1);
 				picture.setUpdateTime(new Date());
 				picture.setUpdateUser("admin");
@@ -271,17 +270,17 @@ public class UserInfoServiceImpl implements UserInfoService {
 		// 查询图片
 
 		List<PictureVo> listPictures = userPictureInfoMapper.queryUserPicturesByteacherId(teacherInfo.getTeacherId());
-		
+
 		List<PictureVo> pictures = new ArrayList<PictureVo>();
-		
-		for(PictureVo p:listPictures) {
-			
+
+		for (PictureVo p : listPictures) {
+
 			String dataPath = p.getPictureUrl();
-			
-			String pictureName = dataPath.substring(dataPath.lastIndexOf('/')+1);
-			
+
+			String pictureName = dataPath.substring(dataPath.lastIndexOf('/') + 1);
+
 			p.setPictureUrl(pictureName);
-			
+
 			pictures.add(p);
 		}
 
@@ -293,8 +292,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Override
 	@Transactional
 	public int updateUserInfoByParameter(TeacherInfoForm teacherInfoForm) {
+		
+		logger.info("teacherInfoForm={}",teacherInfoForm.toString());
 		TeacherPo teacher = new TeacherPo();
-		teacher.setTeacherTag(teacherInfoForm.getTeacherTag());
+		
+		if(teacherInfoForm.getTeacherTag() != null && StringUtils.isNotBlank(teacherInfoForm.getTeacherTag())) {
+			teacher.setTeacherTag(teacherInfoForm.getTeacherTag());
+		}
 
 		if (teacherInfoForm.getTeachLevel() != null && StringUtils.isNotBlank(teacherInfoForm.getTeachLevel())) {
 			teacher.setTeachLevel(Integer.valueOf(teacherInfoForm.getTeachLevel()));
@@ -308,12 +312,28 @@ public class UserInfoServiceImpl implements UserInfoService {
 			teacher.setTeachBrance(Integer.valueOf(teacherInfoForm.getTeachBrance()));
 		}
 
-		teacher.setTeachBranchSlave(teacherInfoForm.getTeachBranchSlave());
-		teacher.setTeachAddress(teacherInfoForm.getTeachAddress());
-		teacher.setName(teacherInfoForm.getName());
-		teacher.setSchool(teacherInfoForm.getSchool());
+		if(teacherInfoForm.getTeachBranchSlave() != null && StringUtils.isNotBlank(teacherInfoForm.getTeachBranchSlave())) {
+			teacher.setTeachBranchSlave(teacherInfoForm.getTeachBranchSlave());
+		}
+		if(teacherInfoForm.getTeachAddress() != null && StringUtils.isNotBlank(teacherInfoForm.getTeachAddress())) {
+			teacher.setTeachAddress(teacherInfoForm.getTeachAddress());
+		}
+		if(teacherInfoForm.getName() != null && StringUtils.isNotBlank(teacherInfoForm.getName())) {
+			teacher.setName(teacherInfoForm.getName());	
+		}
+		if(teacherInfoForm.getSchool() != null && StringUtils.isNotBlank(teacherInfoForm.getSchool())) {
+			teacher.setSchool(teacherInfoForm.getSchool());
+		}
+
 		teacher.setTeacherId(Integer.valueOf(teacherInfoForm.getTeacherId()));
-		teacher.setTeachTime(teacherInfoForm.getTeachTime());
+
+		if(teacherInfoForm.getTimeList() != null && teacherInfoForm.getTimeList().size() > 0 ) {
+			teacher.setTeachTime(JSON.toJSONString(teacherInfoForm.getTimeList()));
+		}
+		
+		teacher.setUpdateTime(new Date());
+		teacher.setUpdateUser("admin");
+		
 		int i = userInfoMapper.updateUserInfo(teacher);
 
 		return i;
@@ -439,23 +459,21 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 		List<Map<String, Object>> lists = new ArrayList<Map<String, Object>>();
 
-		
-
 		TeacherVo tv = new TeacherVo();
 
 		for (TeacherInfoPicturesVo tp : tps) {
-			
+
 			List<String> pathList = new ArrayList<String>();
-			
+
 			Map<String, Object> pictureMap = new HashMap<String, Object>();
 
 			if (tp != null && tp.getPictureUrl() != null && StringUtils.isNoneBlank(tp.getPictureUrl())) {
 
 				String pictureUrls = tp.getPictureUrl();
 				String[] urls = pictureUrls.split(",");
-				
-				for(String dataPath : urls) {
-					String path = dataPath.substring(dataPath.lastIndexOf('/')+1);
+
+				for (String dataPath : urls) {
+					String path = dataPath.substring(dataPath.lastIndexOf('/') + 1);
 					pathList.add(path);
 				}
 

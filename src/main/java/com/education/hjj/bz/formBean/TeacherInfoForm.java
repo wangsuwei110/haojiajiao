@@ -1,6 +1,10 @@
 package com.education.hjj.bz.formBean;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.education.hjj.bz.entity.TeachTimePo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TeacherInfoForm extends PageForm implements Serializable{
 
@@ -61,7 +65,8 @@ public class TeacherInfoForm extends PageForm implements Serializable{
 	
 	private String teachAddress;
 	
-	private String teachTime;
+	@JsonProperty("teachTime")
+	private List<TeachTimePo> timeList;
 	
 	private String logonStatus;
 	
@@ -254,14 +259,13 @@ public class TeacherInfoForm extends PageForm implements Serializable{
 		this.teachAddress = teachAddress;
 	}
 
-	public String getTeachTime() {
-		return teachTime;
+	public List<TeachTimePo> getTimeList() {
+		return timeList;
 	}
 
-	public void setTeachTime(String teachTime) {
-		this.teachTime = teachTime;
+	public void setTimeList(List<TeachTimePo> timeList) {
+		this.timeList = timeList;
 	}
-
 
 	public String getTeacherProfile() {
 		return teacherProfile;
