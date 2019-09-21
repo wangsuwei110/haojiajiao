@@ -1,5 +1,7 @@
 package com.education.hjj.bz.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,36 +45,131 @@ public class ParameterController {
 	@Transactional
 	public ApiResponse queryParametersByParentId(@RequestBody ParameterForm parameterForm) {
 		
-		String parent_Ids = parameterForm.getParentId();
+		
 		
 		String teacherId = parameterForm.getTeacherId();
 		
-		logger.info("parameters={} , teacherId={}" , parent_Ids , teacherId);
+		String parent_Ids = parameterForm.getParentId();
 		
 		if(parent_Ids == null || StringUtils.isBlank(parent_Ids)) {
 			return ApiResponse.error("参数错误！");
 		}
 		
+		logger.info("parameters={} , teacherId={}" , parent_Ids , teacherId);
 		
 		TeacherVo  tv = userInfoService.queryTeacherHomeInfos(teacherId);
-		List<ParameterVo>  pVoList = null;
-		if(tv != null && tv.getTeacherTag() !=null && StringUtils.isNoneBlank(tv.getTeacherTag())) {
-			pVoList = parameterService.queryParameterListsByTypes(tv.getTeacherTag());
-		}
 		
-		List<ParameterVo>  list = parameterService.queryParameterListsByParentId(parent_Ids);
 		
-		for(int i=0 ; i< list.size();i++) {
-			for(int j=0; j<pVoList.size();j++) {
-				
-				if(list.get(i).getParameterId() == pVoList.get(j).getParameterId()) {
-					list.get(i).setFlag(true);
+		List<ParameterVo> pVoBranchSlaveList = null;
+		
+		String[] parentIds = parent_Ids.split(",");
+		
+		List<Map<String , List<ParameterVo>>> compareResult = new ArrayList<Map<String , List<ParameterVo>>>();
+		
+		Map<String , List<ParameterVo>> map = new HashMap<String, List<ParameterVo>>();
+		
+		for(String parentId:parentIds) {
+			
+			List<ParameterVo>  pVoList = new ArrayList<ParameterVo>();
+			
+			if(tv != null && Integer.valueOf(parentId) == 31 ) {
+				if(tv.getTeachLevel()!=null && StringUtils.isNoneBlank(tv.getTeachLevel())) {
+					pVoList = parameterService.queryParameterListsByTypes(tv.getTeachLevel());
+				}
+			}
+			
+			if(tv != null && Integer.valueOf(parentId) == 38 ) {
+				if(tv.getTeachGrade() !=null && StringUtils.isNoneBlank(tv.getTeachGrade())) {
+					pVoList = parameterService.queryParameterListsByTypes(tv.getTeachGrade());
+				}
+			}
+			
+			if(tv != null && Integer.valueOf(parentId) == 62 ) {
+				if(tv.getTeacherTag() !=null && StringUtils.isNoneBlank(tv.getTeacherTag())) {
+					pVoList = parameterService.queryParameterListsByTypes(tv.getTeacherTag());
+				}
+			}
+			
+			if(tv != null && Integer.valueOf(parentId) == 78 ) {
+				if(tv.getTeachAddress() !=null && StringUtils.isNoneBlank(tv.getTeachAddress())) {
+					pVoList = parameterService.queryParameterListsByTypes(tv.getTeachAddress());
+				}
+			}
+			
+			if(tv != null && Integer.valueOf(parentId) == 95 ) {
+				if(tv.getTeachBrance() !=null && tv.getTeachBrance() != 0) {
+					pVoList = parameterService.queryParameterListsByTypes(String.valueOf(tv.getTeachBrance()));
+				}
+			}
+			
+			List<ParameterVo>  list = parameterService.queryParameterListsByParentId(parentId);
+			
+			
+			for(int i=0 ; i< list.size();i++) {
+				for(int j=0; j<pVoList.size();j++) {
+					
+					if(list.get(i).getParameterId() == pVoList.get(j).getParameterId()) {
+						list.get(i).setFlag(true);
+					}
+					
 				}
 				
 			}
+			
+			
+			
+			if(Integer.valueOf(parentId) == 31) {
+				map.put("teachLevel", list);
+			}
+			if(Integer.valueOf(parentId) == 38) {
+				map.put("teachGrade", list);
+			}
+			if(Integer.valueOf(parentId) == 62) {
+				map.put("teacherTag", list);
+			}
+			if(Integer.valueOf(parentId) == 78) {
+				map.put("teachAddress", list);
+			}
+			if(Integer.valueOf(parentId) == 95) {
+				map.put("teachBrance", list);
+			}
+			
+			
+			
+			
+			
+			if(tv != null && Integer.valueOf(parentId) == 95 ) {
+				if(tv.getTeachBranchSlave() !=null && StringUtils.isNoneBlank(tv.getTeachBranchSlave())) {
+					
+					pVoList = parameterService.queryParameterListsByTypes(String.valueOf(tv.getTeachBranchSlave()));
+				}
+			}
+			
+			
+			List<ParameterVo>  list1 = parameterService.queryParameterListsByParentId(parentId);
+			
+			
+			for(int i=0 ; i< list1.size();i++) {
+				for(int j=0; j<pVoList.size();j++) {
+					
+					if(list1.get(i).getParameterId() == pVoList.get(j).getParameterId()) {
+						list1.get(i).setFlag(true);
+					}
+					
+				}
+				
+			}
+			
+			if(Integer.valueOf(parentId) == 95) {
+				map.put("teachBranceSlave", list1);
+			}
+			
+			
+			
 		}
 		
+		compareResult.add(map);
 		
-		return ApiResponse.success("操作成功" ,JSON.toJSON(list));
+		return ApiResponse.success("操作成功" ,JSON.toJSON(compareResult));
 	}
 }

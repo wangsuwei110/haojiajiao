@@ -19,7 +19,9 @@ public class ParameterVo extends BaseVo implements Serializable{
 	
 	private String englishName;
 	
+	//是否被选中
 	private boolean flag ;
+
 
 	public Integer getParameterId() {
 		return parameterId;

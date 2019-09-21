@@ -8,7 +8,7 @@ import com.education.hjj.bz.entity.vo.ParameterVo;
 
 public interface ParameterService {
 
-	Map<String , List<ParameterVo>> queryParameterListsByParentId(String parentId);
+	List<ParameterVo> queryParameterListsByParentId(String parentId);
 	
 	List<ParameterVo> queryParameterListsByTypes(String parameterIds);
 }
