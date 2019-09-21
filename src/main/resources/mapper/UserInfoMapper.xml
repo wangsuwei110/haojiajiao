@@ -31,8 +31,11 @@
 		<result column="address" property="address"/>
 		<result column="teacher_tag" property="teacherTag"/>
 		<result column="teach_grade" property="teachGrade"/>
+		<result column="teach_level" property="teachLevel"/>
 		<result column="teach_brance" property="teachBrance"/>
 		<result column="teach_branch_slave" property="teachBranchSlave"/>
+		<result column="teach_address" property="teachAddress"/>
+		<result column="teach_time" property="teachTime"/>
 		<result column="singUp_count" property="singUpCount"/>
 		<result column="choose_count" property="chooseCount"/>
 		<result column="employ_count" property="employCount"/>
@@ -67,9 +70,12 @@
 			t.major,
 			t.address,
 			t.teacher_tag,
+			t.teach_level,
 			t.teach_grade,
 			t.teach_brance,
 			t.teach_branch_slave,
+			t.teach_address,
+			t.teach_time,
 			t.singUp_count,
 			t.choose_count,
 			t.employ_rate,
@@ -110,9 +116,12 @@
 			t.major,
 			t.address,
 			t.teacher_tag,
+			t.teach_level,
 			t.teach_grade,
 			t.teach_brance,
 			t.teach_branch_slave,
+			t.teach_address,
+			t.teach_time,
 			t.singUp_count,
 			t.choose_count,
 			t.employ_rate,

@@ -64,9 +64,9 @@ public class ParameterController {
 		
 		String[] parentIds = parent_Ids.split(",");
 		
-		List<Map<String , List<ParameterVo>>> compareResult = new ArrayList<Map<String , List<ParameterVo>>>();
+		List<Map<String , Object>> compareResult = new ArrayList<Map<String , Object>>();
 		
-		Map<String , List<ParameterVo>> map = new HashMap<String, List<ParameterVo>>();
+		Map<String , Object> map = new HashMap<String, Object>();
 		
 		for(String parentId:parentIds) {
 			
@@ -167,7 +167,7 @@ public class ParameterController {
 			
 			
 		}
-		
+		map.put("teachTime", JSON.toJSON(tv.getTeachTime()));
 		compareResult.add(map);
 		
 		return ApiResponse.success("操作成功" ,JSON.toJSON(compareResult));
