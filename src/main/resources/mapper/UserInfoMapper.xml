@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用于绑定Dao接口 -->
+<mapper namespace="com.education.hjj.bz.mapper.UserInfoMapper">
+
+	<!-- 用用查询映射结果 -->
+	<resultMap id="userInfoResultMap" type="com.education.hjj.bz.entity.vo.TeacherVo" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		<result column="teacher_id" property="teacherId"/>
+		<result column="telephone" property="telephone"/>
+		<result column="name" property="name"/>
+		<result column="sex" property="sex"/>
+		<result column="weiChar" property="weiChar"/>
+		<result column="openId" property="openId"/>
+		<result column="QQ" property="QQ"/>
+		<result column="picture" property="picture"/>
+		<result column="charges_standard" property="chargesStandard"/>
+		<result column="logon_status" property="logonStatus"/>
+		<result column="audit_status" property="auditStatus"/>
+		<result column="resume_complete" property="resumeComplete"/>
+		<result column="experience" property="experience"/>
+		<result column="teacher_certificate" property="teacherCertificate"/>
+		<result column="teacher_profile" property="teacherProfile"/>
+		<result column="teacher_level" property="teacherLevel"/>
+		<result column="experience" property="experience"/>
+		<result column="home" property="home"/>
+		<result column="idcard" property="idCard"/>
+		<result column="begin_school_time" property="beginSchoolTime"/>
+		<result column="school" property="school"/>
+		<result column="major" property="major"/>
+		<result column="address" property="address"/>
+		<result column="teacher_tag" property="teacherTag"/>
+		<result column="teach_grade" property="teachGrade"/>
+		<result column="teach_brance" property="teachBrance"/>
+		<result column="teach_branch_slave" property="teachBranchSlave"/>
+		<result column="singUp_count" property="singUpCount"/>
+		<result column="choose_count" property="chooseCount"/>
+		<result column="employ_count" property="employCount"/>
+		<result column="employ_rate" property="employRate"/>
+		<result column="resumption_count" property="resumptionCount"/>
+		<result column="resumption_rate" property="resumptionRate"/>
+		<result column="teacher_points" property="teacherPoints"/>
+	</resultMap>
+	
+	
+	
+	
+    <!-- 根据电话号码查询教员信息 -->  
+    <select id="queryTeacherInfoByTelephone"  resultMap="userInfoResultMap" parameterType="java.lang.String">    
+        	
+        select
+        	t.teacher_id, 
+        	t.telephone,
+			t.name,
+			t.sex,	
+			t.openId,
+			t.picture,
+			t.charges_standard,
+			t.logon_status,
+			t.audit_status,
+			t.resume_complete,
+			t.teacher_level,
+			t.home,
+			t.idcard,
+			t.begin_school_time,
+			t.school,
+			t.major,
+			t.address,
+			t.teacher_tag,
+			t.teach_grade,
+			t.teach_brance,
+			t.teach_branch_slave,
+			t.singUp_count,
+			t.choose_count,
+			t.employ_rate,
+			t.resumption_count,
+			t.resumption_rate,
+			t.teacher_profile,
+			t.teacher_certificate,
+			t.experience
+		from 
+			teacher t
+		where 
+			t.status=1
+		and
+			t.telephone=#{telephone}  
+    </select>  
+    
+     <!-- 根据电话号码查询教员信息 -->  
+    <select id="queryTeacherHomeInfos"  resultMap="userInfoResultMap" parameterType="java.lang.Integer">    
+        	
+        select 
+        	t.teacher_id, 
+        	t.telephone,
+			t.name,
+			t.sex,
+			t.weiChar,	
+			t.openId,
+			t.QQ,
+			t.picture,
+			t.charges_standard,
+			t.logon_status,
+			t.audit_status,
+			t.resume_complete,
+			t.teacher_level,
+			t.home,
+			t.idcard,
+			t.begin_school_time,
+			t.school,
+			t.major,
+			t.address,
+			t.teacher_tag,
+			t.teach_grade,
+			t.teach_brance,
+			t.teach_branch_slave,
+			t.singUp_count,
+			t.choose_count,
+			t.employ_rate,
+			t.resumption_count,
+			t.resumption_rate,
+			t.teacher_profile,
+			t.teacher_certificate,
+			t.experience
+			
+		from 
+			teacher t
+		where 
+			t.status=1
+		and
+			t.teacher_id=#{teacherId}  
+    </select>  
+    
+    <update id="updateUserInfo" parameterType="com.education.hjj.bz.entity.TeacherPo">
+    	update 
+    		teacher 
+    	<set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="openId != null">
+                openId = #{openId},
+            </if>
+            <if test="telephone != null">
+                telephone = #{telephone},
+            </if>
+            <if test="weiChar != null">
+                weiChar = #{weiChar},
+            </if>
+            <if test="QQ != null">
+                QQ = #{QQ},
+            </if>
+            <if test="picture != null">
+                picture = #{picture},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday},
+            </if>
+            <if test="home != null">
+                home = #{home},
+            </if>
+            <if test="idCard != null">
+                idcard = #{idCard},
+            </if>
+            <if test="school != null">
+                school = #{school},
+            </if>
+            <if test="major != null">
+                major = #{major},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="degree != null">
+                degree = #{degree},
+            </if>
+            <if test="account != null">
+                account = #{account},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="teacherLevel != null">
+                teacher_level = #{teacherLevel},
+            </if>
+            <if test="experience != null">
+                experience = #{experience},
+            </if>
+            <if test="teacherTag != null">
+                teacher_tag = #{teacherTag},
+            </if>
+            <if test="teachLevel != null">
+                teach_level = #{teachLevel},
+            </if>
+            <if test="teachGrade != null">
+                teach_grade = #{teachGrade},
+            </if>
+            <if test="teachBrance != null">
+                teach_brance = #{teachBrance},
+            </if>
+            <if test="teachBranchSlave != null">
+                teach_branch_slave = #{teachBranchSlave},
+            </if>
+            <if test="teachAddress != null">
+                teach_address = #{teachAddress},
+            </if>
+            <if test="teachTime != null">
+                teach_time = #{teachTime},
+            </if>
+            <if test="logonStatus != null">
+                logon_status = #{logonStatus},
+            </if>
+            <if test="auditStatus != null">
+                audit_status = #{auditStatus},
+            </if>
+            <if test="resumeComplete != null">
+                resume_complete = #{resumeComplete},
+            </if>
+            
+            <if test="teacherProfile != null">
+                teacher_profile = #{teacherProfile},
+            </if>
+            <if test="teacherCertificate != null">
+                teacher_certificate = #{teacherCertificate},
+            </if>
+            <if test="vacationStatus != null">
+                vacation_status = #{vacationStatus},
+            </if>
+            <if test="teachStyle != null">
+                teach_style = #{teachStyle},
+            </if>
+            <if test="teachType != null">
+                teach_type = #{teachType},
+            </if>
+            <if test="chargesStandard != null">
+                charges_standard = #{chargesStandard},
+            </if>
+            <if test="beginSchoolTime != null">
+                begin_school_time = #{beginSchoolTime},
+            </if>
+            <if test="isGraduate != null">
+                is_graduate = #{isGraduate},
+            </if>
+            <if test="teacherPoints != null">
+                teacher_points = #{teacherPoints},
+            </if>
+            <if test="singUpCount != null">
+                singUp_count = #{singUpCount},
+            </if>
+            <if test="chooseCount != null">
+                choose_count = #{chooseCount},
+            </if>
+            <if test="employCount != null">
+                employ_count = #{employCount},
+            </if>
+            <if test="employRate != null">
+                employ_rate = #{employRate},
+            </if>
+            <if test="resumptionCount != null">
+                resumption_count = #{resumptionCount},
+            </if>
+            <if test="resumptionRate != null">
+                resumption_rate = #{resumptionRate},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser},
+            </if>
+            
+            
+            
+        </set>
+    	
+    	where 
+    		teacher_id = #{teacherId}
+    </update>
+    
+	<insert id="insertUserInfo" parameterType="com.education.hjj.bz.entity.TeacherPo"
+        keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO teacher(
+        	telephone,
+        	sex,
+        	openId,
+        	create_time,
+        	create_user,
+        	update_time,
+        	update_user
+        	)
+        VALUES (
+        	#{telephone},
+        	#{sex},
+        	#{openId},
+        	#{createTime},
+        	#{createUser},
+        	#{updateTime},
+        	#{updateUser}
+        )
+    </insert>
+    
+    <!-- 查询所有的在职的教员id -->
+    <select id="queryAllTeacherIds" resultType="java.lang.Integer">
+    	select
+    		teacher_id as teacherId
+    	from 
+    		teacher
+    	where 
+    		status = 1
+    </select>
+    
+    
+    
+    <select id="queryAllTeacherInfos" resultMap="userInfoResultMap">
+    	select
+    		teacher_id,
+    		resumption_rate,
+    		teacher_points
+    	from 
+    		teacher
+    	where 
+    		status = 1
+    </select>
+    
+    <update id="updateTeachers" parameterType="java.util.List">
+        <foreach collection="list" item="bean" index="index" open="" close="" separator=";">
+            UPDATE teacher
+            <set>
+                teacher_level = #{bean.teacherLevel},
+                charges_standard = #{bean.chargesStandard},
+                update_time = #{bean.updateTime},
+                update_user = #{bean.updateUser}
+            </set>
+            <where>
+            	teacher_id = #{bean.teacherId}
+            </where>
+        </foreach>
+    </update>
+    
+    <resultMap id="userInfoAndPicturesResultMap" type="com.education.hjj.bz.entity.vo.TeacherInfoPicturesVo" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		<result column="idCard" property="idCard"/>
+		<result column="begin_school_time" property="beginSchoolTime"/>
+		<result column="school" property="school"/>
+		<result column="major" property="major"/>
+		<result column="is_graduate" property="isGraduate"/>
+		<result column="degree" property="degree"/>
+		<result column="teacher_tag" property="teacherTag"/>
+		<result column="logon_status" property="logonStatus"/>
+		<result column="picture_url" property="pictureUrl"/>
+		<result column="picture_title" property="pictureTitle"/>
+		<result column="picture_desc" property="pictureDesc"/>
+	</resultMap>
+    
+    <select id="queryTeacherInfoByType" parameterType="com.education.hjj.bz.entity.PicturePo" resultMap="userInfoAndPicturesResultMap">
+    	select 
+			t.idCard,
+			t.school,
+			t.major,
+			t.is_graduate,
+			t.degree,
+			t.begin_school_time,
+			t.teacher_tag,
+			t.logon_status,
+			tp.picture_url,
+			tp.picture_title,
+			tp.picture_desc
+		FROM	
+			teacher t
+		LEFT JOIN
+			teacher_picture tp
+		ON
+			t.teacher_id = tp.teacher_id
+		WHERE
+			t.status =1
+		AND
+			tp.status=1
+		AND
+			tp.teacher_id=#{teacherId}
+        AND 
+        	tp.picture_type=#{pictureType}
+	
+		
+			
+	</select>   	
+</mapper>

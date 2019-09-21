@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用于绑定Dao接口 -->
+<mapper namespace="com.education.hjj.bz.mapper.LoginLogMapper">
+      
+    <insert id="addLoginLog" parameterType="com.education.hjj.bz.entity.LoginLogPo"
+        keyProperty="id" useGeneratedKeys="true">
+        
+        insert into login_log(
+			phone_num,
+			student_name,
+			teacher_name,
+			status,
+			create_time,
+			create_user,
+			update_time,
+			update_user
+		)
+		values(
+			#{phoneNum},
+
+			#{studentName},
+
+			#{teacherName},
+
+			#{status},
+			#{createTime},
+			#{createUser},
+			#{updateTime},
+			#{updateUser}
+		)
+        
+    </insert>
+
+</mapper>

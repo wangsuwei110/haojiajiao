@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用于绑定Dao接口 -->
+<mapper namespace="com.education.hjj.bz.mapper.UserMapper">
+
+	<resultMap id="userInfoMap" type="com.education.hjj.bz.model.UserDto" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		
+		<result column="id" property="id"/>
+		<result column="account" property="account"/>
+		<result column="password" property="password"/>
+		<result column="username" property="username"/>
+		<result column="reg_time" property="regTime"/>
+	</resultMap>
+	
+    <!-- 查询用户信息 -->  
+    <select id="selectOne"  resultMap="userInfoMap" parameterType="com.education.hjj.bz.model.UserDto">    
+        	
+        select 
+			id,
+			account,
+			password,
+			username,
+			reg_time
+			
+		from 
+			user
+		where 
+			1=1
+		and
+			status = 1
+		<if test="account != null">
+            and account=#{account}
+        </if>
+    </select>  
+    
+    <insert id="insertUser" parameterType="com.education.hjj.bz.model.UserDto">
+    
+    insert into user(
+    	account,
+    	password,
+    	username,
+    	reg_time,
+    	status	
+    )
+    values(
+    	#{username},
+    	#{password},
+    	#{username},
+    	#{regTime},
+    	#{status}
+    )
+    </insert>
+    
+    
+</mapper>

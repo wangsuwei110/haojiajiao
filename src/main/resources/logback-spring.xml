@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+    <property name="LOG_HOME" value="./log" />
+    <property name="LOG_FILE" value="${LOG_HOME}/manage}"/>
+    <property name="LOG_FILE_ERROE" value="${LOG_HOME}/manage.error}"/>
+
+    <appender name="FILEERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--<file>${LOG_FILE_ERROE}.log</file>-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${LOG_FILE_ERROE}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- keep 7 days' worth of history -->
+            <maxHistory>3</maxHistory>
+            <!--<totalSizeCap>3GB</totalSizeCap>-->
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 最大2GB 超过最大值，会重新建一个文件-->
+                <maxFileSize>2GB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILEINFO"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <!--<file>${LOG_FILE}.log</file>-->
+
+        <!-- 配置日志所生成的目录以及生成文件名的规则 在logs/mylog-2016-10-31.0.log -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- 日志总保存量为3GB -->
+            <!--<totalSizeCap>3GB</totalSizeCap>-->
+            <!-- 设置日志清理时间为1天，1天之前的会被清除 -->
+            <maxHistory>3</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 最大2GB 超过最大值，会重新建一个文件-->
+                <maxFileSize>2GB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="org.springframework.web" level="INFO"/>
+    <logger name="org.springboot.sample" level="TRACE" />
+
+    <!-- 测试环境+开发环境. 多个使用逗号隔开. -->
+    <springProfile name="dev">
+        <root level="debug">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+
+    <!-- 生产环境. -->
+    <springProfile name="prod,test,dev">
+        <root level="info">
+            <appender-ref ref="FILEINFO"/>
+            <appender-ref ref="FILEERROR"/>
+        </root>
+    </springProfile>
+
+</configuration>

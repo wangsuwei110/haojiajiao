@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用于绑定Dao接口 -->
+<mapper namespace="com.education.hjj.bz.mapper.LevelRulesMapper">
+
+	<resultMap id="levelRulesResultMap" type="com.education.hjj.bz.entity.vo.TeacherLevelRuleVo" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		
+		<result column="teacher_level_id" property="teacherLevelId"/>
+		<result column="teacher_level_name" property="teacherLevelName"/>
+		<result column="teacher_points_section" property="teacherPointsSection"/>
+		<result column="resumption_rate" property="resumptionRate"/>
+		<result column="class_wage" property="classWage"/>
+	</resultMap>
+	
+    <!-- 根据教员id查询教员账户收入信息 -->  
+    <select id="queryAllLevelRules"  resultMap="levelRulesResultMap" >    
+        	
+        select 
+			teacher_level_id,
+			teacher_level_name,
+			teacher_points_section,
+			resumption_rate,
+			class_wage
+			
+		from 
+			teacher_level_rule
+		where 
+			status=1
+		<if test="offset != null">
+            <![CDATA[
+                limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
+    </select>  
+    
+    
+</mapper>

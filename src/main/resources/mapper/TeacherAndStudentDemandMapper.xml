@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用于绑定Dao接口 -->
+<mapper namespace="com.education.hjj.bz.mapper.StudentDemandMapper">
+
+	<!-- 用用查询映射结果 -->
+	<resultMap id="teacherStudentDemandsResultMap" type="com.education.hjj.bz.entity.vo.TeacherVo" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		
+		<result column="name" property="name"/>
+		<result column="teacher_level" property="teacherLevel"/>
+		<result column="picture" property="picture"/>
+		
+	</resultMap>
+	
+	
+    <select id="queryTeacherStudentDemands"  resultMap="teacherStudentDemandsResultMap"  parameterType="java.lang.Integer">    
+        	
+        select
+			t.name ,
+			t.teacher_level,
+			t.picture
+		from 
+			teacher_student_order tsd
+		LEFT JOIN
+			teacher t
+		on tsd.teacher_id = t.teacher_id
+		
+		where 
+			t.status=1
+		and 
+		  tsd.order_id=#{orderId}
+    </select>  
+    
+    <!-- 教员报名的所有订单中被选中当试讲员的总订单数,即被聘用 -->
+    <select id="calcueEmployCount" resultType="java.lang.Integer" parameterType="com.education.hjj.bz.entity.TeacherPo">
+    	select 
+    		tso.teacher_id
+			count(1) as choose
+		from 
+			teacher_student_order tso
+		WHERE
+			tso.choose_status = 1
+		AND
+			tso.status = 1
+		and 
+			tso.teacher_id=#{teacherId}
+			
+    </select>
+    
+    <!-- 教员报名的所有订单 -->
+    <select id="calcuSignUpCount" resultType="java.lang.Integer">
+    	select 
+    		tso.teacher_id
+			count(1) as choose
+		from 
+			teacher_student_order tso
+		WHERE
+			tso.status = 1
+		and 
+			tso.teacher_id=#{teacherId}
+    </select>
+    
+    <!-- 教员当试讲员的所有订单中，试讲通过后，付款完成的总数,即被续课 -->
+    <select id="calcuResumptionCount" resultType="java.lang.Integer">
+    	select 
+    		tso.teacher_id
+			count(1) as choose
+		from 
+			student_order so
+		left join
+			teacher_student_order tso
+		on 
+			so.order_id=tso.order_id
+		WHERE
+			tso.status = 1
+		and
+			order_status = 6
+		and 
+			tso.teacher_id=#{teacherId}
+    </select>
+
+</mapper>

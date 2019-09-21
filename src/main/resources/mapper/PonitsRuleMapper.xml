@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用于绑定Dao接口 -->
+<mapper namespace="com.education.hjj.bz.mapper.PointsRuleMapper">
+
+	<!-- 用用查询映射结果 -->
+	<resultMap id="pointRulesResultMap" type="com.education.hjj.bz.entity.vo.TeacherPointsRuleVo" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		
+		<result column="points_rule_id" property="pointsRuleId"/>
+		<result column="points_score" property="pointsScore"/>
+		<result column="points_rule_type" property="pointsRuleType"/>
+		<result column="points_rule_name" property="pointsRuleName"/>
+		<result column="points_score_type" property="pointsScoreType"/>
+	</resultMap>
+	
+	
+    <select id="queryAllPointsRules"  resultMap="pointRulesResultMap" >    
+        	
+        select 
+			points_rule_id,
+			points_score,
+			points_rule_type,
+			points_rule_name,
+			points_score_type
+			
+		from 
+			teacher_points_rule
+		where 
+			status=1
+		<if test="offset != null">
+            <![CDATA[
+                limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
+    </select>  
+    
+    
+</mapper>

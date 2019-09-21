@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用于绑定Dao接口 -->
+<mapper namespace="com.education.hjj.bz.mapper.PointsLogMapper">
+
+	<!-- 用用查询映射结果 -->
+	<resultMap id="pointLogsResultMap" type="com.education.hjj.bz.entity.vo.PointsLogVo" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		
+		<result column="get_points_counts" property="getPointsCounts"/>
+		<result column="get_points_desc" property="getPointsDesc"/>
+		<result column="surplus_points" property="surplusPoints"/>
+		<result column="create_time" property="createTime"/>
+	</resultMap>
+	
+	
+    <select id="queryAllPointsLogByTeacherId"  resultMap="pointLogsResultMap" parameterType="java.lang.Integer">    
+        	
+        select 
+			get_points_counts,
+			get_points_desc,
+			surplus_points,
+			create_time
+			
+		from 
+			teacher_points_log
+		where 
+			status=1
+		and
+			teacher_id = #{teacherId}
+		<if test="offset != null">
+            <![CDATA[
+                limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
+    </select>  
+    
+    
+</mapper>

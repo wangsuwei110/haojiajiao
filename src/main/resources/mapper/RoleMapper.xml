@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用于绑定Dao接口 -->
+<mapper namespace="com.education.hjj.bz.mapper.RoleMapper">
+
+	<resultMap id="levelRulesResultMap" type="com.education.hjj.bz.model.RoleDto" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		
+		<result column="id" property="id"/>
+		<result column="name" property="name"/>
+	</resultMap>
+	
+    <!-- 查询用户信息 -->  
+    <select id="findRoleByUser"  resultMap="levelRulesResultMap" parameterType="com.education.hjj.bz.model.UserDto">    
+        	
+        select 
+			r.id,
+			r.name
+			
+		from 
+			role r
+		left join
+			user_role ur
+		on
+			r.id=ur.role_id
+		left join
+			user u
+		on
+			ur.user_id=u.id
+		where 
+			r.status = 1
+		and
+			u.account=#{account}
+    </select>  
+    
+    
+</mapper>

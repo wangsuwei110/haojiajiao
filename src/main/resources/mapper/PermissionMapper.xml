@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用于绑定Dao接口 -->
+<mapper namespace="com.education.hjj.bz.mapper.PermissionMapper">
+
+	<resultMap id="levelRulesResultMap" type="com.education.hjj.bz.model.PermissionDto" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		
+		<result column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="per_code" property="perCode"/>
+	</resultMap>
+	
+    <!-- 查询用户信息 -->  
+    <select id="findPermissionByRole"  resultMap="levelRulesResultMap" parameterType="com.education.hjj.bz.model.RoleDto">    
+        	
+        select 
+			p.id,
+			p.name,
+			p.per_code
+			
+		from 
+			permission p
+		left join
+			role_permission rp
+		on
+			p.id=rp.permission_id
+		where 
+			rp.role_id=#{id}
+    </select>  
+    
+    
+</mapper>

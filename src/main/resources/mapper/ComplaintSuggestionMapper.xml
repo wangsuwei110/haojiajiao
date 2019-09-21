@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用于绑定Dao接口 -->
+<mapper namespace="com.education.hjj.bz.mapper.ComplaintSuggestionMapper">
+      
+    <insert id="addComplaintSuggestion" parameterType="com.education.hjj.bz.entity.ComplaintSuggestionPo"
+        keyProperty="id" useGeneratedKeys="true">
+        insert INTO teacher_complaints_suggestions(
+				person_id,
+				type,
+				content,
+				telephone,
+				pictures,
+				status,
+				create_time,
+				create_user,
+				update_time,
+				update_user
+				)
+			VALUES (
+				#{personId},
+				#{type},
+				#{content},
+				#{telephone},
+				<if test="pictures != null">
+					pictures= #{pictures},
+        		</if>
+				#{status},
+				#{createTime},
+				#{createUser},
+				#{updateTime},
+				#{updateUser}
+			)
+    </insert>
+
+</mapper>

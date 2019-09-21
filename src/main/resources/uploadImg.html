@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>一个input实现多图片上传</title>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/uploadImg.js"></script>
+		<style type="text/css"></style>
+		<link rel="stylesheet" type="text/css" href="css/uploadImg.css">
+	</head>
+	<body>
+		
+		<form action="" id="upBox">
+		
+			身份证号：<input name="areaName">
+			
+			<div id="inputBox">
+				<input type="file" name="file" title="请选择图片" id="file" multiple="multiple" accept="image/png,image/jpg,image/gif,image/JPEG"/>选择图片
+			</div>
+		
+		    <div id="imgBox">
+		    </div>
+		    <button id="btn">上传</button>
+		</form>
+	</body>
+	<script type="text/javascript">
+	imgUpload({
+		inputId:'file', //input框id
+		imgBox:'imgBox', //图片容器id
+		buttonId:'btn', //提交按钮id
+		upUrl:'/userInfo/update',  //提交地址
+		data:'file', //参数名
+		num:"10"//最多上传图片个数
+	})
+</script>
+	
+</html>

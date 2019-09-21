@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用于绑定Dao接口 -->
+<mapper namespace="com.education.hjj.bz.mapper.OrderMapper">
+
+	<!-- 用用查询映射结果 -->
+	<resultMap id="oneOrderInfosResultMap" type="com.education.hjj.bz.entity.vo.StudentOrderVo" >
+		<result column="order_id" property="orderId"/>
+		<result column="order_num" property="orderNum"/>
+		<result column="student_id" property="studentId"/>
+		<result column="student_name" property="studentName"/>
+		<result column="student_area" property="studentArea"/>
+		<result column="demand_address" property="demandAddress"/>
+		<result column="demand_grade" property="demandGrade"/>
+		<result column="demand_branch" property="demandBranch"/>
+		<result column="demand_phone" property="demandPhone"/>
+		<result column="demand_desc" property="demandDesc"/>
+		<result column="teacher_sex" property="teacherSex"/>
+		<result column="teach_count" property="teachCount"/>
+		<result column="teach_time" property="teachTime"/>
+		<result column="person_num" property="personNum"/>
+		<result column="trialTime" property="trialTime"/>
+		<result column="order_money" property="orderMoney"/>
+		<result column="order_status" property="orderStatus"/>
+		<result column="pay_time" property="payTime"/>
+		<result column="service_evaluation_desc" property="serviceEvaluationDesc"/>
+		<result column="gradeName" property="gradeName"/>
+		<result column="teach_brance_name" property="teachBranceName"/>
+		<result column="order_Time" property="orderTime"/>
+		<result column="is_resumption" property="isResumption"/>
+	</resultMap>
+	
+	<resultMap id="AllOrdersResultMap" type="com.education.hjj.bz.entity.vo.StudentOrderVo" >
+		<result column="order_id" property="orderId"/>
+		<result column="demand_address" property="demandAddress"/>
+		<result column="demand_grade" property="demandGrade"/>
+		<result column="demand_branch" property="demandBranch"/>
+		<result column="demand_desc" property="demandDesc"/>
+		<result column="teach_count" property="teachCount"/>
+		<result column="teach_time" property="teachTime"/>
+		<result column="person_num" property="personNum"/>
+		<result column="create_time" property="createTime"/>
+	</resultMap>
+	
+	<!-- 订单列表页，查询所有的订单，不包含已经付款完成的订单 -->
+    <select id="queryAllOrders"  resultMap="AllOrdersResultMap" parameterType="com.education.hjj.bz.entity.StudentOrderPo">    
+		SELECT
+			so.order_id,
+			so.demand_grade,
+			so.demand_branch,
+			so.person_num,
+			so.create_time,
+			so.demand_address,
+			so.teach_time,
+			so.teach_count,
+			so.demand_desc
+		FROM
+			student_order so
+		WHERE
+			so.status = 1
+        <if test="orderStatus != null and orderStatus !='' ">
+			AND order_status= #{orderStatus}
+     	</if>
+     	order by
+			so.create_time desc
+    </select>  
+    
+    <!-- 试讲订单列表 -->
+    <select id="queryAllOrdersListByTrail"  resultMap="AllOrdersResultMap" parameterType="com.education.hjj.bz.entity.StudentOrderPo">    
+		SELECT
+			so.order_id,
+			so.demand_grade,
+			so.demand_branch,
+			so.person_num,
+			so.create_time,
+			so.demand_address,
+			so.teach_time,
+			so.teach_count,
+			so.demand_desc
+		FROM
+			student_order so
+		WHERE
+			so.status = 1
+        <if test="orderStatus != null">
+			AND order_status= #{orderStatus}
+     	</if>
+     	order by
+			so.create_time desc
+    </select>  
+    
+    <!-- 订单详情,通过订单ID查看 ,并根据订单状态查询各类型的订单-->
+    <select id="queryOneOrderInfosById"  resultMap="oneOrderInfosResultMap"  parameterType="com.education.hjj.bz.entity.StudentOrderPo">    
+           SELECT
+           		so.order_id,
+				so.demand_grade,
+				so.demand_branch,
+				so.create_time,
+				so.demand_address,
+				so.teach_time,
+				so.teach_count,
+				so.demand_desc,
+				tso.create_time,
+				so.order_time,
+				so.demand_phone,
+				so.trial_time,
+				so.pay_time,
+				so.order_money,
+				so.is_resumption
+				
+			FROM
+				student_order so
+			LEFT JOIN
+				teacher_student_order tso
+			ON
+				so.order_id=tso.order_id
+			WHERE
+				so.status =1
+
+			AND order_id= #{orderId}
+
+	     	<if test="orderStatus != null">
+				AND order_status= #{orderStatus}
+	     	</if>
+	     	order by
+				so.create_time desc
+    </select>
+    
+    <!-- 首页，查询我的所有的试讲订单列表 -->
+    <select id="queryTrailOrdersList"  resultMap="AllOrdersResultMap" parameterType="com.education.hjj.bz.entity.TeacherStudentOrderPo">    
+        SELECT
+        	so.order_id,
+			so.demand_grade,
+			so.demand_branch,
+			so.person_num,
+			so.demand_address,
+			so.teach_time,
+			so.teach_count,
+			so.demand_desc,
+			so.create_time
+		FROM
+			student_order so
+		left join
+			teacher_student_order tso
+		on
+			so.order_id = tso.order_id
+		WHERE
+			so.status =1
+		AND
+			so.order_status = #{orderStatus}
+		AND
+			tso.teacher_id = #{teacherId}
+		order by
+			so.create_time desc
+    </select>
+    
+    <!-- 首页，查询适合我的订单需求列表 -->
+    <select id="queryAllOrdersListBySuit"  resultMap="AllOrdersResultMap" >    
+		    SELECT
+	      		so.order_id,
+				so.demand_grade,
+				so.demand_branch,
+				so.person_num,
+				so.demand_address,
+				so.teach_time,
+				so.teach_count,
+				so.demand_desc,
+				so.create_time
+				
+			FROM
+				student_order so
+			left join
+				teacher_student_order tso
+			on
+				so.order_id = tso.order_id
+			left join
+				teacher t
+			on
+				t.teacher_id = tso.teacher_id
+			WHERE
+				so.status =1
+			AND
+				so.order_status = !6
+			AND
+				so.demand_grade=t.teach_grade
+			AND
+				so.demand_branch=t.teach_brance
+			
+			order by
+				so.demand_branch, 
+				so.create_time desc
+    </select>  
+    
+    <!-- 确定试讲时间 -->
+    <update id="updateTrialTimeById" parameterType="com.education.hjj.bz.entity.StudentOrderPo">
+		update 
+			student_order so
+		SET
+			so.trial_time=#{trialTime},
+			so.order_status = #{orderStatus},
+			so.update_time = #{updateTime},
+			so.update_user = #{updateUser}
+		WHERE
+			so.status = 1
+		AND
+			so.order_id = #{orderId}
+	</update>
+	
+	<!-- 试讲通过创建订单 -->
+    <update id="updateOneOrderStatusInfoById" parameterType="com.education.hjj.bz.entity.StudentOrderPo">
+		update 
+			student_order so
+		SET
+			
+			so.order_time = #{orderTime},
+			
+			<if test="orderMoney != null">
+				so.order_money = #{orderMoney},
+	     	</if>
+	     	
+	     	so.order_status = #{orderStatus},
+	     	
+			<if test="payTime != null">
+				so.pay_time = #{payTime},
+	     	</if>
+			
+			so.update_time = #{updateTime},
+			so.update_user = #{updateUser}
+		WHERE
+			so.status = 1
+		AND
+			so.order_id = #{orderId}
+	</update>
+	
+	<!-- 教员报名需求订单 -->
+    <update id="updateOneOrderPersonNumInfoById" parameterType="com.education.hjj.bz.entity.StudentOrderPo">
+		update 
+			student_order so
+		SET
+			so.person_num = #{personNum},			
+			so.update_time = #{updateTime},
+			so.update_user = #{updateUser}
+		WHERE
+			so.status = 1
+		AND
+			so.order_id = #{orderId}
+	</update>
+	
+	<!-- 添加新的需求订单 -->
+	<insert id="addOrderInfo" parameterType="com.education.hjj.bz.entity.StudentOrderPo">
+		insert into student_order(
+			order_num,
+			student_id,
+			student_name,
+			student_area,
+			demand_address,
+			demand_grade,
+			demand_branch,
+			demand_phone,
+			demand_desc,
+			teach_count,
+			teach_time,
+			status,
+			create_time,
+			create_user,
+			update_time,
+			update_user
+			
+		)
+		values(
+			#{orderNum},
+			#{studentId},
+			#{studentName},
+			#{studentArea},
+			#{demandAddress},
+			#{demandGrade},
+			#{demandBranch},
+			#{demandPhone},
+			#{demandDesc},
+			#{teachCount},
+			#{teachTime},
+			#{status},
+			#{createTime},
+			#{createUser},
+			#{updateTime},
+			#{updateUser}
+
+		)
+	</insert>
+	
+	<!-- 教员被选中，准备试讲，更新教员学生订单关系表 -->
+	<update id="updateTSOrder" parameterType="com.education.hjj.bz.entity.TeacherStudentOrderPo">
+		update
+			teacher_student_order
+		set
+			choose_status=#{chooseStatus},
+			update_time=#{updateTime},
+			update_user=#{updateUser}
+		where
+			status=1
+		and
+			order_id=#{orderId}
+		and
+			teacher_id=#{teacherId}
+	</update>
+	
+	<!-- 教员报名需求订单时，对教员学生订单关系表新增 -->
+	<insert id="addTSOrderInfo" parameterType="com.education.hjj.bz.entity.TeacherStudentOrderPo">
+		insert into teacher_student_order(
+			order_id,
+			teacher_id,
+			teacher_name,
+			teacher_phone,
+			choose_status,
+			status,
+			create_time,
+			create_user,
+			update_time,
+			update_user
+		)
+		values(
+			#{orderId},
+			#{teacherId},
+			#{teacherName},
+			#{teacherPhone},
+			#{chooseStatus},
+			#{status},
+			#{createTime},
+			#{createUser},
+			#{updateTime},
+			#{updateUser}
+		)
+	</insert>
+	
+	<!-- 已完成付款订单详情 -->
+	<resultMap id="onePayOrderDetailInfosResultMap" type="com.education.hjj.bz.entity.vo.TeacherStudentOrderVo" >
+		<result column="order_id" property="orderId"/>
+		<result column="order_num" property="orderNum"/>
+		<result column="demand_address" property="demandAddress"/>
+		<result column="demand_grade" property="demandGrade"/>
+		<result column="demand_branch" property="demandBranch"/>
+		<result column="demand_phone" property="demandPhone"/>
+		<result column="demand_desc" property="demandDesc"/>
+		<result column="teacher_id" property="teacherId"/>
+		<result column="teacher_phone" property="teacherPhone"/>
+		<result column="teach_count" property="teachCount"/>
+		<result column="teach_time" property="teachTime"/>
+		<result column="person_num" property="personNum"/>
+		<result column="trialTime" property="trialTime"/>
+		<result column="order_money" property="orderMoney"/>
+		<result column="pay_time" property="payTime"/>
+		<result column="order_Time" property="orderTime"/>
+		<result column="is_resumption" property="isResumption"/>
+		<result column="create_time" property="createTime"/>
+	</resultMap>
+	
+	<!-- 已完成付款订单详情,通过订单ID查看 -->
+    <select id="queryOneOrderDetailInfosById"  resultMap="onePayOrderDetailInfosResultMap"  parameterType="com.education.hjj.bz.entity.StudentOrderPo">    
+           SELECT
+           		so.order_id,
+           		so.order_num,
+				so.demand_grade,
+				so.demand_branch,
+				so.create_time,
+				so.demand_address,
+				so.teach_time,
+				so.teach_count,
+				so.demand_desc,
+				tso.create_time,
+				so.order_time,
+				so.demand_phone,
+				so.trial_time,
+				so.person_num,
+				so.pay_time,
+				so.order_money,
+				so.is_resumption,
+				tso.teacher_id,
+				tso.teacher_phone
+				
+			FROM
+				student_order so
+			LEFT JOIN
+				teacher_student_order tso
+			ON
+				so.order_id=tso.order_id
+			WHERE
+				so.status =1
+
+			AND order_id= #{orderId}
+
+			AND order_status= #{orderStatus}
+
+	     	order by
+				so.create_time desc
+    </select>
+    
+    <!-- 付款,被选中的教员且试讲已通过的教员才可以付款 -->
+	
+</mapper>

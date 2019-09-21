@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用于绑定Dao接口 -->
+<mapper namespace="com.education.hjj.bz.mapper.UserPictureInfoMapper">
+
+	<!-- 用用查询映射结果 -->
+	<resultMap id="userPicturesResultMap" type="com.education.hjj.bz.entity.vo.PictureVo" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		<result column="picture_id" property="pictureId"/>
+		<result column="teacher_id" property="teacherId"/>
+		<result column="picture_type" property="pictureType"/>
+		<result column="picture_url" property="pictureUrl"/>
+		<result column="picture_title" property="pictureTitle"/>
+		<result column="picture_desc" property="pictureDesc"/>
+	</resultMap>
+	
+    <select id="queryUserPictureInfoByTelephone"  parameterType="com.education.hjj.bz.entity.PicturePo" resultType="java.lang.Integer">    
+        select 
+        	count(1) 
+        from 
+        	teacher_picture
+        where 
+        	status=1
+        and
+        	teacher_id = #{teacherId}
+        and 
+        	picture_type = #{pictureType}    
+    </select>  
+    
+    
+    
+	<insert id="insertUserPictureInfo" parameterType="java.util.List"
+        keyProperty="id" useGeneratedKeys="true">
+        
+        INSERT INTO teacher_picture(
+	        	teacher_id,
+	        	picture_type,
+	        	picture_url,
+	        	picture_title,
+	        	picture_desc,
+	        	status,
+	        	create_time,
+	        	create_user,
+	        	update_time,
+	        	update_user
+        	)
+        VALUES 
+        	<foreach collection="list" index="index" item="item" separator=",">
+            (
+	           	#{item.teacherId},
+	        	#{item.pictureType},
+	        	#{item.pictureUrl},
+	        	#{item.pictureTitle},
+	        	#{item.pictureDesc},
+	        	#{item.status},
+	        	#{item.createTime},
+	        	#{item.createUser},
+	        	#{item.updateTime},
+	        	#{item.updateUser}
+            )
+        </foreach>
+    </insert>
+    
+    <insert id="insertUserOnePictureInfo" parameterType="com.education.hjj.bz.entity.PicturePo">
+        
+        INSERT INTO teacher_picture(
+	        	teacher_id,
+	        	picture_type,
+	        	picture_url,
+	        	picture_title,
+	        	picture_desc,
+	        	status,
+	        	create_time,
+	        	create_user,
+	        	update_time,
+	        	update_user
+        	)
+        VALUES 
+            (
+	           	#{teacherId},
+	        	#{pictureType},
+	        	#{pictureUrl},
+	        	#{pictureTitle},
+	        	#{pictureDesc},
+	        	#{status},
+	        	#{createTime},
+	        	#{createUser},
+	        	#{updateTime},
+	        	#{updateUser}
+            )
+    </insert>
+    
+    <update id="updateUserPictureInfo" parameterType="com.education.hjj.bz.entity.PicturePo">
+    	update 
+    		teacher_picture 
+		set 
+			
+            picture_url = #{pictureUrl},
+
+            <if test="pictureTitle != null">
+                picture_title = #{pictureTitle},
+            </if>
+            <if test="pictureDesc != null">
+                picture_desc = #{pictureDesc},
+            </if>
+    		status=1
+    		
+    	where 
+    		teacher_id = #{teacherId}
+    	and 
+        	picture_type = #{pictureType}  
+    </update>
+    
+    <select id="queryUserPicturesByType"  parameterType="com.education.hjj.bz.entity.PicturePo" resultMap="userPicturesResultMap">    
+        select 
+        	picture_id,
+        	teacher_id,
+        	picture_type,
+        	picture_url,
+        	picture_title,
+        	picture_desc 
+        from 
+        	teacher_picture
+        where 
+        	status=1
+        and
+        	teacher_id = #{teacherId} 
+        and 
+        	picture_type = #{pictureType}
+        order by
+        	update_time
+    </select>
+    
+    <select id="queryUserPicturesByteacherId"  parameterType="java.lang.Integer" resultMap="userPicturesResultMap">    
+        select 
+        	picture_id,
+        	teacher_id,
+        	picture_type,
+        	picture_url,
+        	picture_title,
+        	picture_desc 
+        from 
+        	teacher_picture
+        where 
+        	status=1
+        and
+        	teacher_id = #{teacherId} 
+        and
+        	picture_type != 2
+
+		ORDER BY
+			picture_type
+    </select>  
+    
+    <select id="queryUserPicturesDetail"  parameterType="java.lang.Integer" resultMap="userPicturesResultMap">    
+        select 
+        	picture_id,
+        	teacher_id,
+        	picture_type,
+        	picture_url,
+        	picture_title,
+        	picture_desc 
+        from 
+        	teacher_picture
+        where 
+        	status=1
+        and
+        	picture_id = #{pictureId} 
+    </select> 
+</mapper>

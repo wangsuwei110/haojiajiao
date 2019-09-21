@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用于绑定Dao接口 -->
+<mapper namespace="com.education.hjj.bz.mapper.ParameterMapper">
+
+	<!-- 用用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.education.hjj.bz.entity.vo.ParameterVo" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		
+		<result column="parameter_id" property="parameterId"/>
+		<result column="parent_id" property="parentId"/>
+		<result column="name" property="name"/>
+		<result column="english_name" property="englishName"/>
+	</resultMap>
+	
+	
+	<!-- 通过父ID查询所有的参数 -->
+    <select id="queryParameterListsByParentId"  resultMap="BaseResultMap" parameterType="java.lang.Integer">    
+        select 
+        	parameter_id,
+        	parent_id,
+        	name,
+        	english_name
+        from 
+        	parameter 
+        where 
+        	status=1
+
+        and parent_id = #{parentId}  
+
+    </select>
+    
+    <!-- 查询所有的参数 -->
+    <select id="queryParameterLists"  resultMap="BaseResultMap">    
+        select 
+        	parameter_id,
+        	parent_id,
+        	name,
+        	english_name
+        from 
+        	parameter 
+        where 
+        	status=1 
+    </select>   
+    
+    <select id="queryParameterById" parameterType="java.lang.Integer" resultMap="BaseResultMap">    
+        select 
+        	parameter_id,
+        	parent_id,
+        	name,
+        	english_name
+        from 
+        	parameter 
+        where 
+        	status=1  
+        and
+        	parameter_id=#{parameterId}  
+    </select>  
+    
+    <select id="queryParameterListsByTypes"  resultMap="BaseResultMap" parameterType="java.util.List">    
+        select 
+        	parameter_id,
+        	parent_id,
+        	name,
+        	english_name
+        from 
+        	parameter 
+        where 
+        	status=1   
+        and
+        	parameter_id 
+        in
+       	<foreach item="item" collection="list" separator="," open="(" close=")" index="">    
+	      #{item.parameterId}    
+	    </foreach>
+    </select>  
+</mapper>
