@@ -21,6 +21,8 @@ public class ParameterVo extends BaseVo implements Serializable{
 	
 	//是否被选中
 	private boolean flag ;
+	
+	private String branchType;
 
 
 	public Integer getParameterId() {
@@ -61,6 +63,14 @@ public class ParameterVo extends BaseVo implements Serializable{
 
 	public void setFlag(boolean flag) {
 		this.flag = flag;
+	}
+
+	public String getBranchType() {
+		return branchType;
+	}
+
+	public void setBranchType(String branchType) {
+		this.branchType = branchType;
 	}
 	
 }

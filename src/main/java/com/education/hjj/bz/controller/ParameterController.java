@@ -62,6 +62,7 @@ public class ParameterController {
 		
 		List<ParameterVo> pVoBranchSlaveList = null;
 		
+		
 		String[] parentIds = parent_Ids.split(",");
 		
 		List<Map<String , Object>> compareResult = new ArrayList<Map<String , Object>>();
@@ -110,6 +111,7 @@ public class ParameterController {
 					
 					if(list.get(i).getParameterId() == pVoList.get(j).getParameterId()) {
 						list.get(i).setFlag(true);
+						list.get(i).setBranchType("master");
 					}
 					
 				}
@@ -135,7 +137,7 @@ public class ParameterController {
 			}
 			
 			
-			
+			list = null; 
 			
 			
 			if(tv != null && Integer.valueOf(parentId) == 95 ) {
@@ -143,26 +145,29 @@ public class ParameterController {
 					
 					pVoList = parameterService.queryParameterListsByTypes(String.valueOf(tv.getTeachBranchSlave()));
 				}
-			}
-			
-			
-			List<ParameterVo>  list1 = parameterService.queryParameterListsByParentId(parentId);
-			
-			
-			for(int i=0 ; i< list1.size();i++) {
-				for(int j=0; j<pVoList.size();j++) {
-					
-					if(list1.get(i).getParameterId() == pVoList.get(j).getParameterId()) {
-						list1.get(i).setFlag(true);
+				
+				
+				list = parameterService.queryParameterListsByParentId(parentId);
+				
+				
+				for(int i=0 ; i< list.size();i++) {
+					for(int j=0; j<pVoList.size();j++) {
+						
+						if(list.get(i).getParameterId() == pVoList.get(j).getParameterId()) {
+							list.get(i).setFlag(true);
+							list.get(i).setBranchType("slave");
+						}
+						
 					}
 					
 				}
 				
+				if(Integer.valueOf(parentId) == 95) {
+					map.put("teachBrance", list);
+				}
 			}
 			
-			if(Integer.valueOf(parentId) == 95) {
-				map.put("teachBranceSlave", list1);
-			}
+			
 			
 			
 			
