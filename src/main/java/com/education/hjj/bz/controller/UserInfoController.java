@@ -320,6 +320,9 @@ public class UserInfoController {
 				//可教区域
 				map.put("teachAddress", addressList);
 				
+				//教学时间
+				map.put("teachTime", teacherVo.getTeachTime());
+				
 				return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
 			} 
 				
