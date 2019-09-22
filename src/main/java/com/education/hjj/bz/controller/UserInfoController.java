@@ -58,9 +58,12 @@ public class UserInfoController {
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ApiResponse updateUserInfos(@RequestBody  UserInfoForm userInfoForm) {
 		
-		userInfoService.updateUserInfo(userInfoForm);
+		int i = userInfoService.updateUserInfo(userInfoForm);
 
-		return ApiResponse.success("保存成功!");
+		if(i > 0) {
+			return ApiResponse.success("保存成功!");
+		}
+		return ApiResponse.error("保存失败!");
 
 	}
 	
@@ -79,9 +82,11 @@ public class UserInfoController {
 			if(teacherVo != null ) {
 				map.put("teacherName", teacherVo.getName());
 			}
+			
+			return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
 		}
         
-        return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
+        return ApiResponse.error("操作失败!");
 
 	}
 
@@ -316,10 +321,9 @@ public class UserInfoController {
 				map.put("teachAddress", addressList);
 				
 				return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
-			}else {
-				return ApiResponse.error("暂无数据！");
-			}
-			
+			} 
+				
+			return ApiResponse.error("暂无数据！");
 		}
 		
 		return ApiResponse.error("暂无数据！");
