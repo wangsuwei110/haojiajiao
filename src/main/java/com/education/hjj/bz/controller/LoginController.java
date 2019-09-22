@@ -158,7 +158,7 @@ public class LoginController {
 			teacherVo = userInfoService.queryTeacherInfosByTelephone(phoneNum);
 			
 			if (teacherVo == null) {//首次注册登录,加入用户详情表
-				
+				logger.info("该用户为首次注册用户");
 				j = userInfoService.insertTeacherInfo(LoginForm);
 				
 				if(j<=0) {
@@ -198,7 +198,7 @@ public class LoginController {
 	          
 		        return ApiResponse.success("注册成功" , UtilTools.mapToJson(map));
 			}else {
-				
+				logger.info("该用户为已注册用户");
 				String openId = teacherVo.getOpenId();
 				
 				if(openId.equalsIgnoreCase(LoginForm.getOpenId())) {
