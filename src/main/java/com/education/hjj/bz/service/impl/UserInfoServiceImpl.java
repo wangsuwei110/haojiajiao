@@ -47,7 +47,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Value("${picture_url}")
-	private String picture_url;
+	private String PICTURE_URL;
 
 	@Autowired
 	private UserInfoMapper userInfoMapper;
@@ -112,10 +112,11 @@ public class UserInfoServiceImpl implements UserInfoService {
 				if (pictureUrl.contains(File.separator)) {
 					picture.setPictureUrl(pictureUrl);
 				} else {
-					picture.setPictureUrl(picture_url + File.separator + pictureUrl);
+					picture.setPictureUrl(PICTURE_URL + File.separator + pictureUrl);
 				}
 			}
 			
+			logger.info("pictureUrl = {}" , pictureUrl);
 
 			picture.setPictureDesc(pictureDesc);
 			picture.setStatus(1);
@@ -327,6 +328,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 		if(teacherInfoForm.getSchool() != null && StringUtils.isNotBlank(teacherInfoForm.getSchool())) {
 			teacher.setSchool(teacherInfoForm.getSchool());
 		}
+		if(teacherInfoForm.getAddress() != null && StringUtils.isNotBlank(teacherInfoForm.getAddress())) {
+			teacher.setAddress(teacherInfoForm.getAddress());
+		}
+		
 
 		teacher.setTeacherId(Integer.valueOf(teacherInfoForm.getTeacherId()));
 
@@ -502,6 +507,23 @@ public class UserInfoServiceImpl implements UserInfoService {
 		map.put("pictures", lists);
 
 		return map;
+	}
+
+	@Override
+	public int updateOpenId(String openId , int teacherId) {
+		
+		TeacherPo tp = new TeacherPo();
+		
+		tp.setTeacherId(teacherId);
+		tp.setOpenId(openId);
+		
+		tp.setUpdateUser(String.valueOf(teacherId));
+		tp.setUpdateTime(new Date());
+		
+		int  i = userInfoMapper.updateUserInfo(tp);
+		
+		// TODO Auto-generated method stub
+		return i;
 	}
 
 }
