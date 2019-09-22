@@ -76,6 +76,7 @@ public class ShiroConfig {
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
         // 添加自己的过滤器取名为jwt
         Map<String, Filter> filterMap = new HashMap<>(16);
+//        filterMap.put("jwt", new JwtFilter());
         filterMap.put("jwt", new JwtFilter());
         factoryBean.setFilters(filterMap);
         factoryBean.setSecurityManager(securityManager);
