@@ -108,11 +108,14 @@ public class UserInfoServiceImpl implements UserInfoService {
 			picture.setTeacherId(Integer.valueOf(teacherId));
 			picture.setPictureTitle(pictureTitle);
 
-			if (pictureUrl.contains(File.separator)) {
-				picture.setPictureUrl(pictureUrl);
-			} else {
-				picture.setPictureUrl(picture_url + File.separator + pictureUrl);
+			if(pictureUrl != null && StringUtils.isNoneBlank(pictureUrl)) {
+				if (pictureUrl.contains(File.separator)) {
+					picture.setPictureUrl(pictureUrl);
+				} else {
+					picture.setPictureUrl(picture_url + File.separator + pictureUrl);
+				}
 			}
+			
 
 			picture.setPictureDesc(pictureDesc);
 			picture.setStatus(1);
