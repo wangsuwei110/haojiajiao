@@ -5,7 +5,7 @@ import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.platform.commons.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
