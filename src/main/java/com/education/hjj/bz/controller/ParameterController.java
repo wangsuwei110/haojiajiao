@@ -163,7 +163,7 @@ public class ParameterController {
 				}
 				
 				if(Integer.valueOf(parentId) == 95) {
-					map.put("teachBrance", list);
+					map.put("teachBranceSlave", list);
 				}
 			}
 			
