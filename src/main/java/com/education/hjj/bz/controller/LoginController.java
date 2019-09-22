@@ -133,6 +133,7 @@ public class LoginController {
 		}
 		
 		String identifyCode = LoginForm.getIdentifyCode();
+		logger.info("该用户登录手机号是： {},验证码是: {}" , phoneNum , identifyCode);
 		
 		Map<String, Object> codeMessage = smsService.checkIsCorrectCode(phoneNum, identifyCode);
 		
@@ -201,7 +202,11 @@ public class LoginController {
 				logger.info("该用户为已注册用户");
 				String openId = teacherVo.getOpenId();
 				
-				if(openId.equalsIgnoreCase(LoginForm.getOpenId())) {
+				if(openId ==null || StringUtils.isBlank(openId)) {
+					
+					userInfoService.updateOpenId(LoginForm.getOpenId() , teacherVo.getTeacherId());
+					
+				}else if(openId.equalsIgnoreCase(LoginForm.getOpenId())) {
 					//记录教员的登陆日志
 					j = loginLogService.addLoginLog(loginType, phoneNum , phoneNum);
 				}else {
