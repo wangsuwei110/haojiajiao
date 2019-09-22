@@ -300,36 +300,44 @@ public class LoginController {
     @ApiOperation("获取openId")
     public ApiResponse getOAuth(@RequestBody LoginForm loginForm){       
         String code = loginForm.getCode();//获取微信服务器授权返回的code值
+        
+        logger.info("code = {}" , code);
             /**
              * 构造请求链接
              * https://api.weixin.qq.com/sns/jscode2session?
              * appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code
              */
-            String url = Constant.ACCESS_TOKEN_URL+APPID+"&secret="+SECRET+"&code="+code+"&grant_type=authorization_code";  
-            
-            Map<String, String> urlData= new HashMap<String, String>();
-            
-            urlData.put("appid",APPID);//小程序id
-            urlData.put("secret",SECRET);//小程序key
-            urlData.put("js_code",code);//小程序传过来的code
-            urlData.put("grant_type","authorization_code");//固定值这样写就行
-            
-            String openid;
-			try {
-				String jsonStr = HttpClientUtils.doGet(url, urlData);
-				openid = JSONObject.parseObject(jsonStr).getString("openid");
-				
-				String unionid = JSONObject.parseObject(jsonStr).getString("unionid");
-				logger.info("openid = {}, unionid = {}" , openid , unionid);
-				
-				Map<String , Object> map = new HashMap<String, Object>(1);
-	            map.put("openid", openid);
-				return ApiResponse.success("获取OpenId成功" , UtilTools.mapToJson(map));
-				 
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-            
-            return ApiResponse.error("获取OpenId失败！");
+        String url = Constant.ACCESS_TOKEN_URL+"?appid="+APPID+"&secret="+SECRET+"&code="+code+"&grant_type=authorization_code";  
+        
+        logger.info("url = {}" , url);
+        
+        Map<String, String> urlData= new HashMap<String, String>();
+        
+        urlData.put("appid",APPID);//小程序id
+        urlData.put("secret",SECRET);//小程序key
+        urlData.put("js_code",code);//小程序传过来的code
+        urlData.put("grant_type","authorization_code");//固定值这样写就行
+        
+        String openid;
+        
+		try {
+			String jsonStr = HttpClientUtils.doGet(url, urlData);
+			
+			logger.info("jsonStr = {}" , jsonStr);
+			
+			openid = JSONObject.parseObject(jsonStr).getString("openid");
+			
+			String unionid = JSONObject.parseObject(jsonStr).getString("unionid");
+			logger.info("openid = {}, unionid = {}" , openid , unionid);
+			
+			Map<String , Object> map = new HashMap<String, Object>(1);
+            map.put("openid", openid);
+			return ApiResponse.success("获取OpenId成功" , UtilTools.mapToJson(map));
+			 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        
+        return ApiResponse.error("获取OpenId失败！");
     }
 }
