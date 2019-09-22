@@ -34,4 +34,6 @@ public interface UserInfoService {
 	int auditTeacherInfo(TeacherInfoForm teacherInfoForm);
 	
 	Map<String ,Object> queryTeacherInfoByType(PicturePo picturePo);
+	
+	int updateOpenId(String openId , int teacherId);
 }
