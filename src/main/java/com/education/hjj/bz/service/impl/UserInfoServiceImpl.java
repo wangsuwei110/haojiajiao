@@ -566,6 +566,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			
 			return i;
 		}
+		
 		return -1;
 	}
 
