@@ -52,7 +52,7 @@ public class ComplaintSuggestionController {
 		return ApiResponse.success("操作失败！");
 	}
 	
-	@ApiOperation("新增建议与投诉")
+	@ApiOperation("按ID查找建议与投诉")
 	@RequestMapping(value = "/queryComplaintSuggestionById", method = RequestMethod.POST)
 	@ResponseBody
 	public ApiResponse queryComplaintSuggestionById(@RequestBody ComplaintSuggestionForm complaintSuggestionForm) {
@@ -69,7 +69,7 @@ public class ComplaintSuggestionController {
 		return ApiResponse.success("暂无数据！");
 	}
 	
-	@ApiOperation("新增建议与投诉")
+	@ApiOperation("查找所有的建议与投诉")
 	@RequestMapping(value = "/queryAllComplaintSuggestion", method = RequestMethod.GET)
 	public ApiResponse queryAllComplaintSuggestion() {
 		
