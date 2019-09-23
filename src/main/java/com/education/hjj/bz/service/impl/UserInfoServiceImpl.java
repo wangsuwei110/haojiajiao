@@ -298,6 +298,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	public int updateUserInfoByParameter(TeacherInfoForm teacherInfoForm) {
 		
 		logger.info("teacherInfoForm={}",teacherInfoForm.toString());
+		
 		TeacherPo teacher = new TeacherPo();
 		
 		if(teacherInfoForm.getTeacherTag() != null && StringUtils.isNotBlank(teacherInfoForm.getTeacherTag())) {
@@ -331,7 +332,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 		if(teacherInfoForm.getAddress() != null && StringUtils.isNotBlank(teacherInfoForm.getAddress())) {
 			teacher.setAddress(teacherInfoForm.getAddress());
 		}
-		
 
 		teacher.setTeacherId(Integer.valueOf(teacherInfoForm.getTeacherId()));
 
