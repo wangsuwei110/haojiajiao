@@ -362,4 +362,22 @@ public class UserInfoController {
 		
 		return ApiResponse.error("暂无数据！");
 	}
+	
+	@ApiOperation("查询所有教员信息")
+	@RequestMapping(value = "/queryAllTeacherInfos", method = RequestMethod.GET)
+	@ResponseBody
+	public ApiResponse queryAllTeacherInfos() {
+		
+		List<TeacherVo> list = userInfoService.queryAllTeacherInfos();
+		
+		int count = list.size();
+		
+		Map<String , Object> map = new HashMap<String , Object>(2);
+		
+		map.put("count", count);
+		map.put("teacherList", list);
+		
+		return ApiResponse.success("操作成功！", UtilTools.mapToJson(map));
+	}
+	
 }

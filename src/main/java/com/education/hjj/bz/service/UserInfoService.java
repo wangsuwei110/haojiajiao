@@ -1,5 +1,6 @@
 package com.education.hjj.bz.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -39,4 +40,6 @@ public interface UserInfoService {
 	int updateOpenId(String openId , int teacherId);
 	
 	int updateUserInfos(TeacherInfoReplenishForm teacherInfoReplenishForm);
+	
+	List<TeacherVo> queryAllTeacherInfos();
 }

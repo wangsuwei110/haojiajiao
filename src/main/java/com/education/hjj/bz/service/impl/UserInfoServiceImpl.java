@@ -1,6 +1,7 @@
 package com.education.hjj.bz.service.impl;
 
 import java.io.File;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -568,6 +569,25 @@ public class UserInfoServiceImpl implements UserInfoService {
 		}
 		
 		return -1;
+	}
+
+	@Override
+	public List<TeacherVo> queryAllTeacherInfos() {
+		
+		List<TeacherVo> list = userInfoMapper.queryAllTeacherInfos();
+		for(TeacherVo t:list) {
+			
+			String date = t.getBeginSchoolTime();
+			
+			try {
+				t.setBeginSchoolTime(DateUtil.caculDegree(date));
+			} catch (ParseException e) {
+				logger.info("转换入学日期到年级失败......");
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
 	}
 
 }
