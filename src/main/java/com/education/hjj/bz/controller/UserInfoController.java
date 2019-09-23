@@ -374,10 +374,15 @@ public class UserInfoController {
 		
 		Map<String , Object> map = new HashMap<String , Object>(2);
 		
-		map.put("count", count);
-		map.put("teacherList", list);
+		if(count > 0) {
+			map.put("count", count);
+			map.put("teacherList", list);
+			
+			return ApiResponse.success("操作成功！", UtilTools.mapToJson(map));
+		}
 		
-		return ApiResponse.success("操作成功！", UtilTools.mapToJson(map));
+		return ApiResponse.error("暂无数据！");
+		
 	}
 	
 }
