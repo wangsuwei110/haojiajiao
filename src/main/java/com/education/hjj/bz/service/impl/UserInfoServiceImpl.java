@@ -575,6 +575,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 	public List<TeacherVo> queryAllTeacherInfos() {
 		
 		List<TeacherVo> list = userInfoMapper.queryAllTeacherInfos();
+		
+		// 查询个人标签
+		List<ParameterPo> parameterlist = new ArrayList<ParameterPo>();
+				
 		for(TeacherVo t:list) {
 			
 			String date = t.getBeginSchoolTime();
@@ -584,6 +588,33 @@ public class UserInfoServiceImpl implements UserInfoService {
 			} catch (ParseException e) {
 				logger.info("转换入学日期到年级失败......");
 				e.printStackTrace();
+			}
+			
+			String branchMaster = t.getTeachBrance();
+			
+			ParameterPo par = new ParameterPo();
+			par.setParameterId(Integer.valueOf(branchMaster));
+			parameterlist.add(par);
+			
+			List<ParameterVo> paraList = parameterMapper.queryParameterListsByTypes(parameterlist);
+			
+			for(ParameterVo po: paraList) {
+				t.setTeachBrance(po.getName());
+			}
+			
+			
+			String [] branchArray = t.getTeachBranchSlave().split(",");
+			
+			for(String branch: branchArray) {
+				ParameterPo para = new ParameterPo();
+				para.setParameterId(Integer.valueOf(branch));
+				parameterlist.add(para);
+			}
+			
+			List<ParameterVo> parameterList = parameterMapper.queryParameterListsByTypes(parameterlist);
+			
+			for(ParameterVo po: parameterList) {
+				t.setTeachBranchSlave(po.getName());
 			}
 		}
 		
