@@ -31,6 +31,7 @@ import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.enums.ImagePath;
 import com.education.hjj.bz.formBean.LoginForm;
 import com.education.hjj.bz.formBean.TeacherInfoForm;
+import com.education.hjj.bz.formBean.TeacherInfoReplenishForm;
 import com.education.hjj.bz.formBean.UserInfoForm;
 import com.education.hjj.bz.mapper.ParameterMapper;
 import com.education.hjj.bz.mapper.UserInfoMapper;
@@ -524,6 +525,48 @@ public class UserInfoServiceImpl implements UserInfoService {
 		
 		// TODO Auto-generated method stub
 		return i;
+	}
+
+	@Override
+	public int updateUserInfos(TeacherInfoReplenishForm teacherInfoReplenishForm) {
+		
+		if(teacherInfoReplenishForm != null) {
+			
+			String teacherId = teacherInfoReplenishForm.getTeacherId();
+			String name = teacherInfoReplenishForm.getName();
+			String address = teacherInfoReplenishForm.getAddress();
+			String school = teacherInfoReplenishForm.getSchool();
+			Integer sex = teacherInfoReplenishForm.getSex();
+			
+			Integer teachBrance = null;
+			if(teacherInfoReplenishForm.getTeachBrance() != null && 
+					StringUtils.isNoneBlank(teacherInfoReplenishForm.getTeachBrance())) {
+				
+				teachBrance = Integer.valueOf(teacherInfoReplenishForm.getTeachBrance());
+			}
+			
+			String teachBranchSlave = teacherInfoReplenishForm.getTeachBranchSlave();
+			String telephone = teacherInfoReplenishForm.getTelephone();
+			String teachGrade = teacherInfoReplenishForm.getTeachGrade();
+			
+			TeacherPo teacher = new TeacherPo();
+			teacher.setTeachBrance(teachBrance);
+			teacher.setTeachBranchSlave(teachBranchSlave);
+			teacher.setSex(sex);
+			teacher.setSchool(school);
+			teacher.setName(name);
+			teacher.setAddress(address);
+			teacher.setTelephone(telephone);
+			teacher.setTeacherId(Integer.valueOf(teacherId));
+			teacher.setTeachGrade(teachGrade);
+			teacher.setUpdateTime(new Date());
+			teacher.setUpdateUser(teacherId);
+			
+			int i = userInfoMapper.updateUserInfo(teacher);
+			
+			return i;
+		}
+		return -1;
 	}
 
 }
