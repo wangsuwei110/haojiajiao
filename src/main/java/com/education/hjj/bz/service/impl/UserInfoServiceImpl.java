@@ -305,7 +305,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 		}
 
 		if (teacherInfoForm.getTeachLevel() != null && StringUtils.isNotBlank(teacherInfoForm.getTeachLevel())) {
-			teacher.setTeachLevel(Integer.valueOf(teacherInfoForm.getTeachLevel()));
+			teacher.setTeachLevel(teacherInfoForm.getTeachLevel());
 		}
 
 		if (teacherInfoForm.getTeachGrade() != null && StringUtils.isNotBlank(teacherInfoForm.getTeachGrade())) {
