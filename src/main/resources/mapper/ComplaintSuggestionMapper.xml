@@ -2,7 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace用于绑定Dao接口 -->
 <mapper namespace="com.education.hjj.bz.mapper.ComplaintSuggestionMapper">
-      
+
+
+	<resultMap id="complaintSuggestionResultMap" type="com.education.hjj.bz.entity.vo.ComplaintSuggestionVo" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		<result column="complaint_suggestion_id" property="complaintSuggestionId"/>
+		<result column="person_id" property="personId"/>
+		<result column="type" property="type"/>
+		<result column="content" property="content"/>
+		<result column="telephone" property="telephone"/>
+		<result column="create_time" property="createTime"/>
+	</resultMap>
+     
+    <!-- 新增一条未回复的投诉与建议 -->
     <insert id="addComplaintSuggestion" parameterType="com.education.hjj.bz.entity.ComplaintSuggestionPo"
         keyProperty="id" useGeneratedKeys="true">
         insert INTO teacher_complaints_suggestions(
@@ -10,7 +22,6 @@
 				type,
 				content,
 				telephone,
-				pictures,
 				status,
 				create_time,
 				create_user,
@@ -22,9 +33,6 @@
 				#{type},
 				#{content},
 				#{telephone},
-				<if test="pictures != null">
-					pictures= #{pictures},
-        		</if>
 				#{status},
 				#{createTime},
 				#{createUser},
@@ -32,5 +40,63 @@
 				#{updateUser}
 			)
     </insert>
+    
+    <!-- 更新一条未回复的投诉与建议 -->
+    <update id="updateComplaintSuggestion" parameterType="com.education.hjj.bz.entity.ComplaintSuggestionPo">
+        
+        update
+        	teacher_complaints_suggestions
+        set
+        	reply = #{reply},
+        	status = #{status}
+        	update_time = #{updateTime},
+        	update_user = #{updateUser}
+        where
+        	status = 1
+        and
+        	complaint_suggestion_id = #{complaintSuggestionId}
+    </update>
+    
+    <!-- 查询所有的未回复的投诉与建议 -->
+    <select id="queryAllComplaintSuggestion" resultMap="complaintSuggestionResultMap">
+    	select
+    		complaint_suggestion_id,
+    		person_id,
+			type,
+			content,
+			telephone,
+			reply,
+			status,
+			create_time
+		from
+			teacher_complaints_suggestions
+		
+		GROUP BY
+			status
+		ORDER BY
+			status desc,
+			create_time desc	
+    
+    </select>
+    
+    <!-- 查询一条未回复的投诉与建议 -->
+     <select id="queryComplaintSuggestionById" resultMap="complaintSuggestionResultMap" parameterType="java.lang.Integer">
+    	select
+    		complaint_suggestion_id,
+    		person_id,
+			type,
+			content,
+			telephone,
+			reply,
+			status,
+			create_time
+		from
+			teacher_complaints_suggestions
+		where
+			status = 1
+		and
+			complaint_suggestion_id = #{complaintSuggestionId}
+    
+    </select>
 
 </mapper>

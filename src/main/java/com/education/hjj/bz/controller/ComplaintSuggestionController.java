@@ -2,22 +2,16 @@ package com.education.hjj.bz.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.alibaba.fastjson.JSON;
+import com.education.hjj.bz.entity.vo.ComplaintSuggestionVo;
 import com.education.hjj.bz.formBean.ComplaintSuggestionForm;
-import com.education.hjj.bz.formBean.PictureForm;
 import com.education.hjj.bz.service.ComplaintSuggestionService;
 import com.education.hjj.bz.util.ApiResponse;
 
@@ -33,37 +27,59 @@ public class ComplaintSuggestionController {
 	private ComplaintSuggestionService complaintSuggestionService;
 
 	@ApiOperation("新增建议与投诉")
-	@RequestMapping(value = "/addStudentDemandByTeacher", method = RequestMethod.POST)
-	@RequiresPermissions(logical = Logical.AND, value = {"teacher:edit"})
-	public ApiResponse addStudentDemandByTeacher(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value = "/addComplaintSuggestion", method = RequestMethod.POST)
+	public ApiResponse addStudentDemandByTeacher(@RequestBody ComplaintSuggestionForm complaintSuggestionForm) {
 		
-		response.setContentType("text/html");
-		response.setCharacterEncoding("utf-8");
+		int i = complaintSuggestionService.addComplaintSuggestion(complaintSuggestionForm);
 		
-		MultipartHttpServletRequest req =(MultipartHttpServletRequest)request; 
-		MultipartFile multipartFiles = req.getFile("file");
-		
-		String telephone=request.getParameter("telephone");//取出form-data中a的值
-		String content=request.getParameter("content()");//取出form-data中a的值
-		Integer type = Integer.valueOf(request.getParameter("type"));
-		String teacherId = request.getParameter("personId");
-		
-		ComplaintSuggestionForm complaintSuggestionForm = new ComplaintSuggestionForm();
-		complaintSuggestionForm.setPersonId(teacherId);
-		complaintSuggestionForm.setTelephone(telephone);
-		complaintSuggestionForm.setType(String.valueOf(type));
-		
-		String pictureTitle=request.getParameter("pictureTitle");//取出form-data中a的值
-		String pictureDesc=request.getParameter("pictureDesc");//取出form-data中a的值
-		
-		PictureForm pictureForm = new PictureForm();
-		pictureForm.setPictureTitle(pictureTitle);
-		pictureForm.setPictureDesc(pictureDesc);
-		
+		if(i > 0) {
+			return ApiResponse.success("操作成功！");
+		}
 
-		int i = complaintSuggestionService.addComplaintSuggestion(complaintSuggestionForm, multipartFiles , type , pictureForm);
+		return ApiResponse.success("操作失败！");
+	}
+	
+	@ApiOperation("回复建议与投诉")
+	@RequestMapping(value = "/updateComplaintSuggestion", method = RequestMethod.POST)
+	public ApiResponse updateComplaintSuggestion(@RequestBody ComplaintSuggestionForm complaintSuggestionForm) {
+		
+		int i = complaintSuggestionService.updateComplaintSuggestion(complaintSuggestionForm);
+		
+		if(i > 0) {
+			return ApiResponse.success("操作成功！");
+		}
 
-		return ApiResponse.success(i);
+		return ApiResponse.success("操作失败！");
+	}
+	
+	@ApiOperation("新增建议与投诉")
+	@RequestMapping(value = "/queryComplaintSuggestionById", method = RequestMethod.POST)
+	@ResponseBody
+	public ApiResponse queryComplaintSuggestionById(@RequestBody ComplaintSuggestionForm complaintSuggestionForm) {
+		
+		int id = complaintSuggestionForm.getComplaintSuggestionId();
+		
+		ComplaintSuggestionVo  ComplaintSuggestionVo = complaintSuggestionService.queryComplaintSuggestionById(id);
+		
+		if(ComplaintSuggestionVo != null) {
+			
+			return ApiResponse.success("操作成功！" , JSON.toJSON(ComplaintSuggestionVo));
+		}
+
+		return ApiResponse.success("暂无数据！");
+	}
+	
+	@ApiOperation("新增建议与投诉")
+	@RequestMapping(value = "/queryAllComplaintSuggestion", method = RequestMethod.GET)
+	public ApiResponse queryAllComplaintSuggestion() {
+		
+		List<ComplaintSuggestionVo>  list = complaintSuggestionService.queryAllComplaintSuggestion();
+		
+		if(list.size() > 0) {
+			return ApiResponse.success("操作成功！" , JSON.toJSON(list));
+		}
+
+		return ApiResponse.success("暂无数据！");
 	}
 
 }

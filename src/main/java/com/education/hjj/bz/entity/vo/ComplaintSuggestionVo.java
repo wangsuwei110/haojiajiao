@@ -8,17 +8,31 @@ public class ComplaintSuggestionVo extends BaseVo implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -8080482242846334998L;
+	
+	private Integer complaintSuggestionId;
 
 	//投诉或建议人ID
 	private String personId;
+	
 	//投诉类型(0投诉，1建议)
 	private String type;
+	
 	//投诉或建议内容
 	private String content;
+	
 	//投诉或建议人电话号码
 	private String telephone;
-	//投诉人上传照片地址,多张照片以的主键以“|”拼接
-	private String pictures;
+	
+	//内容回复
+	private String reply;
+	
+
+	public Integer getComplaintSuggestionId() {
+		return complaintSuggestionId;
+	}
+	public void setComplaintSuggestionId(Integer complaintSuggestionId) {
+		this.complaintSuggestionId = complaintSuggestionId;
+	}
 	public String getPersonId() {
 		return personId;
 	}
@@ -43,11 +57,11 @@ public class ComplaintSuggestionVo extends BaseVo implements Serializable{
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
-	public String getPictures() {
-		return pictures;
+	public String getReply() {
+		return reply;
 	}
-	public void setPictures(String pictures) {
-		this.pictures = pictures;
+	public void setReply(String reply) {
+		this.reply = reply;
 	}
 	
 }

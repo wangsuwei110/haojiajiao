@@ -1,12 +1,17 @@
 package com.education.hjj.bz.service;
 
-import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
+import com.education.hjj.bz.entity.vo.ComplaintSuggestionVo;
 import com.education.hjj.bz.formBean.ComplaintSuggestionForm;
-import com.education.hjj.bz.formBean.PictureForm;
 
 public interface ComplaintSuggestionService {
 
-	int addComplaintSuggestion(ComplaintSuggestionForm complaintSuggestionForm, MultipartFile files, Integer type,
-			PictureForm pictureForm);
+	int addComplaintSuggestion(ComplaintSuggestionForm complaintSuggestionForm);
+	
+	int updateComplaintSuggestion(ComplaintSuggestionForm complaintSuggestionForm);
+	
+	ComplaintSuggestionVo queryComplaintSuggestionById(int complaintSuggestionId);
+	
+	List<ComplaintSuggestionVo> queryAllComplaintSuggestion();
 }
