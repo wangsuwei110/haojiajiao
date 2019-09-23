@@ -27,6 +27,7 @@ import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.formBean.PictureForm;
 import com.education.hjj.bz.formBean.TeacherInfoForm;
+import com.education.hjj.bz.formBean.TeacherInfoReplenishForm;
 import com.education.hjj.bz.formBean.UserInfoForm;
 import com.education.hjj.bz.service.ParameterService;
 import com.education.hjj.bz.service.UserInfoService;
@@ -78,6 +79,28 @@ public class UserInfoController {
 		if(i > 0) {
 			
 			TeacherVo teacherVo = userInfoService.queryTeacherHomeInfos(teacherInfoForm.getTeacherId());
+			
+			if(teacherVo != null ) {
+				map.put("teacherName", teacherVo.getName());
+			}
+			
+			return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
+		}
+        
+        return ApiResponse.error("操作失败!");
+
+	}
+	
+	@ApiOperation("用户基本信息补全")
+	@RequestMapping(value = "/updateUserInfo", method = RequestMethod.POST)
+	public ApiResponse updateUserInfos(@RequestBody TeacherInfoReplenishForm teacherInfoReplenishForm) {
+		
+		int i = userInfoService.updateUserInfos(teacherInfoReplenishForm);
+		Map<String , Object> map = new HashMap<String, Object>(1);
+		
+		if(i > 0) {
+			
+			TeacherVo teacherVo = userInfoService.queryTeacherHomeInfos(teacherInfoReplenishForm.getTeacherId());
 			
 			if(teacherVo != null ) {
 				map.put("teacherName", teacherVo.getName());
