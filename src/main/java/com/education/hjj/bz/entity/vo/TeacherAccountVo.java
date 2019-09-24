@@ -16,9 +16,14 @@ public class TeacherAccountVo extends BaseVo implements Serializable{
 	
 	private String teacherPhone;
 	
+	//账户总入账金额
 	private BigDecimal accountMoney;
 	
+	//账户余额
 	private BigDecimal surplusMoney;
+	
+	//该账户创建了多久
+	private String stayTime;
 
 	public Integer getTeacherId() {
 		return teacherId;
@@ -58,6 +63,14 @@ public class TeacherAccountVo extends BaseVo implements Serializable{
 
 	public void setSurplusMoney(BigDecimal surplusMoney) {
 		this.surplusMoney = surplusMoney;
+	}
+
+	public String getStayTime() {
+		return stayTime;
+	}
+
+	public void setStayTime(String stayTime) {
+		this.stayTime = stayTime;
 	}
 	
 }
