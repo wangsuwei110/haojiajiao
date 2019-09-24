@@ -26,7 +26,7 @@ public class UserAccountController {
 	@Autowired
 	private UserAccountService userAccountService;
 	
-	@ApiOperation("教员账户查询")
+	@ApiOperation("教员账户余额查询")
 	@RequestMapping(value = "/queryUserAccount", method = RequestMethod.GET)
 	public ApiResponse queryUserAccount(@RequestParam("teacherId") Integer teacherId) {
 
