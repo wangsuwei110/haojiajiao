@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.education.hjj.bz.mapper.StudentDetailMapper">
+
+	<resultMap id="userInfoMap" type="com.education.hjj.bz.entity.vo.StudentDetailVo" >
+		<result column="sid" property="sid"/>
+		<result column="student_name" property="studentName"/>
+		<result column="telphone" property="telphone"/>
+		<result column="sex" property="sex"/>
+		<result column="grade" property="grade"/>
+		<result column="study_address" property="studyAddress"/>
+		<result column="parent_id" property="parentId"/>
+		<result column="create_time" property="createTime"/>
+	</resultMap>
+	
+    <select id="listStudentDetail" parameterType="com.education.hjj.bz.formBean.StudentDetailForm"  resultMap="userInfoMap" >
+        select
+			*
+		from
+			student_info
+		WHERE delete_status = 0
+		<if test="parentId != null">
+			AND parent_id = #{parentId}
+		</if>
+		<if test="sid != null">
+			AND sid = #{sid}
+		</if>
+		ORDER BY sid DESC
+    </select>
+
+	<select id="countStudent" parameterType="com.education.hjj.bz.formBean.StudentDetailForm"  resultType="java.lang.Integer" >
+        select
+			count(*)
+		from
+			student_info
+		WHERE delete_status = 0
+		<if test="parentId != null">
+			AND parent_id = #{parentId}
+		</if>
+		<if test="sid != null">
+			AND sid = #{sid}
+		</if>
+    </select>
+</mapper>

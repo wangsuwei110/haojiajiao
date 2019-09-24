@@ -1,6 +1,6 @@
 package com.education.hjj.bz.mapper;
 
-import com.education.hjj.bz.model.vo.SubjectVo;
+import com.education.hjj.bz.entity.vo.SubjectVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

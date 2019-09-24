@@ -1,4 +1,4 @@
-package com.education.hjj.bz.model.vo;
+package com.education.hjj.bz.entity.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -10,7 +10,7 @@ import java.util.Date;
  * @author dolyw.com
  * @date 2018/8/30 10:34
  */
-public class SubjectVo implements Serializable{
+public class SubjectVo extends BaseVo implements Serializable{
     private static final long serialVersionUID = 3342723124953988436L;
     /**
      * 科目id

@@ -3,7 +3,7 @@
 
 <mapper namespace="com.education.hjj.bz.mapper.SubjectMapper">
 
-	<resultMap id="userInfoMap" type="com.education.hjj.bz.model.vo.SubjectVo" >
+	<resultMap id="userInfoMap" type="com.education.hjj.bz.entity.vo.SubjectVo" >
 		<result column="sid" property="sid"/>
 		<result column="name_eg" property="nameEg"/>
 		<result column="name_cn" property="nameCn"/>

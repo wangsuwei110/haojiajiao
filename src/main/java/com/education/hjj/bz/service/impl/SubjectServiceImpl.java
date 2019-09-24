@@ -5,7 +5,6 @@ import com.education.hjj.bz.mapper.SubjectMapper;
 import com.education.hjj.bz.service.SubjectService;
 import com.education.hjj.bz.util.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 /**
