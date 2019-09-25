@@ -195,7 +195,7 @@ public class LoginController {
 	          
 	            Map<String , Object> map = new HashMap<String, Object>(1);
 	            map.put("teacherId", teacherVo.getTeacherId());
-	            map.put("telephone", teacherVo.getTelephone());
+	            map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
 	          
 		        return ApiResponse.success("注册成功" , UtilTools.mapToJson(map));
 			}else {
@@ -246,7 +246,7 @@ public class LoginController {
             Map<String , Object> map = new HashMap<String, Object>(1);
             map.put("teacherName", teacherName);
             map.put("teacherId", teacherVo.getTeacherId());
-            map.put("telephone", teacherVo.getTelephone());
+            map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
             
             return ApiResponse.success("登录成功" , UtilTools.mapToJson(map));
         } else {
