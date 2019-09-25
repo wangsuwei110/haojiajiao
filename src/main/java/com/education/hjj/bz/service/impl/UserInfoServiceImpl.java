@@ -98,6 +98,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			String beginSchool = userInfoForm.getBeginSchoolTime();
 			Integer isGraduate = userInfoForm.getIsGraduate();
 			String tag = userInfoForm.getTag();
+			String address = userInfoForm.getAddress();
 
 			String type = userInfoForm.getType();
 
@@ -162,7 +163,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 					teacher.setWeiChar(weiChar);
 					teacher.setQQ(QQ);
 					teacher.setPicture(pictureUrl);
-
+					teacher.setAddress(address);
+					
 					if (tv.getHome() == null || StringUtils.isBlank(tv.getHome())) {
 						resumeComplete += 20;
 						teacher.setResumeComplete(resumeComplete);
