@@ -197,6 +197,7 @@ public class LoginController {
 	            map.put("teacherId", teacherVo.getTeacherId());
 	            map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
 	          
+	            logger.info("telephone = {}" , map.get("telephone"));
 		        return ApiResponse.success("注册成功" , UtilTools.mapToJson(map));
 			}else {
 				logger.info("该用户为已注册用户");
@@ -247,7 +248,7 @@ public class LoginController {
             map.put("teacherName", teacherName);
             map.put("teacherId", teacherVo.getTeacherId());
             map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
-            
+            logger.info("telephone = {}" , map.get("telephone"));
             return ApiResponse.success("登录成功" , UtilTools.mapToJson(map));
         } else {
         	return ApiResponse.error("登录失败，请检查网络...");
@@ -270,10 +271,10 @@ public class LoginController {
      * 登出 
      * @return
      */
-    @GetMapping(value = "/logout")
     @ApiOperation("用户退出")
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @Transactional
-    public ApiResponse logout(HttpServletRequest servletRequest , @RequestBody LogoutForm logoutForm) {
+    public ApiResponse logout( @RequestBody LogoutForm logoutForm) {
         Subject subject = SecurityUtils.getSubject();
         String token = SecurityUtils.getSubject().getPrincipal().toString();
         
@@ -288,13 +289,13 @@ public class LoginController {
         }
 
         subject.logout();
-        return new ApiResponse(ErrorEnum.USER_LOGOUT.getCode(), ErrorEnum.USER_LOGOUT.getMsg());
+        return ApiResponse.success("登出成功！");
     }
     
     @GetMapping(value = "unauthorized")
     @ApiOperation("用户未授权")
     public ApiResponse unauthorized() {
-        return new ApiResponse(ErrorEnum.USER_Unauthorized.getCode(), ErrorEnum.USER_Unauthorized.getMsg());
+        return new ApiResponse(ErrorEnum.USER_UNAUTHORIZED.getCode(), ErrorEnum.USER_UNAUTHORIZED.getMsg());
     }
     
     /**
