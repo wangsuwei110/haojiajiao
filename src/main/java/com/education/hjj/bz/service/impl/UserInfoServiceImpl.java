@@ -138,7 +138,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 					if (tv.getTeacherCertificate() == null || StringUtils.isBlank(tv.getTeacherCertificate())) {
 						resumeComplete += 10;
 					}
-					teacher.setTeacherCertificate(picture.getPictureUrl());
+					teacher.setTeacherCertificate("1");
 					teacher.setResumeComplete(resumeComplete);
 					picture.setPictureType(4);
 				}
@@ -150,7 +150,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 						resumeComplete += 10;
 					}
 					picture.setPictureType(5);
-					teacher.setExperience(picture.getPictureUrl());
+					teacher.setExperience("1");
 					teacher.setResumeComplete(resumeComplete);
 				}
 			}
