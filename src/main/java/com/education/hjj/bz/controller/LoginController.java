@@ -154,6 +154,8 @@ public class LoginController {
 		
 		Integer loginType = LoginForm.getLoginType();
 		
+		 Map<String , Object> map = new HashMap<String, Object>(1);
+		
 		if(loginType == Constant.TEACHER_CODE) {
 			//插入teacher表
 			teacherVo = userInfoService.queryTeacherInfosByTelephone(phoneNum);
@@ -193,7 +195,6 @@ public class LoginController {
 
 	            teacherVo = userInfoService.queryTeacherInfosByTelephone(phoneNum);
 	          
-	            Map<String , Object> map = new HashMap<String, Object>(1);
 	            map.put("teacherId", teacherVo.getTeacherId());
 	            map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
 	          
@@ -216,10 +217,17 @@ public class LoginController {
 				
 			}
 			
+            map.put("teacherName", teacherVo.getName());
+            map.put("teacherId", teacherVo.getTeacherId());
+            map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
+            logger.info("telephone = {}" , map.get("telephone"));
 		}
 		
-		String teacherName = teacherVo.getName();
-
+		//学生登录入口
+		if(loginType == Constant.STUDENT_CODE) {
+			
+		}
+		
 		//统一处理：如果是已经注册过的用户登录，教员和学生统一将认证信息和权限授权更新。
 		UserDto userDtoTemp = new UserDto();
 		
@@ -244,11 +252,7 @@ public class LoginController {
             httpServletResponse.setHeader(Constant.TOKEN, token);
             httpServletResponse.setHeader("Access-Control-Expose-Headers", Constant.TOKEN);
             
-            Map<String , Object> map = new HashMap<String, Object>(1);
-            map.put("teacherName", teacherName);
-            map.put("teacherId", teacherVo.getTeacherId());
-            map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
-            logger.info("telephone = {}" , map.get("telephone"));
+           
             return ApiResponse.success("登录成功" , UtilTools.mapToJson(map));
         } else {
         	return ApiResponse.error("登录失败，请检查网络...");
@@ -275,17 +279,40 @@ public class LoginController {
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @Transactional
     public ApiResponse logout( @RequestBody LogoutForm logoutForm) {
+    	
+    	String userId = logoutForm.getUserId();
+    	
+    	Integer type = logoutForm.getType();
+    	
+    	String telephone = null;
+    	
+    	//教员登出
+    	if(type == Constant.TEACHER_CODE) {
+    		TeacherVo  teacherInfo = userInfoService.queryTeacherHomeInfos(userId);
+    		
+    		 if(teacherInfo != null) {
+    	        	telephone = teacherInfo.getTelephone();
+    	     }
+    	}
+    	
+    	//学员登出
+    	if(type == Constant.STUDENT_CODE) {
+    		
+    	}
+    	
         Subject subject = SecurityUtils.getSubject();
         String token = SecurityUtils.getSubject().getPrincipal().toString();
         
+        logger.info("teacherId = {} , telephone = {}" , userId , telephone);
+        
         //删除Token
         if (StringUtils.isNotBlank(token)) {
-            JedisUtil.delKey(Constant.PREFIX_SHIRO_REFRESH_TOKEN + logoutForm.getLoginPhone());
+            JedisUtil.delKey(Constant.PREFIX_SHIRO_REFRESH_TOKEN + telephone);
         }
         
         //删除授权
-        if(JedisUtil.exists(Constant.PREFIX_SHIRO_CACHE + logoutForm.getLoginPhone())) {
-        	JedisUtil.delKey(Constant.PREFIX_SHIRO_CACHE + logoutForm.getLoginPhone());
+        if(JedisUtil.exists(Constant.PREFIX_SHIRO_CACHE + telephone)) {
+        	JedisUtil.delKey(Constant.PREFIX_SHIRO_CACHE + telephone);
         }
 
         subject.logout();
