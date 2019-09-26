@@ -172,8 +172,9 @@ public class UserInfoController {
 		map.put("QQ", teacherVo.getQQ());
 		map.put("resumeComplete", teacherVo.getResumeComplete());
 		map.put("address", teacherVo.getAddress());
-		map.put("certificate", teacherVo.getTeacherCertificate());
-		map.put("experience", teacherVo.getExperience());
+		
+		map.put("certificate", teacherVo.getTeacherCertificate() == null?"0":teacherVo.getTeacherCertificate());
+		map.put("experience", teacherVo.getExperience() == null ? "0":teacherVo.getExperience());
 		
 		return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
 	}
