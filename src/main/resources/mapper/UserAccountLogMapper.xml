@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用于绑定Dao接口 -->
+<mapper namespace="com.education.hjj.bz.mapper.UserInfoMapper">
+
+	<!-- 用查询映射结果 -->
+	<resultMap id="teacherAccountLogResultMap" type="com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		
+		<result column="payment_id" property="paymentId"/>
+		<result column="payment_stream_id" property="paymentStreamId"/>
+		<result column="payment_person_id" property="paymentPersonId"/>
+		<result column="payment_person_name" property="paymentPersonName"/>
+		<result column="payment_type" property="paymentType"/>
+		<result column="payment_account" property="paymentAccount"/>
+		<result column="payment_desc" property="paymentDesc"/>
+		<result column="create_time" property="createTime"/>
+	</resultMap>
+	
+    
+    <!-- 查询用户账户变化日志 -->  
+    <select id="queryUserAccountOperateLog"  resultMap="teacherAccountLogResultMap" parameterType="com.education.hjj.bz.entity.TeacherAccountOperateLogPo">    
+        	
+       	select 
+			payment_stream_id,
+			payment_person_id,
+			payment_person_name,
+			payment_type,
+			payment_account,
+			payment_desc,
+			create_time
+		FROM
+			teacher_payments_log
+		WHERE
+			payment_person_id=#{teacherId}
+		AND
+			status =1
+			<if test="paymentType != null">
+               and payment_type = #{paymentType},
+            </if>
+       		
+    </select> 
+    
+</mapper>

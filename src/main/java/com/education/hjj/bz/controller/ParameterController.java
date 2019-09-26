@@ -98,7 +98,7 @@ public class ParameterController {
 			}
 			
 			if(tv != null && Integer.valueOf(parentId) == 95 ) {
-				if(tv.getTeachBrance() !=null && tv.getTeachBrance() != 0) {
+				if(tv.getTeachBrance() !=null && StringUtils.isNoneBlank(tv.getTeachBrance())) {
 					pVoList = parameterService.queryParameterListsByTypes(String.valueOf(tv.getTeachBrance()));
 				}
 			}

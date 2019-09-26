@@ -1,6 +1,7 @@
 package com.education.hjj.bz.service.impl;
 
 import java.io.File;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -31,6 +32,7 @@ import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.enums.ImagePath;
 import com.education.hjj.bz.formBean.LoginForm;
 import com.education.hjj.bz.formBean.TeacherInfoForm;
+import com.education.hjj.bz.formBean.TeacherInfoReplenishForm;
 import com.education.hjj.bz.formBean.UserInfoForm;
 import com.education.hjj.bz.mapper.ParameterMapper;
 import com.education.hjj.bz.mapper.UserInfoMapper;
@@ -96,6 +98,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			String beginSchool = userInfoForm.getBeginSchoolTime();
 			Integer isGraduate = userInfoForm.getIsGraduate();
 			String tag = userInfoForm.getTag();
+			String address = userInfoForm.getAddress();
 
 			String type = userInfoForm.getType();
 
@@ -135,7 +138,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 					if (tv.getTeacherCertificate() == null || StringUtils.isBlank(tv.getTeacherCertificate())) {
 						resumeComplete += 10;
 					}
-					teacher.setTeacherCertificate(picture.getPictureUrl());
+					teacher.setTeacherCertificate("1");
 					teacher.setResumeComplete(resumeComplete);
 					picture.setPictureType(4);
 				}
@@ -147,7 +150,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 						resumeComplete += 10;
 					}
 					picture.setPictureType(5);
-					teacher.setExperience(picture.getPictureUrl());
+					teacher.setExperience("1");
 					teacher.setResumeComplete(resumeComplete);
 				}
 			}
@@ -160,7 +163,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 					teacher.setWeiChar(weiChar);
 					teacher.setQQ(QQ);
 					teacher.setPicture(pictureUrl);
-
+					teacher.setAddress(address);
+					
 					if (tv.getHome() == null || StringUtils.isBlank(tv.getHome())) {
 						resumeComplete += 20;
 						teacher.setResumeComplete(resumeComplete);
@@ -298,6 +302,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	public int updateUserInfoByParameter(TeacherInfoForm teacherInfoForm) {
 		
 		logger.info("teacherInfoForm={}",teacherInfoForm.toString());
+		
 		TeacherPo teacher = new TeacherPo();
 		
 		if(teacherInfoForm.getTeacherTag() != null && StringUtils.isNotBlank(teacherInfoForm.getTeacherTag())) {
@@ -305,7 +310,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 		}
 
 		if (teacherInfoForm.getTeachLevel() != null && StringUtils.isNotBlank(teacherInfoForm.getTeachLevel())) {
-			teacher.setTeachLevel(Integer.valueOf(teacherInfoForm.getTeachLevel()));
+			teacher.setTeachLevel(teacherInfoForm.getTeachLevel());
 		}
 
 		if (teacherInfoForm.getTeachGrade() != null && StringUtils.isNotBlank(teacherInfoForm.getTeachGrade())) {
@@ -331,7 +336,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 		if(teacherInfoForm.getAddress() != null && StringUtils.isNotBlank(teacherInfoForm.getAddress())) {
 			teacher.setAddress(teacherInfoForm.getAddress());
 		}
-		
 
 		teacher.setTeacherId(Integer.valueOf(teacherInfoForm.getTeacherId()));
 
@@ -524,6 +528,99 @@ public class UserInfoServiceImpl implements UserInfoService {
 		
 		// TODO Auto-generated method stub
 		return i;
+	}
+
+	@Override
+	public int updateUserInfos(TeacherInfoReplenishForm teacherInfoReplenishForm) {
+		
+		if(teacherInfoReplenishForm != null) {
+			
+			String teacherId = teacherInfoReplenishForm.getTeacherId();
+			String name = teacherInfoReplenishForm.getName();
+			String address = teacherInfoReplenishForm.getAddress();
+			String school = teacherInfoReplenishForm.getSchool();
+			Integer sex = teacherInfoReplenishForm.getSex();
+			
+			Integer teachBrance = null;
+			if(teacherInfoReplenishForm.getTeachBrance() != null && 
+					StringUtils.isNoneBlank(teacherInfoReplenishForm.getTeachBrance())) {
+				
+				teachBrance = Integer.valueOf(teacherInfoReplenishForm.getTeachBrance());
+			}
+			
+			String teachBranchSlave = teacherInfoReplenishForm.getTeachBranchSlave();
+			String telephone = teacherInfoReplenishForm.getTelephone();
+			String teachGrade = teacherInfoReplenishForm.getTeachGrade();
+			
+			TeacherPo teacher = new TeacherPo();
+			teacher.setTeachBrance(teachBrance);
+			teacher.setTeachBranchSlave(teachBranchSlave);
+			teacher.setSex(sex);
+			teacher.setSchool(school);
+			teacher.setName(name);
+			teacher.setAddress(address);
+			teacher.setTelephone(telephone);
+			teacher.setTeacherId(Integer.valueOf(teacherId));
+			teacher.setTeachGrade(teachGrade);
+			teacher.setUpdateTime(new Date());
+			teacher.setUpdateUser(teacherId);
+			
+			int i = userInfoMapper.updateUserInfo(teacher);
+			
+			return i;
+		}
+		
+		return -1;
+	}
+
+	@Override
+	public List<TeacherVo> queryAllTeacherInfos() {
+		
+		List<TeacherVo> list = userInfoMapper.queryAllTeacherInfos();
+		
+		// 查询个人标签
+		List<ParameterPo> parameterlist = new ArrayList<ParameterPo>();
+				
+		for(TeacherVo t:list) {
+			
+			String date = t.getBeginSchoolTime();
+			
+			try {
+				t.setBeginSchoolTime(DateUtil.caculDegree(date));
+			} catch (ParseException e) {
+				logger.info("转换入学日期到年级失败......");
+				e.printStackTrace();
+			}
+			
+			String branchMaster = t.getTeachBrance();
+			
+			ParameterPo par = new ParameterPo();
+			par.setParameterId(Integer.valueOf(branchMaster));
+			parameterlist.add(par);
+			
+			List<ParameterVo> paraList = parameterMapper.queryParameterListsByTypes(parameterlist);
+			
+			for(ParameterVo po: paraList) {
+				t.setTeachBrance(po.getName());
+			}
+			
+			
+			String [] branchArray = t.getTeachBranchSlave().split(",");
+			
+			for(String branch: branchArray) {
+				ParameterPo para = new ParameterPo();
+				para.setParameterId(Integer.valueOf(branch));
+				parameterlist.add(para);
+			}
+			
+			List<ParameterVo> parameterList = parameterMapper.queryParameterListsByTypes(parameterlist);
+			
+			for(ParameterVo po: parameterList) {
+				t.setTeachBranchSlave(po.getName());
+			}
+		}
+		
+		return list;
 	}
 
 }
