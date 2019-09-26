@@ -26,6 +26,9 @@
 		<if test="sid != null">
 			AND sid = #{sid}
 		</if>
+		<if test="studentName != null and student != ''">
+			AND student_name like concat('%',#{studentName},'%',)
+		</if>
 		ORDER BY sid DESC
     </select>
 
@@ -40,6 +43,9 @@
 		</if>
 		<if test="sid != null">
 			AND sid = #{sid}
+		</if>
+		<if test="studentName != null and student != ''">
+            AND student_name like concat('%',#{studentName},'%',)
 		</if>
     </select>
 </mapper>
