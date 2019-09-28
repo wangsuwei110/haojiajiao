@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.hjj.bz.mapper.StudentMapper">
+
+    <resultMap id="studentResultMap" type="com.education.hjj.bz.entity.vo.StudentVo">
+	     	<result property="sid" column="sid"/>
+	     	<result property="studentName" column="student_name"/>
+	     	<result property="sex" column="sex"/>
+	     	<result property="grade" column="grade"/>
+	     	<result property="openid" column="openId"/>
+	     	<result property="picture" column="picture"/>
+	     	<result property="parentName" column="parent_name"/>
+	     	<result property="parentPhoneNum" column="parent_phone_num"/>
+	     	<result property="url" column="url"/>
+	     	<result property="studentAccount" column="student_account"/>
+	     	<result property="studentPassword" column="student_password"/>
+	     	<result property="deleteStatus" column="delete_status"/>
+	     	<result property="createTime" column="create_time"/>
+	     	<result property="createUser" column="create_user"/>
+	     	<result property="updateTime" column="update_time"/>
+	     	<result property="updateUser" column="update_user"/>
+    </resultMap>
+
+	<select id="load" resultMap="studentResultMap" parameterType="long">
+        SELECT * FROM student
+        WHERE id =  #{id} and delete_status = 0
+    </select>
+
+	<select id="findByPhone" resultMap="studentResultMap" parameterType="string">
+        SELECT
+         	*
+        FROM student
+        WHERE parent_phone_num =  #{phone}
+        and delete_status = 0
+    </select>
+
+
+
+	<update id="delete">
+        UPDATE student
+        SET delete_status = 1
+        WHERE id =  #{id}
+    </update>
+
+    <update id="updateNotNull" parameterType="com.commonrail.app.domain.Student">
+        UPDATE student
+        <set>
+		     	 <if test="studentId != null">
+	               student_id =  #{studentId},
+       		     </if>
+		     	 <if test="studentName != null">
+	               student_name =  #{studentName},
+       		     </if>
+		     	 <if test="sex != null">
+	               sex =  #{sex},
+       		     </if>
+		     	 <if test="grade != null">
+	               grade =  #{grade},
+       		     </if>
+		     	 <if test="openid != null">
+	               openId =  #{openid},
+       		     </if>
+		     	 <if test="picture != null">
+	               picture =  #{picture},
+       		     </if>
+		     	 <if test="parentName != null">
+	               parent_name =  #{parentName},
+       		     </if>
+		     	 <if test="parentPhoneNum != null">
+	               parent_phone_num =  #{parentPhoneNum},
+       		     </if>
+		     	 <if test="url != null">
+	               url =  #{url},
+       		     </if>
+		     	 <if test="studentAccount != null">
+	               student_account =  #{studentAccount},
+       		     </if>
+		     	 <if test="studentPassword != null">
+	               student_password =  #{studentPassword},
+       		     </if>
+		     	 <if test="deleteStatus != null">
+	               delete_status =  #{deleteStatus},
+       		     </if>
+		     	 <if test="createTime != null">
+	               create_time =  #{createTime},
+       		     </if>
+		     	 <if test="createUser != null">
+	               create_user =  #{createUser},
+       		     </if>
+		     	 <if test="updateTime != null">
+	               update_time =  #{updateTime},
+       		     </if>
+		     	 <if test="updateUser != null">
+	               update_user =  #{updateUser},
+       		     </if>
+        </set>
+        WHERE id =  #{id}
+    </update>
+
+    <insert id="insert" parameterType="com.commonrail.app.domain.Student">
+        <selectKey resultType="long" keyProperty="id" >
+		SELECT @@IDENTITY AS id
+		</selectKey>
+        INSERT INTO student(
+	        student_name,
+	        sex,
+	        grade,
+	        openId,
+	        picture,
+	        parent_name,
+	        parent_phone_num,
+	        url,
+	        student_account,
+	        student_password,
+	        delete_status,
+	        create_time,
+	        create_user,
+	        update_time,
+	        update_user
+	        ) VALUES (
+	        #{studentName},
+	        #{sex},
+	        #{grade},
+	        #{openid},
+	        #{picture},
+	        #{parentName},
+	        #{parentPhoneNum},
+	        #{url},
+	        #{studentAccount},
+	        #{studentPassword},
+	        #{deleteStatus},
+	        #{createTime},
+	        #{createUser},
+	        #{updateTime},
+	        #{updateUser}
+        )
+    </insert>
+
+
+    <select id="getCount" parameterType="com.commonrail.app.domain.form.StudentForm"  resultType="int">
+        SELECT count(0)
+        FROM student
+        <include refid="listRef"/>
+    </select>
+
+    <select id="list" parameterType="com.commonrail.app.domain.form.StudentForm"  resultMap="studentResultMap">
+        SELECT *
+        FROM student
+        <include refid="listRef"/>
+        ORDER BY id DESC
+        <if test="offset != null">
+            <![CDATA[
+            limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
+    </select>
+    <sql id="listRef">
+        <where>
+                <if test="studentId != null and studentId != ''">
+                    and student_id =  #{studentId}
+                </if>
+                <if test="studentName != null and studentName != ''">
+                    and student_name =  #{studentName}
+                </if>
+                <if test="sex != null and sex != ''">
+                    and sex =  #{sex}
+                </if>
+                <if test="grade != null and grade != ''">
+                    and grade =  #{grade}
+                </if>
+                <if test="openid != null and openid != ''">
+                    and openId =  #{openid}
+                </if>
+                <if test="picture != null and picture != ''">
+                    and picture =  #{picture}
+                </if>
+                <if test="parentName != null and parentName != ''">
+                    and parent_name =  #{parentName}
+                </if>
+                <if test="parentPhoneNum != null and parentPhoneNum != ''">
+                    and parent_phone_num =  #{parentPhoneNum}
+                </if>
+                <if test="url != null and url != ''">
+                    and url =  #{url}
+                </if>
+                <if test="studentAccount != null and studentAccount != ''">
+                    and student_account =  #{studentAccount}
+                </if>
+                <if test="studentPassword != null and studentPassword != ''">
+                    and student_password =  #{studentPassword}
+                </if>
+                <if test="deleteStatus != null and deleteStatus != ''">
+                    and delete_status =  #{deleteStatus}
+                </if>
+                <if test="createTime != null and createTime != ''">
+                    and create_time =  #{createTime}
+                </if>
+                <if test="createUser != null and createUser != ''">
+                    and create_user =  #{createUser}
+                </if>
+                <if test="updateTime != null and updateTime != ''">
+                    and update_time =  #{updateTime}
+                </if>
+                <if test="updateUser != null and updateUser != ''">
+                    and update_user =  #{updateUser}
+                </if>
+        </where>
+    </sql>
+</mapper>

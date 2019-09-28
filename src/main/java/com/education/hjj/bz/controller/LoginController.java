@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.education.hjj.bz.entity.vo.StudentVo;
+import com.education.hjj.bz.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -24,18 +26,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
-import com.education.hjj.bz.entity.PicturePo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.enums.ErrorEnum;
 import com.education.hjj.bz.formBean.LoginForm;
 import com.education.hjj.bz.formBean.LogoutForm;
 import com.education.hjj.bz.model.UserDto;
 import com.education.hjj.bz.model.common.ResponseBean;
-import com.education.hjj.bz.service.ISmsService;
-import com.education.hjj.bz.service.IUserService;
-import com.education.hjj.bz.service.LoginLogService;
-import com.education.hjj.bz.service.UserInfoService;
-import com.education.hjj.bz.service.UserPictureInfoService;
 import com.education.hjj.bz.util.AesCipherUtil;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.Constant;
@@ -77,7 +73,10 @@ public class LoginController {
 
 	@Autowired
 	private UserInfoService userInfoService;
-	
+
+	@Autowired
+	private StudentService studentService;
+
 	@Autowired
 	private LoginLogService loginLogService;
 	
@@ -149,13 +148,14 @@ public class LoginController {
 		
 		
 		TeacherVo teacherVo = null;
+		StudentVo studentVo = null;
 
 		int j =0;
 		
 		Integer loginType = LoginForm.getLoginType();
 		
 		 Map<String , Object> map = new HashMap<String, Object>(1);
-		
+
 		if(loginType == Constant.TEACHER_CODE) {
 			//插入teacher表
 			teacherVo = userInfoService.queryTeacherInfosByTelephone(phoneNum);
@@ -194,7 +194,7 @@ public class LoginController {
 	            httpServletResponse.setHeader("Access-Control-Expose-Headers", Constant.TOKEN);
 
 	            teacherVo = userInfoService.queryTeacherInfosByTelephone(phoneNum);
-	          
+
 	            map.put("teacherId", teacherVo.getTeacherId());
 	            map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
 	          
@@ -216,16 +216,79 @@ public class LoginController {
 				}
 				
 			}
-			
+
             map.put("teacherName", teacherVo.getName());
             map.put("teacherId", teacherVo.getTeacherId());
             map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
             logger.info("telephone = {}" , map.get("telephone"));
-		}
-		
-		//学生登录入口
-		if(loginType == Constant.STUDENT_CODE) {
-			
+		// 学员端
+		}else if (loginType == Constant.STUDENT_CODE) {
+
+            //插入teacher表
+            studentVo = studentService.findByPhone(phoneNum);
+
+            if (studentVo == null) {//首次注册登录,加入用户详情表
+                logger.info("该学员端用户为首次注册用户");
+
+                j = userInfoService.insertTeacherInfo(LoginForm);
+
+                if(j<=0) {
+                    return ApiResponse.success("注册失败，请重新注册！");
+                }
+
+                UserDto userDto = new UserDto();
+                userDto.setRegTime(new Date());
+                userDto.setUsername(phoneNum);
+                // 密码以帐号+密码的形式进行AES加密
+                String key = AesCipherUtil.enCrypto(phoneNum + RESET_PASSWORD);
+                userDto.setPassword(key);
+                userDto.setStatus(1);
+                //加入用户表user
+                int count = userService.insertUser(userDto);
+                if (count <= 0) {
+                    return ApiResponse.success("注册失败，请检查网络...");
+                }
+
+                //记录教员的登陆日志
+                loginLogService.addLoginLog(loginType, phoneNum , phoneNum);
+
+                //将自动生成token信息，并将信息返回前端
+                String currentTimeMillis = String.valueOf(System.currentTimeMillis());
+                JedisUtil.setObject(Constant.PREFIX_SHIRO_ACCESS_TOKEN + phoneNum, currentTimeMillis, Integer.parseInt(refreshTokenExpireTime));
+                JedisUtil.setObject(Constant.PREFIX_SHIRO_REFRESH_TOKEN + phoneNum, currentTimeMillis, Integer.parseInt(refreshTokenExpireTime));
+                // 从Header中Authorization返回AccessToken，时间戳为当前时间戳
+                String token = JwtUtil.sign(phoneNum, currentTimeMillis);
+                httpServletResponse.setHeader(Constant.TOKEN, token);
+                httpServletResponse.setHeader("Access-Control-Expose-Headers", Constant.TOKEN);
+
+                teacherVo = userInfoService.queryTeacherInfosByTelephone(phoneNum);
+
+                Map<String , Object> map = new HashMap<String, Object>(1);
+                map.put("teacherId", teacherVo.getTeacherId());
+                map.put("telephone", teacherVo.getTelephone());
+
+                return ApiResponse.success("注册成功" , UtilTools.mapToJson(map));
+            }else {
+                logger.info("该用户为已注册用户");
+                String openId = teacherVo.getOpenId();
+
+                if(openId ==null || StringUtils.isBlank(openId)) {
+
+                    userInfoService.updateOpenId(LoginForm.getOpenId() , teacherVo.getTeacherId());
+
+                }else if(openId.equalsIgnoreCase(LoginForm.getOpenId())) {
+                    //记录教员的登陆日志
+                    j = loginLogService.addLoginLog(loginType, phoneNum , phoneNum);
+                }else {
+                    return ApiResponse.error("登录失败...");
+                }
+
+            }
+
+            map.put("teacherName", teacherVo.getName());
+            map.put("teacherId", teacherVo.getTeacherId());
+            map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
+            logger.info("telephone = {}" , map.get("telephone"));
 		}
 		
 		//统一处理：如果是已经注册过的用户登录，教员和学生统一将认证信息和权限授权更新。
@@ -252,7 +315,7 @@ public class LoginController {
             httpServletResponse.setHeader(Constant.TOKEN, token);
             httpServletResponse.setHeader("Access-Control-Expose-Headers", Constant.TOKEN);
             
-           
+
             return ApiResponse.success("登录成功" , UtilTools.mapToJson(map));
         } else {
         	return ApiResponse.error("登录失败，请检查网络...");
@@ -279,29 +342,29 @@ public class LoginController {
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @Transactional
     public ApiResponse logout(HttpServletRequest request , @RequestBody LogoutForm logoutForm) {
-    	
+
     	Subject subject = SecurityUtils.getSubject();
         String token = request.getHeader(Constant.TOKEN);
-        
+
     	String telephone = null;
     	String userId = logoutForm.getUserId();
     	Integer type = logoutForm.getType();
-    	
+
     	//教员登出
     	if(type == Constant.TEACHER_CODE) {
     		TeacherVo  teacherInfo = userInfoService.queryTeacherHomeInfos(userId);
-    		
+
     		 if(teacherInfo != null) {
     	        	telephone = teacherInfo.getTelephone();
     	     }
     	}
-    	
+
     	//学员登出
     	if(type == Constant.STUDENT_CODE) {
-    		
+
     	}
-    	
-        
+
+
         logger.info("teacherId = {} , telephone = {}" , userId , telephone);
         
         //删除Token

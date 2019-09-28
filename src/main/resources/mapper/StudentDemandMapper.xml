@@ -6,50 +6,35 @@
 	<!-- 用用查询映射结果 -->
 	<resultMap id="studentDemandsResultMap" type="com.education.hjj.bz.entity.vo.StudentDemandVo" >
 		<!-- column代表数据库列名，property代表实体类属性名 -->
-		<result column="demand_id" property="demandId"/>
+		<result column="sid" property="sid"/>
 		<result column="student_id" property="studentId"/>
-		<result column="student_name" property="studentName"/>
-		<result column="demand_num" property="demandNum"/>
-		<result column="student_area" property="studentArea"/>
+		<result column="demand_grade" property="demandGrade"/>
+		<result column="subject_id" property="subjectId"/>
+		<result column="order_start" property="orderStart"/>
+		<result column="week_num" property="weekNum"/>
+		<result column="class_num" property="classNum"/>
+		<result column="time_range" property="timeRange"/>
+		<result column="order_money" property="orderMoney"/>
+		<result column="demand_desc" property="demandDesc"/>
 		<result column="demand_address" property="demandAddress"/>
 		<result column="demand_grade" property="demandGrade"/>
-		<result column="demand_branch" property="demandBranch"/>
-		<result column="demand_phone" property="demandPhone"/>
-		<result column="teacher_sex" property="teacherSex"/>
-		<result column="teach_time" property="teachTime"/>
-		<result column="teach_count" property="teachCount"/>
-		<result column="demand_desc" property="demandDesc"/>
-		<result column="person_num" property="personNum"/>
+		<result column="status" property="status"/>
 		<result column="create_time" property="createTime"/>
+		<result column="create_user" property="createUser"/>
+		<result column="update_time" property="updateTime"/>
+		<result column="update_user" property="updateUser"/>
 	</resultMap>
 	
 	
     <select id="querystudentDemands"  resultMap="studentDemandsResultMap" parameterType="com.education.hjj.bz.entity.StudentDemandPo">    
-        	
         select
-        	sd.demand_id, 
-        	sd.student_id,
-        	sd.student_name,
-			sd.demand_num,
-			sd.student_area,	
-		    sd.demand_address,
-		    sd.demand_grade,
-			sd.demand_branch,
-			sd.demand_phone,
-			sd.teacher_sex,
-			sd.teach_time,
-			sd.teach_count,
-			sd.demand_desc,
-			sd.person_num,
-			sd.create_time,
-			
-		from 
+        	sd.*
+		from
 			student_demand sd
-		
-		where 
-			sd.status=1
-		<if test='demandId != null and demandId != ""'>
-            AND sd.demand_id = #{demandId}
+		where
+			1=1
+		<if test='sid != null and sid != ""'>
+            AND sd.sid = #{sid}
         </if>
         <if test='demandGrade != null and demandGrade != ""'>
             AND sd.demand_grade = #{demandGrade}
@@ -71,14 +56,23 @@
     </select>  
     
     
-    <insert id="addStudentDemandByTeacher" parameterType="com.education.hjj.bz.entity.TeacherAndStudentDemandPo"
-        keyProperty="id" useGeneratedKeys="true">
-        INSERT INTO teacher(
-        	demand_id,
-        	teacher_id,
-        	teacher_name,
-        	teacher_phone,
-        	choose_status,
+    <insert id="addStudentDemandByTeacher" parameterType="com.education.hjj.bz.entity.TeacherAndStudentDemandPo">
+
+		<selectKey resultType="long" keyProperty="sid" >
+			SELECT @@IDENTITY AS sid
+		</selectKey>
+        INSERT INTO student_demand(
+			student_id,
+			demand_address,
+			demand_grade,
+			subject_id,
+			order_start,
+        	week_num,
+        	class_num,
+        	time_range,
+        	order_type,
+        	order_money,
+        	demand_desc,
         	status,
         	create_time,
         	create_user,
@@ -86,11 +80,17 @@
         	update_user
         	)
         VALUES (
-        	#{demandId},
-        	#{teacherId},
-        	#{teacherName},
-        	#{teacherPhone},
-        	#{chooseStatus},
+        	#{studentId},
+        	#{demandAddress},
+        	#{demandGrade},
+        	#{subjectId},
+        	#{orderStart},
+        	#{weekNum},
+        	#{classNum},
+        	#{timeRange},
+        	#{orderType},
+        	#{orderMoney},
+        	#{demandDesc},
         	#{status},
         	#{createTime},
         	#{createUser},

@@ -1,152 +1,206 @@
 package com.education.hjj.bz.formBean;
 
+import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.NotBlank;
+
 import java.io.Serializable;
+import java.util.Date;
+/**
+ * 学员发布需求表Form
+ *
+ * @创建者：sys
+ * @创建时间：2019-9-26 0:51:18
+ */
+public class StudentDemandForm extends PageForm implements Serializable {
 
-public class StudentDemandForm extends PageForm implements Serializable{
+    @ApiModelProperty(value = "学员ID",required = true)
+    @NotBlank(message = "学员ID不能为空")
+    private Long studentId;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8694093635600221795L;
+    @ApiModelProperty(value = "上课地址",required = true)
+    @NotBlank(message = "上课地址不能为空")
+    private String demandAddress;
 
-	private String demandId;
+    @ApiModelProperty(value = "补习年级",required = true)
+    @NotBlank(message = "补习年级不能为空")
+    private Long demandGrade;
 
-	private String studentId;
-	
-	private String studentName;
-	
-	private String demandNum;
-	
-	private String studnetArea;
-	
-	private String demandAddress;
-	
-	private String demandGrade;
-	
-	private String demandBranch;
-	
-	private String demandPhone;
-	
-	private String teacherSex;
-	
-	private String teachTime;
-	
-	private String teachCount;
-	
-	private String demandDesc;
-	
-	private String personNum;
+    @ApiModelProperty(value = "辅导科目id",required = true)
+    @NotBlank(message = "辅导科目id不能为空")
+    private Long subjectId;
 
-	public String getDemandId() {
-		return demandId;
-	}
+    @ApiModelProperty(value = "付费订单开始时间",required = true)
+    @NotBlank(message = "付费订单开始时间不能为空")
+    private Date orderStart;
 
-	public void setDemandId(String demandId) {
-		this.demandId = demandId;
-	}
+    @ApiModelProperty(value = "订单周数",required = true)
+    @NotBlank(message = "订单周数不能为空")
+    private Date weekNum;
 
-	public String getStudentId() {
-		return studentId;
-	}
+    @ApiModelProperty(value = "每周上课次数",required = true)
+    @NotBlank(message = "每周上课次数不能为空")
+    private Long classNum;
 
-	public void setStudentId(String studentId) {
-		this.studentId = studentId;
-	}
+    @ApiModelProperty(value = "每周上课时间范围",required = true)
+    @NotBlank(message = "每周上课时间范围不能为空")
+    private String timeRange;
 
-	public String getStudentName() {
-		return studentName;
-	}
+    @ApiModelProperty(value = "订单类型,1:试讲订单,2:付费订单",required = true)
+    @NotBlank(message = "订单类型,1:试讲订单,2:付费订单不能为空")
+    private Long orderType;
 
-	public void setStudentName(String studentName) {
-		this.studentName = studentName;
-	}
+    @ApiModelProperty(value = "订单金额",required = true)
+    @NotBlank(message = "订单金额不能为空")
+    private Float orderMoney;
 
-	public String getDemandNum() {
-		return demandNum;
-	}
+    @ApiModelProperty(value = "每周上课次数",required = true)
+    @NotBlank(message = "每周上课次数不能为空")
+    private Long teachCount;
 
-	public void setDemandNum(String demandNum) {
-		this.demandNum = demandNum;
-	}
+    @ApiModelProperty(value = "具体需求",required = true)
+    @NotBlank(message = "具体需求不能为空")
+    private String demandDesc;
 
-	public String getStudnetArea() {
-		return studnetArea;
-	}
+    @ApiModelProperty(value = "状态 0:未发布，1:发布中;2:已接单;3:结单",required = true)
+    @NotBlank(message = "状态 0:未发布，1:发布中;2:已接单;3:结单不能为空")
+    private Boolean status;
 
-	public void setStudnetArea(String studnetArea) {
-		this.studnetArea = studnetArea;
-	}
+    @ApiModelProperty(value = "创建时间",required = true)
+    @NotBlank(message = "创建时间不能为空")
+    private Date createTime;
 
-	public String getDemandAddress() {
-		return demandAddress;
-	}
+    @ApiModelProperty(value = "创建人",required = true)
+    @NotBlank(message = "创建人不能为空")
+    private String createUser;
 
-	public void setDemandAddress(String demandAddress) {
-		this.demandAddress = demandAddress;
-	}
+    @ApiModelProperty(value = "修改时间",required = true)
+    @NotBlank(message = "修改时间不能为空")
+    private Date updateTime;
 
-	public String getDemandGrade() {
-		return demandGrade;
-	}
+    @ApiModelProperty(value = "修改人",required = true)
+    @NotBlank(message = "修改人不能为空")
+    private String updateUser;
 
-	public void setDemandGrade(String demandGrade) {
-		this.demandGrade = demandGrade;
-	}
+    public Long getStudentId() {
+        return studentId;
+    }
 
-	public String getDemandBranch() {
-		return demandBranch;
-	}
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
+    }
+    public String getDemandAddress() {
+        return demandAddress;
+    }
 
-	public void setDemandBranch(String demandBranch) {
-		this.demandBranch = demandBranch;
-	}
+    public void setDemandAddress(String demandAddress) {
+        this.demandAddress = demandAddress;
+    }
+    public Long getDemandGrade() {
+        return demandGrade;
+    }
 
-	public String getDemandPhone() {
-		return demandPhone;
-	}
+    public void setDemandGrade(Long demandGrade) {
+        this.demandGrade = demandGrade;
+    }
+    public Long getSubjectId() {
+        return subjectId;
+    }
 
-	public void setDemandPhone(String demandPhone) {
-		this.demandPhone = demandPhone;
-	}
+    public void setSubjectId(Long subjectId) {
+        this.subjectId = subjectId;
+    }
+    public Date getOrderStart() {
+        return orderStart;
+    }
 
-	public String getTeacherSex() {
-		return teacherSex;
-	}
+    public void setOrderStart(Date orderStart) {
+        this.orderStart = orderStart;
+    }
+    public Date getWeekNum() {
+        return weekNum;
+    }
 
-	public void setTeacherSex(String teacherSex) {
-		this.teacherSex = teacherSex;
-	}
+    public void setWeekNum(Date weekNum) {
+        this.weekNum = weekNum;
+    }
+    public Long getClassNum() {
+        return classNum;
+    }
 
-	public String getTeachTime() {
-		return teachTime;
-	}
+    public void setClassNum(Long classNum) {
+        this.classNum = classNum;
+    }
+    public String getTimeRange() {
+        return timeRange;
+    }
 
-	public void setTeachTime(String teachTime) {
-		this.teachTime = teachTime;
-	}
+    public void setTimeRange(String timeRange) {
+        this.timeRange = timeRange;
+    }
+    public Long getOrderType() {
+        return orderType;
+    }
 
-	public String getTeachCount() {
-		return teachCount;
-	}
+    public void setOrderType(Long orderType) {
+        this.orderType = orderType;
+    }
+    public Float getOrderMoney() {
+        return orderMoney;
+    }
 
-	public void setTeachCount(String teachCount) {
-		this.teachCount = teachCount;
-	}
+    public void setOrderMoney(Float orderMoney) {
+        this.orderMoney = orderMoney;
+    }
+    public Long getTeachCount() {
+        return teachCount;
+    }
 
-	public String getDemandDesc() {
-		return demandDesc;
-	}
+    public void setTeachCount(Long teachCount) {
+        this.teachCount = teachCount;
+    }
+    public String getDemandDesc() {
+        return demandDesc;
+    }
 
-	public void setDemandDesc(String demandDesc) {
-		this.demandDesc = demandDesc;
-	}
+    public void setDemandDesc(String demandDesc) {
+        this.demandDesc = demandDesc;
+    }
+    public Boolean getStatus() {
+        return status;
+    }
 
-	public String getPersonNum() {
-		return personNum;
-	}
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+    public Date getCreateTime() {
+        return createTime;
+    }
 
-	public void setPersonNum(String personNum) {
-		this.personNum = personNum;
-	}
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+    public String getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
+    }
+
+
 
 }
