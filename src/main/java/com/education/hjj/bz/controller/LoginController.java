@@ -278,13 +278,14 @@ public class LoginController {
     @ApiOperation("用户退出")
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @Transactional
-    public ApiResponse logout( @RequestBody LogoutForm logoutForm) {
+    public ApiResponse logout(HttpServletRequest request , @RequestBody LogoutForm logoutForm) {
     	
-    	String userId = logoutForm.getUserId();
-    	
-    	Integer type = logoutForm.getType();
-    	
+    	Subject subject = SecurityUtils.getSubject();
+        String token = request.getHeader(Constant.TOKEN);
+        
     	String telephone = null;
+    	String userId = logoutForm.getUserId();
+    	Integer type = logoutForm.getType();
     	
     	//教员登出
     	if(type == Constant.TEACHER_CODE) {
@@ -300,8 +301,6 @@ public class LoginController {
     		
     	}
     	
-        Subject subject = SecurityUtils.getSubject();
-        String token = SecurityUtils.getSubject().getPrincipal().toString();
         
         logger.info("teacherId = {} , telephone = {}" , userId , telephone);
         
