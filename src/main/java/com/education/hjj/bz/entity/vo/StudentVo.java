@@ -1,0 +1,183 @@
+package com.education.hjj.bz.entity.vo;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import java.util.Date;
+/**
+ * 学员表Vo
+ *
+ * @创建者：sys
+ * @创建时间：2019-9-29 0:30:25
+ */
+@ApiModel(value = "Student")
+public class StudentVo {
+
+
+    @ApiModelProperty(value = "学员主键id")
+    private Long sid;
+
+    @ApiModelProperty(value = "学员姓名")
+    private String studentName;
+
+    @ApiModelProperty(value = "性别（0未知，1男，2女）")
+    private Boolean sex;
+
+    @ApiModelProperty(value = "学员年级")
+    private Long grade;
+
+    @ApiModelProperty(value = "微信openid")
+    private String openid;
+
+    @ApiModelProperty(value = "头像")
+    private String picture;
+
+    @ApiModelProperty(value = "家长姓名")
+    private String parentName;
+
+    @ApiModelProperty(value = "家长手机号")
+    private String parentPhoneNum;
+
+    @ApiModelProperty(value = "学员头像")
+    private String url;
+
+    @ApiModelProperty(value = "学员账号")
+    private String studentAccount;
+
+    @ApiModelProperty(value = "学员密码")
+    private String studentPassword;
+
+    @ApiModelProperty(value = "状态")
+    private Boolean deleteStatus;
+
+    @ApiModelProperty(value = "创建时间")
+    private Date createTime;
+
+    @ApiModelProperty(value = "创建人")
+    private String createUser;
+
+    @ApiModelProperty(value = "修改时间")
+    private Date updateTime;
+
+    @ApiModelProperty(value = "修改人")
+    private String updateUser;
+
+
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+    public Boolean getSex() {
+        return sex;
+    }
+
+    public void setSex(Boolean sex) {
+        this.sex = sex;
+    }
+    public Long getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Long grade) {
+        this.grade = grade;
+    }
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
+    }
+    public String getParentPhoneNum() {
+        return parentPhoneNum;
+    }
+
+    public void setParentPhoneNum(String parentPhoneNum) {
+        this.parentPhoneNum = parentPhoneNum;
+    }
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+    public String getStudentAccount() {
+        return studentAccount;
+    }
+
+    public void setStudentAccount(String studentAccount) {
+        this.studentAccount = studentAccount;
+    }
+    public String getStudentPassword() {
+        return studentPassword;
+    }
+
+    public void setStudentPassword(String studentPassword) {
+        this.studentPassword = studentPassword;
+    }
+    public Boolean getDeleteStatus() {
+        return deleteStatus;
+    }
+
+    public void setDeleteStatus(Boolean deleteStatus) {
+        this.deleteStatus = deleteStatus;
+    }
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+
+    public Long getSid() {
+        return sid;
+    }
+
+    public void setSid(Long sid) {
+        this.sid = sid;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
+    }
+
+
+
+}

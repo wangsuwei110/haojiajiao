@@ -1,154 +1,189 @@
 package com.education.hjj.bz.entity.vo;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import java.util.Date;
+/**
+ * 学员发布需求表Vo
+ *
+ * @创建者：sys
+ * @创建时间：2019-9-26 0:51:18
+ */
+@ApiModel(value = "StudentDemand")
+public class StudentDemandVo {
 
-import java.io.Serializable;
 
-import com.education.hjj.bz.entity.BasePo;
+    @ApiModelProperty(value = "需求主键id")
+    private Long sid;
 
-public class StudentDemandVo extends BasePo implements Serializable{
+    @ApiModelProperty(value = "学员ID")
+    private Long studentId;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8187654387169395608L;
+    @ApiModelProperty(value = "上课地址")
+    private String demandAddress;
 
-	private String demandId;
+    @ApiModelProperty(value = "补习年级")
+    private Long demandGrade;
 
-	private String studentId;
-	
-	private String studentName;
-	
-	private String demandNum;
-	
-	private String studnetArea;
-	
-	private String demandAddress;
-	
-	private String demandGrade;
-	
-	private String demandBranch;
-	
-	private String demandPhone;
-	
-	private String teacherSex;
-	
-	private String teachTime;
-	
-	private String teachCount;
-	
-	private String demandDesc;
-	
-	private String personNum;
+    @ApiModelProperty(value = "辅导科目id")
+    private Long subjectId;
 
-	public String getDemandId() {
-		return demandId;
-	}
+    @ApiModelProperty(value = "付费订单开始时间")
+    private Date orderStart;
 
-	public void setDemandId(String demandId) {
-		this.demandId = demandId;
-	}
+    @ApiModelProperty(value = "订单周数")
+    private Date weekNum;
 
-	public String getStudentId() {
-		return studentId;
-	}
+    @ApiModelProperty(value = "每周上课次数")
+    private Long classNum;
 
-	public void setStudentId(String studentId) {
-		this.studentId = studentId;
-	}
+    @ApiModelProperty(value = "每周上课时间范围")
+    private String timeRange;
 
-	public String getStudentName() {
-		return studentName;
-	}
+    @ApiModelProperty(value = "订单类型,1:试讲订单,2:付费订单")
+    private Integer orderType;
 
-	public void setStudentName(String studentName) {
-		this.studentName = studentName;
-	}
+    @ApiModelProperty(value = "订单金额")
+    private Float orderMoney;
 
-	public String getDemandNum() {
-		return demandNum;
-	}
+    @ApiModelProperty(value = "具体需求")
+    private String demandDesc;
 
-	public void setDemandNum(String demandNum) {
-		this.demandNum = demandNum;
-	}
+    @ApiModelProperty(value = "状态 0:未发布，1:发布中;2:已接单;3:结单")
+    private Boolean status;
 
-	public String getStudnetArea() {
-		return studnetArea;
-	}
+    @ApiModelProperty(value = "创建时间")
+    private Date createTime;
 
-	public void setStudnetArea(String studnetArea) {
-		this.studnetArea = studnetArea;
-	}
+    @ApiModelProperty(value = "创建人")
+    private String createUser;
 
-	public String getDemandAddress() {
-		return demandAddress;
-	}
+    @ApiModelProperty(value = "修改时间")
+    private Date updateTime;
 
-	public void setDemandAddress(String demandAddress) {
-		this.demandAddress = demandAddress;
-	}
+    @ApiModelProperty(value = "修改人")
+    private String updateUser;
 
-	public String getDemandGrade() {
-		return demandGrade;
-	}
 
-	public void setDemandGrade(String demandGrade) {
-		this.demandGrade = demandGrade;
-	}
+    public Long getSid() {
+        return sid;
+    }
 
-	public String getDemandBranch() {
-		return demandBranch;
-	}
+    public void setSid(Long sid) {
+        this.sid = sid;
+    }
+    public Long getStudentId() {
+        return studentId;
+    }
 
-	public void setDemandBranch(String demandBranch) {
-		this.demandBranch = demandBranch;
-	}
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
+    }
+    public String getDemandAddress() {
+        return demandAddress;
+    }
 
-	public String getDemandPhone() {
-		return demandPhone;
-	}
+    public void setDemandAddress(String demandAddress) {
+        this.demandAddress = demandAddress;
+    }
+    public Long getDemandGrade() {
+        return demandGrade;
+    }
 
-	public void setDemandPhone(String demandPhone) {
-		this.demandPhone = demandPhone;
-	}
+    public void setDemandGrade(Long demandGrade) {
+        this.demandGrade = demandGrade;
+    }
+    public Long getSubjectId() {
+        return subjectId;
+    }
 
-	public String getTeacherSex() {
-		return teacherSex;
-	}
+    public void setSubjectId(Long subjectId) {
+        this.subjectId = subjectId;
+    }
+    public Date getOrderStart() {
+        return orderStart;
+    }
 
-	public void setTeacherSex(String teacherSex) {
-		this.teacherSex = teacherSex;
-	}
+    public void setOrderStart(Date orderStart) {
+        this.orderStart = orderStart;
+    }
+    public Date getWeekNum() {
+        return weekNum;
+    }
 
-	public String getTeachTime() {
-		return teachTime;
-	}
+    public void setWeekNum(Date weekNum) {
+        this.weekNum = weekNum;
+    }
+    public Long getClassNum() {
+        return classNum;
+    }
 
-	public void setTeachTime(String teachTime) {
-		this.teachTime = teachTime;
-	}
+    public void setClassNum(Long classNum) {
+        this.classNum = classNum;
+    }
+    public String getTimeRange() {
+        return timeRange;
+    }
 
-	public String getTeachCount() {
-		return teachCount;
-	}
+    public void setTimeRange(String timeRange) {
+        this.timeRange = timeRange;
+    }
+    public Integer getOrderType() {
+        return orderType;
+    }
 
-	public void setTeachCount(String teachCount) {
-		this.teachCount = teachCount;
-	}
+    public void setOrderType(Integer orderType) {
+        this.orderType = orderType;
+    }
+    public Float getOrderMoney() {
+        return orderMoney;
+    }
 
-	public String getDemandDesc() {
-		return demandDesc;
-	}
+    public void setOrderMoney(Float orderMoney) {
+        this.orderMoney = orderMoney;
+    }
+    public String getDemandDesc() {
+        return demandDesc;
+    }
 
-	public void setDemandDesc(String demandDesc) {
-		this.demandDesc = demandDesc;
-	}
+    public void setDemandDesc(String demandDesc) {
+        this.demandDesc = demandDesc;
+    }
+    public Boolean getStatus() {
+        return status;
+    }
 
-	public String getPersonNum() {
-		return personNum;
-	}
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+    public Date getCreateTime() {
+        return createTime;
+    }
 
-	public void setPersonNum(String personNum) {
-		this.personNum = personNum;
-	}
-	
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+    public String getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
+    }
+
+
+
 }
