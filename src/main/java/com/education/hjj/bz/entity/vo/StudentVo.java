@@ -25,7 +25,7 @@ public class StudentVo {
     private Long grade;
 
     @ApiModelProperty(value = "微信openid")
-    private String openid;
+    private String openId;
 
     @ApiModelProperty(value = "头像")
     private String picture;
@@ -83,13 +83,15 @@ public class StudentVo {
     public void setGrade(Long grade) {
         this.grade = grade;
     }
-    public String getOpenid() {
-        return openid;
+
+    public String getOpenId() {
+        return openId;
     }
 
-    public void setOpenid(String openid) {
-        this.openid = openid;
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
+
     public String getPicture() {
         return picture;
     }

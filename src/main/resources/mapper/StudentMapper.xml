@@ -7,7 +7,7 @@
 	     	<result property="studentName" column="student_name"/>
 	     	<result property="sex" column="sex"/>
 	     	<result property="grade" column="grade"/>
-	     	<result property="openid" column="openId"/>
+	     	<result property="openId" column="openId"/>
 	     	<result property="picture" column="picture"/>
 	     	<result property="parentName" column="parent_name"/>
 	     	<result property="parentPhoneNum" column="parent_phone_num"/>
@@ -42,7 +42,7 @@
         WHERE id =  #{id}
     </update>
 
-    <update id="updateNotNull" parameterType="com.commonrail.app.domain.Student">
+    <update id="updateNotNull" parameterType="com.education.hjj.bz.formBean.StudentForm">
         UPDATE student
         <set>
 		     	 <if test="studentId != null">
@@ -94,10 +94,10 @@
 	               update_user =  #{updateUser},
        		     </if>
         </set>
-        WHERE id =  #{id}
+        WHERE sid = #{sid}
     </update>
 
-    <insert id="insert" parameterType="com.commonrail.app.domain.Student">
+    <insert id="insert" parameterType="com.education.hjj.bz.formBean.StudentForm">
         <selectKey resultType="long" keyProperty="id" >
 		SELECT @@IDENTITY AS id
 		</selectKey>
@@ -137,17 +137,17 @@
     </insert>
 
 
-    <select id="getCount" parameterType="com.commonrail.app.domain.form.StudentForm"  resultType="int">
+    <select id="getCount" parameterType="com.education.hjj.bz.formBean.StudentForm"  resultType="int">
         SELECT count(0)
         FROM student
         <include refid="listRef"/>
     </select>
 
-    <select id="list" parameterType="com.commonrail.app.domain.form.StudentForm"  resultMap="studentResultMap">
+    <select id="list" parameterType="com.education.hjj.bz.formBean.StudentForm"  resultMap="studentResultMap">
         SELECT *
         FROM student
         <include refid="listRef"/>
-        ORDER BY id DESC
+        ORDER BY sid DESC
         <if test="offset != null">
             <![CDATA[
             limit #{pageSize} offset #{offset}
@@ -156,8 +156,8 @@
     </select>
     <sql id="listRef">
         <where>
-                <if test="studentId != null and studentId != ''">
-                    and student_id =  #{studentId}
+                <if test="sid != null">
+                    and sid =  #{sid}
                 </if>
                 <if test="studentName != null and studentName != ''">
                     and student_name =  #{studentName}

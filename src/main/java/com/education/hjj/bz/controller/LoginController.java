@@ -7,7 +7,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSON;
 import com.education.hjj.bz.entity.vo.StudentVo;
+import com.education.hjj.bz.redis.RedisContant;
+import com.education.hjj.bz.redis.RedisService;
 import com.education.hjj.bz.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -89,7 +92,10 @@ public class LoginController {
     
     @Autowired
     private ISmsService smsService;
-	
+
+    @Autowired
+	private RedisService redisService;
+
     @Autowired
 	public LoginController(UserUtil userUtil, IUserService userService) {
 		super();
@@ -222,14 +228,15 @@ public class LoginController {
             map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
             logger.info("telephone = {}" , map.get("telephone"));
 		// 学员端
-		}else if (loginType == Constant.STUDENT_CODE) {
+		}else if (loginType.equals(Constant.STUDENT_CODE) {
 
-            //插入teacher表
-            studentVo = studentService.findByPhone(phoneNum);
+			// 检索是否用户已经注册过
+			studentVo = studentService.findByPhone(phoneNum);
 
             if (studentVo == null) {//首次注册登录,加入用户详情表
                 logger.info("该学员端用户为首次注册用户");
 
+				j = studentService.add(LoginForm);
                 j = userInfoService.insertTeacherInfo(LoginForm);
 
                 if(j<=0) {
@@ -261,36 +268,35 @@ public class LoginController {
                 httpServletResponse.setHeader(Constant.TOKEN, token);
                 httpServletResponse.setHeader("Access-Control-Expose-Headers", Constant.TOKEN);
 
-                teacherVo = userInfoService.queryTeacherInfosByTelephone(phoneNum);
+				studentVo = studentService.findByPhone(phoneNum);
 
-                Map<String , Object> map = new HashMap<String, Object>(1);
-                map.put("teacherId", teacherVo.getTeacherId());
-                map.put("telephone", teacherVo.getTelephone());
+				Map<String , Object> map = new HashMap<String, Object>(1);
+				map.put("studentId", studentVo.getSid());
+				map.put("telephone", studentVo.getParentPhoneNum());
 
-                return ApiResponse.success("注册成功" , UtilTools.mapToJson(map));
-            }else {
-                logger.info("该用户为已注册用户");
-                String openId = teacherVo.getOpenId();
+				return ApiResponse.success("注册成功" , UtilTools.mapToJson(map));
+			} else {
+				logger.info("该用户为已注册用户");
+				String openId = studentVo.getOpenId();
 
-                if(openId ==null || StringUtils.isBlank(openId)) {
+				if(openId ==null || StringUtils.isBlank(openId)) {
 
-                    userInfoService.updateOpenId(LoginForm.getOpenId() , teacherVo.getTeacherId());
+					studentService.updateOpenIdByStudentId(LoginForm.getOpenId() , studentVo.getSid());
 
-                }else if(openId.equalsIgnoreCase(LoginForm.getOpenId())) {
-                    //记录教员的登陆日志
-                    j = loginLogService.addLoginLog(loginType, phoneNum , phoneNum);
-                }else {
-                    return ApiResponse.error("登录失败...");
-                }
+				}else if(openId.equalsIgnoreCase(LoginForm.getOpenId())) {
+					//记录学院端的登陆日志
+					j = loginLogService.addLoginLog(loginType, phoneNum , phoneNum);
+				}else {
+					return ApiResponse.error("登录失败...");
+				}
 
-            }
-
-            map.put("teacherName", teacherVo.getName());
-            map.put("teacherId", teacherVo.getTeacherId());
-            map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
-            logger.info("telephone = {}" , map.get("telephone"));
+			}
+			// 记录学员端客户信息
+			redisService.cacheValue(RedisContant.STUDENT_INFO + studentVo.getSid(), JSON.toJSONString(studentVo), 35 * 60);
 		}
 		
+		String teacherName = teacherVo.getName();
+
 		//统一处理：如果是已经注册过的用户登录，教员和学生统一将认证信息和权限授权更新。
 		UserDto userDtoTemp = new UserDto();
 		

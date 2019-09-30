@@ -2,7 +2,9 @@ package com.education.hjj.bz.service;
 
 import com.education.hjj.bz.entity.vo.PageVo;
 import com.education.hjj.bz.entity.vo.StudentVo;
+import com.education.hjj.bz.formBean.LoginForm;
 import com.education.hjj.bz.formBean.StudentForm;
+import com.education.hjj.bz.util.ApiResponse;
 
 /**
  * 学员表业务接口
@@ -28,10 +30,10 @@ public interface StudentService{
 	
 	/**
      * 添加
-     * @param student
+     * @param loginForm
      * @return 新增对象ID
      */
-    void add(StudentForm student);
+    Integer add(LoginForm loginForm);
 
     /**
      * 更新不为空的属性
@@ -39,7 +41,15 @@ public interface StudentService{
      * @return
      */
     void updateNotNull(StudentForm student);
-    
+
+    /**
+     * 更新openId
+     * @param openId
+     * @param studentId
+     * @return
+     */
+    void updateOpenIdByStudentId(String openId, Long studentId);
+
     /**
      * 根据ID逻辑删除
      * @param id
@@ -49,10 +59,10 @@ public interface StudentService{
 
 
     /**
-    * 分页查询
+    * 查找自己信息
     * @param form
     * @return
     */
-    PageVo<StudentVo> listPage(StudentForm form);
+    ApiResponse findBySid(StudentForm form);
 
 }

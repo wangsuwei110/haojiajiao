@@ -18,7 +18,7 @@ public interface StudentMapper {
 
 	StudentVo findByPhone(@Param("phone") String phone);
 
-	void insert(StudentForm student);
+	Integer insert(StudentForm student);
 	
 	void updateNotNull(StudentForm student);
 

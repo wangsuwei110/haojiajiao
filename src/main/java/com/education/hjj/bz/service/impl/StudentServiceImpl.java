@@ -1,15 +1,16 @@
 package com.education.hjj.bz.service.impl;
 
-import com.education.hjj.bz.entity.vo.PageVo;
 import com.education.hjj.bz.entity.vo.StudentVo;
+import com.education.hjj.bz.formBean.LoginForm;
 import com.education.hjj.bz.formBean.StudentForm;
 import com.education.hjj.bz.mapper.StudentMapper;
 import com.education.hjj.bz.service.StudentService;
+import com.education.hjj.bz.util.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 /**
  * 学员表业务实现
@@ -34,13 +35,41 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void add(StudentForm student) {
-        studentMapper.insert(student);
+    public Integer add(LoginForm loginForm) {
+
+ 	    StudentForm studentForm = new StudentForm();
+
+        studentForm.setParentPhoneNum(loginForm.getLoginPhone());
+        studentForm.setSex(loginForm.getGender());
+        studentForm.setPicture(loginForm.getHeadPicture());
+ 	    studentForm.setCreateTime(new Date());
+ 	    studentForm.setUpdateTime(new Date());
+ 	    studentForm.setCreateUser("admin");
+ 	    studentForm.setCreateUser("admin");
+ 	    studentForm.setDeleteStatus(0);
+
+ 	    return studentMapper.insert(studentForm);
     }
 
 	@Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateNotNull(StudentForm student) {
+ 	    student.setUpdateTime(new Date());
+ 	    student.setUpdateUser(student.getSid().toString());
         studentMapper.updateNotNull(student);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateOpenIdByStudentId(String openId, Long studentId) {
+
+        StudentForm studentForm = new StudentForm();
+        studentForm.setOpenId(openId);
+        studentForm.setSid(studentId);
+        studentForm.setUpdateTime(new Date());
+        studentForm.setUpdateUser(studentId.toString());
+
+        studentMapper.updateNotNull(studentForm);
     }
 
     @Override
@@ -49,13 +78,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public PageVo<StudentVo> listPage(StudentForm form) {
-        int total = studentMapper.getCount(form);
-        if (total == 0) {
-            return new PageVo<>(total, new ArrayList<StudentVo>());
+    public ApiResponse findBySid(StudentForm form) {
+
+ 	    if (form.getSid() != null) {
+            return ApiResponse.error("当前员工不存在");
         }
-        List<StudentVo> list = studentMapper.list(form);
-        return new PageVo<>(total, list);
+        return ApiResponse.success(studentMapper.load(form.getSid()));
     }
 
  }
