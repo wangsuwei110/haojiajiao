@@ -43,9 +43,9 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 		StudentDemandPo studentDemandPo = new StudentDemandPo();
 
-		List<StudentDemandVo> list=studentDemandMapper.queryStudentDemands(studentDemandPo);
+//		List<StudentDemandVo> list=studentDemandMapper.queryStudentDemands(studentDemandPo);
 		
-		pageVo.setDataList(list);
+//		pageVo.setDataList(list);
 		
 		return pageVo;
 	}

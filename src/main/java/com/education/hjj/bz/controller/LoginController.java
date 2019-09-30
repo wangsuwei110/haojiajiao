@@ -228,7 +228,7 @@ public class LoginController {
             map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
             logger.info("telephone = {}" , map.get("telephone"));
 		// 学员端
-		}else if (loginType.equals(Constant.STUDENT_CODE) {
+		}else if (loginType.equals(Constant.STUDENT_CODE)) {
 
 			// 检索是否用户已经注册过
 			studentVo = studentService.findByPhone(phoneNum);
@@ -256,7 +256,7 @@ public class LoginController {
                     return ApiResponse.success("注册失败，请检查网络...");
                 }
 
-                //记录教员的登陆日志
+                //记录学员的登陆日志，教员学员放一起
                 loginLogService.addLoginLog(loginType, phoneNum , phoneNum);
 
                 //将自动生成token信息，并将信息返回前端
@@ -270,7 +270,6 @@ public class LoginController {
 
 				studentVo = studentService.findByPhone(phoneNum);
 
-				Map<String , Object> map = new HashMap<String, Object>(1);
 				map.put("studentId", studentVo.getSid());
 				map.put("telephone", studentVo.getParentPhoneNum());
 
@@ -289,14 +288,15 @@ public class LoginController {
 				}else {
 					return ApiResponse.error("登录失败...");
 				}
-
 			}
 			// 记录学员端客户信息
 			redisService.cacheValue(RedisContant.STUDENT_INFO + studentVo.getSid(), JSON.toJSONString(studentVo), 35 * 60);
+
+			map.put("studentName", studentVo.getStudentName());
+			map.put("studentId", studentVo.getSid());
+			map.put("telephone", studentVo.getParentPhoneNum().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
 		}
 		
-		String teacherName = teacherVo.getName();
-
 		//统一处理：如果是已经注册过的用户登录，教员和学生统一将认证信息和权限授权更新。
 		UserDto userDtoTemp = new UserDto();
 		

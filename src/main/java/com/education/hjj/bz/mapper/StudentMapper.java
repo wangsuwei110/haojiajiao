@@ -2,6 +2,7 @@ package com.education.hjj.bz.mapper;
 
 import com.education.hjj.bz.entity.vo.StudentVo;
 import com.education.hjj.bz.formBean.StudentForm;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
  * @创建者：sys
  * @创建时间：2019-9-29 0:30:25
  */
+@Mapper
 public interface StudentMapper {
 
 	StudentVo load(Long id);

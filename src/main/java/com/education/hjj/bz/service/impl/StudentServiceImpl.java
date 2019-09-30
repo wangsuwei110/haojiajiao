@@ -80,10 +80,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public ApiResponse findBySid(StudentForm form) {
 
- 	    if (form.getSid() != null) {
+ 	    if (form.getSid() == null) {
             return ApiResponse.error("当前员工不存在");
         }
-        return ApiResponse.success(studentMapper.load(form.getSid()));
+        StudentVo vo = studentMapper.load(form.getSid());
+        return ApiResponse.success(vo);
     }
 
  }

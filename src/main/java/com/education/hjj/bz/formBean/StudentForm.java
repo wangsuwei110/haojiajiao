@@ -38,25 +38,9 @@ public class StudentForm implements Serializable {
     @NotBlank(message = "头像不能为空")
     private String picture;
 
-    @ApiModelProperty(value = "家长姓名",required = true)
-    @NotBlank(message = "家长姓名不能为空")
-    private String parentName;
-
     @ApiModelProperty(value = "家长手机号",required = true)
     @NotBlank(message = "家长手机号不能为空")
     private String parentPhoneNum;
-
-    @ApiModelProperty(value = "学员头像",required = true)
-    @NotBlank(message = "学员头像不能为空")
-    private String url;
-
-    @ApiModelProperty(value = "学员账号",required = true)
-    @NotBlank(message = "学员账号不能为空")
-    private String studentAccount;
-
-    @ApiModelProperty(value = "学员密码",required = true)
-    @NotBlank(message = "学员密码不能为空")
-    private String studentPassword;
 
     @ApiModelProperty(value = "状态",required = true)
     @NotBlank(message = "状态不能为空")
@@ -131,40 +115,13 @@ public class StudentForm implements Serializable {
     public void setPicture(String picture) {
         this.picture = picture;
     }
-    public String getParentName() {
-        return parentName;
-    }
 
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
-    }
     public String getParentPhoneNum() {
         return parentPhoneNum;
     }
 
     public void setParentPhoneNum(String parentPhoneNum) {
         this.parentPhoneNum = parentPhoneNum;
-    }
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-    public String getStudentAccount() {
-        return studentAccount;
-    }
-
-    public void setStudentAccount(String studentAccount) {
-        this.studentAccount = studentAccount;
-    }
-    public String getStudentPassword() {
-        return studentPassword;
-    }
-
-    public void setStudentPassword(String studentPassword) {
-        this.studentPassword = studentPassword;
     }
 
     public Date getCreateTime() {
