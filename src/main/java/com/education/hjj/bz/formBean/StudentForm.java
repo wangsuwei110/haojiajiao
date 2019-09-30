@@ -8,10 +8,15 @@ import java.util.Date;
 /**
  * 学员表Form
  *
+ * @author caohuan
+ *
  * @创建者：sys
  * @创建时间：2019-9-29 0:30:25
  */
 public class StudentForm implements Serializable {
+
+
+    private Long sid;
 
     @ApiModelProperty(value = "学员姓名",required = true)
     @NotBlank(message = "学员姓名不能为空")
@@ -19,7 +24,7 @@ public class StudentForm implements Serializable {
 
     @ApiModelProperty(value = "性别（0未知，1男，2女）",required = true)
     @NotBlank(message = "性别（0未知，1男，2女）不能为空")
-    private Boolean sex;
+    private Integer sex;
 
     @ApiModelProperty(value = "学员年级",required = true)
     @NotBlank(message = "学员年级不能为空")
@@ -27,7 +32,7 @@ public class StudentForm implements Serializable {
 
     @ApiModelProperty(value = "微信openid",required = true)
     @NotBlank(message = "微信openid不能为空")
-    private String openid;
+    private String openId;
 
     @ApiModelProperty(value = "头像",required = true)
     @NotBlank(message = "头像不能为空")
@@ -55,7 +60,7 @@ public class StudentForm implements Serializable {
 
     @ApiModelProperty(value = "状态",required = true)
     @NotBlank(message = "状态不能为空")
-    private Boolean deleteStatus;
+    private Integer deleteStatus;
 
     @ApiModelProperty(value = "创建时间",required = true)
     @NotBlank(message = "创建时间不能为空")
@@ -71,6 +76,21 @@ public class StudentForm implements Serializable {
     @ApiModelProperty(value = "修改人",required = true)
     private String updateUser;
 
+    public Long getSid() {
+        return sid;
+    }
+
+    public void setSid(Long sid) {
+        this.sid = sid;
+    }
+
+    public Integer getDeleteStatus() {
+        return deleteStatus;
+    }
+
+    public void setDeleteStatus(Integer deleteStatus) {
+        this.deleteStatus = deleteStatus;
+    }
 
     public String getStudentName() {
         return studentName;
@@ -79,13 +99,15 @@ public class StudentForm implements Serializable {
     public void setStudentName(String studentName) {
         this.studentName = studentName;
     }
-    public Boolean getSex() {
+
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(Boolean sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
+
     public Long getGrade() {
         return grade;
     }
@@ -93,13 +115,15 @@ public class StudentForm implements Serializable {
     public void setGrade(Long grade) {
         this.grade = grade;
     }
-    public String getOpenid() {
-        return openid;
+
+    public String getOpenId() {
+        return openId;
     }
 
-    public void setOpenid(String openid) {
-        this.openid = openid;
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
+
     public String getPicture() {
         return picture;
     }
@@ -142,13 +166,7 @@ public class StudentForm implements Serializable {
     public void setStudentPassword(String studentPassword) {
         this.studentPassword = studentPassword;
     }
-    public Boolean getDeleteStatus() {
-        return deleteStatus;
-    }
 
-    public void setDeleteStatus(Boolean deleteStatus) {
-        this.deleteStatus = deleteStatus;
-    }
     public Date getCreateTime() {
         return createTime;
     }

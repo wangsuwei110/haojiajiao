@@ -79,6 +79,9 @@ public class Constant {
     // 授权认证的缓存名
     public static final String authorizationCache = "authorizationCache";
 
+    //登录认证前缀
+    public static final String DEFAULT_CACHE_KEY_PREFIX = "network:cache:";
+
     /**
      * wx登录认证的缓存名
      * */
