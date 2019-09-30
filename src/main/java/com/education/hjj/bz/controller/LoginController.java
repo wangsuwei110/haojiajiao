@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.alibaba.fastjson.JSON;
 import com.education.hjj.bz.entity.vo.StudentVo;
 import com.education.hjj.bz.redis.RedisContant;
-import com.education.hjj.bz.redis.RedisService;
+//import com.education.hjj.bz.redis.RedisService;
 import com.education.hjj.bz.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -92,9 +92,9 @@ public class LoginController {
     
     @Autowired
     private ISmsService smsService;
-
-    @Autowired
-	private RedisService redisService;
+//
+//    @Autowired
+//	private RedisService redisService;
 
     @Autowired
 	public LoginController(UserUtil userUtil, IUserService userService) {
@@ -290,7 +290,7 @@ public class LoginController {
 				}
 			}
 			// 记录学员端客户信息
-			redisService.cacheValue(RedisContant.STUDENT_INFO + studentVo.getSid(), JSON.toJSONString(studentVo), 35 * 60);
+//			redisService.cacheValue(RedisContant.STUDENT_INFO + studentVo.getSid(), JSON.toJSONString(studentVo), 35 * 60);
 
 			map.put("studentName", studentVo.getStudentName());
 			map.put("studentId", studentVo.getSid());
