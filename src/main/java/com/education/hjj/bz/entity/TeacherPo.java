@@ -52,7 +52,7 @@ public class TeacherPo extends BasePo implements Serializable{
 	
 	private String teacherTag;
 	
-	private Integer teachLevel;
+	private String teachLevel;
 	
 	private String teachGrade;
 	
@@ -342,11 +342,12 @@ public class TeacherPo extends BasePo implements Serializable{
 		this.teachBranchSlave = teachBranchSlave;
 	}
 
-	public Integer getTeachLevel() {
+
+	public String getTeachLevel() {
 		return teachLevel;
 	}
 
-	public void setTeachLevel(Integer teachLevel) {
+	public void setTeachLevel(String teachLevel) {
 		this.teachLevel = teachLevel;
 	}
 

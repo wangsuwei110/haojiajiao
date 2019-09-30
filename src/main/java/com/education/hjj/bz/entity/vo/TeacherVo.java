@@ -56,7 +56,7 @@ public class TeacherVo extends BaseVo implements Serializable {
 
 	private String teachGrade;
 
-	private Integer teachBrance;
+	private String teachBrance;
 
 	private String teachBranchSlave;
 
@@ -277,11 +277,11 @@ public class TeacherVo extends BaseVo implements Serializable {
 		this.teachGrade = teachGrade;
 	}
 
-	public Integer getTeachBrance() {
+	public String getTeachBrance() {
 		return teachBrance;
 	}
 
-	public void setTeachBrance(Integer teachBrance) {
+	public void setTeachBrance(String teachBrance) {
 		this.teachBrance = teachBrance;
 	}
 

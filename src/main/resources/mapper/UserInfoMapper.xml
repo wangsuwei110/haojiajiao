@@ -328,6 +328,14 @@
     <select id="queryAllTeacherInfos" resultMap="userInfoResultMap">
     	select
     		teacher_id,
+    		name,
+    		picture,
+    		school,
+    		teacher_level,
+    		teach_brance,
+    		teach_branch_slave,
+    		logon_status,
+    		begin_school_time,
     		resumption_rate,
     		teacher_points
     	from 

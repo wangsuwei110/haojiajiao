@@ -930,7 +930,12 @@ public final class DateUtil {
     }
     
     
-    
+    /**
+     * 根据入学时间计算现在的年级
+     * @param date
+     * @return
+     * @throws ParseException
+     */
     public static String caculDegree(String date) throws ParseException {
     	
     	String beginDate = date + "-" + "09" + "-" + "01";
@@ -956,5 +961,77 @@ public final class DateUtil {
     	}
     	
     	return grade;
+    }
+    
+    /**
+     * 计算两个时间之间是多少年多少月多少天
+     * @param Date beginTime
+     * @return
+     * @throws ParseException
+     */
+    public static String  calStayTimeByString(String beginTime) throws ParseException {
+    	
+    	SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_LONG);
+    	
+    	Date begin = sdf.parse(beginTime);
+		Date end = new Date();
+		long between=(end.getTime()-begin.getTime())/1000;//除以1000是为了转换成秒
+
+		long year = between/(12*30*24*3600);
+		long month = between/(30*24*3600);
+		long day=between/(24*3600*30);
+		
+		StringBuffer ab = new StringBuffer();
+		
+		if(year > 0) {
+			ab.append(year+" 年 ");
+		}
+		
+		if(month > 0) {
+			ab.append(month+" 个月 ");
+		}
+		
+		if(day > 0) {
+			ab.append(day+" 天");
+		}else {
+			ab.append("0 天"); 
+		}
+		
+		return ab.toString();
+    }
+    
+    /**
+     * 计算两个时间之间是多少年多少月多少天
+     * @param Date beginTime
+     * @return
+     * @throws ParseException
+     */
+    public static String  calStayTimeByDate(Date beginTime) throws ParseException {
+    	
+    	Date begin = beginTime;
+		Date end = new Date();
+		long between=(end.getTime()-begin.getTime())/1000;//除以1000是为了转换成秒
+
+		long year = between/(12*30*24*3600);
+		long month = between/(30*24*3600);
+		long day=between/(24*3600*30);
+		
+		StringBuffer ab = new StringBuffer();
+		
+		if(year > 0) {
+			ab.append(year+" 年 ");
+		}
+		
+		if(month > 0) {
+			ab.append(month+" 个月 ");
+		}
+		
+		if(day > 0) {
+			ab.append(day+" 天");
+		}else {
+			ab.append("0 天"); 
+		}
+		
+		return ab.toString();
     }
 }

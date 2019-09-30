@@ -27,6 +27,7 @@ import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.formBean.PictureForm;
 import com.education.hjj.bz.formBean.TeacherInfoForm;
+import com.education.hjj.bz.formBean.TeacherInfoReplenishForm;
 import com.education.hjj.bz.formBean.UserInfoForm;
 import com.education.hjj.bz.service.ParameterService;
 import com.education.hjj.bz.service.UserInfoService;
@@ -89,6 +90,28 @@ public class UserInfoController {
         return ApiResponse.error("操作失败!");
 
 	}
+	
+	@ApiOperation("用户基本信息补全")
+	@RequestMapping(value = "/updateUserInfo", method = RequestMethod.POST)
+	public ApiResponse updateUserInfos(@RequestBody TeacherInfoReplenishForm teacherInfoReplenishForm) {
+		
+		int i = userInfoService.updateUserInfos(teacherInfoReplenishForm);
+		Map<String , Object> map = new HashMap<String, Object>(1);
+		
+		if(i > 0) {
+			
+			TeacherVo teacherVo = userInfoService.queryTeacherHomeInfos(teacherInfoReplenishForm.getTeacherId());
+			
+			if(teacherVo != null ) {
+				map.put("teacherName", teacherVo.getName());
+			}
+			
+			return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
+		}
+        
+        return ApiResponse.error("操作失败!");
+
+	}
 
 	@ApiOperation("通过手机号查找用户信息详情")
 	@RequestMapping(value = "/queryTeacherInfoByTelephone", method = RequestMethod.GET)
@@ -136,7 +159,10 @@ public class UserInfoController {
 		Map<String , Object> map = new HashMap<String, Object>(1);
 		map.put("teacherName", teacherVo.getName());
 		map.put("teacherLevel", teacherVo.getTeacherLevel());
-		map.put("telephone", teacherVo.getTelephone());
+		map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
+		
+		logger.info("telephone = {}" , map.get("telephone"));
+		
 		map.put("headPicture", teacherVo.getPicture());
 		map.put("sex", teacherVo.getSex());
 		map.put("auditStatus", teacherVo.getAuditStatus());
@@ -145,7 +171,11 @@ public class UserInfoController {
 		map.put("weiChar", teacherVo.getWeiChar());
 		map.put("QQ", teacherVo.getQQ());
 		map.put("resumeComplete", teacherVo.getResumeComplete());
-
+		map.put("address", teacherVo.getAddress());
+		
+		map.put("certificate", teacherVo.getTeacherCertificate() == null?"0":teacherVo.getTeacherCertificate());
+		map.put("experience", teacherVo.getExperience() == null ? "0":teacherVo.getExperience());
+		
 		return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
 	}
 	
@@ -339,4 +369,27 @@ public class UserInfoController {
 		
 		return ApiResponse.error("暂无数据！");
 	}
+	
+	@ApiOperation("查询所有教员信息")
+	@RequestMapping(value = "/queryAllTeacherInfos", method = RequestMethod.GET)
+	@ResponseBody
+	public ApiResponse queryAllTeacherInfos() {
+		
+		List<TeacherVo> list = userInfoService.queryAllTeacherInfos();
+		
+		int count = list.size();
+		
+		Map<String , Object> map = new HashMap<String , Object>(2);
+		
+		if(count > 0) {
+			map.put("count", count);
+			map.put("teacherList", list);
+			
+			return ApiResponse.success("操作成功！", UtilTools.mapToJson(map));
+		}
+		
+		return ApiResponse.error("暂无数据！");
+		
+	}
+	
 }
