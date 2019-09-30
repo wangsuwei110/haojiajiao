@@ -2,6 +2,8 @@ package com.education.hjj.bz.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,8 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping(value = "/ComplaintSuggestion")
 public class ComplaintSuggestionController {
+	
+	private static Logger logger = LoggerFactory.getLogger(ComplaintSuggestionController.class);
 
 	@Autowired
 	private ComplaintSuggestionService complaintSuggestionService;
@@ -52,7 +56,7 @@ public class ComplaintSuggestionController {
 		return ApiResponse.success("操作失败！");
 	}
 	
-	@ApiOperation("新增建议与投诉")
+	@ApiOperation("按ID查找建议与投诉")
 	@RequestMapping(value = "/queryComplaintSuggestionById", method = RequestMethod.POST)
 	@ResponseBody
 	public ApiResponse queryComplaintSuggestionById(@RequestBody ComplaintSuggestionForm complaintSuggestionForm) {
@@ -69,7 +73,7 @@ public class ComplaintSuggestionController {
 		return ApiResponse.success("暂无数据！");
 	}
 	
-	@ApiOperation("新增建议与投诉")
+	@ApiOperation("查找所有的建议与投诉")
 	@RequestMapping(value = "/queryAllComplaintSuggestion", method = RequestMethod.GET)
 	public ApiResponse queryAllComplaintSuggestion() {
 		

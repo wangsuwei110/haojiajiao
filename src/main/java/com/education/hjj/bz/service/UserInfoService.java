@@ -1,5 +1,6 @@
 package com.education.hjj.bz.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -9,6 +10,7 @@ import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.formBean.LoginForm;
 import com.education.hjj.bz.formBean.TeacherInfoForm;
+import com.education.hjj.bz.formBean.TeacherInfoReplenishForm;
 import com.education.hjj.bz.formBean.UserInfoForm;
 
 public interface UserInfoService {
@@ -36,4 +38,8 @@ public interface UserInfoService {
 	Map<String ,Object> queryTeacherInfoByType(PicturePo picturePo);
 	
 	int updateOpenId(String openId , int teacherId);
+	
+	int updateUserInfos(TeacherInfoReplenishForm teacherInfoReplenishForm);
+	
+	List<TeacherVo> queryAllTeacherInfos();
 }

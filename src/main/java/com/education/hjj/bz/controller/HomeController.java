@@ -6,7 +6,10 @@ import java.util.Map;
 
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.education.hjj.bz.entity.vo.StudentOrderVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
+import com.education.hjj.bz.formBean.LoginForm;
 import com.education.hjj.bz.formBean.StudentOrderForm;
 import com.education.hjj.bz.service.OrderService;
 import com.education.hjj.bz.service.UserInfoService;
@@ -27,6 +31,8 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(value = "/home")
 public class HomeController {
 	
+	private static Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
 	@Autowired
 	private UserInfoService userInfoService;
 	
@@ -34,13 +40,14 @@ public class HomeController {
 	private OrderService orderService;
 
 	@ApiOperation("查询教员登录首页的内容")
-	@RequestMapping(value = "/queryTeacherInfosByHome", method = RequestMethod.GET)
-	@RequiresPermissions(logical = Logical.AND, value = {"teacher:view"})
-	public ApiResponse queryTeacherHomeInfos(@RequestParam("phone") String teacherId) {
+	@RequestMapping(value = "/queryTeacherInfosByHome", method = RequestMethod.POST)
+	public ApiResponse queryTeacherHomeInfos(@RequestBody LoginForm LoginForm) {
+		
+		String telephone = LoginForm.getLoginPhone();
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		//查询出教员首页信息
-		TeacherVo teacherVo = userInfoService.queryTeacherHomeInfos(teacherId);
+		TeacherVo teacherVo = userInfoService.queryTeacherInfosByTelephone(telephone);
 		map.put("teacherInfo", teacherVo);
 		
 		//查询所有的订单信息

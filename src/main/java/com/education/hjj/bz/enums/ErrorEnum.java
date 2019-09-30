@@ -25,11 +25,8 @@ public enum ErrorEnum {
     USER_PWD_ERROR("02004", "登录名或密码错误"),
     NO_PERMIT("02009", "该用户无权访问"),
     LOCKED_USER("02010", "用户已被锁定，请%s分钟之后再操作。"),
-
-
-    //USER_LOGIN("02011", "登录"),
-    USER_Unauthorized("02011", "暂无权限"),
-    USER_LOGOUT("02012", "登出"),
+    USER_UNAUTHORIZED("02011", "暂无权限"),
+    USER_LOGOUT("02012", "登出成功"),
 
 
     //-------------smsboss----------start

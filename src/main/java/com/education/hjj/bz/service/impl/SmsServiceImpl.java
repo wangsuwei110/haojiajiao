@@ -35,15 +35,22 @@ public class SmsServiceImpl implements ISmsService{
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	//产品名称:云通信短信API产品,开发者无需替换
-    static final String product = "Dysmsapi";
-    //产品域名,开发者无需替换
-    static final String domain = "dysmsapi.aliyuncs.com";
+    @Value("${aliyun.sms.product}")
+    private String PRODUCT; 
+    
+    @Value("${aliyun.sms.domain}")
+    private String DOMAIN; 
  
     @Value("${aliyun.sms.accessKeyId}")
-    private String accessKeyId;
+    private  String accessKeyId;
     @Value("${aliyun.sms.accessKeySecret}")
-    private String accessKeySecret;
+    private  String accessKeySecret;
+    
+    @Value("${aliyun.sms.templateCode}")
+    private  String TEMPLATECODE;
+    
+    private static final String signName = "来家教";
+    
  
     @Resource
     private IRedisService redisService;
@@ -58,7 +65,7 @@ public class SmsServiceImpl implements ISmsService{
  
         //初始化acsClient,暂不支持region化
         IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
-        DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
+        DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", PRODUCT, DOMAIN);
         IAcsClient acsClient = new DefaultAcsClient(profile);
  
         //组装请求对象-具体描述见控制台-文档部分内容
@@ -94,7 +101,7 @@ public class SmsServiceImpl implements ISmsService{
  
         //初始化acsClient,暂不支持region化
         IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
-        DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
+        DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", PRODUCT, DOMAIN);
         IAcsClient acsClient = new DefaultAcsClient(profile);
  
         //组装请求对象
@@ -145,7 +152,7 @@ public class SmsServiceImpl implements ISmsService{
         codeMap.put("code", identifyCode);
         SendSmsResponse response;
         try {
-            response = sendSms(mobile, "好家教", "SMS_171119392", JSON.toJSONString(codeMap), null);
+            response = sendSms(mobile, signName, TEMPLATECODE, JSON.toJSONString(codeMap), null);
             //短信发送成功后存入redis
             if (response != null && Constant.SMS_SEND_STATUS_OK.equalsIgnoreCase(response.getCode()) && StringUtils.isEmpty(returnCode)) {
                 redisService.setKey( Constant.SMS_LOGIN_IDENTIFY_CODE+mobile, identifyCode);

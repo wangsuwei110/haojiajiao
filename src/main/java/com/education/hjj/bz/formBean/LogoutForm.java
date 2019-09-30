@@ -12,15 +12,26 @@ public class LogoutForm implements Serializable{
 	 */
 	private static final long serialVersionUID = 7383091642255012278L;
 	
-	private String loginPhone;
+	private String userId;
+	
+	private Integer type;
 
-	public String getLoginPhone() {
-		return loginPhone;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setLoginPhone(String loginPhone) {
-		this.loginPhone = loginPhone;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
 	
 	
 }

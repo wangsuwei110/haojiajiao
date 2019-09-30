@@ -32,6 +32,8 @@ public class UserInfoForm extends PictureForm{
 	private String type;
 	
 	private String tag;
+	
+	private String address;
 
 
 	public String getTeacherName() {
@@ -137,6 +139,14 @@ public class UserInfoForm extends PictureForm{
 
 	public void setTag(String tag) {
 		this.tag = tag;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
 	

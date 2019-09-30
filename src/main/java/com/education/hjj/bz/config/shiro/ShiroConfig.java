@@ -153,7 +153,7 @@ public class ShiroConfig {
     
  // 直接放行的接口
     private static final Map<String, String> anonMap =  new HashMap<String, String>(){{
-        put("/user/logout", "anon");
+        put("/user/getOpenId", "anon");
 
         put("/user/login", "anon");
         put("/user/unauth", "anon");
