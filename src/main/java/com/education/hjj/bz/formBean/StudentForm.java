@@ -30,6 +30,9 @@ public class StudentForm implements Serializable {
     @NotBlank(message = "学员年级不能为空")
     private Long grade;
 
+    @ApiModelProperty(value = "科目",required = true)
+    private Integer subjectId;
+
     @ApiModelProperty(value = "微信openid",required = true)
     @NotBlank(message = "微信openid不能为空")
     private String openId;
@@ -59,6 +62,14 @@ public class StudentForm implements Serializable {
 
     @ApiModelProperty(value = "修改人",required = true)
     private String updateUser;
+
+    public Integer getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(Integer subjectId) {
+        this.subjectId = subjectId;
+    }
 
     public Long getSid() {
         return sid;

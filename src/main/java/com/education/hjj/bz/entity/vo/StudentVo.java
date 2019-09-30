@@ -24,6 +24,9 @@ public class StudentVo {
     @ApiModelProperty(value = "学员年级")
     private Long grade;
 
+    @ApiModelProperty(value = "辅导科目")
+    private Integer subjectId;
+
     @ApiModelProperty(value = "微信openid")
     private String openId;
 
@@ -48,6 +51,13 @@ public class StudentVo {
     @ApiModelProperty(value = "修改人")
     private String updateUser;
 
+    public Integer getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(Integer subjectId) {
+        this.subjectId = subjectId;
+    }
 
     public String getStudentName() {
         return studentName;

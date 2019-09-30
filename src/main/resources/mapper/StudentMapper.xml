@@ -50,6 +50,9 @@
 		     	 <if test="grade != null">
 	               grade =  #{grade},
        		     </if>
+                 <if test="subjectId != null">
+                   subject_id =  #{subjectId},
+                 </if>
 		     	 <if test="openId != null">
 	               openId =  #{openid},
        		     </if>
@@ -86,6 +89,7 @@
 	        student_name,
 	        sex,
 	        grade,
+            subjectId,
 	        openId,
 	        picture,
 	        parent_phone_num,
@@ -98,6 +102,7 @@
 	        #{studentName},
 	        #{sex},
 	        #{grade},
+	        #{subject_id},
 	        #{openid},
 	        #{picture},
 	        #{parentPhoneNum},
