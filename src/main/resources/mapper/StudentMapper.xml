@@ -9,11 +9,7 @@
 	     	<result property="grade" column="grade"/>
 	     	<result property="openId" column="openId"/>
 	     	<result property="picture" column="picture"/>
-	     	<result property="parentName" column="parent_name"/>
 	     	<result property="parentPhoneNum" column="parent_phone_num"/>
-	     	<result property="url" column="url"/>
-	     	<result property="studentAccount" column="student_account"/>
-	     	<result property="studentPassword" column="student_password"/>
 	     	<result property="deleteStatus" column="delete_status"/>
 	     	<result property="createTime" column="create_time"/>
 	     	<result property="createUser" column="create_user"/>
@@ -23,7 +19,7 @@
 
 	<select id="load" resultMap="studentResultMap" parameterType="long">
         SELECT * FROM student
-        WHERE id =  #{id} and delete_status = 0
+        WHERE sid =  #{sid} and delete_status = 0
     </select>
 
 	<select id="findByPhone" resultMap="studentResultMap" parameterType="string">
@@ -39,7 +35,7 @@
 	<update id="delete">
         UPDATE student
         SET delete_status = 1
-        WHERE id =  #{id}
+        WHERE sid =  #{sid}
     </update>
 
     <update id="updateNotNull" parameterType="com.education.hjj.bz.formBean.StudentForm">
@@ -57,26 +53,14 @@
 		     	 <if test="grade != null">
 	               grade =  #{grade},
        		     </if>
-		     	 <if test="openid != null">
+		     	 <if test="openId != null">
 	               openId =  #{openid},
        		     </if>
 		     	 <if test="picture != null">
 	               picture =  #{picture},
        		     </if>
-		     	 <if test="parentName != null">
-	               parent_name =  #{parentName},
-       		     </if>
 		     	 <if test="parentPhoneNum != null">
 	               parent_phone_num =  #{parentPhoneNum},
-       		     </if>
-		     	 <if test="url != null">
-	               url =  #{url},
-       		     </if>
-		     	 <if test="studentAccount != null">
-	               student_account =  #{studentAccount},
-       		     </if>
-		     	 <if test="studentPassword != null">
-	               student_password =  #{studentPassword},
        		     </if>
 		     	 <if test="deleteStatus != null">
 	               delete_status =  #{deleteStatus},
@@ -107,11 +91,7 @@
 	        grade,
 	        openId,
 	        picture,
-	        parent_name,
 	        parent_phone_num,
-	        url,
-	        student_account,
-	        student_password,
 	        delete_status,
 	        create_time,
 	        create_user,
@@ -123,11 +103,7 @@
 	        #{grade},
 	        #{openid},
 	        #{picture},
-	        #{parentName},
 	        #{parentPhoneNum},
-	        #{url},
-	        #{studentAccount},
-	        #{studentPassword},
 	        #{deleteStatus},
 	        #{createTime},
 	        #{createUser},
@@ -174,20 +150,8 @@
                 <if test="picture != null and picture != ''">
                     and picture =  #{picture}
                 </if>
-                <if test="parentName != null and parentName != ''">
-                    and parent_name =  #{parentName}
-                </if>
                 <if test="parentPhoneNum != null and parentPhoneNum != ''">
                     and parent_phone_num =  #{parentPhoneNum}
-                </if>
-                <if test="url != null and url != ''">
-                    and url =  #{url}
-                </if>
-                <if test="studentAccount != null and studentAccount != ''">
-                    and student_account =  #{studentAccount}
-                </if>
-                <if test="studentPassword != null and studentPassword != ''">
-                    and student_password =  #{studentPassword}
                 </if>
                 <if test="deleteStatus != null and deleteStatus != ''">
                     and delete_status =  #{deleteStatus}

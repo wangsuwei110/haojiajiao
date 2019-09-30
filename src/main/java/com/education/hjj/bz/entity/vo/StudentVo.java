@@ -8,7 +8,7 @@ import java.util.Date;
  * @创建者：sys
  * @创建时间：2019-9-29 0:30:25
  */
-@ApiModel(value = "Student")
+@ApiModel(value = "StudentVo")
 public class StudentVo {
 
 
@@ -30,20 +30,8 @@ public class StudentVo {
     @ApiModelProperty(value = "头像")
     private String picture;
 
-    @ApiModelProperty(value = "家长姓名")
-    private String parentName;
-
     @ApiModelProperty(value = "家长手机号")
     private String parentPhoneNum;
-
-    @ApiModelProperty(value = "学员头像")
-    private String url;
-
-    @ApiModelProperty(value = "学员账号")
-    private String studentAccount;
-
-    @ApiModelProperty(value = "学员密码")
-    private String studentPassword;
 
     @ApiModelProperty(value = "状态")
     private Boolean deleteStatus;
@@ -59,7 +47,6 @@ public class StudentVo {
 
     @ApiModelProperty(value = "修改人")
     private String updateUser;
-
 
 
     public String getStudentName() {
@@ -99,13 +86,7 @@ public class StudentVo {
     public void setPicture(String picture) {
         this.picture = picture;
     }
-    public String getParentName() {
-        return parentName;
-    }
 
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
-    }
     public String getParentPhoneNum() {
         return parentPhoneNum;
     }
@@ -113,27 +94,7 @@ public class StudentVo {
     public void setParentPhoneNum(String parentPhoneNum) {
         this.parentPhoneNum = parentPhoneNum;
     }
-    public String getUrl() {
-        return url;
-    }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-    public String getStudentAccount() {
-        return studentAccount;
-    }
-
-    public void setStudentAccount(String studentAccount) {
-        this.studentAccount = studentAccount;
-    }
-    public String getStudentPassword() {
-        return studentPassword;
-    }
-
-    public void setStudentPassword(String studentPassword) {
-        this.studentPassword = studentPassword;
-    }
     public Boolean getDeleteStatus() {
         return deleteStatus;
     }
