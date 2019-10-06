@@ -153,8 +153,6 @@ public class SmsServiceImpl implements ISmsService{
         SendSmsResponse response;
         try {
             response = sendSms(mobile, signName, TEMPLATECODE, JSON.toJSONString(codeMap), null);
-            logger.info("****************caohuan1" + response.getCode());
-            logger.info("****************caohuan2" + returnCode);
             //短信发送成功后存入redis
             if (response != null && Constant.SMS_SEND_STATUS_OK.equalsIgnoreCase(response.getCode()) && StringUtils.isEmpty(returnCode)) {
                 redisService.setKey( Constant.SMS_LOGIN_IDENTIFY_CODE+mobile, identifyCode);
