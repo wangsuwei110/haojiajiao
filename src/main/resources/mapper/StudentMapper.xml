@@ -82,14 +82,14 @@
     </update>
 
     <insert id="insert" parameterType="com.education.hjj.bz.formBean.StudentForm">
-        <selectKey resultType="long" keyProperty="id" >
-		SELECT @@IDENTITY AS id
+        <selectKey resultType="long" keyProperty="sid" >
+		SELECT @@IDENTITY AS sid
 		</selectKey>
         INSERT INTO student(
 	        student_name,
 	        sex,
 	        grade,
-            subjectId,
+            subject_id,
 	        openId,
 	        picture,
 	        parent_phone_num,
@@ -102,8 +102,8 @@
 	        #{studentName},
 	        #{sex},
 	        #{grade},
-	        #{subject_id},
-	        #{openid},
+	        #{subjectId},
+	        #{openId},
 	        #{picture},
 	        #{parentPhoneNum},
 	        #{deleteStatus},

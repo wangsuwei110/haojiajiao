@@ -237,7 +237,6 @@ public class LoginController {
                 logger.info("该学员端用户为首次注册用户");
 
 				j = studentService.add(LoginForm);
-                j = userInfoService.insertTeacherInfo(LoginForm);
 
                 if(j<=0) {
                     return ApiResponse.success("注册失败，请重新注册！");
