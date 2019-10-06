@@ -54,7 +54,7 @@
                    subject_id =  #{subjectId},
                  </if>
 		     	 <if test="openId != null">
-	               openId =  #{openid},
+	               openId =  #{openId},
        		     </if>
 		     	 <if test="picture != null">
 	               picture =  #{picture},
@@ -146,8 +146,8 @@
                 <if test="grade != null and grade != ''">
                     and grade =  #{grade}
                 </if>
-                <if test="openid != null and openid != ''">
-                    and openId =  #{openid}
+                <if test="openId != null and openId != ''">
+                    and openId =  #{openId}
                 </if>
                 <if test="picture != null and picture != ''">
                     and picture =  #{picture}
