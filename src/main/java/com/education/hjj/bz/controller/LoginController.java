@@ -148,7 +148,7 @@ public class LoginController {
 		int verifyResult = (int) codeMessage.get("code");
 		
 		if(Constant.FAILED == verifyResult) {
-			return ApiResponse.error("手机验证码输入不正确，请重新输入！");
+			return ApiResponse.error(codeMessage.get("msg").toString());
 		}
 
 		
