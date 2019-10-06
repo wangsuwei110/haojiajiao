@@ -7,6 +7,7 @@
 	     	<result property="studentName" column="student_name"/>
 	     	<result property="sex" column="sex"/>
 	     	<result property="grade" column="grade"/>
+	     	<result property="subjectId" column="subject_id"/>
 	     	<result property="openId" column="openId"/>
 	     	<result property="picture" column="picture"/>
 	     	<result property="parentPhoneNum" column="parent_phone_num"/>

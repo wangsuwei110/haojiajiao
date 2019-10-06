@@ -19,7 +19,7 @@ public class StudentVo {
     private String studentName;
 
     @ApiModelProperty(value = "性别（0未知，1男，2女）")
-    private Boolean sex;
+    private Integer sex;
 
     @ApiModelProperty(value = "学员年级")
     private Long grade;
@@ -37,7 +37,7 @@ public class StudentVo {
     private String parentPhoneNum;
 
     @ApiModelProperty(value = "状态")
-    private Boolean deleteStatus;
+    private Integer deleteStatus;
 
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
@@ -66,13 +66,7 @@ public class StudentVo {
     public void setStudentName(String studentName) {
         this.studentName = studentName;
     }
-    public Boolean getSex() {
-        return sex;
-    }
 
-    public void setSex(Boolean sex) {
-        this.sex = sex;
-    }
     public Long getGrade() {
         return grade;
     }
@@ -105,13 +99,22 @@ public class StudentVo {
         this.parentPhoneNum = parentPhoneNum;
     }
 
-    public Boolean getDeleteStatus() {
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
+    public Integer getDeleteStatus() {
         return deleteStatus;
     }
 
-    public void setDeleteStatus(Boolean deleteStatus) {
+    public void setDeleteStatus(Integer deleteStatus) {
         this.deleteStatus = deleteStatus;
     }
+
     public Date getCreateTime() {
         return createTime;
     }
