@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.education.hjj.bz.util.common.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -191,6 +192,14 @@ public class SmsServiceImpl implements ISmsService{
         }
 		
         String returnCode = redisService.getValue( Constant.SMS_LOGIN_IDENTIFY_CODE+mobile);
+
+		// 验证码已经过期
+		if (StringUtils.isEmpty(returnCode)) {
+            map.put("msg", "您输入的手机验证码已过期，请重新获取！");
+            map.put("code", Constant.FAILED);
+            return map;
+        }
+
         if (!StringUtils.isEmpty(returnCode) && returnCode.equals(identifyCode)) {
         	map.put("msg", "验证成功！");
         	map.put("code", Constant.SUCCESS);

@@ -293,7 +293,7 @@ public class LoginController {
 
 			map.put("studentName", studentVo.getStudentName());
 			map.put("studentId", studentVo.getSid());
-			map.put("telephone", studentVo.getParentPhoneNum().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
+			map.put("telephone", studentVo.getParentPhoneNum().replace(studentVo.getParentPhoneNum().subSequence(3, 7), "****"));
 		}
 		
 		//统一处理：如果是已经注册过的用户登录，教员和学生统一将认证信息和权限授权更新。
