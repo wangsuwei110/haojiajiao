@@ -20,7 +20,10 @@
 
 	<select id="load" resultMap="studentResultMap" parameterType="long">
         SELECT <include refid="selectColumn"/>
-        FROM student
+        FROM student t1
+        LEFT JOIN
+        grade t3
+        on t3.sid = t1.grade
         WHERE sid =  #{sid} and delete_status = 0
     </select>
 
@@ -36,7 +39,7 @@
           t1.create_user,
           t1.update_time,
           t1.update_user,
-          t3.grade_name
+          t3.grade_name AS grade
     </sql>
 
     <select id="loadAll" resultMap="studentResultMap" parameterType="long">
