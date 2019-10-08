@@ -343,6 +343,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 			teacher.setTeachTime(JSON.toJSONString(teacherInfoForm.getTimeList()));
 		}
 		
+		if(teacherInfoForm.getVacationStatus() != null && StringUtils.isNotBlank(teacherInfoForm.getVacationStatus())) {
+			teacher.setVacationStatus(Integer.valueOf(teacherInfoForm.getVacationStatus()));
+		}
+		
 		teacher.setUpdateTime(new Date());
 		teacher.setUpdateUser("admin");
 		

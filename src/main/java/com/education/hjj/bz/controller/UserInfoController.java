@@ -81,6 +81,7 @@ public class UserInfoController {
 			
 			if(teacherVo != null ) {
 				map.put("teacherName", teacherVo.getName());
+				map.put("vacationStatus", teacherVo.getVacationStatus());
 			}
 			
 			return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
