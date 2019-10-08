@@ -39,7 +39,8 @@
           t1.create_user,
           t1.update_time,
           t1.update_user,
-          t3.grade_name AS grade
+          t1.grade,
+          t3.grade_name AS gradeName
     </sql>
 
     <select id="loadAll" resultMap="studentResultMap" parameterType="long">
