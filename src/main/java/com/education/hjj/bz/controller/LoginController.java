@@ -38,6 +38,7 @@ import com.education.hjj.bz.model.common.ResponseBean;
 import com.education.hjj.bz.util.AesCipherUtil;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.Constant;
+import com.education.hjj.bz.util.DateUtil;
 import com.education.hjj.bz.util.HttpClientUtils;
 import com.education.hjj.bz.util.JedisUtil;
 import com.education.hjj.bz.util.JwtUtil;
@@ -203,6 +204,8 @@ public class LoginController {
 
 	            map.put("teacherId", teacherVo.getTeacherId());
 	            map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
+	            map.put("registerDate", DateUtil.getStandardDay(teacherVo.getCreateTime()));
+	            map.put("vacationStatus", teacherVo.getVacationStatus());
 	          
 	            logger.info("telephone = {}" , map.get("telephone"));
 		        return ApiResponse.success("注册成功" , UtilTools.mapToJson(map));
@@ -226,6 +229,8 @@ public class LoginController {
             map.put("teacherName", teacherVo.getName());
             map.put("teacherId", teacherVo.getTeacherId());
             map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
+            map.put("registerDate", DateUtil.getStandardDay(teacherVo.getCreateTime()));
+            map.put("vacationStatus", teacherVo.getVacationStatus());
             logger.info("telephone = {}" , map.get("telephone"));
 		// 学员端
 		}else if (loginType.equals(Constant.STUDENT_CODE)) {
