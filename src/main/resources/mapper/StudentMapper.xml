@@ -24,7 +24,7 @@
         LEFT JOIN
         grade t3
         on t3.sid = t1.grade
-        WHERE sid =  #{sid} and delete_status = 0
+        WHERE t1.sid =  #{sid} and delete_status = 0
     </select>
 
     <sql id="selectColumn">
