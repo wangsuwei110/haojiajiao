@@ -14,6 +14,7 @@
 		<result column="openId" property="openId"/>
 		<result column="QQ" property="QQ"/>
 		<result column="picture" property="picture"/>
+		<result column="vacation_status" property="vacationStatus"/>
 		<result column="charges_standard" property="chargesStandard"/>
 		<result column="logon_status" property="logonStatus"/>
 		<result column="audit_status" property="auditStatus"/>
@@ -43,6 +44,8 @@
 		<result column="resumption_count" property="resumptionCount"/>
 		<result column="resumption_rate" property="resumptionRate"/>
 		<result column="teacher_points" property="teacherPoints"/>
+		<result column="create_time" property="createTime"/>
+		<result column="update_time" property="updateTime"/>
 	</resultMap>
 	
 	
@@ -58,6 +61,7 @@
 			t.sex,	
 			t.openId,
 			t.picture,
+			t.vacation_status,
 			t.charges_standard,
 			t.logon_status,
 			t.audit_status,
@@ -83,7 +87,9 @@
 			t.resumption_rate,
 			t.teacher_profile,
 			t.teacher_certificate,
-			t.experience
+			t.experience,
+			t.create_time,
+			t.update_time
 		from 
 			teacher t
 		where 
@@ -104,6 +110,7 @@
 			t.openId,
 			t.QQ,
 			t.picture,
+			t.vacation_status,
 			t.charges_standard,
 			t.logon_status,
 			t.audit_status,
@@ -129,7 +136,9 @@
 			t.resumption_rate,
 			t.teacher_profile,
 			t.teacher_certificate,
-			t.experience
+			t.experience,
+			t.create_time,
+			t.update_time
 			
 		from 
 			teacher t
