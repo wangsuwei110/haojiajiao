@@ -302,6 +302,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	public int updateUserInfoByParameter(TeacherInfoForm teacherInfoForm) {
 		
 		logger.info("teacherInfoForm={}",teacherInfoForm.toString());
+		logger.info("vacationStatus = {}" , teacherInfoForm.getVacationStatus());
 		
 		TeacherPo teacher = new TeacherPo();
 		
@@ -344,7 +345,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			teacher.setTeachTime(JSON.toJSONString(teacherInfoForm.getTimeList()));
 		}
 		
-		logger.info("vacationStatus = {}" , teacherInfoForm.getVacationStatus());
+		
 		if(teacherInfoForm.getVacationStatus() != null && StringUtils.isNotBlank(teacherInfoForm.getVacationStatus())) {
 			teacher.setVacationStatus(Integer.valueOf(teacherInfoForm.getVacationStatus()));
 		}
