@@ -71,8 +71,7 @@ public class UserInfoController {
 	@ApiOperation("用户信息更新")
 	@RequestMapping(value = "/updateUserInfoByParameter", method = RequestMethod.POST)
 	public ApiResponse updateUserInfoByParameter(@RequestBody TeacherInfoForm teacherInfoForm) {
-		logger.info("caohuan" + teacherInfoForm.getTimeList().toString());
-		teacherInfoForm.getTimeList().forEach(f -> logger.info("caohuan" + f.getWeek() + ":" + f.getTime()));
+
 		int i = userInfoService.updateUserInfoByParameter(teacherInfoForm);
 		Map<String , Object> map = new HashMap<String, Object>(1);
 		
