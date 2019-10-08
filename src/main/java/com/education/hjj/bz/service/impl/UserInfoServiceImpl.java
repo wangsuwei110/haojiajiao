@@ -330,6 +330,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 		if(teacherInfoForm.getName() != null && StringUtils.isNotBlank(teacherInfoForm.getName())) {
 			teacher.setName(teacherInfoForm.getName());	
 		}
+		
 		if(teacherInfoForm.getSchool() != null && StringUtils.isNotBlank(teacherInfoForm.getSchool())) {
 			teacher.setSchool(teacherInfoForm.getSchool());
 		}
