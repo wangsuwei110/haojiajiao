@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 学员表业务实现
@@ -79,12 +81,18 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public ApiResponse findBySid(StudentForm form) {
-
+        List<StudentVo> list = new ArrayList<>();
  	    if (form.getSid() == null) {
             return ApiResponse.error("当前员工不存在");
         }
-        StudentVo vo = studentMapper.load(form.getSid());
-        return ApiResponse.success(vo);
-    }
 
+        // 根据查询类型区分检索的结果,type 为1，则检索自己所有孩子的信息
+        if (form.getFindType() != null && form.getFindType() == 1) {
+            list =  studentMapper.loadAll(form.getSid());
+        } else {
+            StudentVo vo = studentMapper.load(form.getSid());
+            list.add(vo);
+        }
+        return ApiResponse.success(list);
+    }
  }

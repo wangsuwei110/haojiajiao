@@ -18,6 +18,9 @@ public class StudentForm implements Serializable {
 
     private Long sid;
 
+    @ApiModelProperty(value = "查询类型，1：代表查询所有",required = true)
+    private Integer findType;
+
     @ApiModelProperty(value = "学员姓名",required = true)
     @NotBlank(message = "学员姓名不能为空")
     private String studentName;
@@ -62,6 +65,14 @@ public class StudentForm implements Serializable {
 
     @ApiModelProperty(value = "修改人",required = true)
     private String updateUser;
+
+    public Integer getFindType() {
+        return findType;
+    }
+
+    public void setFindType(Integer findType) {
+        this.findType = findType;
+    }
 
     public Integer getSubjectId() {
         return subjectId;

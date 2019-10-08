@@ -28,5 +28,5 @@ public interface StudentMapper {
 
     int getCount(StudentForm form);
 
-    List<StudentVo> list(StudentForm form);
+    List<StudentVo> loadAll(Long id);
 }

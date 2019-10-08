@@ -23,6 +23,25 @@
         WHERE sid =  #{sid} and delete_status = 0
     </select>
 
+    <select id="loadAll" resultMap="studentResultMap" parameterType="long">
+      select
+          t1.*
+      from
+          student t1
+      where
+          t1.delete_status = 0
+      and t1.parent_phone_num in (
+         select
+            t2.parent_phone_num
+         from
+            student t2
+         where
+            t2.sid = #{sid}
+         and t2.delete_status = 0
+  )
+
+    </select>
+
 	<select id="findByPhone" resultMap="studentResultMap" parameterType="string">
         SELECT
          	*
