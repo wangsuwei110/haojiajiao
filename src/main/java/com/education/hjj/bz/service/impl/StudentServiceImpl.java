@@ -6,6 +6,9 @@ import com.education.hjj.bz.formBean.StudentForm;
 import com.education.hjj.bz.mapper.StudentMapper;
 import com.education.hjj.bz.service.StudentService;
 import com.education.hjj.bz.util.ApiResponse;
+import com.education.hjj.bz.util.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +25,11 @@ import java.util.List;
  */
 @Service("studentBiz")
 public class StudentServiceImpl implements StudentService {
+
+    /**
+     * logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
 
 	@Autowired
     private StudentMapper studentMapper;
@@ -81,6 +89,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public ApiResponse findBySid(StudentForm form) {
+
+        logger.info("*****************test&&&&&&&&&&&&&&&&&&&");
         List<StudentVo> list = new ArrayList<>();
  	    if (form.getSid() == null) {
             return ApiResponse.error("当前员工不存在");
