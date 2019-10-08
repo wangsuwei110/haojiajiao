@@ -345,6 +345,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 		}
 		
 		if(teacherInfoForm.getVacationStatus() != null && StringUtils.isNotBlank(teacherInfoForm.getVacationStatus())) {
+			
+			logger.info("vacationStatus = {}" , teacherInfoForm.getVacationStatus());
 			teacher.setVacationStatus(Integer.valueOf(teacherInfoForm.getVacationStatus()));
 		}
 		
