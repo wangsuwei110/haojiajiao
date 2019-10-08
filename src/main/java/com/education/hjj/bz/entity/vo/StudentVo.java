@@ -22,7 +22,10 @@ public class StudentVo {
     private Integer sex;
 
     @ApiModelProperty(value = "学员年级")
-    private String grade;
+    private Integer grade;
+
+    @ApiModelProperty(value = "学员年级")
+    private String gradeName;
 
     @ApiModelProperty(value = "辅导科目")
     private Integer subjectId;
@@ -67,12 +70,20 @@ public class StudentVo {
         this.studentName = studentName;
     }
 
-    public String getGrade() {
+    public Integer getGrade() {
         return grade;
     }
 
-    public void setGrade(String grade) {
+    public void setGrade(Integer grade) {
         this.grade = grade;
+    }
+
+    public String getGradeName() {
+        return gradeName;
+    }
+
+    public void setGradeName(String gradeName) {
+        this.gradeName = gradeName;
     }
 
     public String getOpenId() {
