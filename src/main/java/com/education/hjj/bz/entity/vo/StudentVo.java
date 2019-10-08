@@ -22,7 +22,7 @@ public class StudentVo {
     private Integer sex;
 
     @ApiModelProperty(value = "学员年级")
-    private Long grade;
+    private String grade;
 
     @ApiModelProperty(value = "辅导科目")
     private Integer subjectId;
@@ -40,13 +40,13 @@ public class StudentVo {
     private Integer deleteStatus;
 
     @ApiModelProperty(value = "创建时间")
-    private Date createTime;
+    private String createTime;
 
     @ApiModelProperty(value = "创建人")
     private String createUser;
 
     @ApiModelProperty(value = "修改时间")
-    private Date updateTime;
+    private String updateTime;
 
     @ApiModelProperty(value = "修改人")
     private String updateUser;
@@ -67,11 +67,11 @@ public class StudentVo {
         this.studentName = studentName;
     }
 
-    public Long getGrade() {
+    public String getGrade() {
         return grade;
     }
 
-    public void setGrade(Long grade) {
+    public void setGrade(String grade) {
         this.grade = grade;
     }
 
@@ -115,13 +115,22 @@ public class StudentVo {
         this.deleteStatus = deleteStatus;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
     public String getCreateUser() {
         return createUser;
     }
@@ -138,13 +147,7 @@ public class StudentVo {
         this.sid = sid;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 
     public String getUpdateUser() {
         return updateUser;

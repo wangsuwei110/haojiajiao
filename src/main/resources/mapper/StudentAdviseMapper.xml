@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.hjj.bz.mapper.StudentAdviseMapper">
+
+    <resultMap id="studentAdviseResultMap" type="com.education.hjj.bz.entity.vo.StudentAdviseVo">
+	     	<result property="sid" column="sid"/>
+	     	<result property="studentId" column="student_id"/>
+	     	<result property="adviseDesc" column="advise_desc"/>
+	     	<result property="createTime" column="create_time"/>
+	     	<result property="createUser" column="create_user"/>
+    </resultMap>
+
+	<select id="load" resultMap="studentAdviseResultMap" parameterType="long">
+        SELECT * FROM student_advise
+        WHERE sid =  #{sid} and delete_flag = 0
+    </select>
+
+	<update id="delete">
+        UPDATE student_advise
+        SET delete_flag = 1
+        WHERE id =  #{id}
+    </update>
+
+    <update id="updateNotNull" parameterType="com.education.hjj.bz.formBean.StudentAdviseForm">
+        UPDATE student_advise
+        <set>
+		     	 <if test="sid != null">
+	               sid =  #{sid},
+       		     </if>
+		     	 <if test="studentId != null">
+	               student_id =  #{studentId},
+       		     </if>
+		     	 <if test="adviseDesc != null">
+	               advise_desc =  #{adviseDesc},
+       		     </if>
+		     	 <if test="createTime != null">
+	               create_time =  #{createTime},
+       		     </if>
+		     	 <if test="createUser != null">
+	               create_user =  #{createUser},
+       		     </if>
+        </set>
+        WHERE sid =  #{sid}
+    </update>
+
+    <insert id="insert" parameterType="com.education.hjj.bz.formBean.StudentAdviseForm">
+        INSERT INTO student_advise(
+	        student_id,
+	        advise_desc,
+	        create_time,
+	        create_user
+	        ) VALUES (
+	        #{studentId},
+	        #{adviseDesc},
+	        #{createTime},
+	        #{createUser}
+        )
+    </insert>
+
+
+    <select id="getCount" parameterType="com.education.hjj.bz.formBean.StudentAdviseForm"  resultType="int">
+        SELECT count(0)
+        FROM student_advise
+        <include refid="listRef"/>
+    </select>
+
+    <select id="list" parameterType="com.education.hjj.bz.formBean.StudentAdviseForm"  resultMap="studentAdviseResultMap">
+        SELECT *
+        FROM student_advise
+        <include refid="listRef"/>
+        ORDER BY id DESC
+        <if test="offset != null">
+            <![CDATA[
+            limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
+    </select>
+    <sql id="listRef">
+        <where>
+                <if test="sid != null and sid != ''">
+                    and sid =  #{sid}
+                </if>
+                <if test="studentId != null and studentId != ''">
+                    and student_id =  #{studentId}
+                </if>
+                <if test="adviseDesc != null and adviseDesc != ''">
+                    and advise_desc =  #{adviseDesc}
+                </if>
+                <if test="createTime != null and createTime != ''">
+                    and create_time =  #{createTime}
+                </if>
+                <if test="createUser != null and createUser != ''">
+                    and create_user =  #{createUser}
+                </if>
+        </where>
+    </sql>
+</mapper>

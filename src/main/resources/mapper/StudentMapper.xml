@@ -19,15 +19,34 @@
     </resultMap>
 
 	<select id="load" resultMap="studentResultMap" parameterType="long">
-        SELECT * FROM student
+        SELECT <include refid="selectColumn"/>
+        FROM student
         WHERE sid =  #{sid} and delete_status = 0
     </select>
 
+    <sql id="selectColumn">
+          t1.sid,
+          t1.student_name,
+          t1.sex,
+          t1.subject_id,
+          t1.openId,
+          t1.picture,
+          t1.parent_phone_num,
+          date_format(t1.create_time, '%Y-%m-%d' ) AS create_time,
+          t1.create_user,
+          t1.update_time,
+          t1.update_user,
+          t3.grade_name
+    </sql>
+
     <select id="loadAll" resultMap="studentResultMap" parameterType="long">
       select
-          t1.*
+        <include refid="selectColumn"/>
       from
           student t1
+      LEFT JOIN
+          grade t3
+      on t3.sid = t1.grade
       where
           t1.delete_status = 0
       and t1.parent_phone_num in (
