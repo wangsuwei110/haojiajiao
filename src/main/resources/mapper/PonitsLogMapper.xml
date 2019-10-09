@@ -14,7 +14,7 @@
 	</resultMap>
 	
 	
-    <select id="queryAllPointsLogByTeacherId"  resultMap="pointLogsResultMap" parameterType="java.lang.Integer">    
+    <select id="queryAllPointsLogByTeacherId"  resultMap="pointLogsResultMap" parameterType="com.education.hjj.bz.formBean.PointsLogForm">    
         	
         select 
 			get_points_counts,
@@ -30,7 +30,7 @@
 			teacher_id = #{teacherId}
 		<if test="offset != null">
             <![CDATA[
-                limit #{pageSize} offset #{offset}
+               limit #{pageSize} offset #{offset}
             ]]>
         </if>
     </select>  
