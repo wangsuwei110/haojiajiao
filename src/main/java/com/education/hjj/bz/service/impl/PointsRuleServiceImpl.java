@@ -23,6 +23,7 @@ public class PointsRuleServiceImpl implements PointsRuleService{
 		List<TeacherPointsRuleVo>  list = pointsRuleMapper.queryAllPointsRules();
 		
 		pageVo.setDataList(list);
+		pageVo.setTotal(list.size());
 		
 		return pageVo;
 	}

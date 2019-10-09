@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.education.hjj.bz.entity.vo.PageVo;
 import com.education.hjj.bz.entity.vo.PointsLogVo;
+import com.education.hjj.bz.formBean.PointsLogForm;
 import com.education.hjj.bz.mapper.PointsLogMapper;
 import com.education.hjj.bz.service.PointsLogService;
 
@@ -17,14 +18,14 @@ public class PointsLogServiceImpl implements PointsLogService{
 	private PointsLogMapper pointsLogMapper;
 
 	@Override
-	public PageVo<List<PointsLogVo>> queryAllPointsLogByTeacherId(Integer teacherId) {
+	public PageVo<List<PointsLogVo>> queryAllPointsLogByTeacherId(PointsLogForm pointsLogForm) {
 		
 		PageVo pageVo = new PageVo();
 		
-		List<PointsLogVo> list = pointsLogMapper.queryAllPointsLogByTeacherId(teacherId);
+		List<PointsLogVo> list = pointsLogMapper.queryAllPointsLogByTeacherId(pointsLogForm);
 		
 		pageVo.setDataList(list);
-		
+		pageVo.setTotal(list.size());
 		return pageVo;
 	}
 

@@ -27,7 +27,6 @@ public class PointRulesController {
 
 	@ApiOperation("积分规则查询")
 	@RequestMapping(value = "/queryAllPointsRules", method = RequestMethod.GET)
-	@RequiresPermissions(logical = Logical.AND, value = {"teacher:view"})
 	public ApiResponse queryAllPointsRules() {
 
 		PageVo<List<TeacherPointsRuleVo>> list = pointsRuleService.queryAllPointsRules();
