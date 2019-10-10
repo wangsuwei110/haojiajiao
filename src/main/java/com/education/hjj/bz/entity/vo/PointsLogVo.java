@@ -20,8 +20,6 @@ public class PointsLogVo extends BaseVo implements Serializable{
 	//剩余积分
 	private Integer surplusPoints;
 	
-	private Date createTime;
-
 	public Integer getPointsId() {
 		return pointsId;
 	}
@@ -60,14 +58,6 @@ public class PointsLogVo extends BaseVo implements Serializable{
 
 	public void setSurplusPoints(Integer surplusPoints) {
 		this.surplusPoints = surplusPoints;
-	}
-
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
 	}
 	
 }

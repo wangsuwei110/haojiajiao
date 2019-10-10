@@ -14,11 +14,10 @@ public class TeacherPointsRuleVo extends BaseVo implements Serializable{
 	
 	private Integer pointsScore;
 	
-	private Integer pointsRuleType;
+	private String pointsUnit;
 	
 	private String pointsRuleName;
 	
-	private Integer pointsScoreType;
 
 	public Integer getPointsRuleId() {
 		return pointsRuleId;
@@ -36,14 +35,6 @@ public class TeacherPointsRuleVo extends BaseVo implements Serializable{
 		this.pointsScore = pointsScore;
 	}
 
-	public Integer getPointsRuleType() {
-		return pointsRuleType;
-	}
-
-	public void setPointsRuleType(Integer pointsRuleType) {
-		this.pointsRuleType = pointsRuleType;
-	}
-
 	public String getPointsRuleName() {
 		return pointsRuleName;
 	}
@@ -52,12 +43,12 @@ public class TeacherPointsRuleVo extends BaseVo implements Serializable{
 		this.pointsRuleName = pointsRuleName;
 	}
 
-	public Integer getPointsScoreType() {
-		return pointsScoreType;
+	public String getPointsUnit() {
+		return pointsUnit;
 	}
 
-	public void setPointsScoreType(Integer pointsScoreType) {
-		this.pointsScoreType = pointsScoreType;
+	public void setPointsUnit(String pointsUnit) {
+		this.pointsUnit = pointsUnit;
 	}
 	
 }
