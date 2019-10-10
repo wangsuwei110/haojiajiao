@@ -9,9 +9,8 @@
 		
 		<result column="points_rule_id" property="pointsRuleId"/>
 		<result column="points_score" property="pointsScore"/>
-		<result column="points_rule_type" property="pointsRuleType"/>
+		<result column="points_unit" property="pointsUnit"/>
 		<result column="points_rule_name" property="pointsRuleName"/>
-		<result column="points_score_type" property="pointsScoreType"/>
 	</resultMap>
 	
 	
@@ -20,9 +19,8 @@
         select 
 			points_rule_id,
 			points_score,
-			points_rule_type,
-			points_rule_name,
-			points_score_type
+			points_unit,
+			points_rule_name
 			
 		from 
 			teacher_points_rule
