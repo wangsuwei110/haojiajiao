@@ -1,6 +1,7 @@
 package com.education.hjj.bz.service;
 
 import com.education.hjj.bz.entity.vo.TeacherVo;
+import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
 import com.education.hjj.bz.formBean.TeacherScreenForm;
 import com.education.hjj.bz.util.ApiResponse;
 
@@ -32,4 +33,15 @@ public interface TeacherService{
      */
     ApiResponse selectList();
 
+    /**
+     * 关联学员和教员信息
+     * @return
+     */
+    ApiResponse connect(StudentConnectTeacherForm form);
+
+    /**
+     * 收藏教员列表信息
+     * @return
+     */
+    ApiResponse connectList(StudentConnectTeacherForm form);
 }

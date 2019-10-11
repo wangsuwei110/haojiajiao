@@ -4,16 +4,18 @@ import com.education.hjj.bz.entity.vo.CodeVo;
 import com.education.hjj.bz.entity.vo.ParameterVo;
 import com.education.hjj.bz.entity.vo.TeacherDisplayVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
+import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
 import com.education.hjj.bz.formBean.TeacherScreenForm;
 import com.education.hjj.bz.mapper.ParameterMapper;
+import com.education.hjj.bz.mapper.StudentConnectTeacherMapper;
 import com.education.hjj.bz.mapper.TeacherMapper;
 import com.education.hjj.bz.service.TeacherService;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.DateUtil;
-import com.education.hjj.bz.util.common.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
@@ -28,7 +30,7 @@ import java.util.stream.Stream;
  * @创建者：sys
  * @创建时间：2019-10-9 21:50:41
  */
-@Service("teacherBiz")
+@Service("TeacherService")
 public class TeacherServiceImpl implements TeacherService {
 
 	@Autowired
@@ -36,6 +38,9 @@ public class TeacherServiceImpl implements TeacherService {
 
 	@Autowired
     private ParameterMapper parameterMapper;
+
+	@Autowired
+    private StudentConnectTeacherMapper connectMapper;
 
  	@Override
     public TeacherVo findById(Long id) {
@@ -130,6 +135,42 @@ public class TeacherServiceImpl implements TeacherService {
                 .map(m -> new CodeVo(m.getParameterId(), m.getName())).collect(Collectors.toList()));
 
         return ApiResponse.success(resultMap);
+    }
+
+
+    @Override
+    @Transactional
+    public ApiResponse connect(StudentConnectTeacherForm form) {
+ 	    form.setDeleteStatus(0);
+ 	    form.setCreateTime(new Date());
+        form.setCreateUser(form.getStudentId());
+
+        connectMapper.insert(form);
+
+        return ApiResponse.success("教员收藏成功");
+    }
+
+    @Override
+    public ApiResponse connectList(StudentConnectTeacherForm form) {
+        List<TeacherVo> teachers = teacherMapper.findConnectTeachers(form.getStudentId());
+
+        if (CollectionUtils.isEmpty(teachers)) {
+            return ApiResponse.success("还没有收藏教员");
+        }
+
+        List<TeacherDisplayVo> resultList = new ArrayList<>();
+        teachers.forEach(f -> {
+            TeacherDisplayVo displayVo = new TeacherDisplayVo();
+            displayVo.setTeacherId(f.getTeacherId());
+            displayVo.setTeacherName(f.getName());
+            displayVo.setSchoolName(f.getSchool());
+            displayVo.setTeacherLevel(f.getTeacherLevel());
+            displayVo.setSex(f.getSex());
+
+            displayVo.setPicture(f.getPicture());
+            resultList.add(displayVo);
+        });
+        return ApiResponse.success(resultList);
     }
 
  }
