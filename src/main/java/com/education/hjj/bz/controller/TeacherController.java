@@ -1,0 +1,39 @@
+package com.education.hjj.bz.controller;
+
+import com.education.hjj.bz.formBean.TeacherScreenForm;
+import com.education.hjj.bz.service.TeacherService;
+import com.education.hjj.bz.util.ApiResponse;
+import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * 教师表控制类
+ *
+ * @创建者：sys
+ * @创建时间：2019-10-9 21:50:41
+ */
+@Api(tags = "学员端-教员列表")
+@RestController
+@RequestMapping("teacher")
+public class TeacherController {
+
+
+    @Autowired
+    private TeacherService teacherService;
+
+    // 详情页
+	@PostMapping("/list")
+    @ResponseBody
+	public ApiResponse list(@RequestBody TeacherScreenForm form) {
+        return teacherService.listPage(form);
+    }
+
+    // 教师筛选下拉框
+    @PostMapping("/selectList")
+    @ResponseBody
+    public ApiResponse selectList() {
+        return teacherService.selectList();
+    }
+}

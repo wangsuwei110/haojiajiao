@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.hjj.bz.mapper.TeacherMapper">
+
+    <resultMap id="teacherResultMap" type="com.education.hjj.bz.entity.vo.TeacherVo">
+	     	<result property="teacherId" column="teacher_id"/>
+	     	<result property="num" column="num"/>
+	     	<result property="name" column="name"/>
+	     	<result property="sex" column="sex"/>
+	     	<result property="telephone" column="telephone"/>
+	     	<result property="picture" column="picture"/>
+	     	<result property="birthday" column="birthday"/>
+	     	<result property="home" column="home"/>
+	     	<result property="school" column="school"/>
+	     	<result property="major" column="major"/>
+	     	<result property="address" column="address"/>
+	     	<result property="degree" column="degree"/>
+	     	<result property="account" column="account"/>
+	     	<result property="password" column="password"/>
+	     	<result property="teacherLevel" column="teacher_level"/>
+	     	<result property="experience" column="experience"/>
+	     	<result property="teacherTag" column="teacher_tag"/>
+	     	<result property="teachLevel" column="teach_level"/>
+	     	<result property="teachGrade" column="teach_grade"/>
+	     	<result property="teachBrance" column="teach_brance"/>
+	     	<result property="teachBranchSlave" column="teach_branch_slave"/>
+	     	<result property="teachAddress" column="teach_address"/>
+	     	<result property="teachTime" column="teach_time"/>
+	     	<result property="logonStatus" column="logon_status"/>
+	     	<result property="auditStatus" column="audit_status"/>
+	     	<result property="resumeComplete" column="resume_complete"/>
+	     	<result property="teacherProfile" column="teacher_profile"/>
+	     	<result property="teacherCertificate" column="teacher_certificate"/>
+	     	<result property="vacationStatus" column="vacation_status"/>
+	     	<result property="teachStyle" column="teach_style"/>
+	     	<result property="teachType" column="teach_type"/>
+	     	<result property="chargesStandard" column="charges_standard"/>
+	     	<result property="beginSchoolTime" column="begin_school_time"/>
+	     	<result property="isGraduate" column="is_graduate"/>
+	     	<result property="teacherPoints" column="teacher_points"/>
+	     	<result property="chooseCount" column="choose_count"/>
+	     	<result property="employCount" column="employ_count"/>
+	     	<result property="employRate" column="employ_rate"/>
+	     	<result property="resumptionCount" column="resumption_count"/>
+	     	<result property="resumptionRate" column="resumption_rate"/>
+	     	<result property="status" column="status"/>
+	     	<result property="createTime" column="create_time"/>
+	     	<result property="createUser" column="create_user"/>
+	     	<result property="updateTime" column="update_time"/>
+	     	<result property="updateUser" column="update_user"/>
+    </resultMap>
+
+	<select id="load" resultMap="teacherResultMap" parameterType="long">
+        SELECT * FROM teacher
+        WHERE sid =  #{sid} and status = 1
+    </select>
+
+    <select id="getCount" parameterType="com.education.hjj.bz.formBean.TeacherScreenForm"  resultType="java.lang.Integer">
+        SELECT count(0)
+        FROM teacher
+        <include refid="listRef"/>
+    </select>
+
+	<select id="listTeacher" parameterType="com.education.hjj.bz.formBean.TeacherScreenForm" resultMap="teacherResultMap">
+		SELECT
+            teacher_id
+            ,name
+            ,sex
+            ,teacher_level
+            ,school
+            ,begin_school_time
+            ,teach_branch_slave
+            ,charges_standard
+            ,teacher_tag
+		FROM teacher
+		WHERE status = 1
+		<if test="subjectId != null">
+			AND FIND_IN_SET(#{subjectId}, teach_branch_slave)
+		</if>
+        <if test="sex != null">
+            AND sex = #{sex}
+        </if>
+        <if test="addressId != null">
+            AND FIND_IN_SET(#{addressId}, teach_address)
+        </if>
+        <if test="type != null">
+            AND is_graduate = #{type}
+        </if>
+        <if test="schoolName != null and schoolName != ''">
+            AND school like  CONCAT('%', #{schoolName}, '%')
+        </if>
+		ORDER BY teacher_points DESC
+		<if test="offset != null">
+			<![CDATA[
+            limit #{pageSize} offset #{offset}
+            ]]>
+		</if>
+	</select>
+
+    <select id="list" parameterType="com.education.hjj.bz.formBean.TeacherScreenForm"  resultMap="teacherResultMap">
+        SELECT *
+        FROM teacher
+        <include refid="listRef"/>
+        ORDER BY id DESC
+        <if test="offset != null">
+            <![CDATA[
+            limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
+    </select>
+    <sql id="listRef">
+        <where>
+                <if test="teacherId != null and teacherId != ''">
+                    and teacher_id =  #{teacherId}
+                </if>
+                <if test="num != null and num != ''">
+                    and num =  #{num}
+                </if>
+                <if test="name != null and name != ''">
+                    and name =  #{name}
+                </if>
+                <if test="sex != null and sex != ''">
+                    and sex =  #{sex}
+                </if>
+                <if test="telephone != null and telephone != ''">
+                    and telephone =  #{telephone}
+                </if>
+                <if test="weichar != null and weichar != ''">
+                    and weiChar =  #{weichar}
+                </if>
+                <if test="openid != null and openid != ''">
+                    and openId =  #{openid}
+                </if>
+                <if test="qq != null and qq != ''">
+                    and QQ =  #{qq}
+                </if>
+                <if test="picture != null and picture != ''">
+                    and picture =  #{picture}
+                </if>
+                <if test="birthday != null and birthday != ''">
+                    and birthday =  #{birthday}
+                </if>
+                <if test="home != null and home != ''">
+                    and home =  #{home}
+                </if>
+                <if test="idcard != null and idcard != ''">
+                    and idcard =  #{idcard}
+                </if>
+                <if test="school != null and school != ''">
+                    and school =  #{school}
+                </if>
+                <if test="major != null and major != ''">
+                    and major =  #{major}
+                </if>
+                <if test="address != null and address != ''">
+                    and address =  #{address}
+                </if>
+                <if test="degree != null and degree != ''">
+                    and degree =  #{degree}
+                </if>
+                <if test="account != null and account != ''">
+                    and account =  #{account}
+                </if>
+                <if test="password != null and password != ''">
+                    and password =  #{password}
+                </if>
+                <if test="teacherLevel != null and teacherLevel != ''">
+                    and teacher_level =  #{teacherLevel}
+                </if>
+                <if test="experience != null and experience != ''">
+                    and experience =  #{experience}
+                </if>
+                <if test="teacherTag != null and teacherTag != ''">
+                    and teacher_tag =  #{teacherTag}
+                </if>
+                <if test="teachLevel != null and teachLevel != ''">
+                    and teach_level =  #{teachLevel}
+                </if>
+                <if test="teachGrade != null and teachGrade != ''">
+                    and teach_grade =  #{teachGrade}
+                </if>
+                <if test="teachBrance != null and teachBrance != ''">
+                    and teach_brance =  #{teachBrance}
+                </if>
+                <if test="teachBranchSlave != null and teachBranchSlave != ''">
+                    and teach_branch_slave =  #{teachBranchSlave}
+                </if>
+                <if test="teachAddress != null and teachAddress != ''">
+                    and teach_address =  #{teachAddress}
+                </if>
+                <if test="teachTime != null and teachTime != ''">
+                    and teach_time =  #{teachTime}
+                </if>
+                <if test="logonStatus != null and logonStatus != ''">
+                    and logon_status =  #{logonStatus}
+                </if>
+                <if test="auditStatus != null and auditStatus != ''">
+                    and audit_status =  #{auditStatus}
+                </if>
+                <if test="resumeComplete != null and resumeComplete != ''">
+                    and resume_complete =  #{resumeComplete}
+                </if>
+                <if test="teacherProfile != null and teacherProfile != ''">
+                    and teacher_profile =  #{teacherProfile}
+                </if>
+                <if test="teacherCertificate != null and teacherCertificate != ''">
+                    and teacher_certificate =  #{teacherCertificate}
+                </if>
+                <if test="vacationStatus != null and vacationStatus != ''">
+                    and vacation_status =  #{vacationStatus}
+                </if>
+                <if test="teachStyle != null and teachStyle != ''">
+                    and teach_style =  #{teachStyle}
+                </if>
+                <if test="teachType != null and teachType != ''">
+                    and teach_type =  #{teachType}
+                </if>
+                <if test="chargesStandard != null and chargesStandard != ''">
+                    and charges_standard =  #{chargesStandard}
+                </if>
+                <if test="beginSchoolTime != null and beginSchoolTime != ''">
+                    and begin_school_time =  #{beginSchoolTime}
+                </if>
+                <if test="isGraduate != null and isGraduate != ''">
+                    and is_graduate =  #{isGraduate}
+                </if>
+                <if test="teacherPoints != null and teacherPoints != ''">
+                    and teacher_points =  #{teacherPoints}
+                </if>
+                <if test="singupCount != null and singupCount != ''">
+                    and singUp_count =  #{singupCount}
+                </if>
+                <if test="chooseCount != null and chooseCount != ''">
+                    and choose_count =  #{chooseCount}
+                </if>
+                <if test="employCount != null and employCount != ''">
+                    and employ_count =  #{employCount}
+                </if>
+                <if test="employRate != null and employRate != ''">
+                    and employ_rate =  #{employRate}
+                </if>
+                <if test="resumptionCount != null and resumptionCount != ''">
+                    and resumption_count =  #{resumptionCount}
+                </if>
+                <if test="resumptionRate != null and resumptionRate != ''">
+                    and resumption_rate =  #{resumptionRate}
+                </if>
+                <if test="status != null and status != ''">
+                    and status =  #{status}
+                </if>
+                <if test="createTime != null and createTime != ''">
+                    and create_time =  #{createTime}
+                </if>
+                <if test="createUser != null and createUser != ''">
+                    and create_user =  #{createUser}
+                </if>
+                <if test="updateTime != null and updateTime != ''">
+                    and update_time =  #{updateTime}
+                </if>
+                <if test="updateUser != null and updateUser != ''">
+                    and update_user =  #{updateUser}
+                </if>
+        </where>
+    </sql>
+</mapper>
