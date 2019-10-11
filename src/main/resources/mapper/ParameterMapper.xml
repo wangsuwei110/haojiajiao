@@ -73,5 +73,6 @@
        	<foreach item="item" collection="list" separator="," open="(" close=")" index="">    
 	      #{item.parameterId}    
 	    </foreach>
-    </select>  
+    </select>
+	<select id="queryParameterListsByType" resultType="com.education.hjj.bz.entity.vo.ParameterVo"></select>
 </mapper>
