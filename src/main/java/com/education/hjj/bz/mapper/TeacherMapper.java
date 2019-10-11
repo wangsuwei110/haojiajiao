@@ -3,6 +3,7 @@ package com.education.hjj.bz.mapper;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.formBean.TeacherScreenForm;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,4 +23,7 @@ public interface TeacherMapper {
     List<TeacherVo> list(TeacherScreenForm form);
 
     List<TeacherVo> listTeacher(TeacherScreenForm form);
+
+    List<TeacherVo> findConnectTeachers(@Param("studentId") Integer studentId);
+
 }

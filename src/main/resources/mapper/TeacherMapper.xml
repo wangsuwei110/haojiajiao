@@ -61,6 +61,26 @@
         <include refid="listRef"/>
     </select>
 
+    <select id="findConnectTeachers"  resultMap="teacherResultMap">
+        SELECT
+            tec.teacher_id
+            ,tec.name
+            ,tec.sex
+            ,tec.teacher_level
+            ,tec.school
+            ,tec.begin_school_time
+            ,tec.teach_branch_slave
+            ,tec.charges_standard
+            ,tec.teacher_tag
+            ,tec.picture
+        FROM teacher tec
+        INNER JOIN
+            student_connect_teacher sct
+        ON tec.teacher_id = sct.teacher_id
+        AND sct.delete_status = 0
+        WHERE sct.student_id = #{studentId}
+    </select>
+
 	<select id="listTeacher" parameterType="com.education.hjj.bz.formBean.TeacherScreenForm" resultMap="teacherResultMap">
 		SELECT
             teacher_id

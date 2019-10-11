@@ -1,11 +1,11 @@
 package com.education.hjj.bz.controller;
 
+import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
 import com.education.hjj.bz.formBean.TeacherScreenForm;
 import com.education.hjj.bz.service.TeacherService;
 import com.education.hjj.bz.util.ApiResponse;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -36,4 +36,20 @@ public class TeacherController {
     public ApiResponse selectList() {
         return teacherService.selectList();
     }
+
+
+    // 收藏教员
+    @PostMapping("/connect")
+    @ResponseBody
+    public ApiResponse connect(@RequestBody StudentConnectTeacherForm form) {
+        return teacherService.connect(form);
+    }
+
+    // 收藏教员列表
+    @PostMapping("/connectList")
+    @ResponseBody
+    public ApiResponse connectList(@RequestBody StudentConnectTeacherForm form) {
+        return teacherService.connectList(form);
+    }
+
 }
