@@ -122,11 +122,11 @@ public class TeacherServiceImpl implements TeacherService {
         Supplier<Stream<ParameterVo>> supplier = () -> paramList.stream();
 
         // 科目列表
-        resultMap.put("subjects", supplier.get().filter(f -> f.getParameterId() == 31)
+        resultMap.put("subjects", supplier.get().filter(f -> f.getParentId() != null && f.getParentId() == 31)
                 .map(m -> new CodeVo(m.getParameterId(), m.getName())).collect(Collectors.toList()));
 
         // 区域列表
-        resultMap.put("address", supplier.get().filter(f -> f.getParameterId() == 78)
+        resultMap.put("address", supplier.get().filter(f -> f.getParentId() != null && f.getParentId() == 78)
                 .map(m -> new CodeVo(m.getParameterId(), m.getName())).collect(Collectors.toList()));
 
         return ApiResponse.success(resultMap);
