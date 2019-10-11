@@ -23,8 +23,8 @@ public class TeacherScreenForm extends PageForm implements Serializable {
     @ApiModelProperty(value = "区域Id",required = true)
     private Integer addressId;
 
-    @ApiModelProperty(value = "大学名称",required = true)
-    private String schoolName;
+    @ApiModelProperty(value = "大学名称id",required = true)
+    private Integer schoolId;
 
     @ApiModelProperty(value = "是否在校, 0:未毕业,1:已毕业",required = true)
     private Integer type;
@@ -48,12 +48,12 @@ public class TeacherScreenForm extends PageForm implements Serializable {
         this.addressId = addressId;
     }
 
-    public String getSchoolName() {
-        return schoolName;
+    public Integer getSchoolId() {
+        return schoolId;
     }
 
-    public void setSchoolName(String schoolName) {
-        this.schoolName = schoolName;
+    public void setSchoolId(Integer schoolId) {
+        this.schoolId = schoolId;
     }
 
     public Integer getType() {

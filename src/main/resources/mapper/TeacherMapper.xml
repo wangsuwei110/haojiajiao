@@ -72,6 +72,7 @@
             ,teach_branch_slave
             ,charges_standard
             ,teacher_tag
+            ,picture
 		FROM teacher
 		WHERE status = 1
 		<if test="subjectId != null">
@@ -86,8 +87,8 @@
         <if test="type != null">
             AND is_graduate = #{type}
         </if>
-        <if test="schoolName != null and schoolName != ''">
-            AND school like  CONCAT('%', #{schoolName}, '%')
+        <if test="schoolId != null">
+            AND school =  #{schoolId}
         </if>
 		ORDER BY teacher_points DESC
 		<if test="offset != null">

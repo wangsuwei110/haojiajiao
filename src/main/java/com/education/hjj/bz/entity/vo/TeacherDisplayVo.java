@@ -37,8 +37,19 @@ public class TeacherDisplayVo implements Serializable {
 	// 收费标准
 	private String chargesStandard;
 
+	// 图像
+	private String picture;
+
 	// 性别（0未知，1男，2女）
 	private Integer sex;
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
 
 	public Integer getSex() {
 		return sex;
