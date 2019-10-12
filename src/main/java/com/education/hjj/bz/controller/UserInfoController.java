@@ -300,7 +300,9 @@ public class UserInfoController {
 //							urls.add(subUrl);
 //						}
 						
-						String urls = p.getPictureUrl().replaceAll("/haojiajiao/share/IMG/", "");
+//去除替换路径为空			String urls = p.getPictureUrl().replaceAll("/haojiajiao/share/IMG/", "");
+						
+						String urls = p.getPictureUrl();
 						
 						if(p.getPictureType() == 3) {
 							p.setPictureUrl(urls);
