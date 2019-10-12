@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用于绑定Dao接口 -->
+<mapper namespace="com.education.hjj.bz.mapper.TeachLevelMapper">
+
+	
+    
+    <resultMap id="TeachLevelResultMap" type="com.education.hjj.bz.entity.vo.TeachLevelVo" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		<result column="teach_level_id" property="teachLevelId"/>
+		<result column="teach_level_name" property="teachLevelName"/>
+	</resultMap>
+	
+    
+    <!-- 查询教学学段 -->
+    <select id="queryAllTeachLevel"  resultMap="TeachLevelResultMap">    
+        select 
+			tl.teach_level_id,
+			tl.teach_level_name			
+		from 
+			teach_level tl
+		WHERE
+			tl.status = 1
+		ORDER BY
+			tl.teach_level_id
+    </select>
+    
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用于绑定Dao接口 -->
+<mapper namespace="com.education.hjj.bz.mapper.TeachGradeMapper">
+
+	
+	
+	<resultMap id="TeachGradeResultMap" type="com.education.hjj.bz.entity.vo.TeachGradeVo" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		<result column="teach_grade_id" property="teachGradeId"/>
+		<result column="teach_grade_name" property="teachGradeName"/>
+	</resultMap>
+	
+	
+    <!-- 查询教学年级 -->
+    <select id="queryAllTeachGrade"  resultMap="TeachGradeResultMap">    
+        select 
+			tg.teach_grade_id,
+			tg.teach_grade_name
+		from 
+			teach_grade tg
+		WHERE
+			tg.status = 1
+		ORDER BY
+			tg.teach_grade_id
+
+    </select>
+    
+</mapper>
