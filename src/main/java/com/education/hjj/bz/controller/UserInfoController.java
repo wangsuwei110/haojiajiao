@@ -264,7 +264,7 @@ public class UserInfoController {
 				e.printStackTrace();
 			}
 			
-			teacherVo.setPicture(teacherVo.getPicture().substring(teacherVo.getPicture().lastIndexOf('/')+1));
+//暂时去掉路径替换   teacherVo.setPicture(teacherVo.getPicture().substring(teacherVo.getPicture().lastIndexOf('/')+1));
 			
 			//基本信息
 			map.put("baseInfo", teacherVo);
