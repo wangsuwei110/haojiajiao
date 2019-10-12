@@ -44,7 +44,7 @@ public class ParameterServiceImpl implements ParameterService{
 				String parameters = null;
 				
 				try {
-					parameters = (String)JedisUtil.getObject("parameter_"+s);
+					parameters = JedisUtil.getJson("parameter_"+s);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -58,7 +58,7 @@ public class ParameterServiceImpl implements ParameterService{
 					if(list !=null && list.size() > 0) {
 						try {
 							//存进redis
-							JedisUtil.setObject("parameter_"+s, JSON.toJSON(list) , 60*60*24);
+							JedisUtil.setJson("parameter_"+s, JSON.toJSONString(list) , 60*60*24);
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
