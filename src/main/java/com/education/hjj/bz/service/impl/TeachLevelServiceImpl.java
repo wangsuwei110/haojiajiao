@@ -21,6 +21,7 @@ public class TeachLevelServiceImpl implements TeachLevelService{
 		List<TeachLevelVo> list = teachLevelMapper.queryAllTeachLevel();
 		
 		return list;
+		
 	}
 
 }

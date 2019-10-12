@@ -21,6 +21,7 @@ public class TeachGradeServiceImpl implements TeachGradeService{
 		List<TeachGradeVo> list = teachGradeMapper.queryAllTeachGrade();
 		
 		return list;
+		
 	}
 
 }
