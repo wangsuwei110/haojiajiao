@@ -104,7 +104,11 @@ public class UploadFile {
 		
 		logger.info("the endName is {}" , endName);
 		
+		ImageIO.setUseCache(false);
+		
 		ImageIO.write(newImg, endName, newFile);
+		
+		
 	}
 
 	/**
