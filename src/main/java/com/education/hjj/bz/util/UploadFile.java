@@ -106,7 +106,7 @@ public class UploadFile {
 		
 		ImageIO.setUseCache(false);
 		
-		//ImageIO.write(newImg, endName, newFile);
+		ImageIO.write(newImg, endName, newFile);
 		
 		
 	}
