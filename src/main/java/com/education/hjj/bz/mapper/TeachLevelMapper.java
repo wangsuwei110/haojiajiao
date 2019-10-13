@@ -17,8 +17,6 @@ import java.util.List;
 @Mapper
 public interface TeachLevelMapper {
 
-    List<TeachLevelVo> queryAllTeachLevel();
-
 	TeachLevelVo load(Long id);
 
 	void insert(TeachLevelForm teachLevel);
@@ -32,4 +30,6 @@ public interface TeachLevelMapper {
     List<TeachLevelVo> list(TeachLevelForm form);
 
     List<CodeVo>  listSubject(TeachScreenForm form);
+
+    List<TeachLevelVo> queryAllTeachLevel();
 }
