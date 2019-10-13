@@ -59,7 +59,7 @@ public class UploadFile {
 			resize(inputStream, fileName, targetFilePath);
 		} catch (Exception e) {
 			logger.error("the transfer file is not a image!");
-			logger.info("the exception is {}" , e);
+			logger.info("the exception is :{}" , e);
 			return list;
 		}
 
@@ -102,7 +102,9 @@ public class UploadFile {
 		
 		String endName = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
 		
-		logger.info("the endName is {}" , endName);
+		logger.info("the endName is {} , uploadDir = {} , fileName = {}" , endName , uploadDir , fileName);
+		
+		logger.info("the newImg is {} , newFile = {} " , newImg , newFile);
 		
 		ImageIO.setUseCache(false);
 		
