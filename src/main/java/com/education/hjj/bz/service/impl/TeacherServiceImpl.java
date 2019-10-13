@@ -1,17 +1,17 @@
 package com.education.hjj.bz.service.impl;
 
-import com.education.hjj.bz.entity.vo.CodeVo;
-import com.education.hjj.bz.entity.vo.ParameterVo;
-import com.education.hjj.bz.entity.vo.TeacherDisplayVo;
-import com.education.hjj.bz.entity.vo.TeacherVo;
+import com.education.hjj.bz.entity.vo.*;
 import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
+import com.education.hjj.bz.formBean.TeachScreenForm;
 import com.education.hjj.bz.formBean.TeacherScreenForm;
 import com.education.hjj.bz.mapper.ParameterMapper;
 import com.education.hjj.bz.mapper.StudentConnectTeacherMapper;
+import com.education.hjj.bz.mapper.TeachLevelMapper;
 import com.education.hjj.bz.mapper.TeacherMapper;
 import com.education.hjj.bz.service.TeacherService;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.DateUtil;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +42,9 @@ public class TeacherServiceImpl implements TeacherService {
 	@Autowired
     private StudentConnectTeacherMapper connectMapper;
 
+	@Autowired
+    private TeachLevelMapper teachLevelMapper;
+
  	@Override
     public TeacherVo findById(Long id) {
         return teacherMapper.load(id);
@@ -60,6 +63,10 @@ public class TeacherServiceImpl implements TeacherService {
 
         List<TeacherDisplayVo> result = new ArrayList<>();
 
+        // 检索该学员的收藏教员集合
+        List<Integer> teachers = connectMapper.listConnectTeachers(form.getStudentId());
+        Supplier<Stream<Integer>> supplierTeacher = () -> teachers.stream();
+
         // 检索参数信息
         List<ParameterVo> paramList = parameterMapper.queryParameterLists();
 
@@ -75,6 +82,9 @@ public class TeacherServiceImpl implements TeacherService {
             displayVo.setChargesStandard(f.getChargesStandard());
             displayVo.setSex(f.getSex());
             displayVo.setPicture(f.getPicture());
+
+            // 是否收藏该教员
+            displayVo.setCollectFlag(supplierTeacher.get().anyMatch(m -> m != null && m == f.getTeacherId()));
 
             // 教学科目
             List<String> branchSlave = new ArrayList<>();
@@ -127,14 +137,20 @@ public class TeacherServiceImpl implements TeacherService {
         Supplier<Stream<ParameterVo>> supplier = () -> paramList.stream();
 
         // 科目列表
-        resultMap.put("subjects", supplier.get().filter(f -> f.getParentId() != null && f.getParentId() == 31)
-                .map(m -> new CodeVo(m.getParameterId(), m.getName())).collect(Collectors.toList()));
+        List<TeachLevelVo> teachLevelVos = teachLevelMapper.list(null);
+        resultMap.put("subjects", teachLevelVos.stream().map(l ->
+                new CodeVo(l.getTeachLevelId(), l.getTeachLevelName())).collect(Collectors.toList()));
 
         // 区域列表
         resultMap.put("address", supplier.get().filter(f -> f.getParentId() != null && f.getParentId() == 78)
                 .map(m -> new CodeVo(m.getParameterId(), m.getName())).collect(Collectors.toList()));
 
         return ApiResponse.success(resultMap);
+    }
+
+    @Override
+    public ApiResponse listSubject(TeachScreenForm form) {
+        return ApiResponse.success(teachLevelMapper.listSubject(form));
     }
 
 
@@ -161,6 +177,7 @@ public class TeacherServiceImpl implements TeacherService {
         List<TeacherDisplayVo> resultList = new ArrayList<>();
         teachers.forEach(f -> {
             TeacherDisplayVo displayVo = new TeacherDisplayVo();
+            // sid 为收藏表的数据sid
             displayVo.setTeacherId(f.getTeacherId());
             displayVo.setTeacherName(f.getName());
             displayVo.setSchoolName(f.getSchool());
@@ -171,6 +188,13 @@ public class TeacherServiceImpl implements TeacherService {
             resultList.add(displayVo);
         });
         return ApiResponse.success(resultList);
+    }
+
+    @Override
+    public ApiResponse cancelConnect(StudentConnectTeacherForm form) {
+        connectMapper.cancelConnect(form);
+
+        return ApiResponse.success("已取消收藏");
     }
 
  }

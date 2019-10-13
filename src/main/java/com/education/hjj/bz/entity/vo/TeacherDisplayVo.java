@@ -1,9 +1,6 @@
 package com.education.hjj.bz.entity.vo;
 
-import io.swagger.models.auth.In;
-
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 
 public class TeacherDisplayVo implements Serializable {
@@ -12,6 +9,8 @@ public class TeacherDisplayVo implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 2019341256024529297L;
+
+	private Integer sid;
 
 	// 教员id
 	private Integer teacherId;
@@ -42,6 +41,25 @@ public class TeacherDisplayVo implements Serializable {
 
 	// 性别（0未知，1男，2女）
 	private Integer sex;
+
+	// 是否收藏：true：收藏， false：未收藏
+	private boolean collectFlag;
+
+	public boolean isCollectFlag() {
+		return collectFlag;
+	}
+
+	public void setCollectFlag(boolean collectFlag) {
+		this.collectFlag = collectFlag;
+	}
+
+	public Integer getSid() {
+		return sid;
+	}
+
+	public void setSid(Integer sid) {
+		this.sid = sid;
+	}
 
 	public String getPicture() {
 		return picture;

@@ -17,6 +17,9 @@ import java.util.Date;
 public class TeacherScreenForm extends PageForm implements Serializable {
 
 
+    @ApiModelProperty(value = "学员Id",required = true)
+    private Integer studentId;
+
     @ApiModelProperty(value = "科目Id",required = true)
     private Integer subjectId;
 
@@ -31,6 +34,14 @@ public class TeacherScreenForm extends PageForm implements Serializable {
 
     @ApiModelProperty(value = "性别, 0未知，1男，2女",required = true)
     private Integer sex;
+
+    public Integer getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
+    }
 
     public Integer getSubjectId() {
         return subjectId;

@@ -99,7 +99,6 @@ public class TeacherVo extends BaseVo implements Serializable {
 	private Integer resumptionCount;
 	
 	private Integer employCount;
-	
 
 	public Integer getTeacherId() {
 		return teacherId;

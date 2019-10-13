@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.hjj.bz.mapper.TeachLevelMapper">
+
+    <resultMap id="teachLevelResultMap" type="com.education.hjj.bz.entity.vo.TeachLevelVo">
+	     	<result property="teachLevelId" column="teach_level_id"/>
+	     	<result property="teachLevelName" column="teach_level_name"/>
+	     	<result property="status" column="status"/>
+	     	<result property="createTime" column="create_time"/>
+	     	<result property="createUser" column="create_user"/>
+	     	<result property="updateTime" column="update_time"/>
+	     	<result property="updateUser" column="update_user"/>
+    </resultMap>
+
+	<select id="load" resultMap="teachLevelResultMap" parameterType="long">
+        SELECT * FROM teach_level
+        WHERE id =  #{id} and delete_flag = 0
+    </select>
+
+	<update id="delete">
+        UPDATE teach_level
+        SET delete_flag = 1
+        WHERE id =  #{id}
+    </update>
+
+    <update id="updateNotNull" parameterType="com.education.hjj.bz.formBean.TeachLevelForm">
+        UPDATE teach_level
+        <set>
+		     	 <if test="teachLevelId != null">
+	               teach_level_id =  #{teachLevelId},
+       		     </if>
+		     	 <if test="teachLevelName != null">
+	               teach_level_name =  #{teachLevelName},
+       		     </if>
+		     	 <if test="status != null">
+	               status =  #{status},
+       		     </if>
+		     	 <if test="createTime != null">
+	               create_time =  #{createTime},
+       		     </if>
+		     	 <if test="createUser != null">
+	               create_user =  #{createUser},
+       		     </if>
+		     	 <if test="updateTime != null">
+	               update_time =  #{updateTime},
+       		     </if>
+		     	 <if test="updateUser != null">
+	               update_user =  #{updateUser},
+       		     </if>
+        </set>
+        WHERE id =  #{id}
+    </update>
+
+    <insert id="insert" parameterType="com.education.hjj.bz.formBean.TeachLevelForm">
+        <selectKey resultType="long" keyProperty="id" >
+		SELECT @@IDENTITY AS id
+		</selectKey>
+        INSERT INTO teach_level(
+	        teach_level_id,
+	        teach_level_name,
+	        status,
+	        create_time,
+	        create_user,
+	        update_time,
+	        update_user
+	        ) VALUES (
+	        #{teachLevelId},
+	        #{teachLevelName},
+	        #{status},
+	        #{createTime},
+	        #{createUser},
+	        #{updateTime},
+	        #{updateUser}
+        )
+    </insert>
+
+
+    <select id="getCount" parameterType="com.education.hjj.bz.formBean.TeachLevelForm"  resultType="int">
+        SELECT count(0)
+        FROM teach_level
+        <include refid="listRef"/>
+    </select>
+
+    <select id="listSubject" parameterType="com.education.hjj.bz.formBean.TeachScreenForm"
+            resultType="com.education.hjj.bz.entity.vo.CodeVo">
+        SELECT
+            <if test="teachGrade == null">
+                tlg.teach_level_grade_id AS `key`
+                ,tlg.teach_grade_name AS `value`
+            </if>
+            <if test="teachGrade != null">
+                tb.teach_branch_id AS `key`
+                ,tb.teach_branch_name AS `value`
+            </if>
+        FROM teach_level tl
+        INNER JOIN teach_level_grade tlg
+        ON tl.teach_level_id = tlg.teach_level_id
+        <if test="teachGrade != null">
+        INNER JOIN teach_branch tb
+        ON tlg.teach_level_grade_id = tb.teach_grade_id
+        </if>
+        WHERE tl.teach_level_id = #{teachLevel}
+        <if test="teachGrade != null">
+            AND tlg.teach_level_grade_id = #{teachGrade}
+        </if>
+    </select>
+
+    <select id="list" parameterType="com.education.hjj.bz.formBean.TeachLevelForm"  resultMap="teachLevelResultMap">
+        SELECT *
+        FROM teach_level
+        <include refid="listRef"/>
+        ORDER BY teach_level_id ASC
+        <if test="offset != null">
+            <![CDATA[
+            limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
+    </select>
+    <sql id="listRef">
+        <where>
+                <if test="teachLevelId != null and teachLevelId != ''">
+                    and teach_level_id =  #{teachLevelId}
+                </if>
+                <if test="teachLevelName != null and teachLevelName != ''">
+                    and teach_level_name =  #{teachLevelName}
+                </if>
+                <if test="status != null and status != ''">
+                    and status =  #{status}
+                </if>
+                <if test="createTime != null and createTime != ''">
+                    and create_time =  #{createTime}
+                </if>
+                <if test="createUser != null and createUser != ''">
+                    and create_user =  #{createUser}
+                </if>
+                <if test="updateTime != null and updateTime != ''">
+                    and update_time =  #{updateTime}
+                </if>
+                <if test="updateUser != null and updateUser != ''">
+                    and update_user =  #{updateUser}
+                </if>
+        </where>
+    </sql>
+</mapper>

@@ -16,10 +16,12 @@
         WHERE sid =  #{sid} and delete_status = 0
     </select>
 
-	<update id="delete">
+	<update id="cancelConnect" parameterType="com.education.hjj.bz.formBean.StudentConnectTeacherForm">
         UPDATE student_connect_teacher
         SET delete_status = 1
-        WHERE sid =  #{id}
+        WHERE student_id = #{studentId}
+        AND   teacher_id = #{teacherId}
+        AND   delete_status = 0
     </update>
 
     <update id="updateNotNull" parameterType="com.education.hjj.bz.formBean.StudentConnectTeacherForm">
@@ -63,6 +65,12 @@
         )
     </insert>
 
+    <select id="listConnectTeachers" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT teacher_id
+        FROM student_connect_teacher
+        WHERE student_id = #{studentId}
+        AND  delete_status = 0
+    </select>
 
     <select id="getCount" parameterType="com.education.hjj.bz.formBean.StudentConnectTeacherForm"  resultType="java.lang.Integer">
         SELECT count(0)

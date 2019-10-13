@@ -1,6 +1,7 @@
 package com.education.hjj.bz.controller;
 
 import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
+import com.education.hjj.bz.formBean.TeachScreenForm;
 import com.education.hjj.bz.formBean.TeacherScreenForm;
 import com.education.hjj.bz.service.TeacherService;
 import com.education.hjj.bz.util.ApiResponse;
@@ -38,6 +39,15 @@ public class TeacherController {
     }
 
 
+    // 科目刷选的三级联动 学段/年级/科目
+    @PostMapping("/listSubject")
+    @ResponseBody
+    public ApiResponse listSubject(@RequestBody TeachScreenForm form) {
+        return teacherService.listSubject(form);
+    }
+
+
+
     // 收藏教员
     @PostMapping("/connect")
     @ResponseBody
@@ -52,4 +62,10 @@ public class TeacherController {
         return teacherService.connectList(form);
     }
 
+    // 取消收藏教员
+    @PostMapping("/cancelConnect")
+    @ResponseBody
+    public ApiResponse cancelConnect(@RequestBody StudentConnectTeacherForm form) {
+        return teacherService.cancelConnect(form);
+    }
 }

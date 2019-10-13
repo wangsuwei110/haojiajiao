@@ -3,6 +3,7 @@ package com.education.hjj.bz.mapper;
 import com.education.hjj.bz.entity.vo.StudentConnectTeacherVo;
 import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,12 +19,16 @@ public interface StudentConnectTeacherMapper {
 	StudentConnectTeacherVo load(Long id);
 
 	void insert(StudentConnectTeacherForm studentConnectTeacher);
-	
+
+	void cancelConnect(StudentConnectTeacherForm studentConnectTeacher);
+
 	void updateNotNull(StudentConnectTeacherForm studentConnectTeacher);
 
 	void delete(Long id);
 
     int getCount(StudentConnectTeacherForm form);
+
+    List<Integer> listConnectTeachers(@Param("studentId") Integer studentId);
 
     List<StudentConnectTeacherVo> list(StudentConnectTeacherForm form);
 }
