@@ -51,7 +51,9 @@ public class UploadFileUtil {
 		
 		String dataPath = UploadFile.uploadIMG(multipartFiles, picture_url);
 		
-		String path = dataPath.substring(dataPath.lastIndexOf(File.separator)+1);
+//		String path = dataPath.substring(dataPath.lastIndexOf(File.separator)+1);
+		
+		String path = dataPath;
 		
 		Map<String , Object> map = new HashMap<String , Object>();
 		map.put("url", path);

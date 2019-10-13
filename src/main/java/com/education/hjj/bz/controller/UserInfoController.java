@@ -148,6 +148,8 @@ public class UserInfoController {
 	@RequestMapping(value = "/queryTeacherInfo", method = RequestMethod.POST)
 	public ApiResponse queryTeacherInfo(@RequestBody TeacherInfoForm teacherInfoForm) {
 		
+		logger.info("teacherId() = {}, 访问路径/userInfo/queryTeacherInfo" , teacherInfoForm.getTeacherId());
+		
 		String teacherId = teacherInfoForm.getTeacherId();
 		
 		TeacherVo teacherVo = null;

@@ -285,7 +285,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 			String dataPath = p.getPictureUrl();
 
-			String pictureName = dataPath.substring(dataPath.lastIndexOf('/') + 1);
+//			String pictureName = dataPath.substring(dataPath.lastIndexOf('/') + 1);
+			String pictureName = dataPath;
 
 			p.setPictureUrl(pictureName);
 
@@ -492,7 +493,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 				String[] urls = pictureUrls.split(",");
 
 				for (String dataPath : urls) {
-					String path = dataPath.substring(dataPath.lastIndexOf('/') + 1);
+//					String path = dataPath.substring(dataPath.lastIndexOf('/') + 1);
+					String path = dataPath;
 					pathList.add(path);
 				}
 

@@ -70,7 +70,8 @@ public class UserPictureInfoServiceImpl implements UserPictureInfoService{
 			
 			String dataPath = p.getPictureUrl();
 			
-			String pictureName = dataPath.substring(dataPath.lastIndexOf('/')+1);
+//			String pictureName = dataPath.substring(dataPath.lastIndexOf('/')+1);
+			String pictureName = dataPath;
 			
 			p.setPictureUrl(pictureName);
 			
@@ -90,7 +91,8 @@ public class UserPictureInfoServiceImpl implements UserPictureInfoService{
 		
 		String dataPath = pictureVo.getPictureUrl();
 		
-		String pictureName = dataPath.substring(dataPath.lastIndexOf('/')+1);
+//		String pictureName = dataPath.substring(dataPath.lastIndexOf('/')+1);
+		String pictureName = dataPath;
 		
 		pictureVo.setPictureUrl(pictureName);
 		
