@@ -109,11 +109,16 @@ public class UploadFile {
 
 		// 获取原始名字
 		String fileName = file.getOriginalFilename();
+		
+		logger.info("上传图片原始名字={}", fileName);
+		
 		// 获取后缀名
 		String suffixName = fileName.substring(fileName.lastIndexOf("."));
 
-		// boolean isImage = RegUtils.isIMG(suffixName);
-		boolean isImage = true;
+		boolean isImage = RegUtils.isIMG(fileName);
+		
+		logger.info("是否是图片校验结果={}", isImage);
+
 		if (!isImage) {
 			logger.error("the transfer file is not a image!");
 			return null;
@@ -140,6 +145,8 @@ public class UploadFile {
 
 		String fullPath = targetFilePath +File.separator+ fileName;
 
+		logger.info("上传后的图片全路径={}", fullPath);
+		
 		return fullPath;
 	}
 
