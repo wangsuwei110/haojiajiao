@@ -33,6 +33,16 @@ public class TeachLevelVo {
     @ApiModelProperty(value = "修改人")
     private String updateUser;
 
+    //是否被选中
+    private boolean flag ;
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
 
     public Integer getTeachLevelId() {
         return teachLevelId;
