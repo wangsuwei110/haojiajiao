@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,8 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(value = "/upload")
 public class UploadFileUtil {
 	
+	private static Logger logger = LoggerFactory.getLogger(UploadFileUtil.class);
+	
 	@Value("${picture_url}")
 	private String picture_url;
 	
@@ -50,8 +54,11 @@ public class UploadFileUtil {
 		MultipartFile multipartFiles = req.getFile("file");
 		
 		String dataPath = UploadFile.uploadIMG(multipartFiles, picture_url);
+		logger.info("上传文件路径：{}", dataPath);
 		
-		String path = dataPath.substring(dataPath.lastIndexOf(File.separator)+1);
+//		String path = dataPath.substring(dataPath.lastIndexOf(File.separator)+1);
+		
+		String path = dataPath;
 		
 		Map<String , Object> map = new HashMap<String , Object>();
 		map.put("url", path);

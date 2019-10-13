@@ -17,10 +17,12 @@ import java.util.List;
 @Mapper
 public interface TeachLevelMapper {
 
+    List<TeachLevelVo> queryAllTeachLevel();
+
 	TeachLevelVo load(Long id);
 
 	void insert(TeachLevelForm teachLevel);
-	
+
 	void updateNotNull(TeachLevelForm teachLevel);
 
 	void delete(Long id);

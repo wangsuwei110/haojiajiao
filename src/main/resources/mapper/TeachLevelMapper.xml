@@ -12,7 +12,20 @@
 	     	<result property="updateUser" column="update_user"/>
     </resultMap>
 
-	<select id="load" resultMap="teachLevelResultMap" parameterType="long">
+    <!-- 查询教学学段 -->
+    <select id="queryAllTeachLevel"  resultMap="TeachLevelResultMap">
+        select
+        tl.teach_level_id,
+        tl.teach_level_name
+        from
+        teach_level tl
+        WHERE
+        tl.status = 1
+        ORDER BY
+        tl.teach_level_id
+    </select>
+
+    <select id="load" resultMap="teachLevelResultMap" parameterType="long">
         SELECT * FROM teach_level
         WHERE id =  #{id} and delete_flag = 0
     </select>

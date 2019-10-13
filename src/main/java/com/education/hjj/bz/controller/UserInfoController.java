@@ -148,6 +148,8 @@ public class UserInfoController {
 	@RequestMapping(value = "/queryTeacherInfo", method = RequestMethod.POST)
 	public ApiResponse queryTeacherInfo(@RequestBody TeacherInfoForm teacherInfoForm) {
 		
+		logger.info("teacherId() = {}, 访问路径/userInfo/queryTeacherInfo" , teacherInfoForm.getTeacherId());
+		
 		String teacherId = teacherInfoForm.getTeacherId();
 		
 		TeacherVo teacherVo = null;
@@ -264,7 +266,7 @@ public class UserInfoController {
 				e.printStackTrace();
 			}
 			
-			teacherVo.setPicture(teacherVo.getPicture().substring(teacherVo.getPicture().lastIndexOf('/')+1));
+//暂时去掉路径替换   teacherVo.setPicture(teacherVo.getPicture().substring(teacherVo.getPicture().lastIndexOf('/')+1));
 			
 			//基本信息
 			map.put("baseInfo", teacherVo);
@@ -300,7 +302,9 @@ public class UserInfoController {
 //							urls.add(subUrl);
 //						}
 						
-						String urls = p.getPictureUrl().replaceAll("/haojiajiao/share/IMG/", "");
+//去除替换路径为空			String urls = p.getPictureUrl().replaceAll("/haojiajiao/share/IMG/", "");
+						
+						String urls = p.getPictureUrl();
 						
 						if(p.getPictureType() == 3) {
 							p.setPictureUrl(urls);
