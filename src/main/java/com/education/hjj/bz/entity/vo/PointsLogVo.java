@@ -17,8 +17,7 @@ public class PointsLogVo extends BaseVo implements Serializable{
 	private Integer getPointsCounts;
 	
 	private String getPointsDesc;
-	//剩余积分
-	private Integer teacherPoints;
+
 	
 	public Integer getPointsId() {
 		return pointsId;
@@ -52,12 +51,4 @@ public class PointsLogVo extends BaseVo implements Serializable{
 		this.getPointsDesc = getPointsDesc;
 	}
 
-	public Integer getTeacherPoints() {
-		return teacherPoints;
-	}
-
-	public void setTeacherPoints(Integer teacherPoints) {
-		this.teacherPoints = teacherPoints;
-	}
-	
 }

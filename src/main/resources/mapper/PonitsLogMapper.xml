@@ -7,7 +7,6 @@
 	<resultMap id="pointLogsResultMap" type="com.education.hjj.bz.entity.vo.PointsLogVo" >
 		<!-- column代表数据库列名，property代表实体类属性名 -->
 		
-		<result column="teacher_points" property="teacherPoints"/>
 		<result column="get_points_counts" property="getPointsCounts"/>
 		<result column="get_points_desc" property="getPointsDesc"/>
 		<result column="create_time" property="createTime"/>
@@ -17,21 +16,18 @@
     <select id="queryAllPointsLogByTeacherId"  resultMap="pointLogsResultMap" parameterType="com.education.hjj.bz.formBean.PointsLogForm">    
         	
         select 
-      		t.teacher_points ,
 			tpl.get_points_counts,
 			tpl.get_points_desc,
 			tpl.create_time
 			
 		from 
-			teacher t
-		left JOIN
+		
 			teacher_points_log tpl
-		on
-			t.teacher_id = tpl.teacher_id
+			
 		where 
-			t.status=1
+			tpl.status=1
 		and
-			t.teacher_id = #{teacherId}
+			tpl.teacher_id = #{teacherId}
 		<if test="offset != null">
             <![CDATA[
                limit #{pageSize} offset #{offset}
