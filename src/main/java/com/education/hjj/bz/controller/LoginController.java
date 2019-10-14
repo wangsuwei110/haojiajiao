@@ -236,6 +236,9 @@ public class LoginController {
 				pointsLogPo.setTeacherId(teacherId);
 				pointsLogPo.setGetPointsCounts(PonitsLog.OPEN_SYSTEM.getType());
 				pointsLogPo.setGetPointsDesc(PonitsLog.OPEN_SYSTEM.getValue());
+				pointsLogPo.setStatus(1);
+				pointsLogPo.setCreateTime(new Date());
+				pointsLogPo.setCreateUser(teacherVo.getName());
 				pointsLogPo.setUpdateTime(new Date());
 				pointsLogPo.setUpdateUser(teacherVo.getName());
 				
