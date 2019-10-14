@@ -238,7 +238,7 @@ public class LoginController {
             map.put("employRate", teacherVo.getEmployRate()+"%");
             map.put("resumptionRate", teacherVo.getResumptionRate()+"%");
             
-            logger.info("telephone = {}" , map.get("telephone"));
+            logger.info("telephone = {} , teacherLevel = {}" , map.get("telephone") , map.get("teacherLevel"));
 		// 学员端
 		}else if (loginType.equals(Constant.STUDENT_CODE)) {
 
