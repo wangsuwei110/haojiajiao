@@ -28,6 +28,8 @@ public interface StudentConnectTeacherMapper {
 
     int getCount(StudentConnectTeacherForm form);
 
+    int getConnectCount(StudentConnectTeacherForm form);
+
     List<Integer> listConnectTeachers(@Param("studentId") Integer studentId);
 
     List<StudentConnectTeacherVo> list(StudentConnectTeacherForm form);

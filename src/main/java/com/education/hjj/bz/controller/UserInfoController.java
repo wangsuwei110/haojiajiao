@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.education.hjj.bz.formBean.*;
+import com.education.hjj.bz.mapper.StudentConnectTeacherMapper;
+import com.education.hjj.bz.util.common.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -25,10 +28,6 @@ import com.education.hjj.bz.entity.vo.ParameterVo;
 import com.education.hjj.bz.entity.vo.PictureVo;
 import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
-import com.education.hjj.bz.formBean.PictureForm;
-import com.education.hjj.bz.formBean.TeacherInfoForm;
-import com.education.hjj.bz.formBean.TeacherInfoReplenishForm;
-import com.education.hjj.bz.formBean.UserInfoForm;
 import com.education.hjj.bz.service.ParameterService;
 import com.education.hjj.bz.service.UserInfoService;
 import com.education.hjj.bz.service.UserPictureInfoService;
@@ -54,6 +53,9 @@ public class UserInfoController {
 	
 	@Autowired
 	private ParameterService parameterService;
+
+	@Autowired
+	private StudentConnectTeacherMapper connectTeacherMapper;
 
 	@ApiOperation("用户信息更新(带图片)")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -357,7 +359,22 @@ public class UserInfoController {
 				
 				//教学时间
 				map.put("teachTime", teacherVo.getTeachTime());
-				
+
+				if (pictureForm.getStudentId() != null) {
+					// 查看是否被收藏
+					StudentConnectTeacherForm connectTeacherForm = new StudentConnectTeacherForm();
+					connectTeacherForm.setStudentId(pictureForm.getStudentId());
+					connectTeacherForm.setTeacherId(Integer.valueOf(pictureForm.getTeacherId()));
+					Integer count = connectTeacherMapper.getConnectCount(connectTeacherForm);
+					if (count != null && count > 0) {
+						map.put("collectFlag", true);
+					} else {
+						map.put("collectFlag", false);
+					}
+				} else {
+					map.put("collectFlag", false);
+				}
+
 				return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
 			} 
 				
