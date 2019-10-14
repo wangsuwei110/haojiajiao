@@ -7,11 +7,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.alibaba.fastjson.JSON;
-import com.education.hjj.bz.entity.vo.StudentVo;
-import com.education.hjj.bz.redis.RedisContant;
-//import com.education.hjj.bz.redis.RedisService;
-import com.education.hjj.bz.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -29,12 +24,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.education.hjj.bz.entity.PointsLogPo;
+import com.education.hjj.bz.entity.vo.StudentVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.enums.ErrorEnum;
+import com.education.hjj.bz.enums.PonitsLog;
 import com.education.hjj.bz.formBean.LoginForm;
 import com.education.hjj.bz.formBean.LogoutForm;
 import com.education.hjj.bz.model.UserDto;
 import com.education.hjj.bz.model.common.ResponseBean;
+//import com.education.hjj.bz.redis.RedisService;
+import com.education.hjj.bz.service.ISmsService;
+import com.education.hjj.bz.service.IUserService;
+import com.education.hjj.bz.service.LoginLogService;
+import com.education.hjj.bz.service.PointsLogService;
+import com.education.hjj.bz.service.StudentService;
+import com.education.hjj.bz.service.UserInfoService;
 import com.education.hjj.bz.util.AesCipherUtil;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.Constant;
@@ -85,7 +90,7 @@ public class LoginController {
 	private LoginLogService loginLogService;
 	
 	@Autowired
-	private UserPictureInfoService pictureInfoService;
+	private PointsLogService pointsLogService;
 	
     private final UserUtil userUtil;
 
@@ -152,8 +157,6 @@ public class LoginController {
 			return ApiResponse.error(codeMessage.get("msg").toString());
 		}
 
-		
-		
 		TeacherVo teacherVo = null;
 		StudentVo studentVo = null;
 
@@ -225,6 +228,22 @@ public class LoginController {
 					j = loginLogService.addLoginLog(loginType, phoneNum , phoneNum);
 				}else {
 					return ApiResponse.error("登录失败...");
+				}
+				
+				Integer teacherId = teacherVo.getTeacherId();
+				
+				PointsLogPo pointsLogPo = new PointsLogPo();
+				pointsLogPo.setTeacherId(teacherId);
+				pointsLogPo.setGetPointsCounts(PonitsLog.OPEN_SYSTEM.getType());
+				pointsLogPo.setGetPointsDesc(PonitsLog.OPEN_SYSTEM.getValue());
+				pointsLogPo.setUpdateTime(new Date());
+				pointsLogPo.setUpdateUser(teacherVo.getName());
+				
+				logger.info("记录用户登录时获取的积分日志");
+				int p = pointsLogService.addTeacherPointsLog(teacherId , pointsLogPo);
+				
+				if(p < 0 ) {
+					logger.error("记录用户登录时获取的积分日志失败...");
 				}
 				
 			}
