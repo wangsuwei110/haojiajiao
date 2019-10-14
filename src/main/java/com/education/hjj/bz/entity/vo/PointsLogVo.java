@@ -3,7 +3,7 @@ package com.education.hjj.bz.entity.vo;
 import java.io.Serializable;
 import java.util.Date;
 
-public class PointsLogVo extends BaseVo implements Serializable{
+public class PointsLogVo implements Serializable{
 
 	/**
 	 * 
@@ -17,6 +17,8 @@ public class PointsLogVo extends BaseVo implements Serializable{
 	private Integer getPointsCounts;
 	
 	private String getPointsDesc;
+	
+	private String createTime;
 
 	
 	public Integer getPointsId() {
@@ -50,5 +52,14 @@ public class PointsLogVo extends BaseVo implements Serializable{
 	public void setGetPointsDesc(String getPointsDesc) {
 		this.getPointsDesc = getPointsDesc;
 	}
+
+	public String getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
+
 
 }
