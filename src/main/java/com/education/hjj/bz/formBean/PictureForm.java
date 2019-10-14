@@ -21,6 +21,16 @@ public class PictureForm extends PageForm implements Serializable{
 
 	private String pictureDesc;
 
+	private Integer studentId;
+
+	public Integer getStudentId() {
+		return studentId;
+	}
+
+	public void setStudentId(Integer studentId) {
+		this.studentId = studentId;
+	}
+
 	public String getTeacherId() {
 		return teacherId;
 	}

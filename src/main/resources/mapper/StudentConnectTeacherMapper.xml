@@ -78,6 +78,14 @@
         <include refid="listRef"/>
     </select>
 
+    <select id="getConnectCount" parameterType="com.education.hjj.bz.formBean.StudentConnectTeacherForm"
+            resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM student_connect_teacher
+        WHERE delete_status = 0
+        AND student_id = #{studentId}
+        AND teacher_id = #{teacherId}
+    </select>
     <select id="list" parameterType="com.education.hjj.bz.formBean.StudentConnectTeacherForm"  resultMap="studentConnectTeacherResultMap">
         SELECT *
         FROM student_connect_teacher
