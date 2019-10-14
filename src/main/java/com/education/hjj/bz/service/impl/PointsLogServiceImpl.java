@@ -54,9 +54,11 @@ public class PointsLogServiceImpl implements PointsLogService{
 		
 		TeacherVo tv = userInfoMapper.queryTeacherHomeInfos(teacherId);
 		
+		logger.info("teacherId = {} , existTeacherPoints = {} " , teacherId , tv.getTeacherPoints());
+		
 		TeacherPo teacherPo = new TeacherPo();
 		teacherPo.setTeacherId(teacherId);
-		teacherPo.setTeacherPoints(tv.getTeacherPoints() + pointsLogPo.getGetPointsDesc());
+		teacherPo.setTeacherPoints(tv.getTeacherPoints() + pointsLogPo.getGetPointsCounts());
 		teacherPo.setUpdateTime(new Date());
 		teacherPo.setUpdateUser("admin");
 		

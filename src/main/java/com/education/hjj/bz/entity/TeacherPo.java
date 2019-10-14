@@ -86,7 +86,7 @@ public class TeacherPo extends BasePo implements Serializable{
 	
 	private Integer isGraduate;
 	
-	private String teacherPoints;
+	private Integer teacherPoints;
 	
 	private BigDecimal employRate;
 	
@@ -391,11 +391,11 @@ public class TeacherPo extends BasePo implements Serializable{
 		this.teacherId = teacherId;
 	}
 
-	public String getTeacherPoints() {
+	public Integer getTeacherPoints() {
 		return teacherPoints;
 	}
 
-	public void setTeacherPoints(String teacherPoints) {
+	public void setTeacherPoints(Integer teacherPoints) {
 		this.teacherPoints = teacherPoints;
 	}
 
