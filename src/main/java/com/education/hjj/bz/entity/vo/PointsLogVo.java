@@ -10,8 +10,6 @@ public class PointsLogVo implements Serializable{
 	 */
 	private static final long serialVersionUID = 146146069230434574L;
 
-	private Integer pointsId;
-	
 	private Integer teacherId;
 	
 	private Integer getPointsCounts;
@@ -19,15 +17,6 @@ public class PointsLogVo implements Serializable{
 	private String getPointsDesc;
 	
 	private String createTime;
-
-	
-	public Integer getPointsId() {
-		return pointsId;
-	}
-
-	public void setPointsId(Integer pointsId) {
-		this.pointsId = pointsId;
-	}
 
 	public Integer getTeacherId() {
 		return teacherId;
