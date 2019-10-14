@@ -206,6 +206,9 @@ public class LoginController {
 	            map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
 	            map.put("registerDate", DateUtil.getStandardDay(teacherVo.getCreateTime()));
 	            map.put("vacationStatus", teacherVo.getVacationStatus());
+	            map.put("teacherLevel", teacherVo.getTeacherLevel());
+	            map.put("employRate", teacherVo.getEmployRate()+"%");
+	            map.put("resumptionRate", teacherVo.getResumptionRate()+"%");
 	          
 	            logger.info("telephone = {}" , map.get("telephone"));
 		        return ApiResponse.success("注册成功" , UtilTools.mapToJson(map));
@@ -231,6 +234,10 @@ public class LoginController {
             map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
             map.put("registerDate", DateUtil.getStandardDay(teacherVo.getCreateTime()));
             map.put("vacationStatus", teacherVo.getVacationStatus());
+            map.put("teacherLevel", teacherVo.getTeacherLevel());
+            map.put("employRate", teacherVo.getEmployRate()+"%");
+            map.put("resumptionRate", teacherVo.getResumptionRate()+"%");
+            
             logger.info("telephone = {}" , map.get("telephone"));
 		// 学员端
 		}else if (loginType.equals(Constant.STUDENT_CODE)) {
