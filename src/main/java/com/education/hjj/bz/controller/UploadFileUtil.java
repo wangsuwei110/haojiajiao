@@ -12,11 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -44,7 +40,7 @@ public class UploadFileUtil {
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST , produces = "application/json;charset=utf-8")
 	@ResponseBody
 	@Transactional
-	public ApiResponse uploadFile(HttpServletRequest request, HttpServletResponse response) {
+	public ApiResponse uploadFile(HttpServletRequest request, HttpServletResponse response, @RequestParam("file") MultipartFile file) {
 		
 		response.setHeader("Content-Type", "text/html;charset=utf-8");
 		response.setContentType("text/html;charset=utf-8");
@@ -53,7 +49,8 @@ public class UploadFileUtil {
 		MultipartHttpServletRequest req =(MultipartHttpServletRequest)request; 
 		MultipartFile multipartFiles = req.getFile("file");
 		
-		String dataPath = UploadFile.uploadIMG(multipartFiles, picture_url);
+//		String dataPath = UploadFile.uploadIMG(multipartFiles, picture_url);
+		String dataPath = UploadFile.uploadIMG(file, picture_url);
 		logger.info("上传文件路径：{}", dataPath);
 		
 //		String path = dataPath.substring(dataPath.lastIndexOf(File.separator)+1);
