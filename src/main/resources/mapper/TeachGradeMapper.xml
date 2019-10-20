@@ -25,5 +25,16 @@
 			tg.teach_grade_id
 
     </select>
+
+	<select id="getGrade" parameterType="java.lang.Integer" resultType="java.lang.String">
+		SELECT
+			tg.teach_grade_name
+		FROM
+			teach_grade tg
+		WHERE
+			tg.status = 1
+		AND
+			tg.teach_grade_id = #{teachGradeId}
+	</select>
     
 </mapper>

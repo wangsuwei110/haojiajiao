@@ -7,6 +7,8 @@
 		<!-- column代表数据库列名，property代表实体类属性名 -->
 		<result column="teach_branch_id" property="teachBranchId"/>
 		<result column="teach_branch_name" property="teachBranchName"/>
+		<result column="teach_grade_id" property="teachGradeId"/>
+		<result column="teach_level_id" property="teachLevelId"/>
 	</resultMap>
     
 
@@ -14,7 +16,9 @@
     <select id="queryAllTeachBranchs"  resultMap="TeachBranchsResultMap">    
         select 
 			tb.teach_branch_id,
-			tb.teach_branch_name
+			tb.teach_branch_name,
+			tb.teach_grade_id,
+			tb.teach_level_id
 		from 
 			teach_branch tb
 		WHERE

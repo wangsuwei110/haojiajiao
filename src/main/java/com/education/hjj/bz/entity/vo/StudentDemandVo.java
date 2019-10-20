@@ -13,19 +13,25 @@ public class StudentDemandVo {
 
 
     @ApiModelProperty(value = "需求主键id")
-    private Long sid;
+    private Integer sid;
 
     @ApiModelProperty(value = "学员ID")
     private Long studentId;
+
+    @ApiModelProperty(value = "学员姓名")
+    private String studentName;
 
     @ApiModelProperty(value = "上课地址")
     private String demandAddress;
 
     @ApiModelProperty(value = "补习年级")
-    private Long demandGrade;
+    private Integer demandGrade;
 
     @ApiModelProperty(value = "辅导科目id")
-    private Long subjectId;
+    private Integer subjectId;
+
+    @ApiModelProperty(value = "年级和科目")
+    private String grageSubject;
 
     @ApiModelProperty(value = "付费订单开始时间")
     private Date orderStart;
@@ -63,14 +69,52 @@ public class StudentDemandVo {
     @ApiModelProperty(value = "修改人")
     private String updateUser;
 
+    @ApiModelProperty(value = "预约试讲时间")
+    private Date orderTeachTime;
 
-    public Long getSid() {
+    @ApiModelProperty(value = "预约试讲教员的数量")
+    private Integer orderTeachCount;
+
+    public String getGrageSubject() {
+        return grageSubject;
+    }
+
+    public void setGrageSubject(String grageSubject) {
+        this.grageSubject = grageSubject;
+    }
+
+    public Integer getOrderTeachCount() {
+        return orderTeachCount;
+    }
+
+    public void setOrderTeachCount(Integer orderTeachCount) {
+        this.orderTeachCount = orderTeachCount;
+    }
+
+    public Date getOrderTeachTime() {
+        return orderTeachTime;
+    }
+
+    public void setOrderTeachTime(Date orderTeachTime) {
+        this.orderTeachTime = orderTeachTime;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public Integer getSid() {
         return sid;
     }
 
-    public void setSid(Long sid) {
+    public void setSid(Integer sid) {
         this.sid = sid;
     }
+
     public Long getStudentId() {
         return studentId;
     }
@@ -85,20 +129,23 @@ public class StudentDemandVo {
     public void setDemandAddress(String demandAddress) {
         this.demandAddress = demandAddress;
     }
-    public Long getDemandGrade() {
+
+    public Integer getDemandGrade() {
         return demandGrade;
     }
 
-    public void setDemandGrade(Long demandGrade) {
+    public void setDemandGrade(Integer demandGrade) {
         this.demandGrade = demandGrade;
     }
-    public Long getSubjectId() {
+
+    public Integer getSubjectId() {
         return subjectId;
     }
 
-    public void setSubjectId(Long subjectId) {
+    public void setSubjectId(Integer subjectId) {
         this.subjectId = subjectId;
     }
+
     public Date getOrderStart() {
         return orderStart;
     }

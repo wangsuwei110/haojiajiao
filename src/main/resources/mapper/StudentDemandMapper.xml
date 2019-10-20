@@ -8,6 +8,7 @@
 		<!-- column代表数据库列名，property代表实体类属性名 -->
 		<result column="sid" property="sid"/>
 		<result column="student_id" property="studentId"/>
+		<result column="student_name" property="studentName"/>
 		<result column="demand_grade" property="demandGrade"/>
 		<result column="subject_id" property="subjectId"/>
 		<result column="order_start" property="orderStart"/>
@@ -53,12 +54,36 @@
                 limit #{pageSize} offset #{offset}
             ]]>
         </if>
-    </select>  
-    
-    
-    <insert id="addStudentDemandByTeacher" parameterType="com.education.hjj.bz.entity.TeacherAndStudentDemandPo">
+    </select>
 
-		<selectKey resultType="long" keyProperty="sid" >
+	<select id="listDemand" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm" resultMap="studentDemandsResultMap">
+		select
+		   sd.sid,
+		   sd.create_time,
+		   st.student_name,
+		   sd.time_range,
+		   sd.class_num,
+		   sd.demand_desc,
+		   sd.demand_grade,
+		   sd.subject_id,
+		   sd.status
+		from student_demand sd
+		inner join student st
+		on sd.student_id = st.sid
+		WHERE st.delete_status = 0
+		AND sd.student_id = #{studentId}
+		order by
+			sd.create_time desc
+		<if test="offset != null">
+			<![CDATA[
+                limit #{pageSize} offset #{offset}
+            ]]>
+		</if>
+	</select>
+    
+    <insert id="addStudentDemandByTeacher" parameterType="com.education.hjj.bz.formBean.StudentDemandForm">
+
+		<selectKey resultType="java.lang.Long" keyProperty="sid" >
 			SELECT @@IDENTITY AS sid
 		</selectKey>
         INSERT INTO student_demand(

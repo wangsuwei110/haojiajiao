@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.hjj.bz.mapper.StudentDemandConnectMapper">
+
+    <resultMap id="studentDemandConnectResultMap" type="com.education.hjj.bz.entity.vo.StudentDemandConnectVo">
+	     	<result property="sid" column="sid"/>
+	     	<result property="demandId" column="demand_id"/>
+	     	<result property="teacherId" column="teacher_id"/>
+	     	<result property="status" column="status"/>
+	     	<result property="deleteStatus" column="delete_status"/>
+	     	<result property="createTime" column="create_time"/>
+	     	<result property="createUser" column="create_user"/>
+	     	<result property="updateTime" column="update_time"/>
+	     	<result property="updateUser" column="update_user"/>
+
+	     	<result property="teacherName" column="name"/>
+	     	<result property="chargesStandard" column="charges_standard"/>
+    </resultMap>
+
+	<select id="load" resultMap="studentDemandConnectResultMap" parameterType="long">
+        SELECT * FROM student_demand_connect
+        WHERE sid =  #{sid} and delete_status = 0
+    </select>
+
+	<update id="delete">
+        UPDATE student_demand_connect
+        SET delete_flag = 1
+        WHERE id =  #{id}
+    </update>
+
+    <update id="updateNotNull" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm">
+        UPDATE student_demand_connect
+        <set>
+		     	 <if test="sid != null">
+	               sid =  #{sid},
+       		     </if>
+		     	 <if test="demandId != null">
+	               demand_id =  #{demandId},
+       		     </if>
+		     	 <if test="teacherId != null">
+	               teacher_id =  #{teacherId},
+       		     </if>
+		     	 <if test="status != null">
+	               status =  #{status},
+       		     </if>
+		     	 <if test="deleteStatus != null">
+	               delete_status =  #{deleteStatus},
+       		     </if>
+		     	 <if test="createTime != null">
+	               create_time =  #{createTime},
+       		     </if>
+		     	 <if test="createUser != null">
+	               create_user =  #{createUser},
+       		     </if>
+		     	 <if test="updateTime != null">
+	               update_time =  #{updateTime},
+       		     </if>
+		     	 <if test="updateUser != null">
+	               update_user =  #{updateUser},
+       		     </if>
+        </set>
+        WHERE sid =  #{sid}
+    </update>
+
+    <insert id="insert" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm">
+        <selectKey resultType="long" keyProperty="id" >
+		SELECT @@IDENTITY AS id
+		</selectKey>
+        INSERT INTO student_demand_connect(
+	        sid,
+	        demand_id,
+	        teacher_id,
+	        status,
+	        delete_status,
+	        create_time,
+	        create_user,
+	        update_time,
+	        update_user
+	        ) VALUES (
+	        #{sid},
+	        #{demandId},
+	        #{teacherId},
+	        #{status},
+	        #{deleteStatus},
+	        #{createTime},
+	        #{createUser},
+	        #{updateTime},
+	        #{updateUser}
+        )
+    </insert>
+
+
+    <select id="getCount" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm"  resultType="int">
+        SELECT count(0)
+        FROM student_demand_connect
+        <include refid="listRef"/>
+    </select>
+
+    <select id="listConnectInfo" parameterType="java.lang.Integer" resultMap="studentDemandConnectResultMap">
+        SELECT
+          sdc.*
+          , te.name
+          , te.charges_standard
+        FROM
+          student_demand_connect sdc
+        LEFT JOIN teacher te
+        ON sdc.teacher_id = te.teacher_id
+        WHERE sdc.delete_status = 0
+        AND  sdc.demand_id = #{demandId}
+    </select>
+
+    <select id="list" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm"  resultMap="studentDemandConnectResultMap">
+        SELECT *
+        FROM student_demand_connect
+        <include refid="listRef"/>
+        ORDER BY id DESC
+        <if test="offset != null">
+            <![CDATA[
+            limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
+    </select>
+    <sql id="listRef">
+        <where>
+                <if test="sid != null and sid != ''">
+                    and sid =  #{sid}
+                </if>
+                <if test="demandId != null and demandId != ''">
+                    and demand_id =  #{demandId}
+                </if>
+                <if test="teacherId != null and teacherId != ''">
+                    and teacher_id =  #{teacherId}
+                </if>
+                <if test="status != null and status != ''">
+                    and status =  #{status}
+                </if>
+                <if test="deleteStatus != null and deleteStatus != ''">
+                    and delete_status =  #{deleteStatus}
+                </if>
+                <if test="createTime != null and createTime != ''">
+                    and create_time =  #{createTime}
+                </if>
+                <if test="createUser != null and createUser != ''">
+                    and create_user =  #{createUser}
+                </if>
+                <if test="updateTime != null and updateTime != ''">
+                    and update_time =  #{updateTime}
+                </if>
+                <if test="updateUser != null and updateUser != ''">
+                    and update_user =  #{updateUser}
+                </if>
+        </where>
+    </sql>
+</mapper>
