@@ -81,7 +81,7 @@ public class StudentDemandVo {
     @ApiModelProperty(value = "预约教员通过的评价")
     private String appraise;
 
-    @ApiModelProperty(value = "试讲状态")
+    @ApiModelProperty(value = "试讲状态:0:未试讲，1:试讲中;2:试讲通过;3:试讲未通过")
     private Integer subscribeStatus;
 
     public String getAppraise() {
