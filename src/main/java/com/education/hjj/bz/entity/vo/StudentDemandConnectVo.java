@@ -46,7 +46,16 @@ public class StudentDemandConnectVo {
     private String teacherName;
     @ApiModelProperty(value = "收费标准")
     private String chargesStandard;
+    @ApiModelProperty(value = "评价")
+    private String appraise;
 
+    public String getAppraise() {
+        return appraise;
+    }
+
+    public void setAppraise(String appraise) {
+        this.appraise = appraise;
+    }
 
     public String getTeacherName() {
         return teacherName;

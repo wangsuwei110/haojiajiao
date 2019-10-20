@@ -31,7 +31,7 @@ public class StudentDemandVo {
     private Integer subjectId;
 
     @ApiModelProperty(value = "年级和科目")
-    private String grageSubject;
+    private String gradeSubject;
 
     @ApiModelProperty(value = "付费订单开始时间")
     private Date orderStart;
@@ -75,12 +75,45 @@ public class StudentDemandVo {
     @ApiModelProperty(value = "预约试讲教员的数量")
     private Integer orderTeachCount;
 
-    public String getGrageSubject() {
-        return grageSubject;
+    @ApiModelProperty(value = "预约教员的姓名")
+    private String teachName;
+
+    @ApiModelProperty(value = "预约教员通过的评价")
+    private String appraise;
+
+    @ApiModelProperty(value = "试讲状态")
+    private Integer subscribeStatus;
+
+    public String getAppraise() {
+        return appraise;
     }
 
-    public void setGrageSubject(String grageSubject) {
-        this.grageSubject = grageSubject;
+    public void setAppraise(String appraise) {
+        this.appraise = appraise;
+    }
+
+    public Integer getSubscribeStatus() {
+        return subscribeStatus;
+    }
+
+    public void setSubscribeStatus(Integer subscribeStatus) {
+        this.subscribeStatus = subscribeStatus;
+    }
+
+    public String getTeachName() {
+        return teachName;
+    }
+
+    public void setTeachName(String teachName) {
+        this.teachName = teachName;
+    }
+
+    public String getGradeSubject() {
+        return gradeSubject;
+    }
+
+    public void setGradeSubject(String gradeSubject) {
+        this.gradeSubject = gradeSubject;
     }
 
     public Integer getOrderTeachCount() {

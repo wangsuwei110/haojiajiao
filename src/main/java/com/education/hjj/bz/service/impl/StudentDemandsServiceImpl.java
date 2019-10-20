@@ -111,13 +111,17 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			// 编辑年级和科目
 			Optional<TeachBranchVo> opBranch = supplier.get().filter(b -> b.getTeachLevelId() == f.getDemandGrade()
 						&& b.getTeachGradeId() == f.getSubjectId()).findFirst();
-			f.setGrageSubject(opBranch.isPresent() ? opBranch.get().getTeachBranchName() : "");
+			f.setGradeSubject(opBranch.isPresent() ? opBranch.get().getTeachBranchName() : "");
 
 			// 判断需求订单的详情，是否有教员报名，是否已经预约，是否已经过了试讲时间
 			List<StudentDemandConnectVo> connectVos = connectMapper.listConnectInfo(f.getSid());
 			//判断是否已经有了预约
 			Optional<StudentDemandConnectVo> op = connectVos.stream().filter(s -> s.getOrderTeachTime() != null).findFirst();
 			if (op.isPresent()) {
+				f.setSubscribeStatus(op.get().getStatus());
+				f.setTeachName(op.get().getTeacherName());
+				f.setAppraise(op.get().getAppraise());
+
 				if (!DateUtil.getDayStart(new Date()).after(DateUtil.getDayStart(op.get().getOrderTeachTime()))) {
 					f.setOrderTeachTime(op.get().getOrderTeachTime());
 				}
