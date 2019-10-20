@@ -6,10 +6,9 @@
 	<!-- 用用查询映射结果 -->
 	<resultMap id="pointLogsResultMap" type="com.education.hjj.bz.entity.vo.PointsLogVo" >
 		<!-- column代表数据库列名，property代表实体类属性名 -->
-		
+		<result column="teacher_id" property="teacherId"/>
 		<result column="get_points_counts" property="getPointsCounts"/>
 		<result column="get_points_desc" property="getPointsDesc"/>
-		<result column="surplus_points" property="surplusPoints"/>
 		<result column="create_time" property="createTime"/>
 	</resultMap>
 	
@@ -17,17 +16,18 @@
     <select id="queryAllPointsLogByTeacherId"  resultMap="pointLogsResultMap" parameterType="com.education.hjj.bz.formBean.PointsLogForm">    
         	
         select 
-			get_points_counts,
-			get_points_desc,
-			surplus_points,
-			create_time
-			
+        	tpl.teacher_id,
+			tpl.get_points_counts,
+			tpl.get_points_desc,
+			date_format(tpl.create_time, '%Y-%m-%d %T') as create_time
 		from 
-			teacher_points_log
+		
+			teacher_points_log tpl
+			
 		where 
-			status=1
+			tpl.status=1
 		and
-			teacher_id = #{teacherId}
+			tpl.teacher_id = #{teacherId}
 		<if test="offset != null">
             <![CDATA[
                limit #{pageSize} offset #{offset}
@@ -35,5 +35,29 @@
         </if>
     </select>  
     
+    <!-- 插入积分获取日志 -->
+    <insert id="addTeacherPointsLog" parameterType="com.education.hjj.bz.entity.PointsLogPo"
+    	keyProperty="id" useGeneratedKeys="true">
+    	insert into teacher_points_log(
+    		teacher_id,
+    		get_points_counts,
+    		get_points_desc,
+    		status,
+    		create_time,
+			create_user,
+			update_time,
+			update_user
+    	)
+    	values(
+    		#{teacherId},
+    		#{getPointsCounts},
+    		#{getPointsDesc},
+    		#{status},
+			#{createTime},
+			#{createUser},
+			#{updateTime},
+			#{updateUser}
+    	)	
+    </insert>
     
 </mapper>

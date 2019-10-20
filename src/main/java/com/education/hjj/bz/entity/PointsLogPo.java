@@ -1,14 +1,13 @@
-package com.education.hjj.bz.entity.vo;
+package com.education.hjj.bz.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
-public class PointsLogVo implements Serializable{
+public class PointsLogPo extends BasePo implements Serializable{
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 146146069230434574L;
+	private static final long serialVersionUID = -3214422893122973639L;
 
 	private Integer teacherId;
 	
@@ -16,7 +15,6 @@ public class PointsLogVo implements Serializable{
 	
 	private String getPointsDesc;
 	
-	private String createTime;
 
 	public Integer getTeacherId() {
 		return teacherId;
@@ -41,14 +39,5 @@ public class PointsLogVo implements Serializable{
 	public void setGetPointsDesc(String getPointsDesc) {
 		this.getPointsDesc = getPointsDesc;
 	}
-
-	public String getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
-	}
-
 
 }
