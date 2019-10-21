@@ -10,6 +10,7 @@ import com.education.hjj.bz.formBean.StudentDemandForm;
 import com.education.hjj.bz.mapper.StudentDemandConnectMapper;
 import com.education.hjj.bz.mapper.StudentDemandMapper;
 import com.education.hjj.bz.mapper.TeachBranchMapper;
+import com.education.hjj.bz.mapper.TeacherMapper;
 import com.education.hjj.bz.service.StudentDemandsService;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.DateUtil;
@@ -38,6 +39,9 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 	@Autowired
 	private TeachBranchMapper teachBranchMapper;
+
+	@Autowired
+	private TeacherMapper teacherMapper;
 	
 
 	@Override
@@ -97,7 +101,6 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	}
 	
 	@Override
-	@Transactional
 	public ApiResponse listDemand(StudentDemandConnectForm demandForm) {
 		// 优先检索需求列表
 		List<StudentDemandVo> list = studentDemandMapper.listDemand(demandForm);
@@ -135,4 +138,21 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	}
 	
 
+	@Override
+	public ApiResponse listTeacher(StudentDemandConnectForm demandForm) {
+		// 根据学员的id查找预约的教员列表信息
+		return ApiResponse.success(teacherMapper.listTeacherByStudentId(demandForm.getDemandId()));
+	}
+
+	@Override
+	@Transactional
+	public ApiResponse confirmTeacher(StudentDemandConnectForm demandForm) {
+		Long sid = connectMapper.confirmTeacher(demandForm);
+
+		if (sid != null) {
+			return ApiResponse.success("预约教员成功");
+		}
+
+		return ApiResponse.success("预约教员失败");
+	}
 }

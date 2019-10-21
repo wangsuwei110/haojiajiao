@@ -61,6 +61,23 @@
         <include refid="listRef"/>
     </select>
 
+    <select id="listTeacherByStudentId" parameterType="java.lang.Integer" resultMap="teacherResultMap">
+        SELECT
+          tc.teacher_id
+          , tc.name
+          , tc.sex
+          , tc.employ_rate
+          , tc.resumption_rate
+        FROM
+          teacher tc
+          INNER JOIN student_demand_connect sdc
+            on tc.teacher_id = sdc.teacher_id
+        where
+          sdc.demand_id = #{demandId}
+          AND sdc.delete_status = 0
+
+    </select>
+
     <select id="findConnectTeachers"  resultMap="teacherResultMap">
         SELECT
             tec.teacher_id

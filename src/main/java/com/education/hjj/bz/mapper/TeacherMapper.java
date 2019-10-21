@@ -26,4 +26,6 @@ public interface TeacherMapper {
 
     List<TeacherVo> findConnectTeachers(@Param("studentId") Integer studentId);
 
+    List<TeacherVo> listTeacherByStudentId(@Param("demandId") Integer demandId);
+
 }

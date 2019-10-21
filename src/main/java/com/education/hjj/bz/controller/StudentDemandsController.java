@@ -58,4 +58,15 @@ public class StudentDemandsController {
 		return studentDemandsService.listDemand(demandForm);
 	}
 
+	@ApiOperation("预约教员列表查询")
+	@RequestMapping(value = "/listTeacher", method = RequestMethod.POST)
+	public ApiResponse listTeacher(@RequestBody StudentDemandConnectForm demandForm) {
+		return studentDemandsService.listTeacher(demandForm);
+	}
+
+	@ApiOperation("确定预约教员与时间")
+	@RequestMapping(value = "/confirmTeacher", method = RequestMethod.POST)
+	public ApiResponse confirmTeacher(@RequestBody StudentDemandConnectForm demandForm) {
+		return studentDemandsService.confirmTeacher(demandForm);
+	}
 }

@@ -29,6 +29,17 @@
         WHERE id =  #{id}
     </update>
 
+    <update id="confirmTeacher" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm">
+        <selectKey resultType="long" keyProperty="sid" >
+            SELECT @@IDENTITY AS sid
+        </selectKey>
+        UPDATE student_demand_connect
+        SET order_teach_time = #{confirmDate},
+            status  = 1
+        Where demand_id = #{demandId}
+        AND teacher_id = #{teacherId}
+    </update>
+
     <update id="updateNotNull" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm">
         UPDATE student_demand_connect
         <set>

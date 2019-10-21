@@ -18,4 +18,11 @@ public interface StudentDemandsService {
 	ApiResponse addStudentDemandByTeacher(StudentDemandForm form);
 
 	ApiResponse listDemand(StudentDemandConnectForm demandForm);
+
+	ApiResponse listTeacher(StudentDemandConnectForm demandForm);
+
+	/**
+	 * 确定教员，确定预约时间
+	 **/
+	ApiResponse confirmTeacher(StudentDemandConnectForm demandForm);
 }
