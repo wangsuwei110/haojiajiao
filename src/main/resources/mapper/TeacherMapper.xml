@@ -44,6 +44,7 @@
 	     	<result property="resumptionCount" column="resumption_count"/>
 	     	<result property="resumptionRate" column="resumption_rate"/>
 	     	<result property="status" column="status"/>
+	     	<result property="appraise" column="appraise"/>
 	     	<result property="createTime" column="create_time"/>
 	     	<result property="createUser" column="create_user"/>
 	     	<result property="updateTime" column="update_time"/>
@@ -68,6 +69,8 @@
           , tc.sex
           , tc.employ_rate
           , tc.resumption_rate
+          , sdc.status
+          , sdc.appraise
         FROM
           teacher tc
           INNER JOIN student_demand_connect sdc

@@ -1,5 +1,7 @@
 package com.education.hjj.bz.entity.vo;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -99,6 +101,18 @@ public class TeacherVo extends BaseVo implements Serializable {
 	private Integer resumptionCount;
 	
 	private Integer employCount;
+
+	@ApiModelProperty(name = "教员的评价或试讲不通过原因")
+	private String appraise;
+
+
+	public String getAppraise() {
+		return appraise;
+	}
+
+	public void setAppraise(String appraise) {
+		this.appraise = appraise;
+	}
 
 	public Integer getTeacherId() {
 		return teacherId;

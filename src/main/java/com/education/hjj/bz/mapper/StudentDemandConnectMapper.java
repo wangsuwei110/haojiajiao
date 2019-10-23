@@ -22,6 +22,8 @@ public interface StudentDemandConnectMapper {
 
 	void updateNotNull(StudentDemandConnectForm studentDemandConnect);
 
+	Long updateStatus(StudentDemandConnectForm studentDemandConnect);
+
 	Long confirmTeacher(StudentDemandConnectForm studentDemandConnect);
 
 	void delete(Long id);

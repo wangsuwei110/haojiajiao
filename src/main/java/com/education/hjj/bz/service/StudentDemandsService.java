@@ -25,4 +25,9 @@ public interface StudentDemandsService {
 	 * 确定教员，确定预约时间
 	 **/
 	ApiResponse confirmTeacher(StudentDemandConnectForm demandForm);
+
+	/**
+	 * 试讲通过或不通过
+	 **/
+	ApiResponse updateAdoptStatus(StudentDemandConnectForm demandForm);
 }

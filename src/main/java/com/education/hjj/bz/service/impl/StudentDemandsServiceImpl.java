@@ -15,6 +15,7 @@ import com.education.hjj.bz.service.StudentDemandsService;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.DateUtil;
 import com.education.hjj.bz.util.common.CommonUtil;
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,8 +119,9 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 			// 判断需求订单的详情，是否有教员报名，是否已经预约，是否已经过了试讲时间
 			List<StudentDemandConnectVo> connectVos = connectMapper.listConnectInfo(f.getSid());
-			//判断是否已经有了预约
-			Optional<StudentDemandConnectVo> op = connectVos.stream().filter(s -> s.getOrderTeachTime() != null).findFirst();
+			//判断是否已经有了预约(排除已经预约过，但是未通过的)
+			Optional<StudentDemandConnectVo> op = connectVos.stream().filter(s -> s.getOrderTeachTime() != null
+				&& s.getStatus() != null && s.getStatus() != 4).findFirst();
 			if (op.isPresent()) {
 				f.setSubscribeStatus(op.get().getStatus());
 				f.setTeachName(op.get().getTeacherName());
@@ -154,5 +156,20 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		}
 
 		return ApiResponse.success("预约教员失败");
+	}
+
+	@Override
+	@Transactional
+	public ApiResponse updateAdoptStatus(StudentDemandConnectForm demandForm) {
+		// 判断是否通过或不通过
+		if (demandForm.getStatus() == null) {
+			return ApiResponse.success("订单状态不能为空");
+		}
+		// 试讲通过
+		Long sid = connectMapper.updateStatus(demandForm);
+		if (sid != null) {
+			return ApiResponse.success("状态修改成功");
+		}
+		return ApiResponse.success("状态修改失败");
 	}
 }

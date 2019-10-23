@@ -1,5 +1,6 @@
 package com.education.hjj.bz.formBean;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -28,6 +29,39 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
 
     @ApiModelProperty(value = "教员ID", required = true)
     private Integer teacherId;
+
+    @ApiModelProperty(value = "试讲是否通过，2:试讲通过，3:试讲未通过")
+    private Integer status;
+
+    @ApiModelProperty(value = "试讲不通过的原因")
+    private String appraise;
+
+    @ApiModelProperty(value = "更新时间")
+    private Date updateTime;
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getAppraise() {
+        return appraise;
+    }
+
+    public void setAppraise(String appraise) {
+        this.appraise = appraise;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public Integer getTeacherId() {
         return teacherId;

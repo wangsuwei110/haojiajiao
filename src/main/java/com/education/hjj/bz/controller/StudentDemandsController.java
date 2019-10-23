@@ -69,4 +69,10 @@ public class StudentDemandsController {
 	public ApiResponse confirmTeacher(@RequestBody StudentDemandConnectForm demandForm) {
 		return studentDemandsService.confirmTeacher(demandForm);
 	}
+
+	@ApiOperation("试讲通过或者不通过")
+	@RequestMapping(value = "/updateAdoptStatus", method = RequestMethod.POST)
+	public ApiResponse updateAdoptStatus(@RequestBody StudentDemandConnectForm demandForm) {
+		return studentDemandsService.updateAdoptStatus(demandForm);
+	}
 }
