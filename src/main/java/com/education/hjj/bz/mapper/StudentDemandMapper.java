@@ -6,6 +6,7 @@ import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.StudentDemandForm;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,5 +21,10 @@ public interface StudentDemandMapper {
 	
 	Long addStudentDemandByTeacher(StudentDemandForm form);
 
+	Long openDemand(StudentDemandConnectForm demandForm);
+
 	List<StudentDemandVo> listDemand(StudentDemandConnectForm demandForm);
+
+	List<StudentDemandVo> listDemandAndTeacher(StudentDemandConnectForm demandForm);
+
 }

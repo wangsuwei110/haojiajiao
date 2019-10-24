@@ -1,6 +1,5 @@
 package com.education.hjj.bz.formBean;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
 

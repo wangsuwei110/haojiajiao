@@ -75,4 +75,10 @@ public class StudentDemandsController {
 	public ApiResponse updateAdoptStatus(@RequestBody StudentDemandConnectForm demandForm) {
 		return studentDemandsService.updateAdoptStatus(demandForm);
 	}
+
+	@ApiOperation("开放订单")
+	@RequestMapping(value = "/openDemand", method = RequestMethod.POST)
+	public ApiResponse openDemand(@RequestBody StudentDemandConnectForm demandForm) {
+		return studentDemandsService.openDemand(demandForm);
+	}
 }

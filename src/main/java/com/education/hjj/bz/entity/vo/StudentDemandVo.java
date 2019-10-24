@@ -84,6 +84,17 @@ public class StudentDemandVo {
     @ApiModelProperty(value = "试讲状态:0:未试讲，1:试讲中;2:试讲通过;3:试讲未通过")
     private Integer subscribeStatus;
 
+    @ApiModelProperty(value = "订单类型：1:单独预约，2:快速请家教")
+    private Integer demandType;
+
+    public Integer getDemandType() {
+        return demandType;
+    }
+
+    public void setDemandType(Integer demandType) {
+        this.demandType = demandType;
+    }
+
     public String getAppraise() {
         return appraise;
     }

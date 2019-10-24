@@ -24,6 +24,8 @@
 		<result column="create_user" property="createUser"/>
 		<result column="update_time" property="updateTime"/>
 		<result column="update_user" property="updateUser"/>
+
+		<result column="demand_type" property="demandType"/>
 	</resultMap>
 	
 	
@@ -55,6 +57,17 @@
             ]]>
         </if>
     </select>
+	
+	<select id="listDemandAndTeacher" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm" resultMap="studentDemandsResultMap">
+		SELECT
+			sd.demand_type
+			,sdc.teacher_id
+		FROM student_demand sd
+		LEFT join student_demand_connect sdc
+		ON sd.sid = sdc.demand_id
+		WHERE sdc.delete_status = 0
+		AND sd.sid = #{demandId}
+	</select>
 
 	<select id="listDemand" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm" resultMap="studentDemandsResultMap">
 		select
@@ -80,7 +93,18 @@
             ]]>
 		</if>
 	</select>
-    
+
+	<update id="openDemand" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm">
+	<selectKey resultType="java.lang.Long" keyProperty="sid" >
+		SELECT @@IDENTITY AS sid
+	</selectKey>
+		UPDATE student_demand
+		SET demand_type = 2,
+			update_time = #{updateTime}
+		WHERE sid = #{demandId}
+	</update>
+
+
     <insert id="addStudentDemandByTeacher" parameterType="com.education.hjj.bz.formBean.StudentDemandForm">
 
 		<selectKey resultType="java.lang.Long" keyProperty="sid" >

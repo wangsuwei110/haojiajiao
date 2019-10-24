@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -168,8 +169,42 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		// 试讲通过
 		Long sid = connectMapper.updateStatus(demandForm);
 		if (sid != null) {
+			// 试讲不通过，返回三个形态信息
+			if (demandForm.getStatus() == 3) {
+				// 首先查下订单类型，区分是快速请家教或者单独预约，如果是快速请家教，再区分当前试讲未通过是不是唯一报名的教员
+				List<StudentDemandVo> studentDemandVos = studentDemandMapper.listDemandAndTeacher(demandForm);
+				if (CollectionUtils.isEmpty(studentDemandVos)) {
+					return ApiResponse.success("状态修改失败");
+				} else if (studentDemandVos.size() > 1) {
+					return ApiResponse.success("感谢您的配合，是否再预约之前报名的其他教员进行试讲? 或再等等可能会有更多优秀的教员来报名。", false);
+				} else {
+					Integer demandType = studentDemandVos.get(0).getDemandType();
+					// 单独预约的订单
+					if (demandType == 1) {
+						return ApiResponse.success("感谢您的配合，是否开放本需求让更多教员来报名?", true);
+					} else {
+						return ApiResponse.success("感谢您的配合，再等等可能会有更多优秀的教员来报名。", false);
+					}
+				}
+				// 1.单独预约型
+
+			}
 			return ApiResponse.success("状态修改成功");
 		}
 		return ApiResponse.success("状态修改失败");
+	}
+
+	/**
+	 * 开放订单
+	 **/
+	@Override
+	@Transactional
+	public ApiResponse openDemand(StudentDemandConnectForm demandForm) {
+		demandForm.setUpdateTime(new Date());
+		Long sid = studentDemandMapper.openDemand(demandForm);
+		if (sid != null) {
+			return ApiResponse.success("订单开放成功");
+		}
+		return ApiResponse.success("订单开放失败");
 	}
 }

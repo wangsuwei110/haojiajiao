@@ -30,4 +30,9 @@ public interface StudentDemandsService {
 	 * 试讲通过或不通过
 	 **/
 	ApiResponse updateAdoptStatus(StudentDemandConnectForm demandForm);
+
+	/**
+	 * 开放订单
+	 **/
+	ApiResponse openDemand(StudentDemandConnectForm demandForm);
 }
