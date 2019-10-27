@@ -84,7 +84,7 @@
 		inner join student st
 		on sd.student_id = st.sid
 		WHERE st.delete_status = 0
-		AND sd.student_id = #{studentId}
+		AND st.parent_phone_num = #{parentPhoneNum}
 		order by
 			sd.create_time desc
 		<if test="offset != null">

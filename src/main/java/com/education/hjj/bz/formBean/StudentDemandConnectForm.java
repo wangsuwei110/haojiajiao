@@ -38,6 +38,25 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
+    @ApiModelProperty(value = "家长手机号")
+    private String parentPhoneNum;
+
+    public Long getSid() {
+        return sid;
+    }
+
+    public void setSid(Long sid) {
+        this.sid = sid;
+    }
+
+    public String getParentPhoneNum() {
+        return parentPhoneNum;
+    }
+
+    public void setParentPhoneNum(String parentPhoneNum) {
+        this.parentPhoneNum = parentPhoneNum;
+    }
+
     public Date getUpdateTime() {
         return updateTime;
     }
