@@ -124,10 +124,16 @@
         WHERE sid = #{sid}
     </update>
 
+    <select id="findMaxSid" resultType="java.lang.Long">
+        SELECT MAX(sid)
+        FROM student
+        WHERE delete_status = 0
+    </select>
+
     <insert id="insert" parameterType="com.education.hjj.bz.formBean.StudentForm">
-        <selectKey resultType="long" keyProperty="sid" >
-		SELECT @@IDENTITY AS sid
-		</selectKey>
+        <selectKey resultType="java.lang.Long" keyProperty="sid" >
+            SELECT @@IDENTITY AS sid
+        </selectKey>
         INSERT INTO student(
 	        student_name,
 	        sex,

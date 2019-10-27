@@ -1,20 +1,16 @@
 package com.education.hjj.bz.service.impl;
 
 import com.education.hjj.bz.entity.StudentDemandPo;
-import com.education.hjj.bz.entity.vo.PageVo;
-import com.education.hjj.bz.entity.vo.StudentDemandConnectVo;
-import com.education.hjj.bz.entity.vo.StudentDemandVo;
-import com.education.hjj.bz.entity.vo.TeachBranchVo;
+import com.education.hjj.bz.entity.vo.*;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.StudentDemandForm;
-import com.education.hjj.bz.mapper.StudentDemandConnectMapper;
-import com.education.hjj.bz.mapper.StudentDemandMapper;
-import com.education.hjj.bz.mapper.TeachBranchMapper;
-import com.education.hjj.bz.mapper.TeacherMapper;
+import com.education.hjj.bz.formBean.StudentForm;
+import com.education.hjj.bz.mapper.*;
 import com.education.hjj.bz.service.StudentDemandsService;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.DateUtil;
 import com.education.hjj.bz.util.common.CommonUtil;
+import com.education.hjj.bz.util.common.StringUtil;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +40,9 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 	@Autowired
 	private TeacherMapper teacherMapper;
+
+	@Autowired
+	private StudentMapper studentMapper;
 	
 
 	@Override
@@ -92,6 +91,31 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		form.setCreateTime(date);
 		// todo:  创建人信息，应该再保存信息时，存入redis中。
 		form.setCreateUser("123");
+		form.setStatus(0);
+		// 首先判断学员id和对应姓名是否相同，不同则插入一条学员信息
+		StudentVo studentVo = studentMapper.load((long)form.getStudentId());
+
+		if (StringUtil.isNotBlank(form.getStudentName())
+				&& !studentVo.getStudentName().trim().equals(form.getStudentName())) {
+			StudentForm student = new StudentForm();
+			student.setCreateTime(date);
+			student.setDeleteStatus(0);
+			student.setSex(form.getSex());
+			student.setOpenId(studentVo.getOpenId());
+			student.setSubjectId(form.getSubjectId());
+			student.setGrade(form.getDemandGrade());
+			student.setPicture(studentVo.getPicture());
+			student.setStudentName(form.getStudentName());
+			student.setCreateUser(studentVo.getParentPhoneNum());
+			student.setParentPhoneNum(studentVo.getParentPhoneNum());
+			// 学员姓名不一致，插入一条新数据
+			Long sid = studentMapper.insert(student);
+			if (sid == null) {
+				return ApiResponse.success("新学员信息添加失败");
+			}
+			Long newStudentId = studentMapper.findMaxSid();
+			form.setStudentId(Integer.valueOf(newStudentId.toString()));
+		}
 
 		// 插入需求，返回需求id
 		Long orderId = studentDemandMapper.addStudentDemandByTeacher(form);

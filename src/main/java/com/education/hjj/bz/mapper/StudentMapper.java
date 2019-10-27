@@ -20,8 +20,10 @@ public interface StudentMapper {
 
 	StudentVo findByPhone(@Param("phone") String phone);
 
-	Integer insert(StudentForm student);
-	
+	Long insert(StudentForm student);
+
+	Long findMaxSid();
+
 	void updateNotNull(StudentForm student);
 
 	void delete(Long id);

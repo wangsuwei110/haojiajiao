@@ -57,7 +57,9 @@ public class StudentServiceImpl implements StudentService {
  	    studentForm.setCreateUser("admin");
  	    studentForm.setDeleteStatus(0);
 
- 	    return studentMapper.insert(studentForm);
+        Long studentId = studentMapper.insert(studentForm);
+
+ 	    return studentId != null ? Integer.valueOf(studentId.toString()) : 0;
     }
 
 	@Override

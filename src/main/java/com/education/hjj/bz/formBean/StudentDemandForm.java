@@ -19,6 +19,12 @@ public class StudentDemandForm extends PageForm implements Serializable {
     @NotBlank(message = "学员ID不能为空")
     private Integer studentId;
 
+    @ApiModelProperty(value = "学员姓名（发布需求时，姓名改变，插入新学员）",required = true)
+    private String studentName;
+
+    @ApiModelProperty(value = "学员性别",required = true)
+    private Integer sex;
+
     @ApiModelProperty(value = "上课地址",required = true)
     @NotBlank(message = "上课地址不能为空")
     private String demandAddress;
@@ -79,6 +85,32 @@ public class StudentDemandForm extends PageForm implements Serializable {
     @NotBlank(message = "修改人不能为空")
     private String updateUser;
 
+    @ApiModelProperty(value = "订单类型",required = true)
+    private Integer demandType;
+
+    public Integer getDemandType() {
+        return demandType;
+    }
+
+    public void setDemandType(Integer demandType) {
+        this.demandType = demandType;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
 
     public Long getSid() {
         return sid;

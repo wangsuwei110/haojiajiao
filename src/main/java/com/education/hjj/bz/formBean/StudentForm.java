@@ -31,7 +31,7 @@ public class StudentForm implements Serializable {
 
     @ApiModelProperty(value = "学员年级",required = true)
     @NotBlank(message = "学员年级不能为空")
-    private Long grade;
+    private Integer grade;
 
     @ApiModelProperty(value = "科目",required = true)
     private Integer subjectId;
@@ -114,11 +114,11 @@ public class StudentForm implements Serializable {
         this.sex = sex;
     }
 
-    public Long getGrade() {
+    public Integer getGrade() {
         return grade;
     }
 
-    public void setGrade(Long grade) {
+    public void setGrade(Integer grade) {
         this.grade = grade;
     }
 
