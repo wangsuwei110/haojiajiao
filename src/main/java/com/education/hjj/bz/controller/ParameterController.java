@@ -209,9 +209,35 @@ public class ParameterController {
 		
 		
 		List<TeachBranchVo> teachBranchVoList = teachBranchService.queryAllTeachBranchs();
-		List<TeachBranchVo> teachBranchVoLists = new ArrayList<TeachBranchVo>();
+		List<TeachBranchVo> teachBranchMasterVoLists = new ArrayList<TeachBranchVo>();
 		
 		String teachBrance = tv.getTeachBrance();
+		if(teachBrance !=null && StringUtils.isNotBlank(teachBrance)) {
+			for(TeachBranchVo tbv:teachBranchVoList) {
+				
+				TeachBranchVo tbvs= new TeachBranchVo();
+				
+				tbvs.setTeachBranchId(tbv.getTeachBranchId());
+				tbvs.setTeachBranchName(tbv.getTeachBranchName());
+				
+				if(tbv.getTeachBranchId() == Integer.valueOf(teachBrance)) {
+					
+					tbvs.setFlag(true);
+					tbvs.setBranchType("master");
+				}
+				
+				teachBranchMasterVoLists.add(tbvs);
+			}
+			
+			map.put("teachBranchMaster", teachBranchMasterVoLists);
+		}else {
+			map.put("teachBranchMaster", teachBranchVoList);
+		}
+		
+		
+		
+		List<TeachBranchVo> teachBranchVoLists = new ArrayList<TeachBranchVo>();
+		
 		String[] teachBranceSlave = null;
 		if(tv.getTeachBranchSlave() != null && StringUtils.isNoneBlank(tv.getTeachBranchSlave())) {
 			teachBranceSlave = tv.getTeachBranchSlave().split(",");
@@ -234,12 +260,12 @@ public class ParameterController {
 					}
 					
 					//主授课目
-					if(tbv.getTeachBranchId() == Integer.valueOf(teachBrance)) {
-
-						tbvs.setFlag(true);
-						tbvs.setBranchType("master");
-						break;
-					}
+//					if(tbv.getTeachBranchId() == Integer.valueOf(teachBrance)) {
+//
+//						tbvs.setFlag(true);
+//						tbvs.setBranchType("master");
+//						break;
+//					}
 					
 					
 				}
@@ -248,10 +274,11 @@ public class ParameterController {
 				
 			}
 			
-			map.put("teachBranch", teachBranchVoLists);
+			map.put("teachBranchSlave", teachBranchVoLists);
 		}else {
-			map.put("teachBranch", teachBranchVoList);
+			map.put("teachBranchSlave", teachBranchVoList);
 		}
+		
 		
 		
 		map.put("teachTime", JSON.toJSON(tv.getTeachTime()));
