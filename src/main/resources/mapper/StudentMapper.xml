@@ -71,6 +71,7 @@
         FROM student
         WHERE parent_phone_num =  #{phone}
         and delete_status = 0
+        limit 1
     </select>
 
 
