@@ -99,7 +99,7 @@
         SELECT
             <if test="teachGrade == null">
                 tlg.teach_level_grade_id AS `key`
-                ,tlg.teach_grade_name AS `value`
+                ,tlg.teach_grade_name    AS `value`
             </if>
             <if test="teachGrade != null">
                 tb.teach_branch_id AS `key`
@@ -112,7 +112,10 @@
         INNER JOIN teach_branch tb
         ON tlg.teach_level_grade_id = tb.teach_grade_id
         </if>
-        WHERE tl.teach_level_id = #{teachLevel}
+        WHERE 1 = 1
+        <if test="teachLevel != null">
+            AND tl.teach_level_id = #{teachLevel}
+        </if>
         <if test="teachGrade != null">
             AND tlg.teach_level_grade_id = #{teachGrade}
         </if>
