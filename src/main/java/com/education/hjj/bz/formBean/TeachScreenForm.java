@@ -15,7 +15,6 @@ public class TeachScreenForm {
 
 
     @ApiModelProperty(value = "教学学段等级",required = true)
-    @NotNull
     private Integer teachLevel;
 
     @ApiModelProperty(value = "教学学段下的年级",required = true)
