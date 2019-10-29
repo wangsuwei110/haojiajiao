@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
@@ -285,5 +286,17 @@ public class ParameterController {
 		compareResult.add(map);
 		
 		return ApiResponse.success("操作成功" ,JSON.toJSON(compareResult));
+	}
+	
+	@ApiOperation("通过父ID查询指定类型参数")
+	@RequestMapping(value = "/queryParametersByType", method = RequestMethod.POST)
+	@ResponseBody
+	public ApiResponse queryParametersByType(@RequestBody ParameterForm parameterForm) {
+		
+		String parentId  = parameterForm.getParentId();
+		
+		List<ParameterVo> list = parameterService.queryParameterListsByParentId(parentId);
+		
+		return ApiResponse.success(list);
 	}
 }
