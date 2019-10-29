@@ -26,6 +26,7 @@
 		<result column="update_user" property="updateUser"/>
 
 		<result column="demand_type" property="demandType"/>
+		<result column="parameter_id" property="parameterId"/>
 	</resultMap>
 	
 	
@@ -123,6 +124,7 @@
         	order_money,
         	demand_desc,
 			demand_type,
+			parameter_id,
         	status,
         	create_time,
         	create_user,
@@ -142,6 +144,7 @@
         	#{orderMoney},
         	#{demandDesc},
         	#{demandType},
+        	#{parameterId},
         	#{status},
         	#{createTime},
         	#{createUser},
