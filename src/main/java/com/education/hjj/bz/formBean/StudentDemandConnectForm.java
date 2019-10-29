@@ -41,6 +41,38 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
     @ApiModelProperty(value = "家长手机号")
     private String parentPhoneNum;
 
+    @ApiModelProperty(value = "更新时间")
+    private Date createTime;
+
+    @ApiModelProperty(value = "创建用户")
+    private Integer createUser;
+
+    private Integer deleteStatus;
+
+    public Integer getDeleteStatus() {
+        return deleteStatus;
+    }
+
+    public void setDeleteStatus(Integer deleteStatus) {
+        this.deleteStatus = deleteStatus;
+    }
+
+    public Integer getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(Integer createUser) {
+        this.createUser = createUser;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
     public Long getSid() {
         return sid;
     }

@@ -58,7 +58,11 @@
             ]]>
         </if>
     </select>
-	
+
+	<select id="findMaxSid" resultType="java.lang.Long">
+		SELECT MAX(sid)
+		FROM student_demand
+	</select>
 	<select id="listDemandAndTeacher" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm" resultMap="studentDemandsResultMap">
 		SELECT
 			sd.demand_type
@@ -106,10 +110,10 @@
 	</update>
 
 
-    <insert id="addStudentDemandByTeacher" parameterType="com.education.hjj.bz.formBean.StudentDemandForm">
+    <insert id="addStudentDemandByTeacher" parameterType="com.education.hjj.bz.formBean.StudentDemandForm" >
 
-		<selectKey resultType="java.lang.Long" keyProperty="sid" >
-			SELECT @@IDENTITY AS sid
+		<selectKey resultType="long" keyProperty="sid" >
+			/*FORCE_MASTER*/ SELECT @@IDENTITY AS sid
 		</selectKey>
         INSERT INTO student_demand(
 			student_id,

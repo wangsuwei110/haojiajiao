@@ -86,29 +86,23 @@
     </update>
 
     <insert id="insert" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm">
-        <selectKey resultType="long" keyProperty="id" >
-		SELECT @@IDENTITY AS id
+        <selectKey resultType="long" keyProperty="sid" >
+		SELECT @@IDENTITY AS sid
 		</selectKey>
         INSERT INTO student_demand_connect(
-	        sid,
 	        demand_id,
 	        teacher_id,
 	        status,
 	        delete_status,
 	        create_time,
-	        create_user,
-	        update_time,
-	        update_user
+	        create_user
 	        ) VALUES (
-	        #{sid},
 	        #{demandId},
 	        #{teacherId},
 	        #{status},
 	        #{deleteStatus},
 	        #{createTime},
-	        #{createUser},
-	        #{updateTime},
-	        #{updateUser}
+	        #{createUser}
         )
     </insert>
 

@@ -27,4 +27,5 @@ public interface StudentDemandMapper {
 
 	List<StudentDemandVo> listDemandAndTeacher(StudentDemandConnectForm demandForm);
 
+	Long findMaxSid();
 }
