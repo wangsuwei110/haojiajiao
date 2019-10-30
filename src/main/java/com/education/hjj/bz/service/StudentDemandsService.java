@@ -11,7 +11,9 @@ import java.util.Map;
 
 public interface StudentDemandsService {
 
-	PageVo<List<StudentDemandVo>> queryStudentDemands(StudentDemandForm studentDemandForm);
+	PageVo<List<StudentDemandVo>> queryAllStudentDemandList(StudentDemandForm studentDemandForm);
+	
+	List<StudentDemandVo> queryAllStudentDemandListBy10(StudentDemandForm form);
 	
 	Map<String,Object> queryStudentDemandDetail(String demandId);
 
@@ -35,4 +37,16 @@ public interface StudentDemandsService {
 	 * 开放订单
 	 **/
 	ApiResponse openDemand(StudentDemandConnectForm demandForm);
+	
+	Map<String , Object> queryStudentDemandDetailBySid(Integer sid , Integer teacherId);
+	
+	List<StudentDemandVo> queryNewTrialOrderList(Integer teacherId);
+	
+	List<StudentDemandVo> queryUserDemandsList(StudentDemandConnectForm demandForm);
+	
+	StudentDemandVo queryStudemtDemandDetail(StudentDemandConnectForm demandForm);
+	
+	List<StudentDemandVo> queryFitTeacherOrderList(Integer teacherId);
+	
+	int updateNewTrialDemand(StudentDemandConnectForm demandForm);
 }

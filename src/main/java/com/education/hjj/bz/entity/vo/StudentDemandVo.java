@@ -86,6 +86,15 @@ public class StudentDemandVo {
 
     @ApiModelProperty(value = "订单类型：1:单独预约，2:快速请家教")
     private Integer demandType;
+    
+    //教学年级名称
+    private String teachGradeName;
+    //教学科目名称
+    private String teachBranchName;
+    //报名时间
+    private String signTime;
+    //联系手机号
+    private String parentPhoneNum;
 
     @ApiModelProperty(value = "区域id",required = true)
     private Integer parameterId;
@@ -286,6 +295,36 @@ public class StudentDemandVo {
         this.updateUser = updateUser;
     }
 
+	public String getTeachGradeName() {
+		return teachGradeName;
+	}
 
+	public void setTeachGradeName(String teachGradeName) {
+		this.teachGradeName = teachGradeName;
+	}
+
+	public String getTeachBranchName() {
+		return teachBranchName;
+	}
+
+	public void setTeachBranchName(String teachBranchName) {
+		this.teachBranchName = teachBranchName;
+	}
+
+	public String getSignTime() {
+		return signTime;
+	}
+
+	public void setSignTime(String signTime) {
+		this.signTime = signTime;
+	}
+
+	public String getParentPhoneNum() {
+		return parentPhoneNum;
+	}
+
+	public void setParentPhoneNum(String parentPhoneNum) {
+		this.parentPhoneNum = parentPhoneNum;
+	}
 
 }

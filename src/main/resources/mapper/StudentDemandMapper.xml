@@ -27,6 +27,10 @@
 
 		<result column="demand_type" property="demandType"/>
 		<result column="parameter_id" property="parameterId"/>
+		<result column="demand_signUp_num" property="demandSignUpNum"/>
+		<result column="teach_grade_name" property="teachGradeName"/>
+		<result column="teach_branch_name" property="teachBranchName"/>
+		<result column="order_teach_time" property="orderTeachTime"/>
 	</resultMap>
 	
 	
@@ -157,4 +161,300 @@
         )
     </insert>
 
+	<!-- 教员首页查询所有的需求订单 -->
+	<select id="queryAllStudentDemandList" parameterType="com.education.hjj.bz.formBean.StudentDemandForm" resultMap="studentDemandsResultMap">
+    	SELECT
+			sd.sid,
+			sd.demand_address,
+			tg.teach_grade_name,
+			tb.teach_branch_name,
+			sd.class_num,
+			sd.time_range,
+			sd.demand_desc,
+			date_format(sd.create_time, '%Y-%m-%d') as create_time,
+			demand_signUp_num
+		FROM
+			student_demand sd
+		LEFT JOIN
+			teach_grade tg
+		ON	
+			sd.demand_grade = tg.teach_grade_id 
+		LEFT JOIN
+			teach_branch tb
+		ON
+			sd.subject_id = tb.teach_branch_id
+		WHERE
+			1=1
+		<if test="demandGrade != null">
+			AND sd.demand_grade= #{demandGrade}
+     	</if>
+     	<if test="subjectId != null">
+			AND sd.subject_id= #{subjectId}
+     	</if>
+     	
+     		
+     	<if test="createTime != null">
+			order by create_time desc
+     	</if>
+    </select>
+    
+    <!-- 教员首页查询所有的需求订单10条 -->
+	<select id="queryAllStudentDemandListBy10" parameterType="com.education.hjj.bz.formBean.StudentDemandForm" resultMap="studentDemandsResultMap">
+    	SELECT
+			sd.sid,
+			sd.demand_address,
+			tg.teach_grade_name,
+			tb.teach_branch_name,
+			sd.class_num,
+			sd.time_range,
+			sd.demand_desc,
+			date_format(sd.create_time, '%Y-%m-%d') as create_time,
+			demand_signUp_num
+		FROM
+			student_demand sd
+		LEFT JOIN
+			teach_grade tg
+		ON	
+			sd.demand_grade = tg.teach_grade_id 
+		LEFT JOIN
+			teach_branch tb
+		ON
+			sd.subject_id = tb.teach_branch_id
+		WHERE
+			1=1
+     		
+		order by create_time desc
+		
+		limit 10
+    </select>
+    
+    <!-- 查询需求订单详情 -->
+    <select id="queryStudentDemandDetailBySid" parameterType="java.lang.Integer" resultMap="studentDemandsResultMap">
+    	SELECT
+			sd.sid,
+			sd.demand_address,
+			tg.teach_grade_name,
+			tb.teach_branch_name,
+			sd.class_num,
+			sd.time_range,
+			sd.demand_desc,
+			date_format(sd.create_time, '%Y-%m-%d') as create_time,
+			demand_signUp_num
+		FROM
+			student_demand sd
+		LEFT JOIN
+			teach_grade tg
+		ON	
+			sd.demand_grade = tg.teach_grade_id 
+		LEFT JOIN
+			teach_branch tb
+		ON
+			sd.subject_id = tb.teach_branch_id
+		WHERE
+			1=1
+		and
+			sd.sid = #{sid}
+    </select>
+    
+    <!-- 新的试讲订单,还没确定试讲时间 -->
+    <select id="queryNewTrialOrderList" parameterType="java.lang.Integer" resultMap="studentDemandsResultMap">
+    	SELECT
+			sd.sid,
+			tg.teach_grade_name,
+			tb.teach_branch_name,
+			date_format(sd.create_time, '%Y-%m-%d %T') as create_time
+		FROM
+			student_demand_connect sdc
+		LEFT JOIN
+			student_demand sd
+		ON
+			sdc.demand_id = sd.sid
+		LEFT JOIN
+			teach_grade tg
+		ON
+			sd.demand_grade = tg.teach_grade_id
+		LEFT JOIN
+			teach_branch tb
+		ON
+			sd.subject_id = tb.teach_branch_id
+		WHERE
+			sdc.`status` = 0
+		AND
+			sdc.teacher_id = #{teacherId}
+		ORDER BY
+			sd.create_time desc
+    </select>
+    
+    <!-- 适合我的家教需求订单列表 -->
+    <select id="queryFitTeacherOrderList" parameterType="java.lang.Integer" resultMap="studentDemandsResultMap">
+    	SELECT
+			sd.sid,
+			sd.demand_address,
+			tg.teach_grade_name,
+			tb.teach_branch_name,
+			sd.class_num,
+			sd.time_range,
+			sd.demand_desc,
+			date_format(sd.create_time, '%Y-%m-%d') as create_time,
+			demand_signUp_num
+
+		FROM
+			student_demand sd
+		LEFT JOIN
+			teach_grade tg
+		ON	
+			sd.demand_grade = tg.teach_grade_id 
+		LEFT JOIN
+			teach_branch tb
+		ON
+			sd.subject_id = tb.teach_branch_id
+		LEFT JOIN
+			student_demand_connect sdc
+		ON
+			sd.sid = sdc.demand_id
+		LEFT JOIN
+			teacher t
+		ON
+			sdc.teacher_id = t.teacher_id
+		AND
+			sd.parameter_id like '%t.teach_address%'
+		AND
+			sd.subject_id like '%t.teach_brance%'
+		AND
+			sd.subject_id like '%t.teach_branch_slave%'
+		AND
+			sd.demand_grade like '%t.teach_grade%'
+		AND
+			t.`status` = 1
+		WHERE
+			sd.demand_type = 2
+		AND
+			sdc.order_teach_time is null
+		AND
+			sdc.teacher_id = #{teacherId}
+    </select>
+    
+    <!-- 查询用户所有的订单 -->
+    <select id="queryUserDemandsList" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm" resultMap="studentDemandsResultMap">
+    	SELECT
+			sd.sid,
+			s.student_name,
+			tg.teach_grade_name,
+			tb.teach_branch_name,
+			date_format(sd.create_time, '%Y-%m-%d %T') as create_time,
+			sd.order_money,
+			sdc.order_teach_time,
+			sdc.`status`
+		FROM
+			student_demand_connect sdc
+		LEFT JOIN
+			student_demand sd
+		ON
+			sdc.demand_id = sd.sid
+		LEFT JOIN
+			teach_grade tg
+		ON
+			sd.demand_grade = tg.teach_grade_id
+		LEFT JOIN
+			teach_branch tb
+		ON
+			sd.subject_id = tb.teach_branch_id
+		LEFT JOIN
+			student s
+		ON
+			sd.student_id = s.sid
+		WHERE
+			sdc.teacher_id = #{teacherId}
+		<if test="status != null">
+			AND sdc.status= #{status}
+     	</if>
+     	
+		ORDER BY
+			sd.create_time desc
+	
+    </select>
+    
+    <resultMap id="studentDemandsDetailResultMap" type="com.education.hjj.bz.entity.vo.StudentDemandVo" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		<result column="sid" property="sid"/>
+		<result column="student_name" property="studentName"/>
+		<result column="class_num" property="classNum"/>
+		<result column="time_range" property="timeRange"/>
+		<result column="order_money" property="orderMoney"/>
+		<result column="demand_desc" property="demandDesc"/>
+		<result column="demand_address" property="demandAddress"/>
+		<result column="create_time" property="createTime"/>
+		<result column="sign_Time" property="signTime"/>
+		<result column="teach_grade_name" property="teachGradeName"/>
+		<result column="teach_branch_name" property="teachBranchName"/>
+		<result column="order_teach_time" property="orderTeachTime"/>
+		<result column="parent_phone_num" property="parentPhoneNum"/>
+	</resultMap>
+    
+    <select id ="queryStudemtDemandDetail" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm" resultMap="studentDemandsDetailResultMap">
+    	SELECT
+			sd.sid,
+			s.student_name,
+			tg.teach_grade_name,
+			tb.teach_branch_name,
+			date_format(sd.create_time, '%Y-%m-%d %T') as create_time,
+			sd.order_money,
+			sdc.order_teach_time,
+			date_format(sdc.create_time, '%Y-%m-%d %T') as sign_Time,
+			sd.demand_address,
+			sd.time_range,
+			sd.class_num,
+			sd.demand_desc,
+			s.parent_phone_num
+			
+		FROM
+			student_demand_connect sdc
+		LEFT JOIN
+			student_demand sd
+		ON
+			sdc.demand_id = sd.sid
+		LEFT JOIN
+			teach_grade tg
+		ON
+			sd.demand_grade = tg.teach_grade_id
+		LEFT JOIN
+			teach_branch tb
+		ON
+			sd.subject_id = tb.teach_branch_id
+		LEFT JOIN
+			student s
+		ON
+			sd.student_id = s.sid
+		WHERE
+			sdc.teacher_id = #{teacherId}
+		AND
+			sd.sid = #{demandId}
+		ORDER BY
+			sd.create_time desc
+	
+    </select>
+    
+    <!-- 教员接受学员订单,并更新报名表试讲时间和订单状态 -->
+    <update id="updateNewTrialDemandTime" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm">
+    	UPDATE 
+    		student_demand_connect
+		SET 
+			teacher_id = #{teacherId},
+			status = #{status},
+			order_teach_time = #{orderTeachTime},
+			update_time = #{updateTime}
+			
+		WHERE demand_id = #{demandId}
+    </update>
+    
+    <!-- 教员接受学员订单,并更新订单表订单状态 -->
+    <update id="updateNewTrialDemandStatus" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm">
+    	UPDATE 
+    		student_demand
+		SET 
+			status = #{status},
+			update_time = #{updateTime}
+			
+		WHERE sid = #{demandId}
+    </update>
 </mapper>

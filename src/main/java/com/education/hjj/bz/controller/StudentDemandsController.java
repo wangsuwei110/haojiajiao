@@ -26,16 +26,6 @@ public class StudentDemandsController {
 	private StudentDemandsService studentDemandsService;
 
 	
-	@ApiOperation("学生需求信息检索列表")
-	@RequestMapping(value = "/queryStudentDemandsList", method = RequestMethod.POST)
-	@RequiresPermissions(logical = Logical.AND, value = {"teacher:view" , "student:view"})
-	public ApiResponse queryStudentDemandsList(@RequestBody StudentDemandForm studentDemandForm) {
-
-		PageVo<List<StudentDemandVo>> list = studentDemandsService.queryStudentDemands(studentDemandForm);
-
-		return ApiResponse.success(list);
-	}
-	
 	@ApiOperation("学生需求信息详情")
 	@RequestMapping(value = "/queryStudentDemandDetail", method = RequestMethod.GET)
 	@RequiresPermissions(logical = Logical.AND, value = {"teacher:view" , "student:view"})
@@ -81,4 +71,20 @@ public class StudentDemandsController {
 	public ApiResponse openDemand(@RequestBody StudentDemandConnectForm demandForm) {
 		return studentDemandsService.openDemand(demandForm);
 	}
+	
+	@ApiOperation("教员确定订单试讲时间")
+	@RequestMapping(value = "/updateNewTrialDemand", method = RequestMethod.POST)
+	public ApiResponse updateNewTrialDemand(@RequestBody StudentDemandConnectForm demandForm) {
+		
+		int i = studentDemandsService.updateNewTrialDemand(demandForm);
+		
+		if(i > 0) {
+			return ApiResponse.success("更新成功!");
+		}else {
+			return ApiResponse.error("更新失败！");
+		}
+		
+		 
+	}
+	
 }
