@@ -88,6 +88,30 @@ public class StudentDemandForm extends PageForm implements Serializable {
     @ApiModelProperty(value = "订单类型",required = true)
     private Integer demandType;
 
+    @ApiModelProperty(value = "区域id",required = true)
+    private Integer parameterId;
+
+
+    // *******************单独预约********************
+    @ApiModelProperty(value = "教员ID",required = true)
+    private Integer teacherId;
+
+    public Integer getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(Integer teacherId) {
+        this.teacherId = teacherId;
+    }
+
+    public Integer getParameterId() {
+        return parameterId;
+    }
+
+    public void setParameterId(Integer parameterId) {
+        this.parameterId = parameterId;
+    }
+
     public Integer getDemandType() {
         return demandType;
     }

@@ -2,6 +2,7 @@ package com.education.hjj.bz.service.impl;
 
 import com.education.hjj.bz.entity.StudentDemandPo;
 import com.education.hjj.bz.entity.vo.*;
+import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.StudentDemandForm;
 import com.education.hjj.bz.formBean.StudentForm;
@@ -43,7 +44,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 	@Autowired
 	private StudentMapper studentMapper;
-	
+
 
 	@Override
 	public PageVo<List<StudentDemandVo>> queryStudentDemands(StudentDemandForm studentDemandForm) {
@@ -89,8 +90,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	public ApiResponse addStudentDemandByTeacher(StudentDemandForm form) {
 		Date date = new Date();
 		form.setCreateTime(date);
-		// todo:  创建人信息，应该再保存信息时，存入redis中。
-		form.setCreateUser("123");
+		form.setCreateUser(form.getStudentId().toString());
 		form.setStatus(0);
 		// 首先判断学员id和对应姓名是否相同，不同则插入一条学员信息
 		StudentVo studentVo = studentMapper.load((long)form.getStudentId());
@@ -119,6 +119,19 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 		// 插入需求，返回需求id
 		Long orderId = studentDemandMapper.addStudentDemandByTeacher(form);
+
+		// 如果有教员ID，则插入一条关联教员的表数据
+		if (form.getTeacherId() != null) {
+			Long newOrderId = studentDemandMapper.findMaxSid();
+			StudentDemandConnectForm connectForm = new StudentDemandConnectForm();
+			connectForm.setCreateTime(date);
+			connectForm.setStatus(1);
+			connectForm.setDeleteStatus(0);
+			connectForm.setCreateUser(form.getStudentId());
+			connectForm.setDemandId(newOrderId.intValue());
+			connectForm.setTeacherId(form.getTeacherId());
+			connectMapper.insert(connectForm);
+		}
 
 		if (orderId != null) {
 			return ApiResponse.success("订单发布成功，一个工作日内处理");
