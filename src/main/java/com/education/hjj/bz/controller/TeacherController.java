@@ -1,5 +1,6 @@
 package com.education.hjj.bz.controller;
 
+import com.education.hjj.bz.entity.vo.PageVo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
@@ -84,7 +85,11 @@ public class TeacherController {
 	@ResponseBody
 	public ApiResponse queryUserDemandsList(@RequestBody StudentDemandConnectForm demandForm) {
 		
+		PageVo pageVo = new PageVo();
+		
 		List<StudentDemandVo>  list = studentDemandsService.queryUserDemandsList(demandForm);
+		pageVo.setDataList(list);
+		pageVo.setTotal(list.size());
 		
 		return ApiResponse.success(list);
 	}
