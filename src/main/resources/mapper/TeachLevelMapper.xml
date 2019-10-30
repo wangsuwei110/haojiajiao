@@ -97,7 +97,11 @@
     <select id="listSubject" parameterType="com.education.hjj.bz.formBean.TeachScreenForm"
             resultType="com.education.hjj.bz.entity.vo.CodeVo">
         SELECT
-            <if test="teachGrade == null">
+            <if test="teachLevel == null and teachGrade == null">
+                tl.teach_level_id AS `key`
+                ,tl.teach_level_name AS `value`
+            </if>
+            <if test="teachLevel != null">
                 tlg.teach_level_grade_id AS `key`
                 ,tlg.teach_grade_name    AS `value`
             </if>
@@ -106,11 +110,13 @@
                 ,tb.teach_branch_name AS `value`
             </if>
         FROM teach_level tl
-        INNER JOIN teach_level_grade tlg
-        ON tl.teach_level_id = tlg.teach_level_id
+        <if test="teachLevel != null">
+            INNER JOIN teach_level_grade tlg
+            ON tl.teach_level_id = tlg.teach_level_id
+        </if>
         <if test="teachGrade != null">
-        INNER JOIN teach_branch tb
-        ON tlg.teach_level_grade_id = tb.teach_grade_id
+            INNER JOIN teach_branch tb
+            ON tlg.teach_level_grade_id = tb.teach_grade_id
         </if>
         WHERE 1 = 1
         <if test="teachLevel != null">
