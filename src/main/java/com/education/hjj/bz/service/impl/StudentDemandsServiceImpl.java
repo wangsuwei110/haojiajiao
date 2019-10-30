@@ -1,18 +1,13 @@
 package com.education.hjj.bz.service.impl;
 
-import com.education.hjj.bz.entity.StudentDemandPo;
-import com.education.hjj.bz.entity.vo.*;
-import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
-import com.education.hjj.bz.formBean.StudentDemandConnectForm;
-import com.education.hjj.bz.formBean.StudentDemandForm;
-import com.education.hjj.bz.formBean.StudentForm;
-import com.education.hjj.bz.mapper.*;
-import com.education.hjj.bz.service.StudentDemandsService;
-import com.education.hjj.bz.util.ApiResponse;
-import com.education.hjj.bz.util.DateUtil;
-import com.education.hjj.bz.util.common.CommonUtil;
-import com.education.hjj.bz.util.common.StringUtil;
-import io.swagger.annotations.Api;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +15,29 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
+import com.education.hjj.bz.entity.vo.PageVo;
+import com.education.hjj.bz.entity.vo.StudentDemandConnectVo;
+import com.education.hjj.bz.entity.vo.StudentDemandVo;
+import com.education.hjj.bz.entity.vo.StudentVo;
+import com.education.hjj.bz.entity.vo.TeachBranchVo;
+import com.education.hjj.bz.entity.vo.TeacherVo;
+import com.education.hjj.bz.entity.StudentDemandPo;
+import com.education.hjj.bz.entity.vo.*;
+import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
+import com.education.hjj.bz.formBean.StudentDemandConnectForm;
+import com.education.hjj.bz.formBean.StudentDemandForm;
+import com.education.hjj.bz.formBean.StudentForm;
+import com.education.hjj.bz.mapper.StudentDemandConnectMapper;
+import com.education.hjj.bz.mapper.StudentDemandMapper;
+import com.education.hjj.bz.mapper.StudentMapper;
+import com.education.hjj.bz.mapper.TeachBranchMapper;
+import com.education.hjj.bz.mapper.TeacherMapper;
+import com.education.hjj.bz.mapper.UserInfoMapper;
+import com.education.hjj.bz.service.StudentDemandsService;
+import com.education.hjj.bz.util.ApiResponse;
+import com.education.hjj.bz.util.DateUtil;
+import com.education.hjj.bz.util.common.CommonUtil;
+import com.education.hjj.bz.util.common.StringUtil;
 
 @Service
 @Transactional
@@ -44,24 +59,11 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 	@Autowired
 	private StudentMapper studentMapper;
+	
+	@Autowired
+	private UserInfoMapper userInfoMapper;
+	
 
-
-	@Override
-	public PageVo<List<StudentDemandVo>> queryStudentDemands(StudentDemandForm studentDemandForm) {
-		
-		PageVo pageVo = new PageVo();
-
-		// 订单列表信息
-
-
-		StudentDemandPo studentDemandPo = new StudentDemandPo();
-
-//		List<StudentDemandVo> list=studentDemandMapper.queryStudentDemands(studentDemandPo);
-		
-//		pageVo.setDataList(list);
-		
-		return pageVo;
-	}
 
 	@Override
 	public Map<String, Object> queryStudentDemandDetail(String demandId) {
@@ -243,5 +245,97 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			return ApiResponse.success("订单开放成功");
 		}
 		return ApiResponse.success("订单开放失败");
+	}
+
+	@Override
+	public PageVo<List<StudentDemandVo>> queryAllStudentDemandList(StudentDemandForm form) {
+		
+		PageVo pageVo = new PageVo();
+		
+		List<StudentDemandVo> list = studentDemandMapper.queryAllStudentDemandList(form);
+		
+		pageVo.setTotal(list.size());
+		pageVo.setDataList(list);
+		
+		return pageVo;
+	}
+
+	@Override
+	public Map<String, Object> queryStudentDemandDetailBySid(Integer sid , Integer teacherId) {
+		
+		Map<String, Object> map = new HashMap<String, Object>(2);
+		
+		StudentDemandVo  studentDemandDetail  = studentDemandMapper.queryStudentDemandDetailBySid(sid);
+		
+		List<TeacherVo> list = userInfoMapper.queryStudentDemandSignUpTeacher(sid);
+		
+		boolean flag = false;
+		
+		if(list.size() > 0) {
+			
+			for(TeacherVo t:list) {
+				if(t.getTeacherId() == teacherId) {
+					
+					flag = true;
+					
+					break;
+				}
+			}
+			
+		}
+		
+		
+		map.put("studentDemandDetail", studentDemandDetail);
+		map.put("signUpTeacherInfo", list);
+		map.put("singUpStatus", flag);
+		
+		return map;
+	}
+
+	@Override
+	public List<StudentDemandVo> queryNewTrialOrderList(Integer teacherId) {
+		
+		List<StudentDemandVo>  newTrialStudentDemandList  = studentDemandMapper.queryNewTrialOrderList(teacherId);
+		
+		return newTrialStudentDemandList;
+	}
+
+	@Override
+	public List<StudentDemandVo> queryUserDemandsList(StudentDemandConnectForm demandForm) {
+		List<StudentDemandVo> list = studentDemandMapper.queryUserDemandsList(demandForm);
+		return list;
+	}
+
+	@Override
+	public StudentDemandVo queryStudemtDemandDetail(StudentDemandConnectForm demandForm) {
+		StudentDemandVo studentDemandVo = studentDemandMapper.queryStudemtDemandDetail(demandForm);
+		return studentDemandVo;
+	}
+
+	@Override
+	public List<StudentDemandVo> queryFitTeacherOrderList(Integer teacherId) {
+		List<StudentDemandVo> list = studentDemandMapper.queryFitTeacherOrderList(teacherId);
+		return list;
+	}
+
+	@Override
+	@Transactional
+	public int updateNewTrialDemand(StudentDemandConnectForm demandForm) {
+		
+		int j = studentDemandMapper.updateNewTrialDemandTime(demandForm);
+		
+		int i = studentDemandMapper.updateNewTrialDemandStatus(demandForm);
+		
+		if(i > 0  && j > 0) {
+			return 1;
+		}
+		
+		return -1;
+	}
+
+	@Override
+	public List<StudentDemandVo> queryAllStudentDemandListBy10(StudentDemandForm form) {
+		List<StudentDemandVo> list = studentDemandMapper.queryAllStudentDemandListBy10(form);
+		return list;
 	}
 }

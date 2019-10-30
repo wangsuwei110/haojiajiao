@@ -271,4 +271,6 @@ public class StudentDemandForm extends PageForm implements Serializable {
     public void setUpdateUser(String updateUser) {
         this.updateUser = updateUser;
     }
+    
+    
 }

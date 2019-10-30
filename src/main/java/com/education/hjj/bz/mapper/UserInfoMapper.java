@@ -47,4 +47,6 @@ public interface UserInfoMapper {
 	int updateTeachers(@Param("list") List<TeacherPo> teacherList);
 	
 	List<TeacherInfoPicturesVo> queryTeacherInfoByType(PicturePo picturePo);
+	
+	List<TeacherVo> queryStudentDemandSignUpTeacher(Integer sid);
 }

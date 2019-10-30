@@ -98,8 +98,6 @@ public class HomeController {
 		//查询学员需求订单详情
 		Map<String,Object> map = studentDemandsService.queryStudentDemandDetailBySid(sid , teacherId);
 		
-		
-		
 		return ApiResponse.success(map);
 	}
 	

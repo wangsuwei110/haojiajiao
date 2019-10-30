@@ -26,6 +26,23 @@ public interface StudentDemandMapper {
 	List<StudentDemandVo> listDemand(StudentDemandConnectForm demandForm);
 
 	List<StudentDemandVo> listDemandAndTeacher(StudentDemandConnectForm demandForm);
+	
+	List<StudentDemandVo> queryAllStudentDemandList(StudentDemandForm form);
+	
+	List<StudentDemandVo> queryAllStudentDemandListBy10(StudentDemandForm form);
+	
+	StudentDemandVo queryStudentDemandDetailBySid(Integer sid);
 
 	Long findMaxSid();
+	List<StudentDemandVo> queryNewTrialOrderList(Integer teacherId);
+	
+	List<StudentDemandVo> queryFitTeacherOrderList(Integer teacherId);
+	
+	List<StudentDemandVo> queryUserDemandsList(StudentDemandConnectForm demandForm);
+	
+	StudentDemandVo queryStudemtDemandDetail(StudentDemandConnectForm demandForm);
+	
+	int updateNewTrialDemandTime(StudentDemandConnectForm demandForm);
+	
+	int updateNewTrialDemandStatus(StudentDemandConnectForm demandForm);
 }

@@ -415,5 +415,23 @@
 	
 		
 			
-	</select>   	
+	</select>  
+	
+	<select id="queryStudentDemandSignUpTeacher" parameterType="java.lang.Integer" resultMap="userInfoResultMap">
+    	SELECT
+			DISTINCT(demand_id),
+			t.name,
+			t.picture,
+			t.teacher_level,
+			t.employ_rate,
+			t.resumption_rate
+		FROM
+			student_demand_connect sdc
+		LEFT JOIN
+			teacher t
+		ON
+			sdc.teacher_id = t.teacher_id
+		WHERE
+			sdc.demand_id = #{sid}
+    </select> 	
 </mapper>

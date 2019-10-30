@@ -1,11 +1,18 @@
 package com.education.hjj.bz.controller;
 
+import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
+import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.TeachScreenForm;
 import com.education.hjj.bz.formBean.TeacherScreenForm;
+import com.education.hjj.bz.service.StudentDemandsService;
 import com.education.hjj.bz.service.TeacherService;
 import com.education.hjj.bz.util.ApiResponse;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +30,9 @@ public class TeacherController {
 
     @Autowired
     private TeacherService teacherService;
+    
+    @Autowired
+    private StudentDemandsService studentDemandsService;
 
     // 详情页
 	@PostMapping("/list")
@@ -68,4 +78,26 @@ public class TeacherController {
     public ApiResponse cancelConnect(@RequestBody StudentConnectTeacherForm form) {
         return teacherService.cancelConnect(form);
     }
+    
+	@ApiOperation("我的订单")
+	@RequestMapping(value = "/queryDemandsByTeacher", method = RequestMethod.POST)
+	@ResponseBody
+	public ApiResponse queryUserDemandsList(@RequestBody StudentDemandConnectForm demandForm) {
+		
+		List<StudentDemandVo>  list = studentDemandsService.queryUserDemandsList(demandForm);
+		
+		return ApiResponse.success(list);
+	}
+	
+	@ApiOperation("订单详情")
+	@RequestMapping(value = "/queryStudemtDemandDetail", method = RequestMethod.POST)
+	@ResponseBody
+	public ApiResponse queryStudemtDemandDetail(@RequestBody StudentDemandConnectForm demandForm) {
+		
+		StudentDemandVo  studentDemandVo = studentDemandsService.queryStudemtDemandDetail(demandForm);
+		
+		return ApiResponse.success(studentDemandVo);
+	}
+	
+	
 }
