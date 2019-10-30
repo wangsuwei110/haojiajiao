@@ -101,7 +101,7 @@
                 tl.teach_level_id AS `key`
                 ,tl.teach_level_name AS `value`
             </if>
-            <if test="teachLevel != null">
+            <if test="teachLevel != null and teachGrade == null">
                 tlg.teach_level_grade_id AS `key`
                 ,tlg.teach_grade_name    AS `value`
             </if>
