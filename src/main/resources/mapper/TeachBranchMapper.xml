@@ -28,5 +28,25 @@
 
     </select>
     
+     <select id="queryCheckedTeachBranchs"  resultMap="TeachBranchsResultMap" parameterType="java.util.List">    
+        select 
+			tb.teach_branch_id,
+			tb.teach_branch_name,
+			tb.teach_grade_id,
+			tb.teach_level_id
+		from 
+			teach_branch tb
+		WHERE
+			tb.status = 1
+		and
+        	tb.teach_branch_id 
+        in
+       	<foreach item="item" collection="list" separator="," open="(" close=")" index="">    
+	      #{item.teachBranchId}    
+	    </foreach>
+		ORDER BY
+			tb.teach_branch_id 
+
+    </select>
     
 </mapper>
