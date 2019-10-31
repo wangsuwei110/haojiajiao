@@ -26,9 +26,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.education.hjj.bz.entity.PicturePo;
 import com.education.hjj.bz.entity.vo.ParameterVo;
 import com.education.hjj.bz.entity.vo.PictureVo;
+import com.education.hjj.bz.entity.vo.TeachBranchVo;
 import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.service.ParameterService;
+import com.education.hjj.bz.service.TeachBranchService;
 import com.education.hjj.bz.service.UserInfoService;
 import com.education.hjj.bz.service.UserPictureInfoService;
 import com.education.hjj.bz.util.ApiResponse;
@@ -53,6 +55,9 @@ public class UserInfoController {
 	
 	@Autowired
 	private ParameterService parameterService;
+	
+	@Autowired
+	private TeachBranchService teachBranchService;
 
 	@Autowired
 	private StudentConnectTeacherMapper connectTeacherMapper;
@@ -338,9 +343,9 @@ public class UserInfoController {
 				
 				logger.info("parameterIds = {}" , parameterIds);
 				
-				List<ParameterVo> parametersList = null;
+				List<TeachBranchVo> parametersList = null;
 				if(teacherVo.getTeachBrance() != null && teacherVo.getTeachBranchSlave() != null ) {
-					parametersList = parameterService.queryParameterListsByTypes(parameterIds);
+					parametersList = teachBranchService.queryCheckedTeachBranchs(parameterIds);
 				}
 				
 				//可教科目

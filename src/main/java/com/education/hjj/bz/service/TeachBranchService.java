@@ -13,4 +13,6 @@ public interface TeachBranchService {
 	List<TeachGradeVo> queryTeachBranchListByTeachGrade();
 	
 	List<TeachBranchVo> queryAllTeachBranchs();
+	
+	List<TeachBranchVo> queryCheckedTeachBranchs(String parameterIds);
 }
