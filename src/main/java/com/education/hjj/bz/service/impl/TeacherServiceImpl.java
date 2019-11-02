@@ -3,6 +3,7 @@ package com.education.hjj.bz.service.impl;
 import com.education.hjj.bz.entity.vo.*;
 import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
 import com.education.hjj.bz.formBean.TeachScreenForm;
+import com.education.hjj.bz.formBean.TeachUniversityForm;
 import com.education.hjj.bz.formBean.TeacherScreenForm;
 import com.education.hjj.bz.mapper.ParameterMapper;
 import com.education.hjj.bz.mapper.StudentConnectTeacherMapper;
@@ -151,6 +152,11 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public ApiResponse listSubject(TeachScreenForm form) {
         return ApiResponse.success(teachLevelMapper.listSubject(form));
+    }
+
+    @Override
+    public ApiResponse listUniversity(TeachUniversityForm form) {
+        return ApiResponse.success(teachLevelMapper.listUniversity(form));
     }
 
 

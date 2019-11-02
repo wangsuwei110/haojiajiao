@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.hjj.bz.mapper.UniversityMapper">
+
+    <resultMap id="universityResultMap" type="com.education.hjj.bz.entity.vo.UniversityVo">
+	     	<result property="sid" column="sid"/>
+	     	<result property="universityName" column="university_name"/>
+	     	<result property="province" column="province"/>
+	     	<result property="createTime" column="create_time"/>
+	     	<result property="createUser" column="create_user"/>
+	     	<result property="updateTime" column="update_time"/>
+	     	<result property="updateUser" column="update_user"/>
+    </resultMap>
+
+	<select id="load" resultMap="universityResultMap" parameterType="long">
+        SELECT * FROM university
+        WHERE id =  #{id} and delete_flag = 0
+    </select>
+
+	<update id="delete">
+        UPDATE university
+        SET delete_flag = 1
+        WHERE id =  #{id}
+    </update>
+
+    <update id="updateNotNull" parameterType="com.education.hjj.bz.formBean.UniversityForm">
+        UPDATE university
+        <set>
+		     	 <if test="sid != null">
+	               sid =  #{sid},
+       		     </if>
+		     	 <if test="universityName != null">
+	               university_name =  #{universityName},
+       		     </if>
+		     	 <if test="province != null">
+	               province =  #{province},
+       		     </if>
+		     	 <if test="createTime != null">
+	               create_time =  #{createTime},
+       		     </if>
+		     	 <if test="createUser != null">
+	               create_user =  #{createUser},
+       		     </if>
+		     	 <if test="updateTime != null">
+	               update_time =  #{updateTime},
+       		     </if>
+		     	 <if test="updateUser != null">
+	               update_user =  #{updateUser},
+       		     </if>
+        </set>
+        WHERE id =  #{id}
+    </update>
+
+    <insert id="insert" parameterType="com.education.hjj.bz.formBean.UniversityForm">
+        <selectKey resultType="long" keyProperty="sid" >
+		SELECT @@IDENTITY AS sid
+		</selectKey>
+        INSERT INTO university(
+	        university_name,
+	        province,
+	        create_time,
+	        create_user,
+	        update_time,
+	        update_user
+	        ) VALUES (
+	        #{universityName},
+	        #{province},
+	        #{createTime},
+	        #{createUser},
+	        #{updateTime},
+	        #{updateUser}
+        )
+    </insert>
+
+
+    <select id="getCount" parameterType="com.education.hjj.bz.formBean.UniversityForm"  resultType="int">
+        SELECT count(0)
+        FROM university
+        <include refid="listRef"/>
+    </select>
+
+    <select id="list" parameterType="com.education.hjj.bz.formBean.UniversityForm"  resultMap="universityResultMap">
+        SELECT *
+        FROM university
+        <include refid="listRef"/>
+        ORDER BY id DESC
+        <if test="offset != null">
+            <![CDATA[
+            limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
+    </select>
+    <sql id="listRef">
+        <where>
+                <if test="sid != null and sid != ''">
+                    and sid =  #{sid}
+                </if>
+                <if test="universityName != null and universityName != ''">
+                    and university_name =  #{universityName}
+                </if>
+                <if test="province != null and province != ''">
+                    and province =  #{province}
+                </if>
+                <if test="createTime != null and createTime != ''">
+                    and create_time =  #{createTime}
+                </if>
+                <if test="createUser != null and createUser != ''">
+                    and create_user =  #{createUser}
+                </if>
+                <if test="updateTime != null and updateTime != ''">
+                    and update_time =  #{updateTime}
+                </if>
+                <if test="updateUser != null and updateUser != ''">
+                    and update_user =  #{updateUser}
+                </if>
+        </where>
+    </sql>
+</mapper>
