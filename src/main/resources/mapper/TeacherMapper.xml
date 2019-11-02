@@ -103,33 +103,39 @@
 
 	<select id="listTeacher" parameterType="com.education.hjj.bz.formBean.TeacherScreenForm" resultMap="teacherResultMap">
 		SELECT
-            teacher_id
-            ,name
-            ,sex
-            ,teacher_level
-            ,school
-            ,begin_school_time
-            ,teach_branch_slave
-            ,charges_standard
-            ,teacher_tag
-            ,picture
-		FROM teacher
+            tea.teacher_id
+            ,tea.name
+            ,tea.sex
+            ,tea.teacher_level
+            ,un.university_name AS school
+            ,tea.begin_school_time
+            ,tea.teach_branch_slave
+            ,tea.charges_standard
+            ,tea.teacher_tag
+            ,tea.picture
+		FROM teacher tea
+        LEFT JOIN university un
+        on tea.school = un.sid
 		WHERE status = 1
 		<if test="subjectId != null">
-			AND FIND_IN_SET(#{subjectId}, teach_branch_slave)
+			AND FIND_IN_SET(#{subjectId}, tea.teach_branch_slave)
 		</if>
         <if test="sex != null">
-            AND sex = #{sex}
+            AND tea.sex = #{sex}
         </if>
         <if test="addressId != null">
-            AND FIND_IN_SET(#{addressId}, teach_address)
+            AND FIND_IN_SET(#{addressId}, tea.teach_address)
         </if>
         <if test="type != null">
             AND is_graduate = #{type}
         </if>
         <if test="schoolId != null">
-            AND school =  #{schoolId}
+            AND FIND_IN_SET(#{schoolId}, tea.school)
         </if>
+        <!--<if test="schoolName != null">
+            AND tea.school in  (select sid from university
+            where CONCAT(university_name, province) like CONCAT('%', #{schoolName}, '%'))
+        </if>-->
 		ORDER BY teacher_points DESC
 		<if test="offset != null">
 			<![CDATA[

@@ -94,6 +94,19 @@
         <include refid="listRef"/>
     </select>
 
+    <select id="listUniversity" parameterType="com.education.hjj.bz.formBean.TeachUniversityForm"
+            resultType="com.education.hjj.bz.entity.vo.CodeVo">
+        SELECT
+            sid AS `key`
+            ,university_name AS `value`
+        FROM university
+        WHERE 1=1
+          <if test="schoolAndProvince != null and schoolAndProvince != ''">
+              AND concat(university_name, province) LIKE CONCAT('%', #{schoolAndProvince}, '%')
+          </if>
+        ORDER BY sid ASC
+    </select>
+
     <select id="listSubject" parameterType="com.education.hjj.bz.formBean.TeachScreenForm"
             resultType="com.education.hjj.bz.entity.vo.CodeVo">
         SELECT

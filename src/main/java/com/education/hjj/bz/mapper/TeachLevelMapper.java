@@ -4,6 +4,7 @@ import com.education.hjj.bz.entity.vo.CodeVo;
 import com.education.hjj.bz.entity.vo.TeachLevelVo;
 import com.education.hjj.bz.formBean.TeachLevelForm;
 import com.education.hjj.bz.formBean.TeachScreenForm;
+import com.education.hjj.bz.formBean.TeachUniversityForm;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -30,6 +31,8 @@ public interface TeachLevelMapper {
     List<TeachLevelVo> list(TeachLevelForm form);
 
     List<CodeVo>  listSubject(TeachScreenForm form);
+
+    List<CodeVo>  listUniversity(TeachUniversityForm form);
 
     List<TeachLevelVo> queryAllTeachLevel();
 }

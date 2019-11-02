@@ -3,6 +3,7 @@ package com.education.hjj.bz.service;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
 import com.education.hjj.bz.formBean.TeachScreenForm;
+import com.education.hjj.bz.formBean.TeachUniversityForm;
 import com.education.hjj.bz.formBean.TeacherScreenForm;
 import com.education.hjj.bz.util.ApiResponse;
 
@@ -39,6 +40,12 @@ public interface TeacherService{
      * @return
      */
     ApiResponse listSubject(TeachScreenForm form);
+
+    /**
+     * 教员大学筛选
+     * @return
+     */
+    ApiResponse listUniversity(TeachUniversityForm form);
 
     /**
      * 关联学员和教员信息

@@ -2,10 +2,7 @@ package com.education.hjj.bz.controller;
 
 import com.education.hjj.bz.entity.vo.PageVo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
-import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
-import com.education.hjj.bz.formBean.StudentDemandConnectForm;
-import com.education.hjj.bz.formBean.TeachScreenForm;
-import com.education.hjj.bz.formBean.TeacherScreenForm;
+import com.education.hjj.bz.formBean.*;
 import com.education.hjj.bz.service.StudentDemandsService;
 import com.education.hjj.bz.service.TeacherService;
 import com.education.hjj.bz.util.ApiResponse;
@@ -57,7 +54,13 @@ public class TeacherController {
         return teacherService.listSubject(form);
     }
 
-
+    // 筛选教员大学
+    @ApiOperation("大学列表")
+    @PostMapping("/listUniversity")
+    @ResponseBody
+    public ApiResponse listUniversity(@RequestBody TeachUniversityForm form) {
+        return teacherService.listUniversity(form);
+    }
 
     // 收藏教员
     @PostMapping("/connect")
