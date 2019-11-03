@@ -48,10 +48,19 @@ public class TeacherController {
 
 
     // 科目刷选的三级联动 学段/年级/科目
+    @ApiOperation("三级联动，科目表")
     @PostMapping("/listSubject")
     @ResponseBody
     public ApiResponse listSubject(@RequestBody TeachScreenForm form) {
         return teacherService.listSubject(form);
+    }
+
+    // 科目刷选的三级联动 学段/年级/科目
+    @ApiOperation("二级联动，科目表")
+    @PostMapping("/findAllSubject")
+    @ResponseBody
+    public ApiResponse findAllSubject(@RequestBody TeachScreenForm form) {
+        return teacherService.findAllSubject(form);
     }
 
     // 筛选教员大学

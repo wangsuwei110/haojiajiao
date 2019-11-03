@@ -140,6 +140,30 @@
         </if>
     </select>
 
+    <select id="findAllSubject" parameterType="com.education.hjj.bz.formBean.TeachScreenForm"
+            resultType="com.education.hjj.bz.entity.vo.CodeVo">
+        SELECT
+            <if test="teachLevel == null and teachGrade == null">
+                tl.teach_level_id AS `key`
+                ,tl.teach_level_name AS `value`
+            </if>
+            <if test="teachLevel != null and teachGrade == null">
+                tb.teach_branch_id AS `key`
+                ,tb.teach_branch_name AS `value`
+            </if>
+        FROM teach_level tl
+        <if test="teachLevel != null">
+            INNER JOIN teach_level_grade tlg
+            ON tl.teach_level_id = tlg.teach_level_id
+            INNER JOIN teach_branch tb
+            ON tlg.teach_level_grade_id = tb.teach_grade_id
+        </if>
+        WHERE 1 = 1
+        <if test="teachLevel != null">
+            AND FIND_IN_SET(tl.teach_level_id, #{teachLevel})
+        </if>
+    </select>
+
     <select id="list" parameterType="com.education.hjj.bz.formBean.TeachLevelForm"  resultMap="teachLevelResultMap">
         SELECT *
         FROM teach_level

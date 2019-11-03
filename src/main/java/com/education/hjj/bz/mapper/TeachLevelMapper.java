@@ -32,6 +32,8 @@ public interface TeachLevelMapper {
 
     List<CodeVo>  listSubject(TeachScreenForm form);
 
+    List<CodeVo>  findAllSubject(TeachScreenForm form);
+
     List<CodeVo>  listUniversity(TeachUniversityForm form);
 
     List<TeachLevelVo> queryAllTeachLevel();

@@ -155,6 +155,11 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    public ApiResponse findAllSubject(TeachScreenForm form) {
+        return ApiResponse.success(teachLevelMapper.findAllSubject(form));
+    }
+
+    @Override
     public ApiResponse listUniversity(TeachUniversityForm form) {
         return ApiResponse.success(teachLevelMapper.listUniversity(form));
     }
