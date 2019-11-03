@@ -133,10 +133,10 @@
         </if>
         WHERE 1 = 1
         <if test="teachLevel != null">
-            AND tl.teach_level_id = #{teachLevel}
+            AND FIND_IN_SET(tl.teach_level_id, #{teachLevel})
         </if>
         <if test="teachGrade != null">
-            AND tlg.teach_level_grade_id = #{teachGrade}
+            AND FIND_IN_SET(tlg.teach_level_grade_id, #{teachGrade})
         </if>
     </select>
 

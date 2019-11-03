@@ -15,24 +15,24 @@ public class TeachScreenForm {
 
 
     @ApiModelProperty(value = "教学学段等级",required = true)
-    private Integer teachLevel;
+    private String teachLevel;
 
     @ApiModelProperty(value = "教学学段下的年级",required = true)
-    private Integer teachGrade;
+    private String teachGrade;
 
-    public Integer getTeachLevel() {
+    public String getTeachLevel() {
         return teachLevel;
     }
 
-    public void setTeachLevel(Integer teachLevel) {
+    public void setTeachLevel(String teachLevel) {
         this.teachLevel = teachLevel;
     }
 
-    public Integer getTeachGrade() {
+    public String getTeachGrade() {
         return teachGrade;
     }
 
-    public void setTeachGrade(Integer teachGrade) {
+    public void setTeachGrade(String teachGrade) {
         this.teachGrade = teachGrade;
     }
 }
