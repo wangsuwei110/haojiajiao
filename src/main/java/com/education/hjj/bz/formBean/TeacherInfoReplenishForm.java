@@ -27,7 +27,7 @@ public class TeacherInfoReplenishForm implements Serializable{
 	
 	private String address;
 
-	
+	private String teachLevel;
 
 	public String getTeacherId() {
 		return teacherId;
@@ -99,6 +99,14 @@ public class TeacherInfoReplenishForm implements Serializable{
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public String getTeachLevel() {
+		return teachLevel;
+	}
+
+	public void setTeachLevel(String teachLevel) {
+		this.teachLevel = teachLevel;
 	}
 	
 }

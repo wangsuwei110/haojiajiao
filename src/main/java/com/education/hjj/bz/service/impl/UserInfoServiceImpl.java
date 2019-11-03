@@ -560,6 +560,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			String teachBranchSlave = teacherInfoReplenishForm.getTeachBranchSlave();
 			String telephone = teacherInfoReplenishForm.getTelephone();
 			String teachGrade = teacherInfoReplenishForm.getTeachGrade();
+			String teachLvel = teacherInfoReplenishForm.getTeachLevel();
 			
 			TeacherPo teacher = new TeacherPo();
 			teacher.setTeachBrance(teachBrance);
@@ -573,6 +574,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			teacher.setTeachGrade(teachGrade);
 			teacher.setUpdateTime(new Date());
 			teacher.setUpdateUser(teacherId);
+			teacher.setTeachLevel(teachLvel);
 			
 			int i = userInfoMapper.updateUserInfo(teacher);
 			
