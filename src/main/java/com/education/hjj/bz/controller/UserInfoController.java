@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.education.hjj.bz.entity.PicturePo;
+import com.education.hjj.bz.entity.vo.PageVo;
 import com.education.hjj.bz.entity.vo.ParameterVo;
 import com.education.hjj.bz.entity.vo.PictureVo;
 import com.education.hjj.bz.entity.vo.TeachBranchVo;
@@ -40,7 +41,7 @@ import com.education.hjj.bz.util.UtilTools;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-@Api(tags = { "用户信息" })
+@Api(tags = { "教员信息" })
 @RestController
 @RequestMapping(value = "/userInfo")
 public class UserInfoController {
@@ -389,14 +390,6 @@ public class UserInfoController {
 		return ApiResponse.error("暂无数据！");
 	}
 
-	@ApiOperation("查询授课资料详情")
-	@RequestMapping(value = "/queryUserteachBranchDetails", method = RequestMethod.POST)
-	@ResponseBody
-	public ApiResponse queryUserteachBranchDetails(@RequestBody PictureForm pictureForm) {
-		
-		return ApiResponse.error("暂无数据！");
-	}
-	
 	@ApiOperation("查询所有教员信息")
 	@RequestMapping(value = "/queryAllTeacherInfos", method = RequestMethod.GET)
 	@ResponseBody
@@ -404,15 +397,13 @@ public class UserInfoController {
 		
 		List<TeacherVo> list = userInfoService.queryAllTeacherInfos();
 		
-		int count = list.size();
+		PageVo pageVo = new PageVo();
 		
-		Map<String , Object> map = new HashMap<String , Object>(2);
-		
-		if(count > 0) {
-			map.put("count", count);
-			map.put("teacherList", list);
+		if(list.size() > 0) {
+			pageVo.setDataList(list);
+			pageVo.setTotal(list.size());
 			
-			return ApiResponse.success("操作成功！", UtilTools.mapToJson(map));
+			return ApiResponse.success("操作成功！",pageVo);
 		}
 		
 		return ApiResponse.error("暂无数据！");

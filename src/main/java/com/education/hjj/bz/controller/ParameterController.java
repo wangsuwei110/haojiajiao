@@ -56,7 +56,7 @@ public class ParameterController {
 	private TeachLevelService teachLevelService;
 	
 	
-	@ApiOperation("通过父ID查询所有参数")
+	@ApiOperation("授课资料信息补充参数查询")
 	@RequestMapping(value = "/queryParameters", method = RequestMethod.POST)
 	@Transactional
 	public ApiResponse queryParametersByParentId(@RequestBody ParameterForm parameterForm) {
