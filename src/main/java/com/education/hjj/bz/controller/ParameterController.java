@@ -71,31 +71,32 @@ public class ParameterController {
 			return ApiResponse.error("参数错误！");
 		}
 		
-		logger.info("parameters={} , teacherId={}" , parent_Ids , teacherId);
+		logger.info("teacherId={}" , teacherId);
 		
 		TeacherVo  tv = userInfoService.queryTeacherHomeInfos(teacherId);
 		
+		Map<String , Object> map = new HashMap<String , Object>();
 		
-		List<ParameterVo> pVoBranchSlaveList = null;
-		
+		map.put("teachLevel", JSON.toJSON(tv.getTeachLevel()));
+		map.put("teachGrade", JSON.toJSON(tv.getTeachGrade()));
+		map.put("teachBranchMaster", JSON.toJSON(tv.getTeachBrance()));
+		map.put("teachBranchSlave", JSON.toJSON(tv.getTeachBranchSlave()));
 		
 		String[] parentIds = parent_Ids.split(",");
 		
 		List<Map<String , Object>> compareResult = new ArrayList<Map<String , Object>>();
-		
-		Map<String , Object> map = new HashMap<String, Object>();
 		
 		for(String parentId:parentIds) {
 			
 			List<ParameterVo>  pVoList = new ArrayList<ParameterVo>();
 			
 			
-			
-			if(tv != null && Integer.valueOf(parentId) == 62 ) {
-				if(tv.getTeacherTag() !=null && StringUtils.isNoneBlank(tv.getTeacherTag())) {
-					pVoList = parameterService.queryParameterListsByTypes(tv.getTeacherTag());
-				}
-			}
+//			
+//			if(tv != null && Integer.valueOf(parentId) == 62 ) {
+//				if(tv.getTeacherTag() !=null && StringUtils.isNoneBlank(tv.getTeacherTag())) {
+//					pVoList = parameterService.queryParameterListsByTypes(tv.getTeacherTag());
+//				}
+//			}
 			
 			if(tv != null && Integer.valueOf(parentId) == 78 ) {
 				if(tv.getTeachAddress() !=null && StringUtils.isNoneBlank(tv.getTeachAddress())) {
@@ -121,169 +122,19 @@ public class ParameterController {
 			
 			
 
-			if(Integer.valueOf(parentId) == 62) {
-				map.put("teacherTag", list);
-			}
+//			if(Integer.valueOf(parentId) == 62) {
+//				map.put("teacherTag", list);
+//			}
 			if(Integer.valueOf(parentId) == 78) {
 				map.put("teachAddress", list);
 			}
 			
 			
 		}
-		
-		//开始讲教学年级进行比较，并将比较后的结果赋值
-		String[] teachGrade = null;
-		List<TeachGradeVo> teachGradeVoList =  teachGradeService.queryAllTeachGrade();
-		
-		if(tv.getTeachGrade() != null && StringUtils.isNoneBlank(tv.getTeachGrade())) {
-			teachGrade = tv.getTeachGrade().split(",");
-			
-			List<TeachGradeVo> teachGradeVoLists = new ArrayList<TeachGradeVo>();
-					
-			for(TeachGradeVo tgv:teachGradeVoList) {
-				
-				TeachGradeVo tgvs = new TeachGradeVo();
-				
-				tgvs.setTeachGradeId(tgv.getTeachGradeId());
-				tgvs.setTeachGradeName(tgv.getTeachGradeName());
-				
-				for(String t:teachGrade) {
-					
-					if(tgv.getTeachGradeId() == Integer.valueOf(t)) {
-						
-						tgvs.setFlag(true);
-						
-						break;
-					}
-					
-					
-				}
-				teachGradeVoLists.add(tgvs);
-			}
-			
-			map.put("teachGrade", teachGradeVoLists);
-		}else {
-			map.put("teachGrade", teachGradeVoList);
-		}
-		
-		
-		
-
-		
-		
-		
-		//开始讲教学学段进行比较，并将比较后的结果赋值
-		List<TeachLevelVo> teachLevelVoList = teachLevelService.queryAllTeachLevel();
-		
-		List<TeachLevelVo> teachLevelVoLists = new ArrayList<TeachLevelVo>();
-		
-		String[] teachLevel = null;
-		if(tv.getTeachLevel() != null && StringUtils.isNoneBlank(tv.getTeachLevel())) {
-			teachLevel = tv.getTeachLevel().split(",");
-			
-			for(TeachLevelVo tlv:teachLevelVoList) {
-				TeachLevelVo tlvs = new TeachLevelVo();
-				for(String s:teachLevel) {
-					
-					
-					tlvs.setTeachLevelId(tlv.getTeachLevelId());
-					tlvs.setTeachLevelName(tlv.getTeachLevelName());
-					
-					if(tlv.getTeachLevelId() == Integer.valueOf(s)) {
-						tlvs.setFlag(true);
-						break;
-					}
-					
-					
-				}
-				teachLevelVoLists.add(tlvs);
-			}
-			
-			map.put("teachLevel", teachLevelVoLists);
-		}else {
-			map.put("teachLevel", teachLevelVoList);
-		}
-		
-		
-		
-
-		
-		
-		List<TeachBranchVo> teachBranchVoList = teachBranchService.queryAllTeachBranchs();
-		List<TeachBranchVo> teachBranchMasterVoLists = new ArrayList<TeachBranchVo>();
-		
-		String teachBrance = tv.getTeachBrance();
-		if(teachBrance !=null && StringUtils.isNotBlank(teachBrance)) {
-			for(TeachBranchVo tbv:teachBranchVoList) {
-				
-				TeachBranchVo tbvs= new TeachBranchVo();
-				
-				tbvs.setTeachBranchId(tbv.getTeachBranchId());
-				tbvs.setTeachBranchName(tbv.getTeachBranchName());
-				
-				if(tbv.getTeachBranchId() == Integer.valueOf(teachBrance)) {
-					
-					tbvs.setFlag(true);
-					tbvs.setBranchType("master");
-				}
-				
-				teachBranchMasterVoLists.add(tbvs);
-			}
-			
-			map.put("teachBranchMaster", teachBranchMasterVoLists);
-		}else {
-			map.put("teachBranchMaster", teachBranchVoList);
-		}
-		
-		
-		
-		List<TeachBranchVo> teachBranchVoLists = new ArrayList<TeachBranchVo>();
-		
-		String[] teachBranceSlave = null;
-		if(tv.getTeachBranchSlave() != null && StringUtils.isNoneBlank(tv.getTeachBranchSlave())) {
-			teachBranceSlave = tv.getTeachBranchSlave().split(",");
-			
-			for(TeachBranchVo tbv:teachBranchVoList) {
-				
-				TeachBranchVo tbvs= new TeachBranchVo();
-				
-				tbvs.setTeachBranchId(tbv.getTeachBranchId());
-				tbvs.setTeachBranchName(tbv.getTeachBranchName());
-				
-				for(String s:teachBranceSlave) {
-					
-					//辅授课目
-					
-					tbvs.setBranchType("slave");
-					if(tbv.getTeachBranchId() == Integer.valueOf(s)) {
-						tbvs.setFlag(true);
-						break;
-					}
-					
-					//主授课目
-//					if(tbv.getTeachBranchId() == Integer.valueOf(teachBrance)) {
-//
-//						tbvs.setFlag(true);
-//						tbvs.setBranchType("master");
-//						break;
-//					}
-					
-					
-				}
-				
-				teachBranchVoLists.add(tbvs);
-				
-			}
-			
-			map.put("teachBranchSlave", teachBranchVoLists);
-		}else {
-			map.put("teachBranchSlave", teachBranchVoList);
-		}
-		
-		
-		
+	
 		map.put("teachTime", JSON.toJSON(tv.getTeachTime()));
 		compareResult.add(map);
+		
 		
 		return ApiResponse.success("操作成功" ,JSON.toJSON(compareResult));
 	}

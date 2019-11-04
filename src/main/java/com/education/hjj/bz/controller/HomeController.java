@@ -65,7 +65,7 @@ public class HomeController {
 			map.put("fitTeacherOrderList", fitTeacherOrderList);
 		}else {
 			//查询所有的订单信息列表
-			PageVo<List<StudentDemandVo>> studentDemandList = studentDemandsService.queryAllStudentDemandList(form);
+			List<StudentDemandVo> studentDemandList = studentDemandsService.queryAllStudentDemandListBy10(form);
 			map.put("studentDemandList", studentDemandList);
 		}
 		
@@ -80,7 +80,7 @@ public class HomeController {
 		Map<String,Object> map = new HashMap<String,Object>();
 		
 		//查询所有的订单信息列表
-		List<StudentDemandVo> studentDemandList = studentDemandsService.queryAllStudentDemandListBy10(form);
+		PageVo<List<StudentDemandVo>> studentDemandList = studentDemandsService.queryAllStudentDemandList(form);
 		map.put("studentDemandList", studentDemandList);
 		
 		return ApiResponse.success(map);
