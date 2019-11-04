@@ -95,6 +95,8 @@ public class StudentDemandVo {
     private String signTime;
     //联系手机号
     private String parentPhoneNum;
+    
+    private Integer demandSignUpNum;
 
     @ApiModelProperty(value = "区域id",required = true)
     private Integer parameterId;
@@ -325,6 +327,14 @@ public class StudentDemandVo {
 
 	public void setParentPhoneNum(String parentPhoneNum) {
 		this.parentPhoneNum = parentPhoneNum;
+	}
+
+	public Integer getDemandSignUpNum() {
+		return demandSignUpNum;
+	}
+
+	public void setDemandSignUpNum(Integer demandSignUpNum) {
+		this.demandSignUpNum = demandSignUpNum;
 	}
 
 }
