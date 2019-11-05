@@ -65,7 +65,7 @@ public class TeacherInfoForm extends PageForm implements Serializable{
 	
 	private String teachAddress;
 	
-
+	@JsonProperty("teachTime")
 	private List<TeachTimePo> timeList;
 	
 	private String logonStatus;
