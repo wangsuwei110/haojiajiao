@@ -366,7 +366,7 @@
 		WHERE
 			sdc.teacher_id = #{teacherId}
 		<if test="status != null">
-			AND sdc.status= #{status}
+			AND sdc.status in #{status}
      	</if>
      	
 		ORDER BY
