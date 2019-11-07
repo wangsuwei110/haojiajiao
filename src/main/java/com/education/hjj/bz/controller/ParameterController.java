@@ -46,22 +46,10 @@ public class ParameterController {
 	@Autowired
 	private UserInfoService userInfoService;
 	
-	@Autowired
-	private TeachBranchService teachBranchService;
-	
-	@Autowired
-	private TeachGradeService teachGradeService;
-	
-	@Autowired
-	private TeachLevelService teachLevelService;
-	
-	
 	@ApiOperation("授课资料信息补充参数查询")
 	@RequestMapping(value = "/queryParameters", method = RequestMethod.POST)
 	@Transactional
 	public ApiResponse queryParametersByParentId(@RequestBody ParameterForm parameterForm) {
-		
-		
 		
 		String teacherId = parameterForm.getTeacherId();
 		
@@ -119,9 +107,6 @@ public class ParameterController {
 				
 			}
 			
-			
-			
-
 //			if(Integer.valueOf(parentId) == 62) {
 //				map.put("teacherTag", list);
 //			}

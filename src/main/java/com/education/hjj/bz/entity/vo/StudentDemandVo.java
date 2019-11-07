@@ -56,6 +56,9 @@ public class StudentDemandVo {
 
     @ApiModelProperty(value = "状态 0:未发布，1:发布中;2:已接单;3:结单")
     private Boolean status;
+    
+    //订单报名状态
+    private Integer demandSignStatus;
 
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
@@ -335,6 +338,14 @@ public class StudentDemandVo {
 
 	public void setDemandSignUpNum(Integer demandSignUpNum) {
 		this.demandSignUpNum = demandSignUpNum;
+	}
+
+	public Integer getDemandSignStatus() {
+		return demandSignStatus;
+	}
+
+	public void setDemandSignStatus(Integer demandSignStatus) {
+		this.demandSignStatus = demandSignStatus;
 	}
 
 }
