@@ -336,7 +336,7 @@
     </select>
     
     <!-- 查询用户所有的订单 -->
-    <select id="queryUserDemandsList" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm" resultMap="studentDemandsResultMap">
+    <select id="queryUserDemandsList" parameterType="java.util.Map" resultMap="studentDemandsResultMap">
     	SELECT
 			sd.sid,
 			s.student_name,
@@ -366,13 +366,23 @@
 			sd.student_id = s.sid
 		WHERE
 			sdc.teacher_id = #{teacherId}
-		<if test="status != null">
-			AND sdc.status in #{demandSignStatus}
+			
+		<if test="list != null">
+			AND sdc.status in 
+			
+			<foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+		       #{item}
+		   </foreach>
+		   
      	</if>
      	
 		ORDER BY
 			sd.create_time desc
-	
+		<if test="offset != null">
+            <![CDATA[
+               limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
     </select>
     
     <resultMap id="studentDemandsDetailResultMap" type="com.education.hjj.bz.entity.vo.StudentDemandVo" >
@@ -380,6 +390,7 @@
 		<result column="sid" property="sid"/>
 		<result column="student_name" property="studentName"/>
 		<result column="class_num" property="classNum"/>
+		<result column="week_num" property="weekNum"/>
 		<result column="time_range" property="timeRange"/>
 		<result column="order_money" property="orderMoney"/>
 		<result column="demand_desc" property="demandDesc"/>
@@ -392,6 +403,7 @@
 		<result column="parent_phone_num" property="parentPhoneNum"/>
 	</resultMap>
     
+    <!-- 订单详情 -->
     <select id ="queryStudemtDemandDetail" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm" resultMap="studentDemandsDetailResultMap">
     	SELECT
 			sd.sid,
@@ -405,6 +417,7 @@
 			sd.demand_address,
 			sd.time_range,
 			sd.class_num,
+			sd.week_num,
 			sd.demand_desc,
 			s.parent_phone_num
 			
@@ -427,8 +440,7 @@
 		ON
 			sd.student_id = s.sid
 		WHERE
-			sdc.teacher_id = #{teacherId}
-		AND
+			
 			sd.sid = #{demandId}
 		ORDER BY
 			sd.create_time desc
