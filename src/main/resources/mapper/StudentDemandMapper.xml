@@ -31,6 +31,7 @@
 		<result column="teach_grade_name" property="teachGradeName"/>
 		<result column="teach_branch_name" property="teachBranchName"/>
 		<result column="order_teach_time" property="orderTeachTime"/>
+		<result column="demandSignStatus" property="demandSignStatus"/>
 	</resultMap>
 	
 	
@@ -344,7 +345,7 @@
 			date_format(sd.create_time, '%Y-%m-%d %T') as create_time,
 			sd.order_money,
 			sdc.order_teach_time,
-			sdc.`status`
+			sdc.`status` as demandSignStatus
 		FROM
 			student_demand_connect sdc
 		LEFT JOIN
@@ -366,7 +367,7 @@
 		WHERE
 			sdc.teacher_id = #{teacherId}
 		<if test="status != null">
-			AND sdc.status in #{status}
+			AND sdc.status in #{demandSignStatus}
      	</if>
      	
 		ORDER BY
