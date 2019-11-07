@@ -24,6 +24,9 @@ public interface StudentDemandConnectMapper {
 
 	Long updateStatus(StudentDemandConnectForm studentDemandConnect);
 
+	/** 试讲通过， 其它报名教员状态改为5*/
+	Long updateStatusAndPass(StudentDemandConnectForm studentDemandConnect);
+
 	Long confirmTeacher(StudentDemandConnectForm studentDemandConnect);
 
 	void delete(Long id);

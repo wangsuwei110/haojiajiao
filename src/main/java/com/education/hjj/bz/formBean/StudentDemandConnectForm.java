@@ -47,7 +47,18 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
     @ApiModelProperty(value = "创建用户")
     private Integer createUser;
 
+    @ApiModelProperty(value = "订单类型：1:单独预约，2:快速请家教")
+    private Integer demandType;
+
     private Integer deleteStatus;
+
+    public Integer getDemandType() {
+        return demandType;
+    }
+
+    public void setDemandType(Integer demandType) {
+        this.demandType = demandType;
+    }
 
     public Integer getDeleteStatus() {
         return deleteStatus;

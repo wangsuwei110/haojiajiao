@@ -189,6 +189,17 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	@Override
 	@Transactional
 	public ApiResponse confirmTeacher(StudentDemandConnectForm demandForm) {
+
+		// 单独预约的需求，确定教员时，订单变成试讲中
+		if (demandForm.getDemandId() == null) {
+
+			return ApiResponse.error("必须确定单独试讲或者快速请家教");
+		} else if (demandForm.getDemandId() == 1) {
+			// 单独预约
+			demandForm.setStatus(1);
+		} else {
+			demandForm.setStatus(2);
+		}
 		Long sid = connectMapper.confirmTeacher(demandForm);
 
 		if (sid != null) {
@@ -225,9 +236,11 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 						return ApiResponse.success("感谢您的配合，再等等可能会有更多优秀的教员来报名。", false);
 					}
 				}
-				// 1.单独预约型
-
 			}
+			// 试讲通过，则将其它报名的订单全部改成5
+			demandForm.setStatus(5);
+			connectMapper.updateStatusAndPass(demandForm);
+
 			return ApiResponse.success("状态修改成功");
 		}
 		return ApiResponse.success("状态修改失败");
