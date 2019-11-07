@@ -37,10 +37,10 @@ public class StudentDemandVo {
     private Date orderStart;
 
     @ApiModelProperty(value = "订单周数")
-    private Date weekNum;
+    private Integer weekNum;
 
     @ApiModelProperty(value = "每周上课次数")
-    private Long classNum;
+    private Integer classNum;
 
     @ApiModelProperty(value = "每周上课时间范围")
     private String timeRange;
@@ -222,20 +222,23 @@ public class StudentDemandVo {
     public void setOrderStart(Date orderStart) {
         this.orderStart = orderStart;
     }
-    public Date getWeekNum() {
+
+    public Integer getWeekNum() {
         return weekNum;
     }
 
-    public void setWeekNum(Date weekNum) {
+    public void setWeekNum(Integer weekNum) {
         this.weekNum = weekNum;
     }
-    public Long getClassNum() {
+
+    public Integer getClassNum() {
         return classNum;
     }
 
-    public void setClassNum(Long classNum) {
+    public void setClassNum(Integer classNum) {
         this.classNum = classNum;
     }
+
     public String getTimeRange() {
         return timeRange;
     }
