@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.education.hjj.bz.entity.vo.PageVo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
+import com.education.hjj.bz.entity.vo.StudentLogVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.StudentDemandForm;
 import com.education.hjj.bz.service.StudentDemandsService;
+import com.education.hjj.bz.service.StudentLogService;
 import com.education.hjj.bz.service.UserInfoService;
 import com.education.hjj.bz.util.ApiResponse;
 
@@ -37,6 +39,9 @@ public class HomeController {
 	
 	@Autowired
 	private UserInfoService userInfoService;
+	
+	@Autowired
+	private StudentLogService studentLogService;
 	
 
 	@ApiOperation("查询教员登录首页的内容")
@@ -69,11 +74,15 @@ public class HomeController {
 			map.put("studentDemandList", studentDemandList);
 		}
 		
+		//教员端首页查看学员日志
+		List<StudentLogVo> StudentLogVoList = studentLogService.queryStudentLogByHome10();
+		map.put("StudentLogVoList", StudentLogVoList);
+		
 		return ApiResponse.success(map);
 	}
 	
 	@ApiOperation("查询所有需求订单的内容")
-	@RequestMapping(value = "/queryAllStudentDemandListBy10", method = RequestMethod.POST)
+	@RequestMapping(value = "/queryAllStudentDemandList", method = RequestMethod.POST)
 	@ResponseBody
 	public ApiResponse queryAllStudentDemandList(@RequestBody StudentDemandForm form) {
 		

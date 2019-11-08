@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface StudentDemandMapper {
@@ -38,7 +39,7 @@ public interface StudentDemandMapper {
 	
 	List<StudentDemandVo> queryFitTeacherOrderList(Integer teacherId);
 	
-	List<StudentDemandVo> queryUserDemandsList(StudentDemandConnectForm demandForm);
+	List<StudentDemandVo> queryUserDemandsList(Map<String, Object> map);
 	
 	StudentDemandVo queryStudemtDemandDetail(StudentDemandConnectForm demandForm);
 	

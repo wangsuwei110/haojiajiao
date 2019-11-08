@@ -51,6 +51,9 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
     private Integer demandType;
 
     private Integer deleteStatus;
+    
+    //订单的状态
+    private String demandSignStatus;
 
     public Integer getDemandType() {
         return demandType;
@@ -155,4 +158,12 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
     public void setStudentId(Integer studentId) {
         this.studentId = studentId;
     }
+    public String getDemandSignStatus() {
+		return demandSignStatus;
+	}
+
+	public void setDemandSignStatus(String demandSignStatus) {
+		this.demandSignStatus = demandSignStatus;
+	}
+    
 }

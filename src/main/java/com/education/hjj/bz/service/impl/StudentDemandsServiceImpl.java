@@ -1,5 +1,6 @@
 package com.education.hjj.bz.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -315,8 +316,38 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 	@Override
 	public List<StudentDemandVo> queryUserDemandsList(StudentDemandConnectForm demandForm) {
-		List<StudentDemandVo> list = studentDemandMapper.queryUserDemandsList(demandForm);
+		
+String demandStatus = demandForm.getDemandSignStatus();
+		
+		Integer teacherId = demandForm.getTeacherId();
+		
+		logger.info("teacherId = {} , demandStatus = {}" , teacherId ,  demandStatus);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("teacherId", teacherId);
+		
+		if(demandStatus != null && demandStatus.length() > 0) {
+			
+			String[] demandStatusList = demandStatus.split(",");
+			
+			List<Integer> demandStatusIntList = new ArrayList<Integer>();
+			
+			for(String s: demandStatusList){
+				
+				demandStatusIntList.add(Integer.valueOf(s));
+			}
+			
+			map.put("list", demandStatusIntList);
+			
+		}else {
+			map.put("list", null);
+		}
+		
+		List<StudentDemandVo> list = studentDemandMapper.queryUserDemandsList(map);
+		
 		return list;
+		
 	}
 
 	@Override
