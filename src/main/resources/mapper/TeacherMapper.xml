@@ -71,7 +71,7 @@
           , tc.resumption_rate
           , sdc.status
           , sdc.appraise
-          , teach_level
+          , teacher_level
         FROM
           teacher tc
           INNER JOIN student_demand_connect sdc
