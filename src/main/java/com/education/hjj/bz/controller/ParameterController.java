@@ -79,13 +79,14 @@ public class ParameterController {
 			List<ParameterVo>  pVoList = new ArrayList<ParameterVo>();
 			
 			
-//			
-//			if(tv != null && Integer.valueOf(parentId) == 62 ) {
-//				if(tv.getTeacherTag() !=null && StringUtils.isNoneBlank(tv.getTeacherTag())) {
-//					pVoList = parameterService.queryParameterListsByTypes(tv.getTeacherTag());
-//				}
-//			}
+			//个人标签
+			if(tv != null && Integer.valueOf(parentId) == 62 ) {
+				if(tv.getTeacherTag() !=null && StringUtils.isNoneBlank(tv.getTeacherTag())) {
+					pVoList = parameterService.queryParameterListsByTypes(tv.getTeacherTag());
+				}
+			}
 			
+			//教学区域
 			if(tv != null && Integer.valueOf(parentId) == 78 ) {
 				if(tv.getTeachAddress() !=null && StringUtils.isNoneBlank(tv.getTeachAddress())) {
 					pVoList = parameterService.queryParameterListsByTypes(tv.getTeachAddress());
@@ -107,9 +108,9 @@ public class ParameterController {
 				
 			}
 			
-//			if(Integer.valueOf(parentId) == 62) {
-//				map.put("teacherTag", list);
-//			}
+			if(Integer.valueOf(parentId) == 62) {
+				map.put("teacherTag", list);
+			}
 			if(Integer.valueOf(parentId) == 78) {
 				map.put("teachAddress", list);
 			}

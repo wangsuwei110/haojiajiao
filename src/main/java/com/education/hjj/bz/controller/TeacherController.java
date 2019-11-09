@@ -117,4 +117,18 @@ public class TeacherController {
 	}
 	
 	
+	@ApiOperation("确定订单试讲时间和状态")
+	@RequestMapping(value = "/updateNewTrialDemand", method = RequestMethod.POST)
+	@ResponseBody
+	public ApiResponse updateNewTrialDemand(@RequestBody StudentDemandConnectForm demandForm) {
+		
+		int i = studentDemandsService.updateNewTrialDemand(demandForm);
+		
+		if(i > 0) {
+			return ApiResponse.success("操作成功！");
+		}
+		
+		return ApiResponse.success("操作失败！");
+	}
+	
 }
