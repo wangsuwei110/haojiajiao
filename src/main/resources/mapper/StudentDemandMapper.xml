@@ -24,6 +24,7 @@
 		<result column="create_user" property="createUser"/>
 		<result column="update_time" property="updateTime"/>
 		<result column="update_user" property="updateUser"/>
+		<result column="current_week_day" property="currentWeekDay"/>
 
 		<result column="demand_type" property="demandType"/>
 		<result column="parameter_id" property="parameterId"/>
@@ -228,7 +229,7 @@
 		
 		limit 10
     </select>
-    
+
     <!-- 查询需求订单详情 -->
     <select id="queryStudentDemandDetailBySid" parameterType="java.lang.Integer" resultMap="studentDemandsResultMap">
     	SELECT
@@ -240,7 +241,8 @@
 			sd.time_range,
 			sd.demand_desc,
 			date_format(sd.create_time, '%Y-%m-%d') as create_time,
-			demand_signUp_num
+			demand_signUp_num,
+			current_week_day
 		FROM
 			student_demand sd
 		LEFT JOIN

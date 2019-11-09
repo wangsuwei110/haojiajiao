@@ -564,7 +564,7 @@ public final class DateUtil {
 
 	/**
 	 * 比较日期
-	 * 
+	 *
 	 * @param startDate 日期1
 	 * @param endDate   日期2
 	 * @return 日期2 >= 日期1 返回 true，其他false
@@ -588,7 +588,7 @@ public final class DateUtil {
 
 	/**
 	 * 和当前日期比较
-	 * 
+	 *
 	 * @param date
 	 * @return 小于当前日期时 返回true
 	 */
@@ -614,7 +614,7 @@ public final class DateUtil {
 
 	/**
 	 * 获取备份日期
-	 * 
+	 *
 	 * @return
 	 */
 	public static String getBackupDate(int num) {
@@ -639,7 +639,7 @@ public final class DateUtil {
 	/**
 	 * 参考文档https://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html
 	 * 将时间字符串"Wed Sep 12 22:09:54 CST 2018"转换成Date 此函数目的是为了后面从CSV文件读取GPS时，处理时间的转换
-	 * 
+	 *
 	 * @param date "Wed Sep 12 22:09:54 CST 2018"
 	 * @return
 	 */
@@ -656,7 +656,7 @@ public final class DateUtil {
 
 	/**
 	 * 设定过期时间为凌晨失效
-	 * 
+	 *
 	 * @param ext  过期时长
 	 * @param unit 时间单位 0-day，1-hour，2-minute
 	 * @return
@@ -766,7 +766,7 @@ public final class DateUtil {
 
 	/**
 	 * 传值为字符串，计算当前一个小时之前的时间
-	 * 
+	 *
 	 * @param endTime
 	 * @return
 	 * @throws Exception
@@ -789,7 +789,7 @@ public final class DateUtil {
 
 	/**
 	 * 传值为时间Date，计算当前一个小时之前的时间
-	 * 
+	 *
 	 * @param endTime
 	 * @return
 	 * @throws Exception
@@ -837,7 +837,7 @@ public final class DateUtil {
 
 	/**
 	 * 将传进来的String参数转换成日期类型返回
-	 * 
+	 *
 	 * @param date
 	 * @return
 	 */
@@ -856,7 +856,7 @@ public final class DateUtil {
 
 	/**
 	 * 将传进来的Date参数转换成String日期类型返回
-	 * 
+	 *
 	 * @param date
 	 * @return
 	 */
@@ -940,7 +940,7 @@ public final class DateUtil {
 
 	/**
 	 * 根据入学时间计算现在的年级
-	 * 
+	 *
 	 * @param date
 	 * @return
 	 * @throws ParseException
@@ -974,7 +974,7 @@ public final class DateUtil {
 
 	/**
 	 * 计算两个时间之间是多少年多少月多少天
-	 * 
+	 *
 	 * @param Date beginTime
 	 * @return
 	 * @throws ParseException
@@ -1012,7 +1012,7 @@ public final class DateUtil {
 
 	/**
 	 * 计算两个时间之间是多少年多少月多少天
-	 * 
+	 *
 	 * @param Date beginTime
 	 * @return
 	 * @throws ParseException
@@ -1098,24 +1098,61 @@ public final class DateUtil {
 	 * @return
 	 */
 	public static String getAfterDay(String startDay, int count) {
-		
+
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		
+
 		try {
 			Date date = sdf.parse(startDay);
-			
+
 			Calendar cl = Calendar.getInstance();
-			
+
 			cl.setTime(date);
-			
+
 			cl.add(Calendar.DATE, count);
-			
+
 			return sdf.format(cl.getTime());
-			
+
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+
 		return "";
 	}
+    //获取当前天周几(******返回的是根据周日为开始计算日***)
+    public static int getWeekOfDate(Date date) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        int weekDate = c.get(Calendar.DAY_OF_WEEK) - 1;
+        if (weekDate == 0) {
+            return 7;
+        }
+        return weekDate;
+    }
+
+    //获取本周的结束时间
+    public static Date getEndDayOfWeek(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getBeginDayOfWeek(date));
+        cal.add(Calendar.DAY_OF_WEEK, 6);
+        Date weekEndSta = cal.getTime();
+        return getDayStart(weekEndSta);
+    }
+
+    //获取本周的开始时间
+    public static Date getBeginDayOfWeek(Date date) {
+        if (date == null) {
+            return null;
+        }
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
+        if (dayofweek == 1) {
+            dayofweek += 7;
+        }
+
+        cal.add(Calendar.DATE, 2 - dayofweek);
+        return getDayStart(cal.getTime());
+    }
 }
+

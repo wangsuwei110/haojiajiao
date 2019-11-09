@@ -56,7 +56,7 @@ public class StudentDemandVo {
 
     @ApiModelProperty(value = "状态 0:未发布，1:发布中;2:已接单;3:结单")
     private Boolean status;
-    
+
     //订单报名状态
     private Integer demandSignStatus;
 
@@ -89,7 +89,10 @@ public class StudentDemandVo {
 
     @ApiModelProperty(value = "订单类型：1:单独预约，2:快速请家教")
     private Integer demandType;
-    
+
+    @ApiModelProperty(value = "订单当天周几")
+    private Integer currentWeekDay;
+
     //教学年级名称
     private String teachGradeName;
     //教学科目名称
@@ -98,18 +101,26 @@ public class StudentDemandVo {
     private String signTime;
     //联系手机号
     private String parentPhoneNum;
-    
+
     //订单的报名总人数
     private Integer demandSignUpNum;
-    
+
     //订单的开始日期
     private String orderStartDate;
-    
+
     //订单的结束日期
     private String orderEndDate;
 
     @ApiModelProperty(value = "区域id",required = true)
     private Integer parameterId;
+
+    public Integer getCurrentWeekDay() {
+        return currentWeekDay;
+    }
+
+    public void setCurrentWeekDay(Integer currentWeekDay) {
+        this.currentWeekDay = currentWeekDay;
+    }
 
     public Integer getParameterId() {
         return parameterId;

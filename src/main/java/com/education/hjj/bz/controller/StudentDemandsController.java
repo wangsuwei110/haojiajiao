@@ -1,20 +1,16 @@
 package com.education.hjj.bz.controller;
 
-import com.education.hjj.bz.entity.vo.PageVo;
-import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.StudentDemandForm;
 import com.education.hjj.bz.service.StudentDemandsService;
 import com.education.hjj.bz.util.ApiResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @Api(tags = { "学员端-学生需求信息" })
@@ -53,7 +49,6 @@ public class StudentDemandsController {
 	public ApiResponse listTeacher(@RequestBody StudentDemandConnectForm demandForm) {
 		return studentDemandsService.listTeacher(demandForm);
 	}
-
 	@ApiOperation("确定预约教员与时间")
 	@RequestMapping(value = "/confirmTeacher", method = RequestMethod.POST)
 	public ApiResponse confirmTeacher(@RequestBody StudentDemandConnectForm demandForm) {

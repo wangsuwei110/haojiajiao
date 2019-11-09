@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +123,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		}
 
 		// 插入需求，返回需求id
+		form.setCurrentWeekDay(DateUtil.getWeekOfDate(date));
 		Long orderId = studentDemandMapper.addStudentDemandByTeacher(form);
 
 		// 如果有教员ID，则插入一条关联教员的表数据
@@ -185,7 +187,32 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	@Override
 	public ApiResponse listTeacher(StudentDemandConnectForm demandForm) {
 		// 根据学员的id查找预约的教员列表信息
-		return ApiResponse.success(teacherMapper.listTeacherByStudentId(demandForm.getDemandId()));
+		Map<String, Object> map = new HashMap<>();
+		map.put("teacherList", teacherMapper.listTeacherByStudentId(demandForm.getDemandId()));
+
+		// 根据发布的需求，拿出具体的试讲时间
+		StudentDemandVo vo = studentDemandMapper.queryStudentDemandDetailBySid(demandForm.getDemandId());
+
+		Integer weekDay = vo.getCurrentWeekDay();
+		List<OrderDemandTimeVo> orderDemandTimeVos = new ArrayList<>();
+
+		List<WeekTimeVo> weekTimeVoList = JSON.parseArray(vo.getTimeRange(), WeekTimeVo.class);
+		weekTimeVoList.forEach(w -> {
+			OrderDemandTimeVo timeVo = new OrderDemandTimeVo();
+			timeVo.setWeekDay(w.getWeek());
+			timeVo.setTime(w.getTime());
+			if (weekDay >= w.getWeek()) {
+				timeVo.setDate(DateUtil.addDay(vo.getCreateTime(), 7));
+			} else {
+				timeVo.setDate(DateUtil.addDay(vo.getCreateTime(), w.getWeek() - weekDay));
+			}
+			orderDemandTimeVos.add(timeVo);
+		});
+		orderDemandTimeVos.sort((a, b) -> a.getTime().compareTo(b.getTime()));
+		orderDemandTimeVos.sort((a, b) -> a.getDate().compareTo(b.getDate()));
+		map.put("orderTime", orderDemandTimeVos);
+
+		return ApiResponse.success(map);
 	}
 
 	@Override
