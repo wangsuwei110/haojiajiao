@@ -457,16 +457,18 @@
     	UPDATE 
     		student_demand_connect
 		SET 
-			teacher_id = #{teacherId},
 			status = #{status},
 			order_teach_time = #{orderTeachTime},
 			update_time = #{updateTime}
 			
-		WHERE demand_id = #{demandId}
+		WHERE 
+			demand_id = #{demandId}
+		and
+			teacher_id = #{teacherId}
     </update>
     
     <!-- 教员接受学员订单,并更新订单表订单状态 -->
-    <update id="updateNewTrialDemandStatus" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm">
+    <update id="updateNewTrialDemandStatus" parameterType="com.education.hjj.bz.formBean.StudentDemandForm">
     	UPDATE 
     		student_demand
 		SET 
