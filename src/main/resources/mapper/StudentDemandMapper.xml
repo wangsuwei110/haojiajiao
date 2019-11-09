@@ -396,11 +396,12 @@
 		<result column="demand_desc" property="demandDesc"/>
 		<result column="demand_address" property="demandAddress"/>
 		<result column="create_time" property="createTime"/>
-		<result column="sign_Time" property="signTime"/>
+		<result column="sign_time" property="signTime"/>
 		<result column="teach_grade_name" property="teachGradeName"/>
 		<result column="teach_branch_name" property="teachBranchName"/>
 		<result column="order_teach_time" property="orderTeachTime"/>
 		<result column="parent_phone_num" property="parentPhoneNum"/>
+		<result column="demandSignStatus" property="demandSignStatus"/>
 	</resultMap>
     
     <!-- 订单详情 -->
@@ -413,13 +414,14 @@
 			date_format(sd.create_time, '%Y-%m-%d %T') as create_time,
 			sd.order_money,
 			sdc.order_teach_time,
-			date_format(sdc.create_time, '%Y-%m-%d %T') as sign_Time,
+			date_format(sdc.create_time, '%Y-%m-%d %T') as sign_time,
 			sd.demand_address,
 			sd.time_range,
 			sd.class_num,
 			sd.week_num,
 			sd.demand_desc,
-			s.parent_phone_num
+			s.parent_phone_num,
+			sdc.status as demandSignStatus
 			
 		FROM
 			student_demand_connect sdc
@@ -442,6 +444,8 @@
 		WHERE
 			
 			sd.sid = #{demandId}
+		and
+			sdc.status = #{status}
 		ORDER BY
 			sd.create_time desc
 	
