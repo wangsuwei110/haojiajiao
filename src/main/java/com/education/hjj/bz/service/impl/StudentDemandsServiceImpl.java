@@ -1,5 +1,6 @@
 package com.education.hjj.bz.service.impl;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -317,7 +318,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	@Override
 	public List<StudentDemandVo> queryUserDemandsList(StudentDemandConnectForm demandForm) {
 		
-String demandStatus = demandForm.getDemandSignStatus();
+		String demandStatus = demandForm.getDemandSignStatus();
 		
 		Integer teacherId = demandForm.getTeacherId();
 		
@@ -352,7 +353,45 @@ String demandStatus = demandForm.getDemandSignStatus();
 
 	@Override
 	public StudentDemandVo queryStudemtDemandDetail(StudentDemandConnectForm demandForm) {
+		
 		StudentDemandVo studentDemandVo = studentDemandMapper.queryStudemtDemandDetail(demandForm);
+		
+		Integer demandSignStatus = demandForm.getStatus();
+		
+		
+		
+		//已支付订单详情
+		if(demandSignStatus == 4) {
+			
+			//订单
+			Date orderTeachTime = studentDemandVo.getOrderTeachTime();
+			
+			//订单一共报名几周
+			int weekNum = studentDemandVo.getWeekNum();
+			
+			try {
+				//订单开始时所在的周的周一的日期
+				String orderStartDate = DateUtil.getMonday(DateUtil.getStandardDay(orderTeachTime));
+				
+				//订单结束时所在的周的周日的日期
+				String orderEndDate = DateUtil.getAfterDay(DateUtil.getSunday(DateUtil.getStandardDay(orderTeachTime)) , (weekNum - 1) * 7);
+				
+				System.out.println(DateUtil.getMonday(DateUtil.getStandardDay(orderTeachTime)));
+				System.out.println(DateUtil.getSunday(DateUtil.getStandardDay(orderTeachTime)));
+				System.out.println("----------");
+				System.out.println(DateUtil.getAfterDay(DateUtil.getMonday(DateUtil.getStandardDay(orderTeachTime)) , (weekNum - 1) * 7));
+				System.out.println(DateUtil.getAfterDay(DateUtil.getSunday(DateUtil.getStandardDay(orderTeachTime)) , (weekNum - 1) * 7));
+				
+				studentDemandVo.setOrderStartDate(orderStartDate);
+				studentDemandVo.setOrderEndDate(orderEndDate);
+				
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
 		return studentDemandVo;
 	}
 

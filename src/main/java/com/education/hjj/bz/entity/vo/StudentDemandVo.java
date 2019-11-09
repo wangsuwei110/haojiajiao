@@ -99,7 +99,14 @@ public class StudentDemandVo {
     //联系手机号
     private String parentPhoneNum;
     
+    //订单的报名总人数
     private Integer demandSignUpNum;
+    
+    //订单的开始日期
+    private String orderStartDate;
+    
+    //订单的结束日期
+    private String orderEndDate;
 
     @ApiModelProperty(value = "区域id",required = true)
     private Integer parameterId;
@@ -349,6 +356,22 @@ public class StudentDemandVo {
 
 	public void setDemandSignStatus(Integer demandSignStatus) {
 		this.demandSignStatus = demandSignStatus;
+	}
+
+	public String getOrderStartDate() {
+		return orderStartDate;
+	}
+
+	public void setOrderStartDate(String orderStartDate) {
+		this.orderStartDate = orderStartDate;
+	}
+
+	public String getOrderEndDate() {
+		return orderEndDate;
+	}
+
+	public void setOrderEndDate(String orderEndDate) {
+		this.orderEndDate = orderEndDate;
 	}
 
 }
