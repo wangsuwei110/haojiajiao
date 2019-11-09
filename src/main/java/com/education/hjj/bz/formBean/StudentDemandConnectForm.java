@@ -54,6 +54,8 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
     
     //订单的状态
     private String demandSignStatus;
+    
+    private Date orderTeachTime;
 
     public Integer getDemandType() {
         return demandType;
@@ -165,5 +167,15 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
 	public void setDemandSignStatus(String demandSignStatus) {
 		this.demandSignStatus = demandSignStatus;
 	}
+
+	public Date getOrderTeachTime() {
+		return orderTeachTime;
+	}
+
+	public void setOrderTeachTime(Date orderTeachTime) {
+		this.orderTeachTime = orderTeachTime;
+	}
+	
+	
     
 }

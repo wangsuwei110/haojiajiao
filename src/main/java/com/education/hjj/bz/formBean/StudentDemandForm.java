@@ -13,7 +13,12 @@ import java.util.Date;
  */
 public class StudentDemandForm extends PageForm implements Serializable {
 
-    private Long sid;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3965235681881401644L;
+
+	private Integer sid;
 
     @ApiModelProperty(value = "学员ID",required = true)
     @NotBlank(message = "学员ID不能为空")
@@ -136,15 +141,15 @@ public class StudentDemandForm extends PageForm implements Serializable {
         this.sex = sex;
     }
 
-    public Long getSid() {
-        return sid;
-    }
+    public Integer getSid() {
+		return sid;
+	}
 
-    public void setSid(Long sid) {
-        this.sid = sid;
-    }
+	public void setSid(Integer sid) {
+		this.sid = sid;
+	}
 
-    public Integer getStudentId() {
+	public Integer getStudentId() {
         return studentId;
     }
 

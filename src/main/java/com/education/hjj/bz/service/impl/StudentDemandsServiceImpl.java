@@ -405,9 +405,30 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	@Transactional
 	public int updateNewTrialDemand(StudentDemandConnectForm demandForm) {
 		
+		Date orderTeachTime = demandForm.getOrderTeachTime();
+		
+		String orderTeachDate = DateUtil.getStandardDay(orderTeachTime);
+		
+		String nowDate = DateUtil.getStandardDay(new Date());
+		
+		boolean flag = DateUtil.compareTwoDate(nowDate , orderTeachDate);
+		
+		logger.info("预约的订单试讲时间：{},现在的时间：{}", orderTeachDate , nowDate);
+		
+		if(flag == true) {
+			demandForm.setStatus(2);
+		}
+		demandForm.setStatus(2);
+		demandForm.setUpdateTime(new Date());
+		
 		int j = studentDemandMapper.updateNewTrialDemandTime(demandForm);
 		
-		int i = studentDemandMapper.updateNewTrialDemandStatus(demandForm);
+		StudentDemandForm studentDemandForm = new StudentDemandForm();
+		studentDemandForm.setStatus(2);
+		studentDemandForm.setUpdateTime(new Date());
+		studentDemandForm.setSid(demandForm.getDemandId());
+		
+		int i = studentDemandMapper.updateNewTrialDemandStatus(studentDemandForm);
 		
 		if(i > 0  && j > 0) {
 			return 1;

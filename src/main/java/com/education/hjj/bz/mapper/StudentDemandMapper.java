@@ -45,5 +45,5 @@ public interface StudentDemandMapper {
 	
 	int updateNewTrialDemandTime(StudentDemandConnectForm demandForm);
 	
-	int updateNewTrialDemandStatus(StudentDemandConnectForm demandForm);
+	int updateNewTrialDemandStatus(StudentDemandForm studentDemandForm);
 }

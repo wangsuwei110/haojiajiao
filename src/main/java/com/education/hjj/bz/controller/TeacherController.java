@@ -125,10 +125,10 @@ public class TeacherController {
 		int i = studentDemandsService.updateNewTrialDemand(demandForm);
 		
 		if(i > 0) {
-			return ApiResponse.success("操作成功！");
+			return ApiResponse.success("保存成功！");
 		}
 		
-		return ApiResponse.success("操作失败！");
+		return ApiResponse.success("保存失败！");
 	}
 	
 }
