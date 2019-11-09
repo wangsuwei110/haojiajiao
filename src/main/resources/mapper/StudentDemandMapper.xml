@@ -263,7 +263,8 @@
 			sd.sid,
 			tg.teach_grade_name,
 			tb.teach_branch_name,
-			date_format(sd.create_time, '%Y-%m-%d %T') as create_time
+			date_format(sd.create_time, '%Y-%m-%d %T') as create_time,
+			sdc.status as demandSignStatus
 		FROM
 			student_demand_connect sdc
 		LEFT JOIN
