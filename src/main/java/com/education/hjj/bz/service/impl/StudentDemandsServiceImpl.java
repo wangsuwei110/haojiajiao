@@ -396,6 +396,8 @@ public StudentDemandVo queryStudemtDemandDetail(StudentDemandConnectForm demandF
 				
 				List<TeachTimePo> list = JSON.parseArray(timeRange, TeachTimePo.class);
 				
+				List<Map<String , Object>> teachTimePolist = new ArrayList<>();
+				
 				for(TeachTimePo tp : list) {
 					
 					
@@ -420,8 +422,12 @@ public StudentDemandVo queryStudemtDemandDetail(StudentDemandConnectForm demandF
 					map.put("time", tp.getTime());
 					map.put("weekDayTime", lastDateTime);
 					
-					studentDemandVo.setTimeRange(JSON.toJSONString(map));
+					teachTimePolist.add(map);
+					
+					
 				}
+				
+				studentDemandVo.setTimeRange(JSON.toJSONString(teachTimePolist));
 			}
 			
 			
