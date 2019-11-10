@@ -220,10 +220,10 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	public ApiResponse confirmTeacher(StudentDemandConnectForm demandForm) {
 
 		// 单独预约的需求，确定教员时，订单变成试讲中
-		if (demandForm.getDemandId() == null) {
+		if (demandForm.getDemandType() == null) {
 
 			return ApiResponse.error("必须确定单独试讲或者快速请家教");
-		} else if (demandForm.getDemandId() == 1) {
+		} else if (demandForm.getDemandType() == 1) {
 			// 单独预约
 			demandForm.setStatus(1);
 		} else {
