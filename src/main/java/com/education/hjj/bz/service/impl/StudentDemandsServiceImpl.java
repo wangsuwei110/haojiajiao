@@ -392,7 +392,7 @@ public StudentDemandVo queryStudemtDemandDetail(StudentDemandConnectForm demandF
 			logger.info("订单所选的讲课时间范围：{}" , timeRange);
 			
 			//新的试讲订单,未确认试讲时间的
-			if(demandSignStatus == 2) {
+			if(demandSignStatus == 1) {
 				
 				List<TeachTimePo> list = JSON.parseArray(timeRange, TeachTimePo.class);
 				
