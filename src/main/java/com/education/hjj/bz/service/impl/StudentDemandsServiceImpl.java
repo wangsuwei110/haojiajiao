@@ -46,7 +46,7 @@ import com.education.hjj.bz.util.common.StringUtil;
 @Service
 @Transactional
 public class StudentDemandsServiceImpl implements StudentDemandsService {
-	
+
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
@@ -63,15 +63,13 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 	@Autowired
 	private StudentMapper studentMapper;
-	
+
 	@Autowired
 	private UserInfoMapper userInfoMapper;
-	
-
 
 	@Override
 	public Map<String, Object> queryStudentDemandDetail(String demandId) {
-		Map<String, Object> map=new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 //		StudentDemandVo studentDemand = studentDemandMapper.queryStudentDemandDetail(Integer.valueOf(demandId));
 //		map.put("createTime", DateUtil.covertFromDateToString(studentDemand.getCreateTime()));
 //		map.put("demandAddress", studentDemand.getDemandAddress());
@@ -87,7 +85,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 //		map.put("teacherName", teacher.getName());
 //		map.put("teacherLevel", teacher.getTeacherLevel());
 //		map.put("teacherPicture", teacher.getPicture());
-		
+
 		return map;
 	}
 
@@ -99,7 +97,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		form.setCreateUser(form.getStudentId().toString());
 		form.setStatus(0);
 		// 首先判断学员id和对应姓名是否相同，不同则插入一条学员信息
-		StudentVo studentVo = studentMapper.load((long)form.getStudentId());
+		StudentVo studentVo = studentMapper.load((long) form.getStudentId());
 
 		if (StringUtil.isNotBlank(form.getStudentName())
 				&& !studentVo.getStudentName().trim().equals(form.getStudentName())) {
@@ -145,7 +143,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		}
 		return ApiResponse.error("订单发布失败，请重新发布");
 	}
-	
+
 	@Override
 	public ApiResponse listDemand(StudentDemandConnectForm demandForm) {
 		// 优先检索需求列表
@@ -158,15 +156,17 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			// 编辑中文上班时间段
 			f.setTimeRange(CommonUtil.getWeekDesc(f.getTimeRange()));
 			// 编辑年级和科目
-			Optional<TeachBranchVo> opBranch = supplier.get().filter(b -> b.getTeachLevelId() == f.getDemandGrade()
-						&& b.getTeachGradeId() == f.getSubjectId()).findFirst();
+			Optional<TeachBranchVo> opBranch = supplier.get()
+					.filter(b -> b.getTeachLevelId() == f.getDemandGrade() && b.getTeachGradeId() == f.getSubjectId())
+					.findFirst();
 			f.setGradeSubject(opBranch.isPresent() ? opBranch.get().getTeachBranchName() : "");
 
 			// 判断需求订单的详情，是否有教员报名，是否已经预约，是否已经过了试讲时间
 			List<StudentDemandConnectVo> connectVos = connectMapper.listConnectInfo(f.getSid());
-			//判断是否已经有了预约(排除已经预约过，但是未通过的)
-			Optional<StudentDemandConnectVo> op = connectVos.stream().filter(s -> s.getOrderTeachTime() != null
-				&& s.getStatus() != null && s.getStatus() != 4).findFirst();
+			// 判断是否已经有了预约(排除已经预约过，但是未通过的)
+			Optional<StudentDemandConnectVo> op = connectVos.stream()
+					.filter(s -> s.getOrderTeachTime() != null && s.getStatus() != null && s.getStatus() != 4)
+					.findFirst();
 			if (op.isPresent()) {
 				f.setSubscribeStatus(op.get().getStatus());
 				f.setTeachName(op.get().getTeacherName());
@@ -183,7 +183,6 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		});
 		return ApiResponse.success(list);
 	}
-	
 
 	@Override
 	public ApiResponse listTeacher(StudentDemandConnectForm demandForm) {
@@ -292,198 +291,197 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 	@Override
 	public PageVo<List<StudentDemandVo>> queryAllStudentDemandList(StudentDemandForm form) {
-		
+
 		PageVo pageVo = new PageVo();
-		
+
 		List<StudentDemandVo> list = studentDemandMapper.queryAllStudentDemandList(form);
-		
+
 		pageVo.setTotal(list.size());
 		pageVo.setDataList(list);
-		
+
 		return pageVo;
 	}
 
 	@Override
-	public Map<String, Object> queryStudentDemandDetailBySid(Integer sid , Integer teacherId) {
-		
+	public Map<String, Object> queryStudentDemandDetailBySid(Integer sid, Integer teacherId) {
+
 		Map<String, Object> map = new HashMap<String, Object>(2);
-		
-		StudentDemandVo  studentDemandDetail  = studentDemandMapper.queryStudentDemandDetailBySid(sid);
-		
+
+		StudentDemandVo studentDemandDetail = studentDemandMapper.queryStudentDemandDetailBySid(sid);
+
 		List<TeacherVo> list = userInfoMapper.queryStudentDemandSignUpTeacher(sid);
-		
+
 		boolean flag = false;
-		
-		if(list.size() > 0) {
-			
-			for(TeacherVo t:list) {
-				if(t.getTeacherId() == teacherId) {
-					
+
+		if (list.size() > 0) {
+
+			for (TeacherVo t : list) {
+				if (t.getTeacherId() == teacherId) {
+
 					flag = true;
-					
+
 					break;
 				}
 			}
-			
+
 		}
-		
-		
+
 		map.put("studentDemandDetail", studentDemandDetail);
 		map.put("signUpTeacherInfo", list);
 		map.put("singUpStatus", flag);
-		
+
 		return map;
 	}
 
 	@Override
 	public List<StudentDemandVo> queryNewTrialOrderList(Integer teacherId) {
-		
-		List<StudentDemandVo>  newTrialStudentDemandList  = studentDemandMapper.queryNewTrialOrderList(teacherId);
-		
+
+		List<StudentDemandVo> newTrialStudentDemandList = studentDemandMapper.queryNewTrialOrderList(teacherId);
+
 		return newTrialStudentDemandList;
 	}
 
 	@Override
 	public List<StudentDemandVo> queryUserDemandsList(StudentDemandConnectForm demandForm) {
-		
+
 		String demandStatus = demandForm.getDemandSignStatus();
-		
+
 		Integer teacherId = demandForm.getTeacherId();
-		
-		logger.info("teacherId = {} , demandStatus = {}" , teacherId ,  demandStatus);
-		
+
+		logger.info("teacherId = {} , demandStatus = {}", teacherId, demandStatus);
+
 		Map<String, Object> map = new HashMap<String, Object>();
-		
+
 		map.put("teacherId", teacherId);
-		
-		if(demandStatus != null && demandStatus.length() > 0) {
-			
+
+		if (demandStatus != null && demandStatus.length() > 0) {
+
 			String[] demandStatusList = demandStatus.split(",");
-			
+
 			List<Integer> demandStatusIntList = new ArrayList<Integer>();
-			
-			for(String s: demandStatusList){
-				
+
+			for (String s : demandStatusList) {
+
 				demandStatusIntList.add(Integer.valueOf(s));
 			}
-			
+
 			map.put("list", demandStatusIntList);
-			
-		}else {
+
+		} else {
 			map.put("list", null);
 		}
-		
+
 		List<StudentDemandVo> list = studentDemandMapper.queryUserDemandsList(map);
-		
+
 		return list;
-		
+
 	}
 
 	@Override
-public StudentDemandVo queryStudemtDemandDetail(StudentDemandConnectForm demandForm) {
-		
+	public StudentDemandVo queryStudemtDemandDetail(StudentDemandConnectForm demandForm) {
+
 		StudentDemandVo studentDemandVo = studentDemandMapper.queryStudemtDemandDetail(demandForm);
-		
-		if(studentDemandVo != null) {
-			
+
+		if (studentDemandVo != null) {
+
 			Integer demandSignStatus = demandForm.getStatus();
-			
+
 			String timeRange = studentDemandVo.getTimeRange();
-			logger.info("订单所选的讲课时间范围：{}" , timeRange);
-			
-			//新的试讲订单,未确认试讲时间的
-			if(demandSignStatus == 1) {
-				
+			logger.info("订单所选的讲课时间范围：{}", timeRange);
+
+			// 新的试讲订单,未确认试讲时间的
+			if (demandSignStatus == 1) {
+
 				List<TeachTimePo> list = JSON.parseArray(timeRange, TeachTimePo.class);
-				
-				List<Map<String , Object>> teachTimePolist = new ArrayList<>();
-				
-				for(TeachTimePo tp : list) {
-					
-					
-					
+
+				List<Map<String, Object>> teachTimePolist = new ArrayList<>();
+
+				for (TeachTimePo tp : list) {
+
 					Date date = new Date();
-					//今天日期对应的周几
-					String weekDay= DateUtil.dateToWeek(DateUtil.getStandardDay(date));
-					
+					// 今天日期对应的周几
+					String weekDay = DateUtil.dateToWeek(DateUtil.getStandardDay(date));
+
 					Date lastDateTime = new Date();
-					
-					//学员所选的授课时段中,存在比当前日期(四)靠后的时间段(一、三、五)
-					if(Integer.valueOf(weekDay) < Integer.valueOf(tp.getWeek())) {
-						lastDateTime = DateUtil.addDay(date , (Integer.valueOf(tp.getWeek()) - Integer.valueOf(weekDay)));
+
+					// 学员所选的授课时段中,存在比当前日期(四)靠后的时间段(一、三、五)
+					if (Integer.valueOf(weekDay) < Integer.valueOf(tp.getWeek())) {
+						lastDateTime = DateUtil.addDay(date,
+								(Integer.valueOf(tp.getWeek()) - Integer.valueOf(weekDay)));
 					}
-					
-					if(Integer.valueOf(weekDay) > Integer.valueOf(tp.getWeek())) {
-						lastDateTime = DateUtil.addDay(date , (Integer.valueOf(tp.getWeek()) + 7 ));
+
+					if (Integer.valueOf(weekDay) > Integer.valueOf(tp.getWeek())) {
+						lastDateTime = DateUtil.addDay(date, (Integer.valueOf(tp.getWeek()) + 7));
 					}
-					
-					Map<String , Object> map = new HashMap<>();
+
+					Map<String, Object> map = new HashMap<>();
 					map.put("week", tp.getWeek());
 					map.put("time", tp.getTime());
 					map.put("weekDayTime", lastDateTime);
-					
+
 					teachTimePolist.add(map);
-					
-					
+
 				}
-				
+
 				studentDemandVo.setTimeRange(JSON.toJSONString(teachTimePolist));
 			}
-			
-			
-			//已支付订单详情
-			if(demandSignStatus == 4) {
-				
-				//订单
+
+			// 已支付订单详情
+			if (demandSignStatus == 4) {
+
+				// 订单
 				Date orderStartTime = studentDemandVo.getOrderStart();
 				//
 				String weekDayString = DateUtil.getStandardDay(orderStartTime);
-				
-				
-				//订单支付时间所在星期几
+
+				// 订单支付时间所在星期几
 				int weekDay = Integer.valueOf(DateUtil.dateToWeek(DateUtil.getStandardDay(orderStartTime)));
-				
-				logger.info("订单支付时的日期:{},所在当前周的星期{}" , weekDayString , weekDay);
-				
+
+				logger.info("订单支付时的日期:{},所在当前周的星期{}", weekDayString, weekDay);
+
 				List<TeachTimePo> list = JSON.parseArray(timeRange, TeachTimePo.class);
-				
-				//订单一共报名几周
+
+				// 订单一共报名几周
 				int weekNum = studentDemandVo.getWeekNum();
-				
-				for(TeachTimePo tp : list) {
-					
-					if(Integer.valueOf(tp.getWeek()) < weekDay) {
-						
-						logger.info("订单第一次讲课开始的日期所在的星期：{} ，所选讲课时间范围内存在小于订单第一次开始讲课所在当天的课程，订单课程第一天所在周的周：{}" , weekDay , Integer.valueOf(tp.getWeek()));
-						
-						weekNum = weekNum+1;
+
+				for (TeachTimePo tp : list) {
+
+					if (Integer.valueOf(tp.getWeek()) < weekDay) {
+
+						logger.info("订单第一次讲课开始的日期所在的星期：{} ，所选讲课时间范围内存在小于订单第一次开始讲课所在当天的课程，订单课程第一天所在周的周：{}", weekDay,
+								Integer.valueOf(tp.getWeek()));
+
+						weekNum = weekNum + 1;
 					}
 				}
-				
+
 				try {
-					//订单开始时所在的周的周一的日期
+					// 订单开始时所在的周的周一的日期
 					String orderStartDate = DateUtil.getMonday(DateUtil.getStandardDay(orderStartTime));
-					
-					//订单结束时所在的周的周日的日期
-					String orderEndDate = DateUtil.getAfterDay(DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)) , (weekNum - 1) * 7);
-					
+
+					// 订单结束时所在的周的周日的日期
+					String orderEndDate = DateUtil.getAfterDay(
+							DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)), (weekNum - 1) * 7);
+
 					System.out.println(DateUtil.getMonday(DateUtil.getStandardDay(orderStartTime)));
 					System.out.println(DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)));
 					System.out.println("----------");
-					System.out.println(DateUtil.getAfterDay(DateUtil.getMonday(DateUtil.getStandardDay(orderStartTime)) , (weekNum - 1) * 7));
-					System.out.println(DateUtil.getAfterDay(DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)) , (weekNum - 1) * 7));
-					
+					System.out.println(DateUtil.getAfterDay(DateUtil.getMonday(DateUtil.getStandardDay(orderStartTime)),
+							(weekNum - 1) * 7));
+					System.out.println(DateUtil.getAfterDay(DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)),
+							(weekNum - 1) * 7));
+
 					studentDemandVo.setOrderStartDate(orderStartDate);
 					studentDemandVo.setOrderEndDate(orderEndDate);
-					
+
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-			
+
 		}
-		
+
 		return studentDemandVo;
 	}
 
@@ -496,36 +494,34 @@ public StudentDemandVo queryStudemtDemandDetail(StudentDemandConnectForm demandF
 	@Override
 	@Transactional
 	public int updateNewTrialDemand(StudentDemandConnectForm demandForm) {
-		
-		Date orderTeachTime = demandForm.getOrderTeachTime();
-		
-		String orderTeachDate = DateUtil.getStandardDay(orderTeachTime);
-		
+
+		String orderTeachTime = demandForm.getOrderTeachTime();
+
 		String nowDate = DateUtil.getStandardDay(new Date());
-		
-		boolean flag = DateUtil.compareTwoDate(nowDate , orderTeachDate);
-		
-		logger.info("预约的订单试讲时间：{},现在的时间：{}", orderTeachDate , nowDate);
-		
-		if(flag == true) {
+
+		boolean flag = DateUtil.compareTwoDate(nowDate, orderTeachTime);
+
+		logger.info("预约的订单试讲时间：{},现在的时间：{}", orderTeachTime, nowDate);
+
+		if (flag == true) {
 			demandForm.setStatus(2);
 		}
 		demandForm.setStatus(2);
 		demandForm.setUpdateTime(new Date());
-		
+
 		int j = studentDemandMapper.updateNewTrialDemandTime(demandForm);
-		
+
 		StudentDemandForm studentDemandForm = new StudentDemandForm();
 		studentDemandForm.setStatus(2);
 		studentDemandForm.setUpdateTime(new Date());
 		studentDemandForm.setSid(demandForm.getDemandId());
-		
+
 		int i = studentDemandMapper.updateNewTrialDemandStatus(studentDemandForm);
-		
-		if(i > 0  && j > 0) {
+
+		if (i >= 0 && j >= 0) {
 			return 1;
 		}
-		
+
 		return -1;
 	}
 
@@ -534,49 +530,47 @@ public StudentDemandVo queryStudemtDemandDetail(StudentDemandConnectForm demandF
 		List<StudentDemandVo> list = studentDemandMapper.queryAllStudentDemandListBy10(form);
 		return list;
 	}
-	
-public List<StudentDemandVo> queryTimeTableByTeacherId(StudentDemandConnectForm demandForm) {
-		
-		//查询给定日期的课表
-		Date orderTeachTime = demandForm.getOrderTeachTime();
-		
-		String orderTeachDate = DateUtil.getStandardDay(orderTeachTime);
-		
-		logger.info("查询给定日期课程表的时间：{}" , orderTeachDate);
-		
+
+	public List<StudentDemandVo> queryTimeTableByTeacherId(StudentDemandConnectForm demandForm) {
+
+		// 查询给定日期的课表
+		String orderTeachTime = demandForm.getOrderTeachTime();
+
+		logger.info("查询给定日期课程表的时间：{}", orderTeachTime);
+
 		List<StudentDemandVo> studentDemandlist = studentDemandMapper.queryTimeTableByTeacherId(demandForm);
-		
+
 		List<StudentDemandVo> studentDemandlistBetween = new ArrayList<StudentDemandVo>();
-		
-		for(StudentDemandVo sdv : studentDemandlist) {
-			
+
+		for (StudentDemandVo sdv : studentDemandlist) {
+
 			int weekNum = sdv.getWeekNum();
-			
+
 			String timeRange = sdv.getTimeRange();
-			
-			logger.info("订单持续周数：{}, 订单每周上课时间范围： {}" , orderTeachDate , timeRange);
-			
+
+			logger.info("订单持续周数：{}, 订单每周上课时间范围： {}", orderTeachTime, timeRange);
+
 			try {
-				//订单结束时所在的周的周一的日期
-				String orderStartDate = DateUtil.getAfterDay(DateUtil.getMonday(orderTeachDate) , (weekNum - 1) * 7);
-				
+				// 订单结束时所在的周的周一的日期
+				String orderStartDate = DateUtil.getAfterDay(DateUtil.getMonday(orderTeachTime), (weekNum - 1) * 7);
+
 				Date date = DateUtil.tryConvert(orderStartDate);
-				
+
 				List<TeachTimePo> teachTimelist = JSON.parseArray(timeRange, TeachTimePo.class);
-				
-				//最后一节课所在的日期大于当前传值所在周的周一,即将结果存入返回前端所需要的列表内
-				//将数字转换为日期
-				for(TeachTimePo ttp : teachTimelist) {
-					
-					Date lastDateTime = DateUtil.addDay(date , Integer.valueOf(ttp.getWeek()));
-					
+
+				// 最后一节课所在的日期大于当前传值所在周的周一,即将结果存入返回前端所需要的列表内
+				// 将数字转换为日期
+				for (TeachTimePo ttp : teachTimelist) {
+
+					Date lastDateTime = DateUtil.addDay(date, Integer.valueOf(ttp.getWeek()));
+
 					String lastDate = DateUtil.getStandardDay(lastDateTime);
-					
-					boolean flag = DateUtil.compareTwoDate(orderTeachDate , lastDate);
-					
+
+					boolean flag = DateUtil.compareTwoDate(orderTeachTime, lastDate);
+
 					StudentDemandVo sdvNew = new StudentDemandVo();
-					
-					if(flag == true) {
+
+					if (flag == true) {
 						sdvNew.setSid(sdv.getSid());
 						sdvNew.setTeachName(sdv.getTeachName());
 						sdvNew.setStudentName(sdv.getStudentName());
@@ -587,17 +581,16 @@ public List<StudentDemandVo> queryTimeTableByTeacherId(StudentDemandConnectForm 
 						sdvNew.setStatus(sdv.getStatus());
 						sdvNew.setOrderStart(sdv.getOrderStart());
 					}
-					
+
 					studentDemandlistBetween.add(sdvNew);
 				}
-				
-				
+
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
+
 		return studentDemandlistBetween;
 	}
 }
