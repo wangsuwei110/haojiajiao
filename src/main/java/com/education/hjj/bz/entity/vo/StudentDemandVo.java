@@ -38,6 +38,9 @@ public class StudentDemandVo {
 
     @ApiModelProperty(value = "订单周数")
     private Integer weekNum;
+    
+    //（1上午，2下午，3晚上）
+    private Integer timeNum;
 
     @ApiModelProperty(value = "每周上课次数")
     private Integer classNum;
@@ -386,6 +389,14 @@ public class StudentDemandVo {
 
 	public void setOrderEndDate(String orderEndDate) {
 		this.orderEndDate = orderEndDate;
+	}
+
+	public Integer getTimeNum() {
+		return timeNum;
+	}
+
+	public void setTimeNum(Integer timeNum) {
+		this.timeNum = timeNum;
 	}
 
 }

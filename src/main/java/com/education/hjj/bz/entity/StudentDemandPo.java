@@ -13,6 +13,8 @@ public class StudentDemandPo extends BasePo implements Serializable{
 
 	private Integer studentId;
 	
+	private Integer teacherId;
+	
 	private String studentName;
 	
 	private String demandNum;
@@ -36,6 +38,12 @@ public class StudentDemandPo extends BasePo implements Serializable{
 	private String demandDesc;
 	
 	private Integer personNum;
+	
+    //订单的开始日期
+    private String orderStartDate;
+
+    //订单的结束日期
+    private String orderEndDate;
 	
 
 	public Integer getStudentId() {
@@ -148,6 +156,30 @@ public class StudentDemandPo extends BasePo implements Serializable{
 
 	public void setDemandGrade(String demandGrade) {
 		this.demandGrade = demandGrade;
+	}
+
+	public Integer getTeacherId() {
+		return teacherId;
+	}
+
+	public void setTeacherId(Integer teacherId) {
+		this.teacherId = teacherId;
+	}
+
+	public String getOrderStartDate() {
+		return orderStartDate;
+	}
+
+	public void setOrderStartDate(String orderStartDate) {
+		this.orderStartDate = orderStartDate;
+	}
+
+	public String getOrderEndDate() {
+		return orderEndDate;
+	}
+
+	public void setOrderEndDate(String orderEndDate) {
+		this.orderEndDate = orderEndDate;
 	}
 	
 }

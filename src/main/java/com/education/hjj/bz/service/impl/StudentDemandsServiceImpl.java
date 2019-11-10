@@ -540,67 +540,87 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		String orderTeachTime = demandForm.getOrderTeachTime();
 
 		logger.info("查询给定日期课程表的时间：{}", orderTeachTime);
+		
+		List<StudentDemandVo> studentDemandlist = new ArrayList<>();
+		try {
+			// 订单开始时所在的周的周一的日期
+			String orderStartDate = DateUtil.getMonday(orderTeachTime);
 
-		List<StudentDemandVo> studentDemandlist = studentDemandMapper.queryTimeTableByTeacherId(demandForm);
-
-		List<StudentDemandVo> studentDemandlistBetween = new ArrayList<StudentDemandVo>();
-
-		for (StudentDemandVo sdv : studentDemandlist) {
-
-			int weekNum = sdv.getWeekNum();
-
-			String timeRange = sdv.getTimeRange();
-
-			logger.info("订单持续周数：{}, 订单每周上课时间范围： {}", orderTeachTime, timeRange);
-
-			try {
-				// 订单结束时所在的周的周一的日期
-				String orderStartDate = DateUtil.getAfterDay(DateUtil.getMonday(orderTeachTime), (weekNum - 1) * 7);
-
-				Date date = DateUtil.tryConvert(orderStartDate);
-
-				List<TeachTimePo> teachTimelist = JSON.parseArray(timeRange, TeachTimePo.class);
-
-				// 最后一节课所在的日期大于当前传值所在周的周一,即将结果存入返回前端所需要的列表内
-				// 将数字转换为日期
-				for (TeachTimePo ttp : teachTimelist) {
-
-					Date lastDateTime = DateUtil.addDay(date, Integer.valueOf(ttp.getWeek()));
-
-					String lastDate = DateUtil.getStandardDay(lastDateTime);
-
-					boolean flag = DateUtil.compareTwoDate(orderTeachTime, lastDate);
-
-					StudentDemandVo sdvNew = new StudentDemandVo();
+			// 订单结束时所在的周的周日的日期
+			String orderEndDate = DateUtil.getSunday(orderTeachTime);
 					
-					Map<String, Object> map = new HashMap<>();
-					
+			
+			StudentDemandPo studentDemandPo = new StudentDemandPo();
+			studentDemandPo.setTeacherId(demandForm.getTeacherId());
+			studentDemandPo.setOrderStartDate(orderStartDate);
+			studentDemandPo.setOrderEndDate(orderEndDate);
 
-					if (flag == true) {
-						sdvNew.setSid(sdv.getSid());
-						sdvNew.setTeachName(sdv.getTeachName());
-						sdvNew.setStudentName(sdv.getStudentName());
-						sdvNew.setTeachBranchName(sdv.getTeachBranchName());
-						
-						map.put("week", ttp.getWeek());
-						map.put("time", ttp.getTime());
-						
-						sdvNew.setTimeRange(JSON.toJSONString(map));
-						sdvNew.setWeekNum(sdv.getWeekNum());
-						sdvNew.setDemandSignStatus(sdv.getDemandSignStatus());
-						sdvNew.setStatus(sdv.getStatus());
-						sdvNew.setOrderStart(sdv.getOrderStart());
-					}
-
-					studentDemandlistBetween.add(sdvNew);
-				}
-
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			studentDemandlist = studentDemandMapper.queryTimeTableByTeacherId(studentDemandPo);
+			
+			return studentDemandlist;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
-		return studentDemandlistBetween;
+//		List<StudentDemandVo> studentDemandlistBetween = new ArrayList<StudentDemandVo>();
+//
+//		for (StudentDemandVo sdv : studentDemandlist) {
+//
+//			int weekNum = sdv.getWeekNum();
+//
+//			String timeRange = sdv.getTimeRange();
+//
+//			logger.info("订单持续周数：{}, 订单每周上课时间范围： {}", orderTeachTime, timeRange);
+//
+//			try {
+//				// 订单结束时所在的周的周一的日期
+//				String orderStartDate = DateUtil.getAfterDay(DateUtil.getMonday(orderTeachTime), (weekNum - 1) * 7);
+//
+//				Date date = DateUtil.tryConvert(orderStartDate);
+//
+//				List<TeachTimePo> teachTimelist = JSON.parseArray(timeRange, TeachTimePo.class);
+//
+//				// 最后一节课所在的日期大于当前传值所在周的周一,即将结果存入返回前端所需要的列表内
+//				// 将数字转换为日期
+//				for (TeachTimePo ttp : teachTimelist) {
+//
+//					Date lastDateTime = DateUtil.addDay(date, Integer.valueOf(ttp.getWeek()));
+//
+//					String lastDate = DateUtil.getStandardDay(lastDateTime);
+//
+//					boolean flag = DateUtil.compareTwoDate(orderTeachTime, lastDate);
+//
+//					StudentDemandVo sdvNew = new StudentDemandVo();
+//					
+//					Map<String, Object> map = new HashMap<>();
+//					
+//
+//					if (flag == true) {
+//						sdvNew.setSid(sdv.getSid());
+//						sdvNew.setTeachName(sdv.getTeachName());
+//						sdvNew.setStudentName(sdv.getStudentName());
+//						sdvNew.setTeachBranchName(sdv.getTeachBranchName());
+//						
+//						map.put("week", ttp.getWeek());
+//						map.put("time", ttp.getTime());
+//						
+//						sdvNew.setTimeRange(JSON.toJSONString(map));
+//						sdvNew.setWeekNum(sdv.getWeekNum());
+//						sdvNew.setDemandSignStatus(sdv.getDemandSignStatus());
+//						sdvNew.setStatus(sdv.getStatus());
+//						sdvNew.setOrderStart(sdv.getOrderStart());
+//					}
+//
+//					studentDemandlistBetween.add(sdvNew);
+//				}
+//
+//			} catch (ParseException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+
+		return studentDemandlist;
 	}
 }
