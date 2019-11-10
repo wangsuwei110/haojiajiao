@@ -410,6 +410,7 @@
 		<result column="parent_phone_num" property="parentPhoneNum"/>
 		<result column="demandSignStatus" property="demandSignStatus"/>
 		<result column="status" property="status"/>
+		<result column="classId" property="classId"/>
 	</resultMap>
     
     <!-- 订单详情 -->
@@ -490,6 +491,7 @@
     <select id="queryTimeTableByTeacherId" parameterType="com.education.hjj.bz.entity.StudentDemandPo" resultMap="studentDemandsDetailResultMap">
     	select 
 			sd.sid,
+			dci.sid as classId,
 			t.`name` as teacher_name,
 			s.student_name,
 			tb.teach_branch_name,
@@ -532,5 +534,23 @@
 			dci.order_teach_time <= #{orderEndDate}
 		]]>
     </select>	
+    
+    <!-- 教员打卡(学员节课通用),将该节课的状态改为未结课 -->
+    <update id="updateTimeTableByTeacherId" parameterType="com.education.hjj.bz.entity.StudentDemandPo">
+    	update
+    		demand_course_info
+    	set
+    		status = #{status},
+			update_time = #{updateTime}
+			<if test="teacherId != null">
+				,update_user = #{teacherId}
+			</if>
+			<if test="studentId != null">
+				,update_user = #{studentId}
+			</if>
+    	where
+    		sid= #{classId}	
+    		
+    </update>
     
 </mapper>
