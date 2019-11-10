@@ -496,16 +496,19 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	public int updateNewTrialDemand(StudentDemandConnectForm demandForm) {
 
 		String orderTeachTime = demandForm.getOrderTeachTime();
+		
+		logger.info("教员ID = {} , 确定的试讲时间 = {}" , demandForm.getTeacherId() , orderTeachTime);
 
-		String nowDate = DateUtil.getStandardDay(new Date());
-
-		boolean flag = DateUtil.compareTwoDate(nowDate, orderTeachTime);
-
-		logger.info("预约的订单试讲时间：{},现在的时间：{}", orderTeachTime, nowDate);
-
-		if (flag == true) {
-			demandForm.setStatus(2);
-		}
+//		String nowDate = DateUtil.getStandardDay(new Date());
+//
+//		//确定的试讲时间在当前点击时间之后
+//		boolean flag = DateUtil.compareTwoDate(nowDate, orderTeachTime);
+//
+//		logger.info("预约的订单试讲时间：{},现在的时间：{}", orderTeachTime, nowDate);
+//
+//		if (flag == true) {
+//			demandForm.setStatus(2);
+//		}
 		demandForm.setStatus(2);
 		demandForm.setUpdateTime(new Date());
 
@@ -569,13 +572,20 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 					boolean flag = DateUtil.compareTwoDate(orderTeachTime, lastDate);
 
 					StudentDemandVo sdvNew = new StudentDemandVo();
+					
+					Map<String, Object> map = new HashMap<>();
+					
 
 					if (flag == true) {
 						sdvNew.setSid(sdv.getSid());
 						sdvNew.setTeachName(sdv.getTeachName());
 						sdvNew.setStudentName(sdv.getStudentName());
 						sdvNew.setTeachBranchName(sdv.getTeachBranchName());
-						sdvNew.setTimeRange(sdv.getTimeRange());
+						
+						map.put("week", ttp.getWeek());
+						map.put("time", ttp.getTime());
+						
+						sdvNew.setTimeRange(JSON.toJSONString(map));
 						sdvNew.setWeekNum(sdv.getWeekNum());
 						sdvNew.setDemandSignStatus(sdv.getDemandSignStatus());
 						sdvNew.setStatus(sdv.getStatus());
