@@ -396,6 +396,7 @@
 		<result column="teacher_name" property="teachName"/>
 		<result column="class_num" property="classNum"/>
 		<result column="week_num" property="weekNum"/>
+		<result column="time_num" property="timeNum"/>
 		<result column="time_range" property="timeRange"/>
 		<result column="order_money" property="orderMoney"/>
 		<result column="demand_desc" property="demandDesc"/>
@@ -486,17 +487,17 @@
     </update>
     
     <!-- 查询教员课程表 -->
-    <select id="queryTimeTableByTeacherId" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm" resultMap="studentDemandsDetailResultMap">
+    <select id="queryTimeTableByTeacherId" parameterType="com.education.hjj.bz.entity.StudentDemandPo" resultMap="studentDemandsDetailResultMap">
     	select 
 			sd.sid,
 			t.`name` as teacher_name,
 			s.student_name,
 			tb.teach_branch_name,
-			sd.time_range,
-			sdc.order_teach_time,
-			sd.week_num,
+			dci.order_teach_time,
 			sdc.`status` as demandSignStatus,
-			sd.status,
+			dci.week_num,
+			dci.time_num,
+			dci.status,
 			sd.order_start
 		FROM
 			student_demand_connect sdc
@@ -516,9 +517,20 @@
 			teach_branch tb
 		ON
 			sd.subject_id = tb.teach_branch_id
+		LEFT JOIN
+			demand_course_info dci
+		ON	
+			sd.sid = dci.demand_id
 		WHERE
 			sdc.`status` = 4 
 		AND
 			sdc.teacher_id = #{teacherId}
+		AND
+			dci.order_teach_time >= #{orderStartDate}
+		<![CDATA[
+		AND
+			dci.order_teach_time <= #{orderEndDate}
+		]]>
     </select>	
+    
 </mapper>
