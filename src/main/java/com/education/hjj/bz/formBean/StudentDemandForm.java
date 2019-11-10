@@ -102,6 +102,9 @@ public class StudentDemandForm extends PageForm implements Serializable {
     // *******************单独预约********************
     @ApiModelProperty(value = "教员ID",required = true)
     private Integer teacherId;
+    
+    //试讲时间
+    private String orderTeachTime;
 
     public Integer getCurrentWeekDay() {
         return currentWeekDay;
@@ -286,6 +289,14 @@ public class StudentDemandForm extends PageForm implements Serializable {
     public void setUpdateUser(String updateUser) {
         this.updateUser = updateUser;
     }
+
+	public String getOrderTeachTime() {
+		return orderTeachTime;
+	}
+
+	public void setOrderTeachTime(String orderTeachTime) {
+		this.orderTeachTime = orderTeachTime;
+	}
     
     
 }
