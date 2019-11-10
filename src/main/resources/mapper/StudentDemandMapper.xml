@@ -117,8 +117,7 @@
 
 
     <insert id="addStudentDemandByTeacher" parameterType="com.education.hjj.bz.formBean.StudentDemandForm" >
-
-		<selectKey resultType="long" keyProperty="sid" >
+		<selectKey resultType="java.lang.Integer" keyProperty="sid" >
 			/*FORCE_MASTER*/ SELECT @@IDENTITY AS sid
 		</selectKey>
         INSERT INTO student_demand(
