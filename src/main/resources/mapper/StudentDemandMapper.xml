@@ -482,7 +482,7 @@
 			status = #{status},
 			update_time = #{updateTime}
 			
-		WHERE sid = #{demandId}
+		WHERE sid = #{sid}
     </update>
     
     <!-- 查询教员课程表 -->
