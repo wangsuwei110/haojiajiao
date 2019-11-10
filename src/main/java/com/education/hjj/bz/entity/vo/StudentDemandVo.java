@@ -55,7 +55,7 @@ public class StudentDemandVo {
     private String demandDesc;
 
     @ApiModelProperty(value = "状态 0:未发布，1:发布中;2:已接单;3:结单")
-    private Boolean status;
+    private Integer status;
 
     //订单报名状态
     private Integer demandSignStatus;
@@ -285,14 +285,17 @@ public class StudentDemandVo {
     public void setDemandDesc(String demandDesc) {
         this.demandDesc = demandDesc;
     }
-    public Boolean getStatus() {
-        return status;
-    }
+    
+    
+    public Integer getStatus() {
+		return status;
+	}
 
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-    public Date getCreateTime() {
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Date getCreateTime() {
         return createTime;
     }
 

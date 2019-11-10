@@ -49,4 +49,6 @@ public interface StudentDemandsService {
 	List<StudentDemandVo> queryFitTeacherOrderList(Integer teacherId);
 	
 	int updateNewTrialDemand(StudentDemandConnectForm demandForm);
+	
+	List<StudentDemandVo> queryTimeTableByTeacherId(StudentDemandConnectForm demandForm);
 }

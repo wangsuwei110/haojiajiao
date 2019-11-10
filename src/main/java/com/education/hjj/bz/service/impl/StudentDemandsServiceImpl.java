@@ -25,6 +25,7 @@ import com.education.hjj.bz.entity.vo.StudentVo;
 import com.education.hjj.bz.entity.vo.TeachBranchVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.entity.StudentDemandPo;
+import com.education.hjj.bz.entity.TeachTimePo;
 import com.education.hjj.bz.entity.vo.*;
 import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
@@ -379,45 +380,109 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	}
 
 	@Override
-	public StudentDemandVo queryStudemtDemandDetail(StudentDemandConnectForm demandForm) {
+public StudentDemandVo queryStudemtDemandDetail(StudentDemandConnectForm demandForm) {
 		
 		StudentDemandVo studentDemandVo = studentDemandMapper.queryStudemtDemandDetail(demandForm);
 		
-		Integer demandSignStatus = demandForm.getStatus();
-		
-		
-		
-		//已支付订单详情
-		if(demandSignStatus == 4) {
+		if(studentDemandVo != null) {
 			
-			//订单
-			Date orderTeachTime = studentDemandVo.getOrderTeachTime();
+			Integer demandSignStatus = demandForm.getStatus();
 			
-			//订单一共报名几周
-			int weekNum = studentDemandVo.getWeekNum();
+			String timeRange = studentDemandVo.getTimeRange();
+			logger.info("订单所选的讲课时间范围：{}" , timeRange);
 			
-			try {
-				//订单开始时所在的周的周一的日期
-				String orderStartDate = DateUtil.getMonday(DateUtil.getStandardDay(orderTeachTime));
+			//新的试讲订单,未确认试讲时间的
+			if(demandSignStatus == 1) {
 				
-				//订单结束时所在的周的周日的日期
-				String orderEndDate = DateUtil.getAfterDay(DateUtil.getSunday(DateUtil.getStandardDay(orderTeachTime)) , (weekNum - 1) * 7);
+				List<TeachTimePo> list = JSON.parseArray(timeRange, TeachTimePo.class);
 				
-				System.out.println(DateUtil.getMonday(DateUtil.getStandardDay(orderTeachTime)));
-				System.out.println(DateUtil.getSunday(DateUtil.getStandardDay(orderTeachTime)));
-				System.out.println("----------");
-				System.out.println(DateUtil.getAfterDay(DateUtil.getMonday(DateUtil.getStandardDay(orderTeachTime)) , (weekNum - 1) * 7));
-				System.out.println(DateUtil.getAfterDay(DateUtil.getSunday(DateUtil.getStandardDay(orderTeachTime)) , (weekNum - 1) * 7));
+				List<Map<String , Object>> teachTimePolist = new ArrayList<>();
 				
-				studentDemandVo.setOrderStartDate(orderStartDate);
-				studentDemandVo.setOrderEndDate(orderEndDate);
+				for(TeachTimePo tp : list) {
+					
+					
+					
+					Date date = new Date();
+					//今天日期对应的周几
+					String weekDay= DateUtil.dateToWeek(DateUtil.getStandardDay(date));
+					
+					Date lastDateTime = new Date();
+					
+					//学员所选的授课时段中,存在比当前日期(四)靠后的时间段(一、三、五)
+					if(Integer.valueOf(weekDay) < Integer.valueOf(tp.getWeek())) {
+						lastDateTime = DateUtil.addDay(date , (Integer.valueOf(tp.getWeek()) - Integer.valueOf(weekDay)));
+					}
+					
+					if(Integer.valueOf(weekDay) > Integer.valueOf(tp.getWeek())) {
+						lastDateTime = DateUtil.addDay(date , (Integer.valueOf(tp.getWeek()) + 7 ));
+					}
+					
+					Map<String , Object> map = new HashMap<>();
+					map.put("week", tp.getWeek());
+					map.put("time", tp.getTime());
+					map.put("weekDayTime", lastDateTime);
+					
+					teachTimePolist.add(map);
+					
+					
+				}
 				
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				studentDemandVo.setTimeRange(JSON.toJSONString(teachTimePolist));
 			}
+			
+			
+			//已支付订单详情
+			if(demandSignStatus == 4) {
+				
+				//订单
+				Date orderStartTime = studentDemandVo.getOrderStart();
+				//
+				String weekDayString = DateUtil.getStandardDay(orderStartTime);
+				
+				
+				//订单支付时间所在星期几
+				int weekDay = Integer.valueOf(DateUtil.dateToWeek(DateUtil.getStandardDay(orderStartTime)));
+				
+				logger.info("订单支付时的日期:{},所在当前周的星期{}" , weekDayString , weekDay);
+				
+				List<TeachTimePo> list = JSON.parseArray(timeRange, TeachTimePo.class);
+				
+				//订单一共报名几周
+				int weekNum = studentDemandVo.getWeekNum();
+				
+				for(TeachTimePo tp : list) {
+					
+					if(Integer.valueOf(tp.getWeek()) < weekDay) {
+						
+						logger.info("订单第一次讲课开始的日期所在的星期：{} ，所选讲课时间范围内存在小于订单第一次开始讲课所在当天的课程，订单课程第一天所在周的周：{}" , weekDay , Integer.valueOf(tp.getWeek()));
+						
+						weekNum = weekNum+1;
+					}
+				}
+				
+				try {
+					//订单开始时所在的周的周一的日期
+					String orderStartDate = DateUtil.getMonday(DateUtil.getStandardDay(orderStartTime));
+					
+					//订单结束时所在的周的周日的日期
+					String orderEndDate = DateUtil.getAfterDay(DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)) , (weekNum - 1) * 7);
+					
+					System.out.println(DateUtil.getMonday(DateUtil.getStandardDay(orderStartTime)));
+					System.out.println(DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)));
+					System.out.println("----------");
+					System.out.println(DateUtil.getAfterDay(DateUtil.getMonday(DateUtil.getStandardDay(orderStartTime)) , (weekNum - 1) * 7));
+					System.out.println(DateUtil.getAfterDay(DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)) , (weekNum - 1) * 7));
+					
+					studentDemandVo.setOrderStartDate(orderStartDate);
+					studentDemandVo.setOrderEndDate(orderEndDate);
+					
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 		}
-		
 		
 		return studentDemandVo;
 	}
@@ -468,5 +533,71 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	public List<StudentDemandVo> queryAllStudentDemandListBy10(StudentDemandForm form) {
 		List<StudentDemandVo> list = studentDemandMapper.queryAllStudentDemandListBy10(form);
 		return list;
+	}
+	
+public List<StudentDemandVo> queryTimeTableByTeacherId(StudentDemandConnectForm demandForm) {
+		
+		//查询给定日期的课表
+		Date orderTeachTime = demandForm.getOrderTeachTime();
+		
+		String orderTeachDate = DateUtil.getStandardDay(orderTeachTime);
+		
+		logger.info("查询给定日期课程表的时间：{}" , orderTeachDate);
+		
+		List<StudentDemandVo> studentDemandlist = studentDemandMapper.queryTimeTableByTeacherId(demandForm);
+		
+		List<StudentDemandVo> studentDemandlistBetween = new ArrayList<StudentDemandVo>();
+		
+		for(StudentDemandVo sdv : studentDemandlist) {
+			
+			int weekNum = sdv.getWeekNum();
+			
+			String timeRange = sdv.getTimeRange();
+			
+			logger.info("订单持续周数：{}, 订单每周上课时间范围： {}" , orderTeachDate , timeRange);
+			
+			try {
+				//订单结束时所在的周的周一的日期
+				String orderStartDate = DateUtil.getAfterDay(DateUtil.getMonday(orderTeachDate) , (weekNum - 1) * 7);
+				
+				Date date = DateUtil.tryConvert(orderStartDate);
+				
+				List<TeachTimePo> teachTimelist = JSON.parseArray(timeRange, TeachTimePo.class);
+				
+				//最后一节课所在的日期大于当前传值所在周的周一,即将结果存入返回前端所需要的列表内
+				//将数字转换为日期
+				for(TeachTimePo ttp : teachTimelist) {
+					
+					Date lastDateTime = DateUtil.addDay(date , Integer.valueOf(ttp.getWeek()));
+					
+					String lastDate = DateUtil.getStandardDay(lastDateTime);
+					
+					boolean flag = DateUtil.compareTwoDate(orderTeachDate , lastDate);
+					
+					StudentDemandVo sdvNew = new StudentDemandVo();
+					
+					if(flag == true) {
+						sdvNew.setSid(sdv.getSid());
+						sdvNew.setTeachName(sdv.getTeachName());
+						sdvNew.setStudentName(sdv.getStudentName());
+						sdvNew.setTeachBranchName(sdv.getTeachBranchName());
+						sdvNew.setTimeRange(sdv.getTimeRange());
+						sdvNew.setWeekNum(sdv.getWeekNum());
+						sdvNew.setDemandSignStatus(sdv.getDemandSignStatus());
+						sdvNew.setStatus(sdv.getStatus());
+						sdvNew.setOrderStart(sdv.getOrderStart());
+					}
+					
+					studentDemandlistBetween.add(sdvNew);
+				}
+				
+				
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return studentDemandlistBetween;
 	}
 }

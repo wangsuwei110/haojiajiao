@@ -282,7 +282,7 @@
 		ON
 			sd.subject_id = tb.teach_branch_id
 		WHERE
-			sdc.`status` = 0
+			sdc.`status` = 1
 		AND
 			sdc.teacher_id = #{teacherId}
 		ORDER BY
@@ -388,10 +388,11 @@
         </if>
     </select>
     
-    <resultMap id="studentDemandsDetailResultMap" type="com.education.hjj.bz.entity.vo.StudentDemandVo" >
+	<resultMap id="studentDemandsDetailResultMap" type="com.education.hjj.bz.entity.vo.StudentDemandVo" >
 		<!-- column代表数据库列名，property代表实体类属性名 -->
 		<result column="sid" property="sid"/>
 		<result column="student_name" property="studentName"/>
+		<result column="teacher_name" property="teachName"/>
 		<result column="class_num" property="classNum"/>
 		<result column="week_num" property="weekNum"/>
 		<result column="time_range" property="timeRange"/>
@@ -403,12 +404,14 @@
 		<result column="teach_grade_name" property="teachGradeName"/>
 		<result column="teach_branch_name" property="teachBranchName"/>
 		<result column="order_teach_time" property="orderTeachTime"/>
+		<result column="order_start" property="orderStart"/>
 		<result column="parent_phone_num" property="parentPhoneNum"/>
 		<result column="demandSignStatus" property="demandSignStatus"/>
+		<result column="status" property="status"/>
 	</resultMap>
     
     <!-- 订单详情 -->
-    <select id ="queryStudemtDemandDetail" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm" resultMap="studentDemandsDetailResultMap">
+     <select id ="queryStudemtDemandDetail" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm" resultMap="studentDemandsDetailResultMap">
     	SELECT
 			sd.sid,
 			s.student_name,
@@ -417,6 +420,7 @@
 			date_format(sd.create_time, '%Y-%m-%d %T') as create_time,
 			sd.order_money,
 			sdc.order_teach_time,
+			sd.order_start,
 			date_format(sdc.create_time, '%Y-%m-%d %T') as sign_time,
 			sd.demand_address,
 			sd.time_range,
@@ -479,4 +483,41 @@
 			
 		WHERE sid = #{demandId}
     </update>
+    
+    <!-- 查询教员课程表 -->
+    <select id="queryTimeTableByTeacherId" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm" resultMap="studentDemandsDetailResultMap">
+    	select 
+			sd.sid,
+			t.`name` as teacher_name,
+			s.student_name,
+			tb.teach_branch_name,
+			sd.time_range,
+			sdc.order_teach_time,
+			sd.week_num,
+			sdc.`status` as demandSignStatus,
+			sd.status,
+			sd.order_start
+		FROM
+			student_demand_connect sdc
+		LEFT JOIN
+			student_demand sd
+		ON
+			sdc.demand_id = sd.sid
+		LEFT JOIN
+			student s
+		ON
+			sd.student_id =s.sid
+		LEFT JOIN
+			teacher t
+		ON
+			sdc.teacher_id = t.teacher_id
+		LEFT JOIN
+			teach_branch tb
+		ON
+			sd.subject_id = tb.teach_branch_id
+		WHERE
+			sdc.`status` = 4 
+		AND
+			sdc.teacher_id = #{teacherId}
+    </select>	
 </mapper>

@@ -35,6 +35,7 @@ public interface StudentDemandMapper {
 	StudentDemandVo queryStudentDemandDetailBySid(Integer sid);
 
 	Long findMaxSid();
+	
 	List<StudentDemandVo> queryNewTrialOrderList(Integer teacherId);
 	
 	List<StudentDemandVo> queryFitTeacherOrderList(Integer teacherId);
@@ -46,4 +47,6 @@ public interface StudentDemandMapper {
 	int updateNewTrialDemandTime(StudentDemandConnectForm demandForm);
 	
 	int updateNewTrialDemandStatus(StudentDemandForm studentDemandForm);
+	
+	List<StudentDemandVo> queryTimeTableByTeacherId(StudentDemandConnectForm demandForm);
 }
