@@ -1,6 +1,7 @@
 package com.education.hjj.bz.mapper;
 
 
+import com.education.hjj.bz.entity.StudentDemandPo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
@@ -48,5 +49,5 @@ public interface StudentDemandMapper {
 	
 	int updateNewTrialDemandStatus(StudentDemandForm studentDemandForm);
 	
-	List<StudentDemandVo> queryTimeTableByTeacherId(StudentDemandConnectForm demandForm);
+	List<StudentDemandVo> queryTimeTableByTeacherId(StudentDemandPo studentDemandPo);
 }
