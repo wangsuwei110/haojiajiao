@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.education.hjj.bz.entity.StudentDemandPo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.UserInfoForm;
@@ -36,5 +37,19 @@ public class TimetableController {
 		List<StudentDemandVo> list = studentDemandsService.queryTimeTableByTeacherId(demandForm);
 		
 		return ApiResponse.success(list);
+	}
+	
+	
+	@ApiOperation("教员课程信息表--打卡-结课")
+	@RequestMapping(value = "/updateTimeTableByTeacherId", method = RequestMethod.POST)
+	public ApiResponse updateTimeTableByTeacherId(@RequestBody  StudentDemandPo studentDemandPo) {
+		
+		int i = studentDemandsService.updateTimeTableByTeacherId(studentDemandPo);
+		
+		if(i > 0 ) {
+			return ApiResponse.success("打卡成功！");
+		}
+		
+		return ApiResponse.success("打卡失败！");
 	}
 }

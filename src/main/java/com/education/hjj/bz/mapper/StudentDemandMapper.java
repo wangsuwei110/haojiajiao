@@ -50,4 +50,6 @@ public interface StudentDemandMapper {
 	int updateNewTrialDemandStatus(StudentDemandForm studentDemandForm);
 	
 	List<StudentDemandVo> queryTimeTableByTeacherId(StudentDemandPo studentDemandPo);
+	
+	int updateTimeTableByTeacherId(StudentDemandPo studentDemandPo);
 }

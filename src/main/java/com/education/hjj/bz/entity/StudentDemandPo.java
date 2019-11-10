@@ -44,6 +44,9 @@ public class StudentDemandPo extends BasePo implements Serializable{
 
     //订单的结束日期
     private String orderEndDate;
+    
+    //每节课的id
+    private String classId;
 	
 
 	public Integer getStudentId() {
@@ -180,6 +183,14 @@ public class StudentDemandPo extends BasePo implements Serializable{
 
 	public void setOrderEndDate(String orderEndDate) {
 		this.orderEndDate = orderEndDate;
+	}
+
+	public String getClassId() {
+		return classId;
+	}
+
+	public void setClassId(String classId) {
+		this.classId = classId;
 	}
 	
 }

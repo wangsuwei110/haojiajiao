@@ -113,6 +113,9 @@ public class StudentDemandVo {
 
     //订单的结束日期
     private String orderEndDate;
+    
+    //每节课的ID
+    private Integer classId;
 
     @ApiModelProperty(value = "区域id",required = true)
     private Integer parameterId;
@@ -397,6 +400,14 @@ public class StudentDemandVo {
 
 	public void setTimeNum(Integer timeNum) {
 		this.timeNum = timeNum;
+	}
+
+	public Integer getClassId() {
+		return classId;
+	}
+
+	public void setClassId(Integer classId) {
+		this.classId = classId;
 	}
 
 }

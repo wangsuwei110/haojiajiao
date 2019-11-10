@@ -623,4 +623,29 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 		return studentDemandlist;
 	}
+
+	@Override
+	public int updateTimeTableByTeacherId(StudentDemandPo studentDemandPo) {
+		
+		
+		studentDemandPo.setUpdateTime(new Date());
+		
+		Integer teacherId = studentDemandPo.getTeacherId();
+		
+		Integer studentId = studentDemandPo.getStudentId();
+		
+		//结课
+		if(teacherId == null && studentId!= null) {
+			studentDemandPo.setStatus(2);
+		}
+		
+		//打卡
+		if(teacherId != null && studentId == null) {
+			studentDemandPo.setStatus(1);
+		}
+		
+		int i = studentDemandMapper.updateTimeTableByTeacherId(studentDemandPo);
+		
+		return i;
+	}
 }

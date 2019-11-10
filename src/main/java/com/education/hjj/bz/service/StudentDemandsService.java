@@ -1,5 +1,6 @@
 package com.education.hjj.bz.service;
 
+import com.education.hjj.bz.entity.StudentDemandPo;
 import com.education.hjj.bz.entity.vo.PageVo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
@@ -51,4 +52,6 @@ public interface StudentDemandsService {
 	int updateNewTrialDemand(StudentDemandConnectForm demandForm);
 	
 	List<StudentDemandVo> queryTimeTableByTeacherId(StudentDemandConnectForm demandForm);
+	
+	int updateTimeTableByTeacherId(StudentDemandPo studentDemandPo);
 }
