@@ -33,7 +33,7 @@ public interface StudentDemandConnectMapper {
 
     int getCount(StudentDemandConnectForm form);
     
-    int querySignUpPersonByDemandId(StudentDemandConnectForm form);
+    int querySignUpPersonByDemandId(Integer demandId);
 
     List<StudentDemandConnectVo> list(StudentDemandConnectForm form);
 
