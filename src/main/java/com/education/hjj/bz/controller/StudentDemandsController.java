@@ -1,5 +1,6 @@
 package com.education.hjj.bz.controller;
 
+import com.education.hjj.bz.formBean.DemandCourseInfoForm;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.StudentDemandForm;
 import com.education.hjj.bz.service.StudentDemandsService;
@@ -59,6 +60,24 @@ public class StudentDemandsController {
 	@RequestMapping(value = "/updateAdoptStatus", method = RequestMethod.POST)
 	public ApiResponse updateAdoptStatus(@RequestBody StudentDemandConnectForm demandForm) {
 		return studentDemandsService.updateAdoptStatus(demandForm);
+	}
+
+	@ApiOperation("支付/续课")
+	@RequestMapping(value = "/payDemand", method = RequestMethod.POST)
+	public ApiResponse payDemand(@RequestBody StudentDemandForm demandForm) {
+		return studentDemandsService.payDemand(demandForm);
+	}
+
+	@ApiOperation("结课")
+	@RequestMapping(value = "/conclusion", method = RequestMethod.POST)
+	public ApiResponse conclusion(@RequestBody DemandCourseInfoForm demandForm) {
+		return studentDemandsService.conclusion(demandForm);
+	}
+
+	@ApiOperation("我的课程")
+	@RequestMapping(value = "/listMyCourse", method = RequestMethod.POST)
+	public ApiResponse listMyCourse(@RequestBody DemandCourseInfoForm courseInfoForm) {
+		return studentDemandsService.listMyCourse(courseInfoForm);
 	}
 
 	@ApiOperation("开放订单")

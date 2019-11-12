@@ -26,6 +26,8 @@
 		<result column="update_user" property="updateUser"/>
 		<result column="current_week_day" property="currentWeekDay"/>
 
+		<result column="teacher_id" property="teacherId"/>
+
 		<result column="demand_type" property="demandType"/>
 		<result column="parameter_id" property="parameterId"/>
 		<result column="demand_signUp_num" property="demandSignUpNum"/>
@@ -194,8 +196,6 @@
      	<if test="subjectId != null">
 			AND sd.subject_id= #{subjectId}
      	</if>
-     	
-     		
      	<if test="createTime != null">
 			order by create_time desc
      	</if>
@@ -229,6 +229,31 @@
 		order by create_time desc
 		
 		limit 10
+    </select>
+
+    <update id="updateOldDemandToNew" parameterType="com.education.hjj.bz.formBean.StudentDemandForm" >
+
+        UPDATE student_demand
+        SET   order_start = #{orderStart}
+              ,week_num = #{weekNum}
+              ,time_range = #{timeRange}
+              ,order_type = #{orderType}
+              ,order_money = #{orderMoney}
+              ,current_week_day = #{currentWeekDay}
+              ,create_time = #{createTime}
+        where sid = #{demandId}
+
+    </update>
+
+    <select id="findStudentDemandInfo" parameterType="java.lang.Integer" resultMap="studentDemandsResultMap">
+        SELECT sd.*, tea.teacher_id
+        FROM student_demand sd
+        INNER JOIN student_demand_connect sdc
+        ON sd.sid = sdc.demand_id
+        AND sdc.status = 4
+        INNER JOIN teacher tea
+        ON sdc.teacher_id = tea.teacher_id
+        WHERE sd.sid = #{demanId}
     </select>
 
     <!-- 查询需求订单详情 -->
@@ -484,7 +509,7 @@
 			status = #{status},
 			update_time = #{updateTime}
 			
-		WHERE sid = #{sid}
+		WHERE sid = #{demandId}
     </update>
     
     <!-- 查询教员课程表 -->

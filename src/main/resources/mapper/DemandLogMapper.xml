@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.hjj.bz.mapper.DemandLogMapper">
+
+    <resultMap id="demandLogResultMap" type="com.education.hjj.bz.entity.vo.DemandLogVo">
+	     	<result property="sid" column="sid"/>
+	     	<result property="demandId" column="demand_id"/>
+	     	<result property="mark" column="mark"/>
+	     	<result property="createTime" column="create_time"/>
+	     	<result property="createUser" column="create_user"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.education.hjj.bz.formBean.DemandLogForm">
+        <selectKey resultType="long" keyProperty="sid" >
+		SELECT @@IDENTITY AS sid
+		</selectKey>
+        INSERT INTO demand_log(
+	        demand_id,
+	        mark,
+	        create_time,
+	        create_user
+	        ) VALUES (
+	        #{demandId},
+	        #{mark},
+	        #{createTime},
+	        #{createUser}
+        )
+    </insert>
+
+
+    <select id="getCount" parameterType="com.education.hjj.bz.formBean.DemandLogForm"  resultType="int">
+        SELECT count(0)
+        FROM demand_log
+        <include refid="listRef"/>
+    </select>
+
+    <select id="list" parameterType="com.education.hjj.bz.formBean.DemandLogForm"  resultMap="demandLogResultMap">
+        SELECT *
+        FROM demand_log
+        <include refid="listRef"/>
+        ORDER BY id DESC
+        <if test="offset != null">
+            <![CDATA[
+            limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
+    </select>
+    <sql id="listRef">
+        <where>
+                <if test="sid != null and sid != ''">
+                    and sid =  #{sid}
+                </if>
+                <if test="demandId != null and demandId != ''">
+                    and demand_id =  #{demandId}
+                </if>
+                <if test="mark != null and mark != ''">
+                    and mark =  #{mark}
+                </if>
+                <if test="createTime != null and createTime != ''">
+                    and create_time =  #{createTime}
+                </if>
+                <if test="createUser != null and createUser != ''">
+                    and create_user =  #{createUser}
+                </if>
+        </where>
+    </sql>
+</mapper>

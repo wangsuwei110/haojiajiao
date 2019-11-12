@@ -1,5 +1,6 @@
 package com.education.hjj.bz.util;
 
+import com.education.hjj.bz.formBean.TimeRangeForm;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -975,7 +976,7 @@ public final class DateUtil {
 	/**
 	 * 计算两个时间之间是多少年多少月多少天
 	 *
-	 * @param Date beginTime
+	 * @param beginTime
 	 * @return
 	 * @throws ParseException
 	 */
@@ -1013,7 +1014,7 @@ public final class DateUtil {
 	/**
 	 * 计算两个时间之间是多少年多少月多少天
 	 *
-	 * @param Date beginTime
+	 * @param  beginTime
 	 * @return
 	 * @throws ParseException
 	 */
@@ -1188,5 +1189,20 @@ public final class DateUtil {
         
         return weekDays[w];
     }
+
+	/**
+	 * 当前日期取当前一周范围
+	 *
+	 * @param date
+	 * @return
+	 */
+	public static TimeRangeForm getWeekTime(Date date) {
+		Integer currentWeekDay = getWeekOfDate(date);
+		TimeRangeForm rangeForm = new TimeRangeForm();
+		rangeForm.setStartTime(DateUtil.getDayStart(DateUtil.addDay(date, -currentWeekDay + 1)));
+		rangeForm.setEndTime(DateUtil.getDayEnd(DateUtil.addDay(date, 7-currentWeekDay)));
+
+		return rangeForm;
+	}
 }
 

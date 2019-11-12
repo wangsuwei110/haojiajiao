@@ -11,6 +11,8 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import com.alibaba.fastjson.JSON;
+import com.education.hjj.bz.formBean.*;
+import com.education.hjj.bz.mapper.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +29,6 @@ import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.entity.StudentDemandPo;
 import com.education.hjj.bz.entity.TeachTimePo;
 import com.education.hjj.bz.entity.vo.*;
-import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
-import com.education.hjj.bz.formBean.StudentDemandConnectForm;
-import com.education.hjj.bz.formBean.StudentDemandForm;
-import com.education.hjj.bz.formBean.StudentForm;
-import com.education.hjj.bz.mapper.StudentDemandConnectMapper;
-import com.education.hjj.bz.mapper.StudentDemandMapper;
-import com.education.hjj.bz.mapper.StudentMapper;
-import com.education.hjj.bz.mapper.TeachBranchMapper;
-import com.education.hjj.bz.mapper.TeacherMapper;
-import com.education.hjj.bz.mapper.UserInfoMapper;
 import com.education.hjj.bz.service.StudentDemandsService;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.DateUtil;
@@ -66,6 +58,12 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 	@Autowired
 	private UserInfoMapper userInfoMapper;
+
+	@Autowired
+	private DemandLogMapper demandLogMapper;
+
+	@Autowired
+	private DemandCourseInfoMapper demandCourseInfoMapper;
 
 	@Override
 	public Map<String, Object> queryStudentDemandDetail(String demandId) {
@@ -171,6 +169,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 				f.setSubscribeStatus(op.get().getStatus());
 				f.setTeachName(op.get().getTeacherName());
 				f.setAppraise(op.get().getAppraise());
+				f.setChargesStandard(op.get().getChargesStandard());
 
 				if (!DateUtil.getDayStart(new Date()).after(DateUtil.getDayStart(op.get().getOrderTeachTime()))) {
 					f.setOrderTeachTime(op.get().getOrderTeachTime());
@@ -236,6 +235,94 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		}
 
 		return ApiResponse.success("预约教员失败");
+	}
+
+	/**
+	 * 查询该学员的当前周的课程
+	 **/
+	@Override
+	@Transactional
+	public ApiResponse listMyCourse(DemandCourseInfoForm demandForm) {
+		demandForm.setRangeForm(DateUtil.getWeekTime(demandForm.getOrderTeachTime()));
+		return ApiResponse.success(demandCourseInfoMapper.listMyCourseList(demandForm));
+	}
+
+	/**
+	 * 结课
+	 **/
+	public ApiResponse conclusion(DemandCourseInfoForm courseInfoForm) {
+		courseInfoForm.setStatus(2); // 2:结课状态
+		courseInfoForm.setUpdateTime(new Date());
+		demandCourseInfoMapper.updateNotNull(courseInfoForm);
+
+		return ApiResponse.success("结课成功");
+	}
+
+	/**
+	 * 支付或续课
+	 **/
+	@Override
+	@Transactional
+	public ApiResponse payDemand(StudentDemandForm demandForm) {
+
+		// 如果是试讲订单，要将试讲订单修改成付费订单
+		StudentDemandVo demandVo = studentDemandMapper.findStudentDemandInfo(demandForm.getDemandId());
+
+		if (demandVo == null) {
+			return ApiResponse.error("订单不符合要求");
+		}
+		// 记录上个订单的信息
+		Date date = new Date();
+		DemandLogForm logForm = new DemandLogForm();
+		logForm.setCreateTime(date);
+		logForm.setMark(JSON.toJSONString(demandVo));
+		logForm.setDemandId(demandForm.getDemandId());
+		logForm.setCreateUser(demandVo.getStudentId().toString());
+
+		demandLogMapper.insert(logForm);
+
+		Integer weekDay = DateUtil.getWeekOfDate(date);
+		demandForm.setCurrentWeekDay(weekDay);
+
+		// 修改当前订单成新订单
+		demandForm.setOrderType(2);
+		demandForm.setOrderStart(date);
+		demandForm.setUpdateTime(date);
+		Long sid = studentDemandMapper.updateOldDemandToNew(demandForm);
+
+		List<DemandCourseInfoForm> courseInfoFormList = new ArrayList<>();
+
+		// 根据订单插入每个节课时
+		for (int i = 0; i < demandForm.getWeekNum(); i++) {
+			List<WeekTimeVo> list = JSON.parseArray(demandForm.getTimeRange(), WeekTimeVo.class);
+
+			final Integer weekNum = i;
+			list.forEach(w -> {
+				DemandCourseInfoForm courseInfoForm = new DemandCourseInfoForm();
+				if (weekDay >= w.getWeek()) {
+					courseInfoForm.setOrderTeachTime(DateUtil.addDay(date, 7 + 7*weekNum));
+				} else {
+					courseInfoForm.setOrderTeachTime(DateUtil.addDay(date, w.getWeek() - weekDay + (7*weekNum)));
+				}
+
+				courseInfoForm.setStatus(0);
+				courseInfoForm.setDeleteStatus(0);
+				courseInfoForm.setCreateTime(date);
+				courseInfoForm.setUpdateTime(date);
+				courseInfoForm.setWeekNum(w.getWeek());
+				courseInfoForm.setTimeNum(w.getTime());
+				courseInfoForm.setDemandId(demandForm.getDemandId());
+				courseInfoForm.setStudentId(demandVo.getStudentId());
+				courseInfoForm.setTeacherId(demandVo.getTeacherId());
+				courseInfoForm.setCreateUser(demandVo.getStudentId().toString());
+
+				courseInfoFormList.add(courseInfoForm);
+			});
+		}
+
+		demandCourseInfoMapper.insert(courseInfoFormList);
+
+		return ApiResponse.success("支付课时成功");
 	}
 
 	@Override
@@ -525,7 +612,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		StudentDemandForm studentDemandForm = new StudentDemandForm();
 		studentDemandForm.setStatus(2);
 		studentDemandForm.setUpdateTime(new Date());
-		studentDemandForm.setSid(demandForm.getDemandId());
+		studentDemandForm.setDemandId(demandForm.getDemandId());
 
 		int i = studentDemandMapper.updateNewTrialDemandStatus(studentDemandForm);
 
@@ -556,15 +643,15 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 			// 订单结束时所在的周的周日的日期
 			String orderEndDate = DateUtil.getSunday(orderTeachTime);
-					
-			
+
+
 			StudentDemandPo studentDemandPo = new StudentDemandPo();
 			studentDemandPo.setTeacherId(demandForm.getTeacherId());
 			studentDemandPo.setOrderStartDate(orderStartDate);
 			studentDemandPo.setOrderEndDate(orderEndDate);
 
 			studentDemandlist = studentDemandMapper.queryTimeTableByTeacherId(studentDemandPo);
-			
+
 			return studentDemandlist;
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -600,19 +687,19 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 //					boolean flag = DateUtil.compareTwoDate(orderTeachTime, lastDate);
 //
 //					StudentDemandVo sdvNew = new StudentDemandVo();
-//					
+//
 //					Map<String, Object> map = new HashMap<>();
-//					
+//
 //
 //					if (flag == true) {
 //						sdvNew.setSid(sdv.getSid());
 //						sdvNew.setTeachName(sdv.getTeachName());
 //						sdvNew.setStudentName(sdv.getStudentName());
 //						sdvNew.setTeachBranchName(sdv.getTeachBranchName());
-//						
+//
 //						map.put("week", ttp.getWeek());
 //						map.put("time", ttp.getTime());
-//						
+//
 //						sdvNew.setTimeRange(JSON.toJSONString(map));
 //						sdvNew.setWeekNum(sdv.getWeekNum());
 //						sdvNew.setDemandSignStatus(sdv.getDemandSignStatus());
@@ -634,26 +721,26 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 	@Override
 	public int updateTimeTableByTeacherId(StudentDemandPo studentDemandPo) {
-		
-		
+
+
 		studentDemandPo.setUpdateTime(new Date());
-		
+
 		Integer teacherId = studentDemandPo.getTeacherId();
-		
+
 		Integer studentId = studentDemandPo.getStudentId();
-		
+
 		//结课
 		if(teacherId == null && studentId!= null) {
 			studentDemandPo.setStatus(2);
 		}
-		
+
 		//打卡
 		if(teacherId != null && studentId == null) {
 			studentDemandPo.setStatus(1);
 		}
-		
+
 		int i = studentDemandMapper.updateTimeTableByTeacherId(studentDemandPo);
-		
+
 		return i;
 	}
 

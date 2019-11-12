@@ -3,6 +3,7 @@ package com.education.hjj.bz.service;
 import com.education.hjj.bz.entity.StudentDemandPo;
 import com.education.hjj.bz.entity.vo.PageVo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
+import com.education.hjj.bz.formBean.DemandCourseInfoForm;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.StudentDemandForm;
 import com.education.hjj.bz.util.ApiResponse;
@@ -33,6 +34,21 @@ public interface StudentDemandsService {
 	 * 试讲通过或不通过
 	 **/
 	ApiResponse updateAdoptStatus(StudentDemandConnectForm demandForm);
+
+	/**
+	 * 支付或续课
+	 **/
+	ApiResponse payDemand(StudentDemandForm demandForm);
+
+	/**
+	 * 结课
+	 **/
+	ApiResponse conclusion(DemandCourseInfoForm courseInfoForm);
+
+	/**
+	 * 查询当前学员的当前周的课程
+	 **/
+	ApiResponse listMyCourse(DemandCourseInfoForm demandForm);
 
 	/**
 	 * 开放订单

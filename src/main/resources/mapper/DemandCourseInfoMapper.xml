@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.hjj.bz.mapper.DemandCourseInfoMapper">
+
+    <resultMap id="demandCourseInfoResultMap" type="com.education.hjj.bz.entity.vo.DemandCourseInfoVo">
+	     	<result property="sid" column="sid"/>
+	     	<result property="demandId" column="demand_id"/>
+	     	<result property="teacherId" column="teacher_id"/>
+	     	<result property="studentId" column="student_id"/>
+	     	<result property="status" column="status"/>
+	     	<result property="orderTeachTime" column="order_teach_time"/>
+	     	<result property="weekNum" column="week_num"/>
+	     	<result property="timeNum" column="time_num"/>
+	     	<result property="deleteStatus" column="delete_status"/>
+	     	<result property="createTime" column="create_time"/>
+	     	<result property="createUser" column="create_user"/>
+	     	<result property="updateTime" column="update_time"/>
+	     	<result property="updateUser" column="update_user"/>
+
+	     	<result property="teacherName" column="name"/>
+    </resultMap>
+
+	<select id="load" resultMap="demandCourseInfoResultMap" parameterType="long">
+        SELECT * FROM demand_course_info
+        WHERE sid =  #{sid} and delete_status = 0
+    </select>
+
+	<update id="delete">
+        UPDATE demand_course_info
+        SET delete_status = 1
+        WHERE sid =  #{sid}
+    </update>
+
+    <update id="updateNotNull" parameterType="com.education.hjj.bz.formBean.DemandCourseInfoForm">
+        UPDATE demand_course_info
+        <set>
+		     	 <if test="demandId != null">
+	               demand_id =  #{demandId},
+       		     </if>
+		     	 <if test="teacherId != null">
+	               teacher_id =  #{teacherId},
+       		     </if>
+		     	 <if test="studentId != null">
+	               student_id =  #{studentId},
+       		     </if>
+		     	 <if test="status != null">
+	               status =  #{status},
+       		     </if>
+		     	 <if test="orderTeachTime != null">
+	               order_teach_time =  #{orderTeachTime},
+       		     </if>
+		     	 <if test="weekNum != null">
+	               week_num =  #{weekNum},
+       		     </if>
+		     	 <if test="timeNum != null">
+	               time_num =  #{timeNum},
+       		     </if>
+		     	 <if test="deleteStatus != null">
+	               delete_status =  #{deleteStatus},
+       		     </if>
+		     	 <if test="createTime != null">
+	               create_time =  #{createTime},
+       		     </if>
+		     	 <if test="createUser != null">
+	               create_user =  #{createUser},
+       		     </if>
+		     	 <if test="updateTime != null">
+	               update_time =  #{updateTime},
+       		     </if>
+		     	 <if test="updateUser != null">
+	               update_user =  #{updateUser},
+       		     </if>
+        </set>
+        WHERE sid =  #{sid}
+		AND delete_status = 0
+    </update>
+
+    <insert id="insert" parameterType="com.education.hjj.bz.formBean.DemandCourseInfoForm">
+        <selectKey resultType="long" keyProperty="sid" >
+		SELECT @@IDENTITY AS sid
+		</selectKey>
+        INSERT INTO demand_course_info(
+	        demand_id,
+	        teacher_id,
+	        student_id,
+	        status,
+	        order_teach_time,
+	        week_num,
+	        time_num,
+	        delete_status,
+	        create_time,
+	        create_user,
+	        update_time,
+	        update_user
+	        ) VALUES
+		<foreach collection="demandCourseInfos" item="item" separator=",">
+			(
+				#{item.demandId},
+				#{item.teacherId},
+				#{item.studentId},
+				#{item.status},
+				#{item.orderTeachTime},
+				#{item.weekNum},
+				#{item.timeNum},
+				#{item.deleteStatus},
+				#{item.createTime},
+				#{item.createUser},
+				#{item.updateTime},
+				#{item.updateUser}
+			)
+		</foreach>
+    </insert>
+
+
+    <select id="getCount" parameterType="com.education.hjj.bz.formBean.DemandCourseInfoForm"  resultType="int">
+        SELECT count(0)
+        FROM demand_course_info
+        <include refid="listRef"/>
+    </select>
+
+	<select id="listMyCourseList" parameterType="com.education.hjj.bz.formBean.DemandCourseInfoForm"  resultMap="demandCourseInfoResultMap">
+		SELECT dci.*, tea.name
+		FROM demand_course_info dci
+		INNER JOIN teacher tea
+		ON dci.teacher_id = tea.teacher_id
+		WHERE dci.delete_status = 0
+		AND dci.demand_id = #{demandId}
+		AND dci.student_id = #{studentId}
+		AND dci.order_teach_time <![CDATA[>=]]> #{rangeForm.startTime}
+		AND dci.order_teach_time <![CDATA[<]]> #{rangeForm.endTime}
+	</select>
+
+    <select id="list" parameterType="com.education.hjj.bz.formBean.DemandCourseInfoForm"  resultMap="demandCourseInfoResultMap">
+        SELECT *
+        FROM demand_course_info
+        <include refid="listRef"/>
+        ORDER BY id DESC
+        <if test="offset != null">
+            <![CDATA[
+            limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
+    </select>
+    <sql id="listRef">
+        <where>
+			delete_status = 0
+                <if test="sid != null and sid != ''">
+                    and sid =  #{sid}
+                </if>
+                <if test="demandId != null and demandId != ''">
+                    and demand_id =  #{demandId}
+                </if>
+                <if test="teacherId != null and teacherId != ''">
+                    and teacher_id =  #{teacherId}
+                </if>
+                <if test="studentId != null and studentId != ''">
+                    and student_id =  #{studentId}
+                </if>
+                <if test="status != null and status != ''">
+                    and status =  #{status}
+                </if>
+                <if test="orderTeachTime != null and orderTeachTime != ''">
+                    and order_teach_time =  #{orderTeachTime}
+                </if>
+                <if test="weekNum != null and weekNum != ''">
+                    and week_num =  #{weekNum}
+                </if>
+                <if test="timeNum != null and timeNum != ''">
+                    and time_num =  #{timeNum}
+                </if>
+                <if test="deleteStatus != null and deleteStatus != ''">
+                    and delete_status =  #{deleteStatus}
+                </if>
+                <if test="createTime != null and createTime != ''">
+                    and create_time =  #{createTime}
+                </if>
+                <if test="createUser != null and createUser != ''">
+                    and create_user =  #{createUser}
+                </if>
+                <if test="updateTime != null and updateTime != ''">
+                    and update_time =  #{updateTime}
+                </if>
+                <if test="updateUser != null and updateUser != ''">
+                    and update_user =  #{updateUser}
+                </if>
+        </where>
+    </sql>
+</mapper>

@@ -35,6 +35,10 @@ public interface StudentDemandMapper {
 	
 	StudentDemandVo queryStudentDemandDetailBySid(Integer sid);
 
+	StudentDemandVo findStudentDemandInfo(Integer demandId);
+
+	Long updateOldDemandToNew(StudentDemandForm form);
+
 	Long findMaxSid();
 	
 	List<StudentDemandVo> queryNewTrialOrderList(Integer teacherId);

@@ -16,7 +16,7 @@ public class StudentDemandVo {
     private Integer sid;
 
     @ApiModelProperty(value = "学员ID")
-    private Long studentId;
+    private Integer studentId;
 
     @ApiModelProperty(value = "学员姓名")
     private String studentName;
@@ -96,6 +96,11 @@ public class StudentDemandVo {
     @ApiModelProperty(value = "订单当天周几")
     private Integer currentWeekDay;
 
+    @ApiModelProperty(value = "收费标准")
+    private String chargesStandard;
+
+    private Integer teacherId;
+
     //教学年级名称
     private String teachGradeName;
     //教学科目名称
@@ -117,8 +122,32 @@ public class StudentDemandVo {
     //每节课的ID
     private Integer classId;
 
+    public Integer getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
+    }
+
     @ApiModelProperty(value = "区域id",required = true)
     private Integer parameterId;
+
+    public Integer getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(Integer teacherId) {
+        this.teacherId = teacherId;
+    }
+
+    public String getChargesStandard() {
+        return chargesStandard;
+    }
+
+    public void setChargesStandard(String chargesStandard) {
+        this.chargesStandard = chargesStandard;
+    }
 
     public Integer getCurrentWeekDay() {
         return currentWeekDay;
@@ -208,13 +237,7 @@ public class StudentDemandVo {
         this.sid = sid;
     }
 
-    public Long getStudentId() {
-        return studentId;
-    }
 
-    public void setStudentId(Long studentId) {
-        this.studentId = studentId;
-    }
     public String getDemandAddress() {
         return demandAddress;
     }
