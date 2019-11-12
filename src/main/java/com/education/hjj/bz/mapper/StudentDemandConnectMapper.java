@@ -32,6 +32,8 @@ public interface StudentDemandConnectMapper {
 	void delete(Long id);
 
     int getCount(StudentDemandConnectForm form);
+    
+    int querySignUpPersonByDemandId(StudentDemandConnectForm form);
 
     List<StudentDemandConnectVo> list(StudentDemandConnectForm form);
 

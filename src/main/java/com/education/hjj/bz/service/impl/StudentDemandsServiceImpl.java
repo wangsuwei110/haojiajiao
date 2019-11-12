@@ -655,7 +655,14 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		int count = connectMapper.getCount(studentDemandConnect);
 		
 		if(count > 0) {
-			logger.info("该订单已报名，请不要重复报名该订单！");
+			logger.info("已报名该订单，请不要重复报名该订单！");
+			return -1;
+		}
+		
+		int num = connectMapper.querySignUpPersonByDemandId(studentDemandConnect);
+		
+		if(num > 0) {
+			logger.info("该订单已经被锁定，请稍后尝试报名该订单！");
 			return -1;
 		}
 		
