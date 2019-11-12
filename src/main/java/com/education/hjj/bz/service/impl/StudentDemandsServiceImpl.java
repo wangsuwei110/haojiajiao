@@ -648,4 +648,19 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		
 		return i;
 	}
+
+	@Override
+	public int insert(StudentDemandConnectForm studentDemandConnect) {
+		
+		int count = connectMapper.getCount(studentDemandConnect);
+		
+		if(count > 0) {
+			logger.info("该订单已报名，请不要重复报名该订单！");
+			return -1;
+		}
+		
+		int i = connectMapper.insert(studentDemandConnect);
+		
+		return i;
+	}
 }

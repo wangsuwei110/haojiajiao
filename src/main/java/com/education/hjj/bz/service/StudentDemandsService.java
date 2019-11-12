@@ -54,4 +54,6 @@ public interface StudentDemandsService {
 	List<StudentDemandVo> queryTimeTableByTeacherId(StudentDemandConnectForm demandForm);
 	
 	int updateTimeTableByTeacherId(StudentDemandPo studentDemandPo);
+	
+	int insert(StudentDemandConnectForm studentDemandConnect);
 }

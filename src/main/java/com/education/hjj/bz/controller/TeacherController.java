@@ -131,4 +131,18 @@ public class TeacherController {
 		return ApiResponse.success("保存失败！");
 	}
 	
+	@ApiOperation("报名学员发布的需求订单")
+	@RequestMapping(value = "/signUpStudentDemand", method = RequestMethod.POST)
+	@ResponseBody
+	public ApiResponse signUpStudentDemand(@RequestBody StudentDemandConnectForm demandForm) {
+		
+		int i = studentDemandsService.insert(demandForm);
+		
+		if(i > 0) {
+			return ApiResponse.success("订单报名成功！");
+		}
+		
+		return ApiResponse.success("订单报名失败！");
+	}
+	
 }

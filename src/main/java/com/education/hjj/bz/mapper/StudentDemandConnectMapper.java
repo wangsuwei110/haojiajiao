@@ -18,7 +18,7 @@ public interface StudentDemandConnectMapper {
 
 	StudentDemandConnectVo load(Long id);
 
-	void insert(StudentDemandConnectForm studentDemandConnect);
+	int insert(StudentDemandConnectForm studentDemandConnect);
 
 	void updateNotNull(StudentDemandConnectForm studentDemandConnect);
 
