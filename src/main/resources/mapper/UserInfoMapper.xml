@@ -421,6 +421,7 @@
     	SELECT
 			DISTINCT(demand_id),
 			t.name,
+			t.sex,
 			t.picture,
 			t.teacher_level,
 			t.employ_rate,
