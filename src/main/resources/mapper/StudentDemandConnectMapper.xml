@@ -122,7 +122,7 @@
         <include refid="listRef"/>
     </select>
     
-    <select id="querySignUpPersonByDemandId" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm"  resultType="int">
+    <select id="querySignUpPersonByDemandId" parameterType="java.lang.Integer"  resultType="int">
         SELECT 
         	count(0)
         FROM 
