@@ -46,6 +46,8 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
 
     @ApiModelProperty(value = "创建用户")
     private Integer createUser;
+    
+    private Integer updateUser;
 
     @ApiModelProperty(value = "订单类型：1:单独预约，2:快速请家教")
     private Integer demandType;
@@ -174,6 +176,14 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
 
 	public void setOrderTeachTime(String orderTeachTime) {
 		this.orderTeachTime = orderTeachTime;
+	}
+
+	public Integer getUpdateUser() {
+		return updateUser;
+	}
+
+	public void setUpdateUser(Integer updateUser) {
+		this.updateUser = updateUser;
 	}
 
 }
