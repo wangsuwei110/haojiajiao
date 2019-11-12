@@ -659,6 +659,11 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			return -1;
 		}
 		
+		studentDemandConnect.setStatus(0);
+		studentDemandConnect.setDeleteStatus(0);
+		studentDemandConnect.setCreateTime(new Date());
+		studentDemandConnect.setCreateUser(studentDemandConnect.getTeacherId());
+		
 		int i = connectMapper.insert(studentDemandConnect);
 		
 		return i;
