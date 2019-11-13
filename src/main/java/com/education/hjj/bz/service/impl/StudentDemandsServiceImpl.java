@@ -413,13 +413,6 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 		}
 		
-		int num = connectMapper.querySignUpPersonByDemandId(sid);
-		
-		if(num > 0) {
-			logger.info("该订单已经被锁定，请稍后尝试报名该订单！");
-			map.put("singUpStatus", true);
-			return map;
-		}
 
 		map.put("studentDemandDetail", studentDemandDetail);
 		map.put("signUpTeacherInfo", list);
@@ -754,7 +747,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			return -1;
 		}
 		
-		int num = connectMapper.querySignUpPersonByDemandId(studentDemandConnect.getDemandId());
+		int num = connectMapper.querySignUpPersonByDemandId(studentDemandConnect);
 		
 		if(num > 0) {
 			logger.info("该订单已经被锁定，请稍后尝试报名该订单！");
