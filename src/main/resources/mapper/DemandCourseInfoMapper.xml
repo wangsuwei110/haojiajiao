@@ -124,7 +124,9 @@
 		INNER JOIN teacher tea
 		ON dci.teacher_id = tea.teacher_id
 		WHERE dci.delete_status = 0
-		AND dci.demand_id = #{demandId}
+		<if test="demandId != null">
+			AND dci.demand_id = #{demandId}
+		</if>
 		AND dci.student_id = #{studentId}
 		AND dci.order_teach_time <![CDATA[>=]]> #{rangeForm.startTime}
 		AND dci.order_teach_time <![CDATA[<]]> #{rangeForm.endTime}
