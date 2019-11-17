@@ -155,7 +155,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			f.setTimeRange(CommonUtil.getWeekDesc(f.getTimeRange()));
 			// 编辑年级和科目
 			Optional<TeachBranchVo> opBranch = supplier.get()
-					.filter(b -> b.getTeachLevelId() == f.getDemandGrade() && b.getTeachGradeId() == f.getSubjectId())
+					.filter(b -> b.getTeachBranchId() == f.getSubjectId() && b.getTeachGradeId() == f.getDemandGrade())
 					.findFirst();
 			f.setGradeSubject(opBranch.isPresent() ? opBranch.get().getTeachBranchName() : "");
 

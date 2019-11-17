@@ -55,12 +55,20 @@ public class TeacherController {
         return teacherService.listSubject(form);
     }
 
-    // 科目刷选的三级联动 学段/年级/科目
+    // 科目刷选的二级联动 学段/年级/科目
     @ApiOperation("二级联动，科目表")
     @PostMapping("/findAllSubject")
     @ResponseBody
     public ApiResponse findAllSubject(@RequestBody TeachScreenForm form) {
         return teacherService.findAllSubject(form);
+    }
+
+    // 科目回显接口
+    @ApiOperation("回显科目")
+    @PostMapping("/findSubject")
+    @ResponseBody
+    public ApiResponse findSubject(@RequestBody TeachScreenForm form) {
+        return teacherService.findSubject(form);
     }
 
     // 筛选教员大学

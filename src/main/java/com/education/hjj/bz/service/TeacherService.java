@@ -47,6 +47,12 @@ public interface TeacherService{
      */
     ApiResponse findAllSubject(TeachScreenForm form);
 
+    /**
+     * 回显科目信息
+     * @return
+     */
+    ApiResponse findSubject(TeachScreenForm form);
+
 
     /**
      * 教员大学筛选
