@@ -3,16 +3,26 @@ package com.education.hjj.bz.controller;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSON;
+import com.education.hjj.bz.entity.vo.StudentDemandVo;
+import com.education.hjj.bz.entity.vo.WeekTimeVo;
+import com.education.hjj.bz.formBean.DemandCourseInfoForm;
+import com.education.hjj.bz.formBean.DemandLogForm;
+import com.education.hjj.bz.formBean.StudentDemandForm;
+import com.education.hjj.bz.mapper.DemandCourseInfoMapper;
+import com.education.hjj.bz.mapper.DemandLogMapper;
+import com.education.hjj.bz.mapper.StudentDemandMapper;
+import com.education.hjj.bz.util.ApiResponse;
+import com.education.hjj.bz.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.weixin4j.WeixinException;
 
 import com.alibaba.fastjson.JSONObject;
-import com.education.hjj.bz.formBean.LoginForm;
 import com.education.hjj.bz.util.HttpClientUtils;
 import com.education.hjj.bz.util.weixinUtil.CommonUtil;
 import com.education.hjj.bz.util.weixinUtil.HttpUtil;
@@ -45,12 +54,22 @@ public class PayController {
 
 	private static Logger logger = LoggerFactory.getLogger(PayController.class);
 
+	@Autowired
+	private DemandLogMapper demandLogMapper;
+
+	@Autowired
+	private DemandCourseInfoMapper demandCourseInfoMapper;
+
+	@Autowired
+	private StudentDemandMapper studentDemandMapper;
+
+
 	@ResponseBody
 	@RequestMapping(value = "/prepay", method = RequestMethod.POST)
 	@ApiOperation("微信统一下单")
-	public Json prePay(@RequestBody LoginForm loginForm, HttpServletRequest request) {
+	public ApiResponse prePay(HttpServletRequest request, @RequestBody StudentDemandForm demandForm) {
 
-		String code = loginForm.getCode();//获取微信服务器授权返回的code值
+		String code = demandForm.getCode();//获取微信服务器授权返回的code值
 		
 		Json json = new Json();
 
@@ -117,12 +136,66 @@ public class PayController {
 					response.put("paySign", paySign);
 
 					//更新订单信息
-	                //业务逻辑代码
-					// TODO
+					// 如果是试讲订单，要将试讲订单修改成付费订单
+					StudentDemandVo demandVo = studentDemandMapper.findStudentDemandInfo(demandForm.getDemandId());
+
+					if (demandVo == null) {
+						return ApiResponse.error("订单不符合要求");
+					}
+					// 记录上个订单的信息
+					Date date = new Date();
+					DemandLogForm logForm = new DemandLogForm();
+					logForm.setCreateTime(date);
+					logForm.setMark(JSON.toJSONString(demandVo));
+					logForm.setDemandId(demandForm.getDemandId());
+					logForm.setCreateUser(demandVo.getStudentId().toString());
+
+					demandLogMapper.insert(logForm);
+
+					Integer weekDay = DateUtil.getWeekOfDate(date);
+					demandForm.setCurrentWeekDay(weekDay);
+
+					// 修改当前订单成新订单
+					demandForm.setOrderType(2);
+					demandForm.setOrderStart(date);
+					demandForm.setUpdateTime(date);
+					Long sid = studentDemandMapper.updateOldDemandToNew(demandForm);
+
+					List<DemandCourseInfoForm> courseInfoFormList = new ArrayList<>();
+
+					// 根据订单插入每个节课时
+					for (int i = 0; i < demandForm.getWeekNum(); i++) {
+						List<WeekTimeVo> list = JSON.parseArray(demandForm.getTimeRange(), WeekTimeVo.class);
+
+						final Integer weekNum = i;
+						list.forEach(w -> {
+							DemandCourseInfoForm courseInfoForm = new DemandCourseInfoForm();
+							if (weekDay >= w.getWeek()) {
+								courseInfoForm.setOrderTeachTime(DateUtil.addDay(date, 7 + 7*weekNum));
+							} else {
+								courseInfoForm.setOrderTeachTime(DateUtil.addDay(date, w.getWeek() - weekDay + (7*weekNum)));
+							}
+
+							courseInfoForm.setStatus(0);
+							courseInfoForm.setDeleteStatus(0);
+							courseInfoForm.setCreateTime(date);
+							courseInfoForm.setUpdateTime(date);
+							courseInfoForm.setWeekNum(w.getWeek());
+							courseInfoForm.setTimeNum(w.getTime());
+							courseInfoForm.setDemandId(demandForm.getDemandId());
+							courseInfoForm.setStudentId(demandVo.getStudentId());
+							courseInfoForm.setTeacherId(demandVo.getTeacherId());
+							courseInfoForm.setCreateUser(demandVo.getStudentId().toString());
+
+							courseInfoFormList.add(courseInfoForm);
+						});
+					}
+
+					demandCourseInfoMapper.insert(courseInfoFormList);
 
 				} else {
 
-					return null;
+					return ApiResponse.success("支付失败");
 				}
 
 				response.put("appid", Constant.APP_ID);
@@ -136,7 +209,7 @@ public class PayController {
 			e1.printStackTrace();
 		}
 
-		return json;
+		return ApiResponse.success("支付成功", json);
 	}
 
 	/**

@@ -22,6 +22,8 @@ public class StudentDemandForm extends PageForm implements Serializable {
 
 	private Integer demandId;
 
+	private String code;
+
     @ApiModelProperty(value = "学员ID",required = true)
     @NotBlank(message = "学员ID不能为空")
     private Integer studentId;
@@ -104,6 +106,14 @@ public class StudentDemandForm extends PageForm implements Serializable {
     // *******************单独预约********************
     @ApiModelProperty(value = "教员ID",required = true)
     private Integer teacherId;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public Integer getSid() {
         return sid;
