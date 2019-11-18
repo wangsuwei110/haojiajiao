@@ -160,6 +160,7 @@ public class PayController {
 					demandForm.setOrderType(2);
 					demandForm.setOrderStart(date);
 					demandForm.setUpdateTime(date);
+                    demandForm.setCreateTime(date);
 					Long sid = studentDemandMapper.updateOldDemandToNew(demandForm);
 
 					List<DemandCourseInfoForm> courseInfoFormList = new ArrayList<>();
