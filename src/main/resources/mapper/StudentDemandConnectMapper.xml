@@ -48,8 +48,8 @@
         SET status = #{status},
         update_time  = #{updateTime}
         Where demand_id = #{demandId}
-        AND teacher_id = #{teacherId}
         AND delete_status = 0
+        AND status in (1, 2)
     </update>
 
     <update id="updateStatusAndPass" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm">
