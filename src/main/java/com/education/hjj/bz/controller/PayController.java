@@ -134,6 +134,7 @@ public class PayController {
 					logger.info("=======================第二次签名：" + paySign + "=====================");
 
 					response.put("paySign", paySign);
+                    response.put("signType", Constant.SIGN_TYPE);
 
 					//更新订单信息
 					// 如果是试讲订单，要将试讲订单修改成付费订单
