@@ -163,7 +163,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			List<StudentDemandConnectVo> connectVos = connectMapper.listConnectInfo(f.getSid());
 			// 判断是否已经有了预约(排除已经预约过，但是未通过的)
 			Optional<StudentDemandConnectVo> op = connectVos.stream()
-					.filter(s -> s.getOrderTeachTime() != null && s.getStatus() != null && s.getStatus() != 4)
+					.filter(s -> s.getOrderTeachTime() != null && s.getStatus() != null && s.getStatus() != 3)
 					.findFirst();
 			if (op.isPresent()) {
 				f.setSubscribeStatus(op.get().getStatus());
