@@ -26,7 +26,7 @@ public class DemandCourseInfoVo {
     private Long studentId;
 
     @ApiModelProperty(value = "上课状态:未结课:1, 结课:2")
-    private Boolean status;
+    private Integer status;
 
     @ApiModelProperty(value = "上课时间")
     private Date orderTeachTime;
@@ -38,7 +38,7 @@ public class DemandCourseInfoVo {
     private Long timeNum;
 
     @ApiModelProperty(value = "状态")
-    private Boolean deleteStatus;
+    private Integer deleteStatus;
 
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
@@ -91,13 +91,7 @@ public class DemandCourseInfoVo {
     public void setStudentId(Long studentId) {
         this.studentId = studentId;
     }
-    public Boolean getStatus() {
-        return status;
-    }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
     public Date getOrderTeachTime() {
         return orderTeachTime;
     }
@@ -119,13 +113,23 @@ public class DemandCourseInfoVo {
     public void setTimeNum(Long timeNum) {
         this.timeNum = timeNum;
     }
-    public Boolean getDeleteStatus() {
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getDeleteStatus() {
         return deleteStatus;
     }
 
-    public void setDeleteStatus(Boolean deleteStatus) {
+    public void setDeleteStatus(Integer deleteStatus) {
         this.deleteStatus = deleteStatus;
     }
+
     public Date getCreateTime() {
         return createTime;
     }
