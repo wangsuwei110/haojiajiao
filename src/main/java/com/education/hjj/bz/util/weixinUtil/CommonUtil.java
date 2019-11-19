@@ -10,6 +10,7 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 
 import com.education.hjj.bz.util.weixinUtil.vo.PayInfo;
+import com.education.hjj.bz.util.weixinUtil.vo.RedpackRequestPo;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -63,6 +64,11 @@ public class CommonUtil {
     public static String payInfoToXML(PayInfo pi) {
         xstream.alias("xml", pi.getClass());
         return xstream.toXML(pi);
+    }
+    
+    public static String redpackRequestPoToXML(RedpackRequestPo redpackRequestPo) {
+        xstream.alias("xml", redpackRequestPo.getClass());
+        return xstream.toXML(redpackRequestPo);
     }
 
     @SuppressWarnings("unchecked")

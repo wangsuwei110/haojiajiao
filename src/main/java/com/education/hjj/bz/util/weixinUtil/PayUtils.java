@@ -39,11 +39,20 @@ import org.apache.http.util.EntityUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSONObject;
+import com.education.hjj.bz.controller.PayController;
+import com.education.hjj.bz.util.HttpClientUtils;
 import com.education.hjj.bz.util.weixinUtil.config.Constant;
+import com.education.hjj.bz.util.weixinUtil.vo.PayInfo;
+import com.education.hjj.bz.util.weixinUtil.vo.RedpackRequestPo;
 
 @SuppressWarnings("deprecation")
 public class PayUtils {
+	
+	private static Logger logger = LoggerFactory.getLogger(PayUtils.class);
 
 	private static Object Server;
     @SuppressWarnings("deprecation")
@@ -559,4 +568,54 @@ public class PayUtils {
         }
         return sb.toString();
     }
+    
+    public static String getOpenId(String code) {
+		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + Constant.APP_ID + "&secret="
+				+ Constant.APP_SECRET + "&code=" + code + "&grant_type=authorization_code";
+
+		Map<String, String> urlData = new HashMap<String, String>();
+
+		urlData.put("appid", Constant.APP_ID);// 小程序id
+		urlData.put("secret", Constant.APP_SECRET);// 小程序key
+		urlData.put("js_code", code);// 小程序传过来的code
+		urlData.put("grant_type", "authorization_code");// 固定值这样写就行
+
+		String openid;
+
+		try {
+			String jsonStr = HttpClientUtils.doGet(url, urlData);
+
+			logger.info("jsonStr = {}", jsonStr);
+
+			openid = JSONObject.parseObject(jsonStr).getString("openid");
+
+			String unionid = JSONObject.parseObject(jsonStr).getString("unionid");
+			logger.info("openid = {}, unionid = {}", openid, unionid);
+
+			return openid;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+    
+    public static  String getSign(Object redpackRequestPo) throws Exception {
+
+		String stringSignTemp = null;
+		try {
+			Map<String, String> stringObjectMap = ObjectToMapUntils.objectToMap(redpackRequestPo);
+			// 参数ASCLL码字典序,并将结果转为URL参数串类型
+			String stringA = WXUtils.formatUrlMap(stringObjectMap, false, false);
+			String stringSignTempmode = stringA + "&key=" + Constant.APP_KEY;//
+			logger.info("拼接key后的参数串：" + stringSignTempmode);
+			stringSignTemp = MD5Utils.MD5(stringSignTempmode);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		logger.info("加密后的参数串：" + stringSignTemp);
+
+		return stringSignTemp;
+	}
 }

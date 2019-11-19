@@ -18,6 +18,11 @@ public final class DateUtil {
 	 * 英文简写（默认）如：2010-12-01
 	 */
 	public static final String FORMAT_SHORT = "yyyy-MM-dd";
+	
+	/**
+	 * 英文简写（默认）如：2010-12-01
+	 */
+	public static final String FORMAT_SHORT_NUM = "yyyyMMdd";
 
 	/**
 	 * 英文简写（默认）如：2010-12
@@ -152,6 +157,16 @@ public final class DateUtil {
 	 */
 	public static String getStandardDay(Date date) {
 		SimpleDateFormat df = new SimpleDateFormat(FORMAT_SHORT);
+		return df.format(date);
+	}
+	
+	/**
+	 * 获取时间yyyyMMdd
+	 *
+	 * @return
+	 */
+	public static String getStandardDayByNum(Date date) {
+		SimpleDateFormat df = new SimpleDateFormat(FORMAT_SHORT_NUM);
 		return df.format(date);
 	}
 

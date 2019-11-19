@@ -134,7 +134,6 @@ public class UserInfoController {
 	
 	@ApiOperation("用户收入查询")
 	@RequestMapping(value = "/queryTeacherAccountByID", method = RequestMethod.GET)
-	@RequiresPermissions(logical = Logical.AND, value = {"teacher:view"})
 	public ApiResponse queryUserAccount(@RequestParam("userId") String userId) {
 
 		Map<String,Object> map = userInfoService.queryTeacherAccount(userId);
@@ -144,7 +143,6 @@ public class UserInfoController {
 	
 	@ApiOperation("用户钱款支出明细查询")
 	@RequestMapping(value = "/queryTeacherAccountOpreateLog", method = RequestMethod.GET)
-	@RequiresPermissions(logical = Logical.AND, value = {"teacher:view" , "student:view"})
 	public ApiResponse queryUserAccountOperateLog(@RequestParam("userId") String userId , @RequestParam("type")Integer type) {
 
 		TeacherAccountOperateLogVo teacherAccount = userInfoService.queryUserAccountOperateLog(userId , type);

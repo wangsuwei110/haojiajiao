@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.education.hjj.bz.entity.TeacherAccountPo;
 import com.education.hjj.bz.entity.vo.TeacherAccountVo;
 import com.education.hjj.bz.mapper.UserAccountMapper;
 import com.education.hjj.bz.service.UserAccountService;
@@ -36,6 +37,14 @@ public class UserAccountServiceImpl implements UserAccountService{
 		}
 		
 		return teacherAccountVo;
+	}
+
+	@Override
+	public int updateTeacherAccount(TeacherAccountPo teacherAccountPo) {
+		
+		int i = UserAccountMapper.updateTeacherAccount(teacherAccountPo);
+		
+		return i;
 	}
 
 }

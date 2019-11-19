@@ -1,9 +1,15 @@
 package com.education.hjj.bz.util.weixinUtil;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.net.URLEncoder;
+import java.security.KeyStore;
 import java.security.SignatureException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,13 +19,41 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.net.ssl.SSLContext;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContexts;
+import org.apache.http.util.EntityUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.InputSource;
+
+import com.education.hjj.bz.controller.PayController;
+import com.education.hjj.bz.util.weixinUtil.config.Constant;
+import com.education.hjj.bz.util.weixinUtil.vo.CheckRedPackRequestPo;
+import com.education.hjj.bz.util.weixinUtil.vo.RedpackRequestPo;
+import com.education.hjj.bz.util.weixinUtil.vo.RedpackResponsePo;
 public class WXUtils {
+	
+	private static Logger logger = LoggerFactory.getLogger(WXUtils.class);
    
     /**
      * 方法用途: 对所有传入参数按照字段名的 ASCII 码从小到大排序（字典序），并且生成url参数串<br>
@@ -205,5 +239,92 @@ public class WXUtils {
         } else {   
             return false;   
         }   
-    }   
+    } 
+    
+    /**
+	 * 微信支付，现金红包接口，将参数以xml格式转为流数据传递给微信的支付接口 将微信返回数据转成javabean
+	 */
+	public static String httpsXMLPostPay(String url, Object param, String certPath, String mchId) throws Exception {
+		
+		KeyStore keyStore = KeyStore.getInstance("PKCS12");
+		// 读取证书
+		FileInputStream instream = new FileInputStream(new File(certPath));
+		try {
+			// password是商户号
+			keyStore.load(instream, mchId.toCharArray());
+		} catch (Exception e) {
+			logger.debug(e.getMessage(), e);
+			System.err.println(e);
+		} finally {
+			instream.close();
+		}
+		SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, mchId.toCharArray()).build();
+		SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[] { "TLSv1" }, null,
+				SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+		CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
+ 
+		try {
+			HttpPost httpPost = new HttpPost(url);
+			httpPost.addHeader("Connection", "keep-alive");
+			httpPost.addHeader("Accept", "*/*");
+			httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+			httpPost.addHeader("Host", "api.mch.weixin.qq.com");
+			httpPost.addHeader("X-Requested-With", "XMLHttpRequest");
+			httpPost.addHeader("Cache-Control", "max-age=0");
+			httpPost.addHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0) ");
+			// 设置超时时间
+	        httpPost.setConfig(getRequestConfig());
+			
+			logger.info("executing request：" + httpPost.getRequestLine());
+			
+			String xml = "";
+			
+			if(Constant.CHECK_RED_PACK.equalsIgnoreCase(url)) {
+				xml = XmlParseUtil.beanToXml(param, CheckRedPackRequestPo.class);
+			}
+			
+			if(Constant.SEND_RED_PACK.equalsIgnoreCase(url)) {
+				xml = XmlParseUtil.beanToXml(param, RedpackRequestPo.class);
+			}
+ 
+			
+			logger.info("调试模式_统一下单接口请求XML数据: {}", xml);
+ 
+			httpPost.setEntity(new ByteArrayEntity(xml.getBytes("UTF-8")));
+ 
+			CloseableHttpResponse response = httpclient.execute(httpPost);
+ 
+			try {
+				HttpEntity entity = response.getEntity();
+				System.err.println(response.getStatusLine());
+				if (entity != null) {
+					logger.info("Response content length: " + entity.getContentLength());
+					
+					String result = EntityUtils.toString(entity);
+					
+					logger.info(result);
+					
+					return result;
+					
+				}
+				EntityUtils.consume(entity);
+			} finally {
+				response.close();
+			}
+		} finally {
+			httpclient.close();
+		}
+		return "";
+	}
+
+	/**
+	 * 请求超时时间(毫秒) 5秒
+     * 响应超时时间(毫秒) 15秒
+	 * @return
+	 */
+	public static RequestConfig getRequestConfig() {
+		
+		return RequestConfig.custom().setConnectTimeout(5 * 1000).setConnectionRequestTimeout(15 * 1000).build();
+
+	}
 }
