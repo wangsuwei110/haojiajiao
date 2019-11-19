@@ -436,6 +436,7 @@
 		<result column="demandSignStatus" property="demandSignStatus"/>
 		<result column="status" property="status"/>
 		<result column="classId" property="classId"/>
+		<result column="appraise" property="appraise"/>
 	</resultMap>
     
     <!-- 订单详情 -->
@@ -456,7 +457,8 @@
 			sd.week_num,
 			sd.demand_desc,
 			s.parent_phone_num,
-			sdc.status as demandSignStatus
+			sdc.status as demandSignStatus,
+			appraise
 			
 		FROM
 			student_demand_connect sdc

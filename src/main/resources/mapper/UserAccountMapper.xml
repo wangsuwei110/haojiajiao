@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace用于绑定Dao接口 -->
-<mapper namespace="com.education.hjj.bz.mapper.UserInfoMapper">
+<mapper namespace="com.education.hjj.bz.mapper.UserAccountMapper">
 
 	<!-- 用用查询映射结果 -->
-	<resultMap id="teacherInfoResultMap" type="com.education.hjj.bz.entity.vo.TeacherAccountVo" >
+	<resultMap id="teacherAccountInfoResultMap" type="com.education.hjj.bz.entity.vo.TeacherAccountVo" >
 		<!-- column代表数据库列名，property代表实体类属性名 -->
 		
 		<result column="teacher_id" property="teacherId"/>
@@ -16,7 +16,8 @@
 		<result column="update_time" property="updateTime"/>
 	</resultMap>
 	
-    <select id="queryTeacherAccount"  resultMap="teacherInfoResultMap" parameterType="java.lang.Integer">    
+	<!-- 查询用户账户余额 -->
+    <select id="queryTeacherAccount"  resultMap="teacherAccountInfoResultMap" parameterType="java.lang.Integer">    
         	
         select 
 			teacher_id,
@@ -33,5 +34,16 @@
 		and
 			teacher_id=#{teacherId}
     </select>  
+    
+    <!-- 教员用户提现 -->
+    <update id="updateTeacherAccount" parameterType="com.education.hjj.bz.entity.TeacherAccountPo">
+    	update
+    		teacher_account
+    	set
+    		surplus_money = #{surplusMoney},
+    		update_time = #{updateTime}
+    	where
+    		teacher_id = #{teacherId}
+    </update>
     
 </mapper>

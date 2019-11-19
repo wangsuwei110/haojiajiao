@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace用于绑定Dao接口 -->
-<mapper namespace="com.education.hjj.bz.mapper.UserInfoMapper">
+<mapper namespace="com.education.hjj.bz.mapper.UserAccountLogMapper">
 
 	<!-- 用查询映射结果 -->
 	<resultMap id="teacherAccountLogResultMap" type="com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo" >
@@ -18,10 +18,11 @@
 	</resultMap>
 	
     
-    <!-- 查询用户账户变化日志 -->  
-    <select id="queryUserAccountOperateLog"  resultMap="teacherAccountLogResultMap" parameterType="com.education.hjj.bz.entity.TeacherAccountOperateLogPo">    
+    <!-- 查询用户账户变化日志列表 -->  
+    <select id="queryUserAccountLogList"  resultMap="teacherAccountLogResultMap" parameterType="com.education.hjj.bz.entity.TeacherAccountOperateLogPo">    
         	
-       	select 
+       	select
+       		payment_id, 
 			payment_stream_id,
 			payment_person_id,
 			payment_person_name,
@@ -36,9 +37,62 @@
 		AND
 			status =1
 			<if test="paymentType != null">
-               and payment_type = #{paymentType},
+               and payment_type = #{paymentType}
             </if>
        		
     </select> 
+    
+    <!-- 查询用户账户变化日志列表 -->  
+    <select id="queryUserAccountLogDetail"  resultMap="teacherAccountLogResultMap" parameterType="java.lang.Integer">    
+        	
+       	select 
+       		payment_id,
+			payment_stream_id,
+			payment_person_id,
+			payment_person_name,
+			payment_type,
+			payment_account,
+			payment_desc,
+			create_time
+		FROM
+			teacher_payments_log
+		WHERE
+			
+			status =1
+		and
+			payment_id = #{paymentId}
+       		
+    </select> 
+    
+    <!-- 新增教员收入/支出日志表 -->
+    <insert id="insertUserAccountLog" parameterType="com.education.hjj.bz.entity.TeacherAccountOperateLogPo"
+    	keyProperty="id" useGeneratedKeys="true">
+    	insert into teacher_payments_log(
+    		payment_person_id,
+			payment_person_name,
+			payment_type,
+			payment_account,
+			payment_desc,
+			count,
+			status,
+			create_time,
+			create_user,
+			update_time,
+			update_user
+    				
+    	)values(
+    		#{paymentPersonId},
+    		#{paymentPersonName},
+    		#{paymentType},
+    		#{paymentAccount},
+    		#{paymentDesc},
+    		#{count},
+    		#{status},
+    		#{createTime},
+    		#{createUser},
+    		#{updateTime},
+    		#{updateUser}
+    	)
+    </insert>
     
 </mapper>
