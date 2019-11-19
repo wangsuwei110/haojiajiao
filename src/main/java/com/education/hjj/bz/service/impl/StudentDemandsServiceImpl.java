@@ -245,7 +245,13 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	@Transactional
 	public ApiResponse listMyCourse(DemandCourseInfoForm demandForm) {
 		demandForm.setRangeForm(DateUtil.getWeekTime(demandForm.getOrderTeachTime()));
-		return ApiResponse.success(demandCourseInfoMapper.listMyCourseList(demandForm));
+
+        List<DemandCourseInfoVo> list = demandCourseInfoMapper.listMyCourseList(demandForm);
+        list.forEach(f -> {
+            f.setUnitPrice(Double.valueOf(f.getChargesStandard().split("元")[0].toString()));
+        });
+
+		return ApiResponse.success(list);
 	}
 
 	/**

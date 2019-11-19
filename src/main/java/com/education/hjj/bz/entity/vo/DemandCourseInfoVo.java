@@ -55,6 +55,28 @@ public class DemandCourseInfoVo {
     @ApiModelProperty(value = "教员姓名")
     private String teacherName;
 
+    @ApiModelProperty(value = "教员的单价")
+    private String chargesStandard;
+
+    @ApiModelProperty(value = "教员的单价")
+    private Double unitPrice;
+
+    public Double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(Double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public String getChargesStandard() {
+        return chargesStandard;
+    }
+
+    public void setChargesStandard(String chargesStandard) {
+        this.chargesStandard = chargesStandard;
+    }
+
     public String getTeacherName() {
         return teacherName;
     }

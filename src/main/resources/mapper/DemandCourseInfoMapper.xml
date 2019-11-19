@@ -18,6 +18,7 @@
 	     	<result property="updateUser" column="update_user"/>
 
 	     	<result property="teacherName" column="name"/>
+	     	<result property="chargesStandard" column="charges_standard"/>
     </resultMap>
 
 	<select id="load" resultMap="demandCourseInfoResultMap" parameterType="long">
@@ -119,7 +120,7 @@
     </select>
 
 	<select id="listMyCourseList" parameterType="com.education.hjj.bz.formBean.DemandCourseInfoForm"  resultMap="demandCourseInfoResultMap">
-		SELECT dci.*, tea.name
+		SELECT dci.*, tea.name, tea.charges_standard
 		FROM demand_course_info dci
 		INNER JOIN teacher tea
 		ON dci.teacher_id = tea.teacher_id
