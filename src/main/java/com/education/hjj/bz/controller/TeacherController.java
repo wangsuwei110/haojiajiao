@@ -1,18 +1,28 @@
 package com.education.hjj.bz.controller;
 
-import com.education.hjj.bz.entity.vo.PageVo;
-import com.education.hjj.bz.entity.vo.StudentDemandVo;
-import com.education.hjj.bz.formBean.*;
-import com.education.hjj.bz.service.StudentDemandsService;
-import com.education.hjj.bz.service.TeacherService;
-import com.education.hjj.bz.util.ApiResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.education.hjj.bz.entity.vo.PageVo;
+import com.education.hjj.bz.entity.vo.StudentDemandVo;
+import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
+import com.education.hjj.bz.formBean.StudentDemandConnectForm;
+import com.education.hjj.bz.formBean.TeachScreenForm;
+import com.education.hjj.bz.formBean.TeachUniversityForm;
+import com.education.hjj.bz.formBean.TeacherScreenForm;
+import com.education.hjj.bz.service.StudentDemandsService;
+import com.education.hjj.bz.service.TeacherService;
+import com.education.hjj.bz.util.ApiResponse;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 教师表控制类

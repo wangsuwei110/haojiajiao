@@ -24,7 +24,6 @@ import com.education.hjj.bz.entity.TeacherAccountPo;
 import com.education.hjj.bz.entity.vo.TeacherAccountVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.enums.RedPackEnum;
-import com.education.hjj.bz.formBean.LoginForm;
 import com.education.hjj.bz.formBean.TeacherAccountForm;
 import com.education.hjj.bz.service.UserAccountLogService;
 import com.education.hjj.bz.service.UserAccountService;
