@@ -32,7 +32,9 @@ public class Constant {
     public static final String CHECK_RED_PACK = "https://api.mch.weixin.qq.com/mmpaymkttransfers/gethbinfo";
     
     //证书存放位置
-    public static final String CERT_PATH ="D:\\1557492101_20191115_cert\\apiclient_cert.p12";
+//    public static final String CERT_PATH ="D:\\1557492101_20191115_cert\\apiclient_cert.p12";
+    
+    public static final String CERT_PATH ="/opt/haojiajiao/cert";
     //活动描述
     public static final String ACT_NAME = "来家教提现红包";
     //通知用户形式，小程序固定用 MINI_PROGRAM_JSAPI
