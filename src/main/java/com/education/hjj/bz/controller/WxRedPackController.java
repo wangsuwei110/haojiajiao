@@ -29,6 +29,7 @@ import com.education.hjj.bz.service.UserAccountLogService;
 import com.education.hjj.bz.service.UserAccountService;
 import com.education.hjj.bz.service.UserInfoService;
 import com.education.hjj.bz.util.DateUtil;
+import com.education.hjj.bz.util.GetWXOpenIdUtil;
 import com.education.hjj.bz.util.weixinUtil.CommonUtil;
 import com.education.hjj.bz.util.weixinUtil.PayUtils;
 import com.education.hjj.bz.util.weixinUtil.RandomUtils;
@@ -74,9 +75,12 @@ public class WxRedPackController {
 		
 		String databaseOpenid = teacherVo.getOpenId();
 		
-		String openId = teacherAccountForm.getOpenId();//获取微信服务器授权返回的code值
+		String code = teacherAccountForm.getCode();//获取微信服务器授权返回的code值
 		
-		logger.info("openId: " + openId);
+		logger.info("code: " + code);
+		
+		String openId = GetWXOpenIdUtil.getOpenId(code);
+		
 		//接收红包用户的openid
 //		String openId = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
 		
