@@ -26,14 +26,16 @@ public class UserAccountServiceImpl implements UserAccountService{
 		
 		TeacherAccountVo teacherAccountVo = UserAccountMapper.queryTeacherAccount(teacherId);
 		
-		try {
-			String stayTime = DateUtil.calStayTimeByDate(teacherAccountVo.getCreateTime());
-			
-			teacherAccountVo.setStayTime(stayTime);
-			
-		} catch (ParseException e) {
-			logger.error("日期转换失败！请检查数据的日期值是否正确");
-			e.printStackTrace();
+		if(teacherAccountVo != null) {
+			try {
+				String stayTime = DateUtil.calStayTimeByDate(teacherAccountVo.getCreateTime());
+				
+				teacherAccountVo.setStayTime(stayTime);
+				
+			} catch (ParseException e) {
+				logger.error("日期转换失败！请检查数据的日期值是否正确");
+				e.printStackTrace();
+			}
 		}
 		
 		return teacherAccountVo;
