@@ -199,6 +199,12 @@
      	<if test="createTime != null">
 			order by create_time desc
      	</if>
+     	
+     	<if test="offset != null">
+			<![CDATA[
+                limit #{pageSize} offset #{offset}
+            ]]>
+		</if>
     </select>
     
     <!-- 教员首页查询所有的需求订单10条 -->
