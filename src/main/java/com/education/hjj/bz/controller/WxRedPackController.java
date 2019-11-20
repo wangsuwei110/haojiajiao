@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
 import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
 import com.education.hjj.bz.entity.TeacherAccountPo;
 import com.education.hjj.bz.entity.vo.TeacherAccountVo;
@@ -30,6 +31,7 @@ import com.education.hjj.bz.service.UserAccountService;
 import com.education.hjj.bz.service.UserInfoService;
 import com.education.hjj.bz.util.DateUtil;
 import com.education.hjj.bz.util.GetWXOpenIdUtil;
+import com.education.hjj.bz.util.HttpClientUtils;
 import com.education.hjj.bz.util.weixinUtil.CommonUtil;
 import com.education.hjj.bz.util.weixinUtil.PayUtils;
 import com.education.hjj.bz.util.weixinUtil.RandomUtils;
@@ -79,7 +81,9 @@ public class WxRedPackController {
 		
 		logger.info("code: " + code);
 		
-		String openId = GetWXOpenIdUtil.getOpenId(code);
+		//String openId = GetWXOpenIdUtil.getOpenId(code);
+		
+		String openId =getOpenId(code);
 		
 		//接收红包用户的openid
 //		String openId = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
@@ -261,6 +265,37 @@ public class WxRedPackController {
 		
 	}
 	
+	
+	private String getOpenId(String code) {
+		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + Constant.APP_ID + "&secret="
+				+ Constant.APP_SECRET + "&code=" + code + "&grant_type=authorization_code";
+
+		Map<String, String> urlData = new HashMap<String, String>();
+
+		urlData.put("appid", Constant.APP_ID);// 小程序id
+		urlData.put("secret", Constant.APP_SECRET);// 小程序key
+		urlData.put("js_code", code);// 小程序传过来的code
+		urlData.put("grant_type", "authorization_code");// 固定值这样写就行
+
+		String openid;
+
+		try {
+			String jsonStr = HttpClientUtils.doGet(url, urlData);
+
+			logger.info("jsonStr = {}", jsonStr);
+
+			openid = JSONObject.parseObject(jsonStr).getString("openid");
+
+			String unionid = JSONObject.parseObject(jsonStr).getString("unionid");
+			logger.info("openid = {}, unionid = {}", openid, unionid);
+
+			return openid;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/checkRedPackLog", method = RequestMethod.POST)
