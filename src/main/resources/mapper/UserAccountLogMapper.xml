@@ -33,7 +33,7 @@
 		FROM
 			teacher_payments_log
 		WHERE
-			payment_person_id=#{teacherId}
+			payment_person_id=#{paymentPersonId}
 		AND
 			status =1
 			<if test="paymentType != null">
