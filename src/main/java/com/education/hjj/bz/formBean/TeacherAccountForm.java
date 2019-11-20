@@ -17,7 +17,7 @@ public class TeacherAccountForm implements Serializable{
 	private String loginPhone;
 	
 	//code
-	private String code;
+	private String openId;
 	
 	//提现金额
 	private String  CashOut;
@@ -33,12 +33,12 @@ public class TeacherAccountForm implements Serializable{
 		this.loginPhone = loginPhone;
 	}
 
-	public String getCode() {
-		return code;
+	public String getOpenId() {
+		return openId;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setOpenId(String openId) {
+		this.openId = openId;
 	}
 
 	public String getCashOut() {

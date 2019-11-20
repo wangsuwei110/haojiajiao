@@ -74,12 +74,10 @@ public class WxRedPackController {
 		
 		String databaseOpenid = teacherVo.getOpenId();
 		
-		String code = teacherAccountForm.getCode();//获取微信服务器授权返回的code值
+		String openId = teacherAccountForm.getOpenId();//获取微信服务器授权返回的code值
 		
-		logger.info("code: " + code);
+		logger.info("openId: " + openId);
 		//接收红包用户的openid
-		String openId = PayUtils.getOpenId(code).replace("\"", "").trim();
-		
 //		String openId = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
 		
 		if(databaseOpenid == null || openId == null || !databaseOpenid.equalsIgnoreCase(openId)) {
