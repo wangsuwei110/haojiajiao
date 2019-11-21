@@ -250,6 +250,8 @@ public class WXUtils {
 		// 读取证书
 		FileInputStream instream = new FileInputStream(new File(certPath));
 		try {
+			
+			logger.info("instream" + instream);
 			// password是商户号
 			keyStore.load(instream, mchId.toCharArray());
 		} catch (Exception e) {
@@ -263,6 +265,8 @@ public class WXUtils {
 				SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
 		CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
  
+		logger.info("httpclient" + httpclient);
+		
 		try {
 			HttpPost httpPost = new HttpPost(url);
 			httpPost.addHeader("Connection", "keep-alive");

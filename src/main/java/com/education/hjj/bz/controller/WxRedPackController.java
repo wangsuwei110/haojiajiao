@@ -182,6 +182,8 @@ public class WxRedPackController {
 			//现金红包
 			String url = Constant.SEND_RED_PACK;
 			
+			logger.info("调用获取证书的方法 " + url);
+			
 			wxPayResult = WXUtils.httpsXMLPostPay(url , redpackRequestPo , Constant.CERT_PATH , Constant.MCH_ID);
 			
 			logger.info("调试模式_统一下单接口返回XML数据: " + wxPayResult);
