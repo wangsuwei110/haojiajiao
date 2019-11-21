@@ -173,6 +173,7 @@ public class WxRedPackController {
 		userAccountOperateLogPo.setUpdateTime(new Date());
 		userAccountOperateLogPo.setUpdateUser(teacherVo.getName());
 		
+		
 		int userAccountFlag = userAccountLogService.insertUserAccountLog(userAccountOperateLogPo);
 		
 		if(userAccountFlag <= 0) {
