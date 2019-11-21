@@ -29,8 +29,8 @@ import com.education.hjj.bz.formBean.TeacherAccountForm;
 import com.education.hjj.bz.service.UserAccountLogService;
 import com.education.hjj.bz.service.UserAccountService;
 import com.education.hjj.bz.service.UserInfoService;
+import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.DateUtil;
-import com.education.hjj.bz.util.GetWXOpenIdUtil;
 import com.education.hjj.bz.util.HttpClientUtils;
 import com.education.hjj.bz.util.weixinUtil.CommonUtil;
 import com.education.hjj.bz.util.weixinUtil.PayUtils;
@@ -65,7 +65,7 @@ public class WxRedPackController {
 	@ResponseBody
 	@RequestMapping(value = "/sendRedPack", method = RequestMethod.POST)
 	@ApiOperation("微信发红包")
-	public Json addRedPack(@RequestBody TeacherAccountForm teacherAccountForm) {
+	public ApiResponse addRedPack(@RequestBody TeacherAccountForm teacherAccountForm) {
 		
 		Json json = new Json();
 		
@@ -95,9 +95,7 @@ public class WxRedPackController {
 		
 		if(databaseOpenid == null || openId == null || !databaseOpenid.equalsIgnoreCase(openId)) {
 			logger.error("当前登录用户的openid和注册时的openid不一致，不允许提现！");
-			json.setSuccess(false);
-			json.setMsg("提现失败,请稍后再试！");
-			return json;
+			return ApiResponse.error("提现失败,请稍后再试！");
 		}
 		
 		String cashOut = teacherAccountForm.getCashOut();
@@ -132,7 +130,7 @@ public class WxRedPackController {
 			logger.error("当前用户账户扣除失败，请稍后再试！");
 			json.setSuccess(false);
 			json.setMsg("提现失败,请稍后再试！");
-			return json;
+			return ApiResponse.error("提现失败,请稍后再试！");
 		}
 		
 		
@@ -183,7 +181,7 @@ public class WxRedPackController {
 			json.setMsg("插入教员收支表日志记录失败");
 			logger.error("系统异常，请稍后再试！");
 			
-			return json;
+			return ApiResponse.error("系统异常，请稍后再试！");
 		}
 		
 		//普通红包
@@ -278,7 +276,7 @@ public class WxRedPackController {
 		}
 			 
 		
-		return json;
+		return ApiResponse.success("提现成功！", json);
 		
 		
 	}
@@ -318,7 +316,7 @@ public class WxRedPackController {
 	@ResponseBody
 	@RequestMapping(value = "/checkRedPackLog", method = RequestMethod.POST)
 	@ApiOperation("查询微信红包记录")
-	public Json addRedPack(@RequestBody CheckRedPackPo checkRedPackPo) {
+	public ApiResponse addRedPack(@RequestBody CheckRedPackPo checkRedPackPo) {
 		
 		Json json = new Json();
 		
@@ -375,11 +373,17 @@ public class WxRedPackController {
 				}else {
 					
 					logger.error("错误代码  :{}, 错误代码描述:{}" , parseResult.get("err_code") , parseResult.get("err_code_des") );
+					json.setSuccess(false);
+					json.setMsg(parseResult.get("return_msg"));
+					ApiResponse.error("查询微信红包异常，请稍后再试！");
 				}
 				
 				
 			}else{
 				logger.error("返回信息: " + parseResult.get("return_msg"));
+				json.setSuccess(false);
+				json.setMsg(parseResult.get("return_msg"));
+				ApiResponse.error("查询微信红包异常，请稍后再试！");
 			}
 			
 		} catch (Exception e) {
@@ -387,9 +391,10 @@ public class WxRedPackController {
 			json.setMsg("查询失败");
 			logger.error("查询微信红包异常，请稍后再试！");
 			e.printStackTrace();
+			ApiResponse.error("查询微信红包异常，请稍后再试！");
 		}
 		
-		return json;
+		return ApiResponse.success("查询成功！", json);
 	}
 
 }

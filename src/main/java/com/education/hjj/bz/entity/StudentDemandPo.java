@@ -47,6 +47,9 @@ public class StudentDemandPo extends BasePo implements Serializable{
     
     //每节课的id
     private String classId;
+    
+    //订单报名人数
+    private Integer demandSignUpNum;
 	
 
 	public Integer getStudentId() {
@@ -191,6 +194,14 @@ public class StudentDemandPo extends BasePo implements Serializable{
 
 	public void setClassId(String classId) {
 		this.classId = classId;
+	}
+
+	public Integer getDemandSignUpNum() {
+		return demandSignUpNum;
+	}
+
+	public void setDemandSignUpNum(Integer demandSignUpNum) {
+		this.demandSignUpNum = demandSignUpNum;
 	}
 	
 }

@@ -19,6 +19,8 @@ import com.education.hjj.bz.entity.vo.StudentLogVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.StudentDemandForm;
+import com.education.hjj.bz.service.DemandCourseInfoService;
+import com.education.hjj.bz.service.StudentDemandConnectService;
 import com.education.hjj.bz.service.StudentDemandsService;
 import com.education.hjj.bz.service.StudentLogService;
 import com.education.hjj.bz.service.UserInfoService;
@@ -43,6 +45,12 @@ public class HomeController {
 	@Autowired
 	private StudentLogService studentLogService;
 	
+	@Autowired
+	private StudentDemandConnectService studentDemandConnectService;
+	
+	@Autowired
+	private DemandCourseInfoService demandCourseInfoService;
+	
 
 	@ApiOperation("查询教员登录首页的内容")
 	@RequestMapping(value = "/queryTeacherInfosByHome", method = RequestMethod.POST)
@@ -53,18 +61,32 @@ public class HomeController {
 		
 		Integer teacherId = form.getTeacherId();
 		
-		//教员信息
-		TeacherVo teacherVo = userInfoService.queryTeacherHomeInfos(String.valueOf(teacherId));
-		map.put("teacherLevel", teacherVo.getTeacherLevel());
-		map.put("employRate",  teacherVo.getEmployRate()+"%");
-		map.put("resumptionRate", teacherVo.getResumptionRate()+"%");
+		List<StudentDemandVo> fitTeacherOrderList = null;
 		
-		//查询新的试讲订单列表
-		List<StudentDemandVo> newTrialStudentDemandList = studentDemandsService.queryNewTrialOrderList(teacherId);
-		map.put("newTrialStudentDemandList", newTrialStudentDemandList);
-		
-		//查询适合我的家教需求
-		List<StudentDemandVo> fitTeacherOrderList = studentDemandsService.queryFitTeacherOrderList(teacherId);
+		if(teacherId != null) {
+			
+			//教员信息
+			TeacherVo teacherVo = userInfoService.queryTeacherHomeInfos(String.valueOf(teacherId));
+			map.put("teacherLevel", teacherVo.getTeacherLevel());
+			map.put("employRate",  teacherVo.getEmployRate()+"%");
+			map.put("resumptionRate", teacherVo.getResumptionRate()+"%");
+			
+			//查询新的试讲订单列表
+			List<StudentDemandVo> newTrialStudentDemandList = studentDemandsService.queryNewTrialOrderList(teacherId);
+			map.put("newTrialStudentDemandList", newTrialStudentDemandList);
+			
+			//查询适合我的家教需求
+			fitTeacherOrderList = studentDemandsService.queryFitTeacherOrderList(teacherId);
+			
+			//服务的
+			int num = studentDemandConnectService.queryServiceForStudentSuccess(teacherId);
+			
+			map.put("servicePersonNum", num);
+			
+			int serviceHours = demandCourseInfoService.queryServiceForHours(teacherId);
+			
+			map.put("serviceHours", serviceHours);
+		}
 		
 		if(fitTeacherOrderList.size() > 0) {
 			map.put("fitTeacherOrderList", fitTeacherOrderList);

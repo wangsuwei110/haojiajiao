@@ -29,4 +29,6 @@ public interface DemandCourseInfoMapper {
     List<DemandCourseInfoVo> list(DemandCourseInfoForm form);
 
     List<DemandCourseInfoVo> listMyCourseList(DemandCourseInfoForm form);
+    
+    int queryServiceForHours(Integer teacherId);
 }

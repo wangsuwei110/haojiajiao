@@ -56,4 +56,6 @@ public interface StudentDemandMapper {
 	List<StudentDemandVo> queryTimeTableByTeacherId(StudentDemandPo studentDemandPo);
 	
 	int updateTimeTableByTeacherId(StudentDemandPo studentDemandPo);
+	
+	int updateDemandSignNum(StudentDemandPo studentDemandPo);
 }
