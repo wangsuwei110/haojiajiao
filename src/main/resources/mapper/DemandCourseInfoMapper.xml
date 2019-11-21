@@ -25,6 +25,18 @@
         SELECT * FROM demand_course_info
         WHERE sid =  #{sid} and delete_status = 0
     </select>
+    
+    <!-- 查询某教员已教授课时数-->
+    <select id="queryServiceForHours" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    	select 
+			count(sid)
+		FROM
+			demand_course_info
+		WHERE
+			status = 2
+		AND
+			teacher_id = #{teacherId}
+    </select>
 
 	<update id="delete">
         UPDATE demand_course_info
