@@ -68,6 +68,7 @@
     <insert id="insertUserAccountLog" parameterType="com.education.hjj.bz.entity.TeacherAccountOperateLogPo"
     	keyProperty="id" useGeneratedKeys="true">
     	insert into teacher_payments_log(
+    		payment_stream_id,
     		payment_person_id,
 			payment_person_name,
 			payment_type,
@@ -81,6 +82,7 @@
 			update_user
     				
     	)values(
+    		#{paymentStreamId},
     		#{paymentPersonId},
     		#{paymentPersonName},
     		#{paymentType},
