@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
+import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.entity.vo.WeekTimeVo;
 import com.education.hjj.bz.formBean.DemandCourseInfoForm;
@@ -18,11 +19,13 @@ import com.education.hjj.bz.formBean.StudentDemandForm;
 import com.education.hjj.bz.mapper.DemandCourseInfoMapper;
 import com.education.hjj.bz.mapper.DemandLogMapper;
 import com.education.hjj.bz.mapper.StudentDemandMapper;
+import com.education.hjj.bz.mapper.UserAccountLogMapper;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -63,8 +66,12 @@ public class PayController {
 	@Autowired
 	private StudentDemandMapper studentDemandMapper;
 
+	@Autowired
+	private UserAccountLogMapper userAccountLogMapper;
+
 
 	@ResponseBody
+    @Transactional
 	@RequestMapping(value = "/prepay", method = RequestMethod.POST)
 	@ApiOperation("微信统一下单")
 	public ApiResponse prePay(HttpServletRequest request, @RequestBody StudentDemandForm demandForm) {
@@ -194,6 +201,21 @@ public class PayController {
 					}
 
 					demandCourseInfoMapper.insert(courseInfoFormList);
+
+					// 插入一条日志信息，记录结课/支付记录
+					TeacherAccountOperateLogPo paymentLog = new TeacherAccountOperateLogPo();
+					paymentLog.setPaymentStreamId(randomNonceStr);
+					paymentLog.setPaymentPersonId(demandVo.getStudentId());
+					paymentLog.setPaymentPersonName(demandVo.getStudentName());
+					paymentLog.setPaymentType(1);
+					paymentLog.setPaymentDesc("结课时支付");
+					paymentLog.setStatus(0);
+					paymentLog.setCreateTime(date);
+					paymentLog.setCreateUser(demandVo.getStudentName());
+					paymentLog.setPaymentAccount(demandVo.getOrderMoney());
+					paymentLog.setUpdateTime(date);
+					paymentLog.setUpdateUser(demandVo.getStudentName());
+					userAccountLogMapper.insertUserAccountLog(paymentLog);
 
 				} else {
 

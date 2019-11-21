@@ -16,7 +16,7 @@ import java.util.List;
 @Mapper
 public interface DemandCourseInfoMapper {
 
-	DemandCourseInfoVo load(Long id);
+	DemandCourseInfoVo load(@Param("sid") Integer sid);
 
 	void insert(@Param("demandCourseInfos") List<DemandCourseInfoForm> demandCourseInfos);
 

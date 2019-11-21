@@ -20,7 +20,7 @@ public interface TeacherService{
      * @param id
      * @return
      */
-    TeacherVo findById(Long id);
+    TeacherVo findById(Integer id);
 	
     /**
     * 分页查询

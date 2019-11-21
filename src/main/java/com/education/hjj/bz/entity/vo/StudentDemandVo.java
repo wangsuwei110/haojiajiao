@@ -1,6 +1,8 @@
 package com.education.hjj.bz.entity.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.math.BigDecimal;
 import java.util.Date;
 /**
  * 学员发布需求表Vo
@@ -52,7 +54,7 @@ public class StudentDemandVo {
     private Integer orderType;
 
     @ApiModelProperty(value = "订单金额")
-    private Float orderMoney;
+    private BigDecimal orderMoney;
 
     @ApiModelProperty(value = "具体需求")
     private String demandDesc;
@@ -99,6 +101,9 @@ public class StudentDemandVo {
     @ApiModelProperty(value = "收费标准")
     private String chargesStandard;
 
+    @ApiModelProperty(value = "流水单号")
+    private String paymentStreamId;
+
     private Integer teacherId;
 
     //教学年级名称
@@ -121,6 +126,15 @@ public class StudentDemandVo {
     
     //每节课的ID
     private Integer classId;
+
+
+    public String getPaymentStreamId() {
+        return paymentStreamId;
+    }
+
+    public void setPaymentStreamId(String paymentStreamId) {
+        this.paymentStreamId = paymentStreamId;
+    }
 
     public Integer getStudentId() {
         return studentId;
@@ -300,13 +314,15 @@ public class StudentDemandVo {
     public void setOrderType(Integer orderType) {
         this.orderType = orderType;
     }
-    public Float getOrderMoney() {
+
+    public BigDecimal getOrderMoney() {
         return orderMoney;
     }
 
-    public void setOrderMoney(Float orderMoney) {
+    public void setOrderMoney(BigDecimal orderMoney) {
         this.orderMoney = orderMoney;
     }
+
     public String getDemandDesc() {
         return demandDesc;
     }

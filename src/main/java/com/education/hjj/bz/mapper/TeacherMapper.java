@@ -16,7 +16,7 @@ import java.util.List;
 @Mapper
 public interface TeacherMapper {
 
-	TeacherVo load(Long id);
+	TeacherVo load(@Param("teacherId") Integer teacherId);
 
     int getCount(TeacherScreenForm form);
 

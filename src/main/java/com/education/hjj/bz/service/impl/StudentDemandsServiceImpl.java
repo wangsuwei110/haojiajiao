@@ -1,5 +1,6 @@
 package com.education.hjj.bz.service.impl;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,6 +11,11 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import com.alibaba.fastjson.JSON;
+import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
+import com.education.hjj.bz.entity.TeacherAccountPo;
+import com.education.hjj.bz.entity.vo.*;
+import com.education.hjj.bz.mapper.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import com.alibaba.fastjson.JSON;
 import com.education.hjj.bz.entity.StudentDemandPo;
 import com.education.hjj.bz.entity.TeachTimePo;
-import com.education.hjj.bz.entity.vo.DemandCourseInfoVo;
-import com.education.hjj.bz.entity.vo.OrderDemandTimeVo;
-import com.education.hjj.bz.entity.vo.PageVo;
-import com.education.hjj.bz.entity.vo.StudentDemandConnectVo;
-import com.education.hjj.bz.entity.vo.StudentDemandVo;
-import com.education.hjj.bz.entity.vo.StudentVo;
-import com.education.hjj.bz.entity.vo.TeachBranchVo;
-import com.education.hjj.bz.entity.vo.TeacherVo;
-import com.education.hjj.bz.entity.vo.WeekTimeVo;
 import com.education.hjj.bz.formBean.DemandCourseInfoForm;
 import com.education.hjj.bz.formBean.DemandLogForm;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
@@ -77,6 +73,12 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 	@Autowired
 	private DemandCourseInfoMapper demandCourseInfoMapper;
+
+	@Autowired
+	private UserAccountMapper userAccountMapper;
+
+	@Autowired
+	private UserAccountLogMapper userAccountLogMapper;
 
 	@Override
 	public Map<String, Object> queryStudentDemandDetail(String demandId) {
@@ -271,9 +273,54 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	 * 结课
 	 **/
 	public ApiResponse conclusion(DemandCourseInfoForm courseInfoForm) {
+		Date date = new Date();
+
 		courseInfoForm.setStatus(2); // 2:结课状态
-		courseInfoForm.setUpdateTime(new Date());
+		courseInfoForm.setUpdateTime(date);
 		demandCourseInfoMapper.updateNotNull(courseInfoForm);
+
+		// 检索订单
+		StudentDemandVo vo = studentDemandMapper.findDemandByCourseId(courseInfoForm.getSid());
+
+		// 结课时候，修改教员的总收入金额
+		TeacherAccountVo teacherAccountVo = userAccountMapper.queryTeacherAccount(courseInfoForm.getTeacherId());
+		TeacherVo teacherVo = teacherMapper.load(courseInfoForm.getTeacherId());
+
+		TeacherAccountPo po = new TeacherAccountPo();
+		po.setTeacherId(courseInfoForm.getTeacherId());
+		if (teacherAccountVo == null) {
+
+			po.setStatus(0);
+			po.setCreateTime(date);
+			po.setTeacherName(teacherVo.getName());
+			po.setAccountMoney(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString()));
+			po.setTeacherPhone(teacherVo.getTelephone());
+			po.setCreateUser(teacherVo.getTeacherId().toString());
+
+			// 如果没有数据，则插入一条教员收支数据
+			userAccountMapper.insertTeacherAccount(po);
+
+		} else {
+			po.setUpdateTime(date);
+			po.setUpdateUser(courseInfoForm.getTeacherId().toString());
+			po.setAccountMoney(teacherAccountVo.getAccountMoney().add(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString())));
+			userAccountMapper.updateTeacherAccountMoney(po);
+		}
+
+		// 插入一条日志信息，记录结课/支付记录
+		TeacherAccountOperateLogPo paymentLog = new TeacherAccountOperateLogPo();
+		paymentLog.setPaymentStreamId(vo.getPaymentStreamId());
+		paymentLog.setPaymentPersonId(vo.getStudentId());
+		paymentLog.setPaymentPersonName(vo.getStudentName());
+		paymentLog.setPaymentType(1);
+		paymentLog.setPaymentDesc("结课时支付");
+		paymentLog.setStatus(0);
+		paymentLog.setCreateTime(date);
+		paymentLog.setCreateUser(vo.getStudentName());
+		paymentLog.setUpdateTime(date);
+		paymentLog.setUpdateUser(vo.getStudentName());
+		paymentLog.setPaymentAccount(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString()));
+		userAccountLogMapper.insertUserAccountLog(paymentLog);
 
 		return ApiResponse.success("结课成功");
 	}

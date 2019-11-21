@@ -47,7 +47,7 @@ public class TeacherServiceImpl implements TeacherService {
     private TeachLevelMapper teachLevelMapper;
 
  	@Override
-    public TeacherVo findById(Long id) {
+    public TeacherVo findById(Integer id) {
         return teacherMapper.load(id);
     }
 

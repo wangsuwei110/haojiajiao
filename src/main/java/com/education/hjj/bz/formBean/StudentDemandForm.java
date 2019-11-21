@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 /**
  * 学员发布需求表Form
@@ -68,7 +69,7 @@ public class StudentDemandForm extends PageForm implements Serializable {
 
     @ApiModelProperty(value = "订单金额",required = true)
     @NotBlank(message = "订单金额不能为空")
-    private Float orderMoney;
+    private BigDecimal orderMoney;
 
     @ApiModelProperty(value = "具体需求",required = true)
     @NotBlank(message = "具体需求不能为空")
@@ -254,11 +255,11 @@ public class StudentDemandForm extends PageForm implements Serializable {
         this.orderType = orderType;
     }
 
-    public Float getOrderMoney() {
+    public BigDecimal getOrderMoney() {
         return orderMoney;
     }
 
-    public void setOrderMoney(Float orderMoney) {
+    public void setOrderMoney(BigDecimal orderMoney) {
         this.orderMoney = orderMoney;
     }
 

@@ -28,7 +28,9 @@ public interface StudentDemandMapper {
 	List<StudentDemandVo> listDemand(StudentDemandConnectForm demandForm);
 
 	List<StudentDemandVo> listDemandAndTeacher(StudentDemandConnectForm demandForm);
-	
+
+	StudentDemandVo findDemandByCourseId(@Param("sid") Integer sid);
+
 	List<StudentDemandVo> queryAllStudentDemandList(StudentDemandForm form);
 	
 	List<StudentDemandVo> queryAllStudentDemandListBy10(StudentDemandForm form);
