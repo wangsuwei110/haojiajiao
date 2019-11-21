@@ -48,6 +48,8 @@ public class StudentDemandConnectVo {
     private String chargesStandard;
     @ApiModelProperty(value = "评价")
     private String appraise;
+    @ApiModelProperty(value = "评价时间")
+    private Date appraiseTime;
 
     public String getAppraise() {
         return appraise;
@@ -150,6 +152,12 @@ public class StudentDemandConnectVo {
         this.updateUser = updateUser;
     }
 
+	public Date getAppraiseTime() {
+		return appraiseTime;
+	}
 
+	public void setAppraiseTime(Date appraiseTime) {
+		this.appraiseTime = appraiseTime;
+	}
 
 }

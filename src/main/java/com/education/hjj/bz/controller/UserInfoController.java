@@ -27,10 +27,13 @@ import com.education.hjj.bz.entity.PicturePo;
 import com.education.hjj.bz.entity.vo.PageVo;
 import com.education.hjj.bz.entity.vo.ParameterVo;
 import com.education.hjj.bz.entity.vo.PictureVo;
+import com.education.hjj.bz.entity.vo.StudentDemandConnectVo;
+import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.entity.vo.TeachBranchVo;
 import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.service.ParameterService;
+import com.education.hjj.bz.service.StudentDemandConnectService;
 import com.education.hjj.bz.service.TeachBranchService;
 import com.education.hjj.bz.service.UserInfoService;
 import com.education.hjj.bz.service.UserPictureInfoService;
@@ -62,6 +65,9 @@ public class UserInfoController {
 
 	@Autowired
 	private StudentConnectTeacherMapper connectTeacherMapper;
+	
+	@Autowired
+	private StudentDemandConnectService studentDemandConnectService;
 
 	@ApiOperation("用户信息更新(带图片)")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -378,7 +384,17 @@ public class UserInfoController {
 				} else {
 					map.put("collectFlag", false);
 				}
+				
+				List<StudentDemandVo> teacherForStudentServiceList = studentDemandConnectService.queryServiceForStudentByTeacherId(Integer.valueOf(teacherId));
+				
+				//教员服务过的学员最近5条记录
+				map.put("teacherForStudentServiceList", teacherForStudentServiceList);
+				
+				List<StudentDemandConnectVo>  StudentAppraiseForTeacherList = studentDemandConnectService.queryStudentAppraiseForTeacher(Integer.valueOf(teacherId));
 
+				//学员对教员的评价的最近5条记录
+				map.put("StudentAppraiseForTeacherList", StudentAppraiseForTeacherList);
+				
 				return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
 			} 
 				

@@ -1,6 +1,7 @@
 package com.education.hjj.bz.mapper;
 
 import com.education.hjj.bz.entity.vo.StudentDemandConnectVo;
+import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -38,4 +39,10 @@ public interface StudentDemandConnectMapper {
     List<StudentDemandConnectVo> list(StudentDemandConnectForm form);
 
     List<StudentDemandConnectVo> listConnectInfo(@Param("demandId") Integer demandId);
+    
+    int queryServiceForStudentSuccess(Integer teacherId);
+    
+    List<StudentDemandConnectVo> queryStudentAppraiseForTeacher(Integer teacherId);
+    
+    List<StudentDemandVo> queryServiceForStudentByTeacherId(Integer teacherId);
 }

@@ -13,7 +13,8 @@
 	     	<result property="updateTime" column="update_time"/>
 	     	<result property="updateUser" column="update_user"/>
 	     	<result property="orderTeachTime" column="order_teach_time"/>
-
+			<result property="appraise" column="appraise"/>
+			<result property="appraise_time" column="appraiseTime"/>
 	     	<result property="teacherName" column="name"/>
 	     	<result property="chargesStandard" column="charges_standard"/>
     </resultMap>
@@ -193,4 +194,83 @@
                 </if>
         </where>
     </sql>
+    
+    <select id="queryServiceForStudentSuccess" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    	select
+    		count(sid)
+    	from 
+    		student_demand_connect
+    	where
+			status =4
+		and
+			teacher_id = #{teacherId}
+    		
+    </select>
+    
+    
+    <!-- 用用查询映射结果 -->
+	<resultMap id="studentDemandsResultMap" type="com.education.hjj.bz.entity.vo.StudentDemandVo" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		<result column="sid" property="sid"/>
+		<result column="order_start" property="orderStart"/>
+		<result column="teach_grade_name" property="teachGradeName"/>
+		<result column="teach_branch_name" property="teachBranchName"/>
+		
+	</resultMap>
+    
+    <!-- 查询某教员最近服务过的学员列表信息前5名 -->
+    <select id="queryServiceForStudentByTeacherId" parameterType="java.lang.Integer" resultMap="studentDemandsResultMap">
+    	select
+			sd.sid,
+			tg.teach_grade_name,
+			tb.teach_branch_name,
+			sd.order_start
+		from 
+			student_demand_connect sdc
+		LEFT JOIN
+			student_demand sd
+		ON
+			sdc.demand_id = sd.sid
+		LEFT JOIN
+			teach_grade tg
+		ON	
+			sd.demand_grade = tg.teach_grade_id 
+		LEFT JOIN
+			teach_branch tb
+		ON
+			sd.subject_id = tb.teach_branch_id
+		where
+			sdc.status =4
+		and
+			sdc.teacher_id = #{teacherId}
+    	order by
+			sd.order_start desc
+		limit 5
+    </select>
+    
+    <!-- 查询最近前5条学员对教员的评价记录 -->
+    <select id="queryStudentAppraiseForTeacher" parameterType="java.lang.Integer" resultMap="studentDemandConnectResultMap">
+    	select
+			sdc.appraise,
+			sdc.appraise_time,
+			t.name as teacherName
+		from 
+			student_demand_connect sdc
+		LEFT JOIN
+			teacher t
+		ON
+			sdc.teacher_id = t.teacher_id
+		where
+			sdc.status =4
+		AND	
+			t.status =1
+		and
+			sdc.appraise is not null
+		and
+			sdc.teacher_id =  #{teacherId}
+		order by
+			sdc.appraise_time desc
+		limit 5
+    </select>
+    
 </mapper>
