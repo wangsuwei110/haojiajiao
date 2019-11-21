@@ -84,6 +84,9 @@ public class WxRedPackController {
 		//String openId = GetWXOpenIdUtil.getOpenId(code);
 		
 		String openId =getOpenId(code);
+		if(openId == null) {
+			openId = teacherAccountForm.getOpenId();
+		}
 		
 		//接收红包用户的openid
 //		String openId = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
