@@ -158,6 +158,32 @@ public class WxRedPackController {
 		redpackRequestPo.setWxappid(Constant.APP_ID);
 		redpackRequestPo.setScene_id(RedPackEnum.PRODUCT_4.getValue());
 		
+		
+		
+		TeacherAccountOperateLogPo userAccountOperateLogPo = new TeacherAccountOperateLogPo();
+		userAccountOperateLogPo.setPaymentStreamId(nonceStr);
+		userAccountOperateLogPo.setPaymentPersonId(teacherId);
+		userAccountOperateLogPo.setPaymentPersonName(teacherVo.getName());
+		userAccountOperateLogPo.setPaymentType(1);
+		userAccountOperateLogPo.setPaymentAccount(new BigDecimal(cashOut));
+		userAccountOperateLogPo.setPaymentDesc("提现");
+		userAccountOperateLogPo.setStatus(1);
+		userAccountOperateLogPo.setCreateTime(new Date());
+		userAccountOperateLogPo.setCreateUser(teacherVo.getName());
+		userAccountOperateLogPo.setUpdateTime(new Date());
+		userAccountOperateLogPo.setUpdateUser(teacherVo.getName());
+		
+		int userAccountFlag = userAccountLogService.insertUserAccountLog(userAccountOperateLogPo);
+		
+		if(userAccountFlag <= 0) {
+			
+			json.setSuccess(false);
+			json.setMsg("插入教员收支表日志记录失败");
+			logger.error("系统异常，请稍后再试！");
+			
+			return json;
+		}
+		
 		//普通红包
 //		redpackRequestPo.setClient_ip("112.65.13.31");
 		try {
@@ -223,30 +249,6 @@ public class WxRedPackController {
 					
 					json.setSuccess(true);
 					json.setData(response);
-					
-					TeacherAccountOperateLogPo userAccountOperateLogPo = new TeacherAccountOperateLogPo();
-					userAccountOperateLogPo.setPaymentStreamId(nonceStr);
-					userAccountOperateLogPo.setPaymentPersonId(teacherId);
-					userAccountOperateLogPo.setPaymentPersonName(teacherVo.getName());
-					userAccountOperateLogPo.setPaymentType(1);
-					userAccountOperateLogPo.setPaymentAccount(new BigDecimal(cashOut));
-					userAccountOperateLogPo.setPaymentDesc("提现");
-					userAccountOperateLogPo.setStatus(1);
-					userAccountOperateLogPo.setCreateTime(new Date());
-					userAccountOperateLogPo.setCreateUser(teacherVo.getName());
-					userAccountOperateLogPo.setUpdateTime(new Date());
-					userAccountOperateLogPo.setUpdateUser(teacherVo.getName());
-					
-					int userAccountFlag = userAccountLogService.insertUserAccountLog(userAccountOperateLogPo);
-					
-					if(userAccountFlag <= 0) {
-						
-						json.setSuccess(false);
-						json.setMsg("插入教员收支表日志记录失败");
-						logger.error("系统异常，请稍后再试！");
-						
-						return json;
-					}
 					
 					
 				}else {
