@@ -196,6 +196,9 @@
      	<if test="subjectId != null">
 			AND sd.subject_id= #{subjectId}
      	</if>
+     	<if test="parameterId != null">
+			AND sd.parameter_id= #{parameterId}
+     	</if>
      	<if test="createTime != null">
 			order by create_time desc
      	</if>
@@ -515,6 +518,17 @@
     		student_demand
 		SET 
 			status = #{status},
+			update_time = #{updateTime}
+			
+		WHERE sid = #{demandId}
+    </update>
+    
+    <!-- 教员接受学员订单,并更新订单表订单状态 -->
+    <update id="updateDemandSignNum" parameterType="com.education.hjj.bz.entity.StudentDemandPo">
+    	UPDATE 
+    		student_demand
+		SET 
+			demand_signUp_num = #{demandSignUpNum},
 			update_time = #{updateTime}
 			
 		WHERE sid = #{demandId}
