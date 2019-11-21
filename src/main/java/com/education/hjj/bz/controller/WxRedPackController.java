@@ -77,16 +77,18 @@ public class WxRedPackController {
 		
 		String databaseOpenid = teacherVo.getOpenId();
 		
-		String code = teacherAccountForm.getCode();//获取微信服务器授权返回的code值
+		//String code = teacherAccountForm.getCode();//获取微信服务器授权返回的code值
 		
-		logger.info("code: " + code);
+		//logger.info("code: " + code);
 		
 		//String openId = GetWXOpenIdUtil.getOpenId(code);
 		
-		String openId =getOpenId(code);
-		if(openId == null) {
-			openId = teacherAccountForm.getOpenId();
-		}
+		//String openId =getOpenId(code);
+//		if(openId == null) {
+//			openId = teacherAccountForm.getOpenId();
+//		}
+		String openId = teacherAccountForm.getOpenId();
+		
 		
 		//接收红包用户的openid
 //		String openId = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
