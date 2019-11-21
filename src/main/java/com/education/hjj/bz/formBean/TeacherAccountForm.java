@@ -24,6 +24,8 @@ public class TeacherAccountForm implements Serializable{
 	
 	//教员id
 	private Integer teacherId;
+	
+	private String openId;
 
 	public String getLoginPhone() {
 		return loginPhone;
@@ -55,6 +57,14 @@ public class TeacherAccountForm implements Serializable{
 
 	public void setTeacherId(Integer teacherId) {
 		this.teacherId = teacherId;
+	}
+
+	public String getOpenId() {
+		return openId;
+	}
+
+	public void setOpenId(String openId) {
+		this.openId = openId;
 	}
 		
 }
