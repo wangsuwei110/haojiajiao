@@ -173,6 +173,7 @@ public class WxRedPackController {
 		userAccountOperateLogPo.setUpdateTime(new Date());
 		userAccountOperateLogPo.setUpdateUser(teacherVo.getName());
 		
+		logger.info("nonceStr = "+nonceStr +" teacherId = "+teacherId +" name= "+teacherVo.getName()+" cashOut= "+cashOut);
 		
 		int userAccountFlag = userAccountLogService.insertUserAccountLog(userAccountOperateLogPo);
 		
