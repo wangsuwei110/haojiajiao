@@ -255,11 +255,18 @@ public class WxRedPackController {
 					
 				}else {
 					
+					json.setSuccess(false);
+					json.setMsg("体现失败 ,原因： "+parseResult.get("return_msg"));
+					
 					logger.error("错误代码  :{}, 错误代码描述:{}" , parseResult.get("err_code") , parseResult.get("err_code_des") );
 				}
 				
 				
 			}else{
+				
+				json.setSuccess(false);
+				json.setMsg("体现失败 ,原因： "+parseResult.get("return_msg"));
+				
 				logger.error("返回信息: " + parseResult.get("return_msg"));
 			}
 		
