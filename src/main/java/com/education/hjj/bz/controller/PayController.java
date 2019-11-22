@@ -228,6 +228,8 @@ public class PayController {
 
 				json.setSuccess(true);
 				json.setData(response);
+				
+				logger.info("返回的json = " + json);
 			}
 		} catch (Exception e1) {
 			json.setSuccess(false);
