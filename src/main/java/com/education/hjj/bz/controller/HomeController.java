@@ -62,7 +62,7 @@ public class HomeController {
 		Integer teacherId = form.getTeacherId();
 		
 		List<StudentDemandVo> fitTeacherOrderList = null;
-		
+		List<StudentDemandVo> studentDemandList = null;
 		if(teacherId != null) {
 			
 			//教员信息
@@ -91,9 +91,15 @@ public class HomeController {
 				map.put("fitTeacherOrderList", fitTeacherOrderList);
 			}else {
 				//查询所有的订单信息列表
-				List<StudentDemandVo> studentDemandList = studentDemandsService.queryAllStudentDemandListBy10(form);
-				map.put("studentDemandList", studentDemandList);
+				 studentDemandList = studentDemandsService.queryAllStudentDemandListBy10(form);
+				 map.put("studentDemandList", studentDemandList);
 			}
+		}else {
+			
+			//查询所有的订单信息列表
+			studentDemandList = studentDemandsService.queryAllStudentDemandListBy10(form);
+			
+			map.put("studentDemandList", studentDemandList);
 		}
 		
 		//教员端首页查看学员日志
