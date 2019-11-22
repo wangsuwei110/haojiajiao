@@ -15,7 +15,7 @@
 	     	<result property="orderTeachTime" column="order_teach_time"/>
 			<result property="appraise" column="appraise"/>
 			<result property="appraise_time" column="appraiseTime"/>
-	     	<result property="teacherName" column="name"/>
+	     	<result property="teacherName" column="teacherName"/>
 	     	<result property="chargesStandard" column="charges_standard"/>
     </resultMap>
 
