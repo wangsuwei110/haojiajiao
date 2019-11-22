@@ -173,6 +173,20 @@ public class ShiroConfig {
         //获取OpenId
         put("/user/getOpenId", "anon");
         
+      //teacher/list
+        put("/teacher/list", "anon");
+        
+      //teacher/selectList
+        put("/teacher/selectList", "anon");
+        
+      //userInfo/queryUserInfosDetail
+        put("/userInfo/queryUserInfosDetail", "anon");
+        
+      //home/queryTeacherInfosByHome
+        put("/home/queryTeacherInfosByHome", "anon");
+        
+      //home/queryTeacherInfosByHome
+        put("/home/queryStudentDemandSignUpTeacher", "anon");
         
     }};
 }

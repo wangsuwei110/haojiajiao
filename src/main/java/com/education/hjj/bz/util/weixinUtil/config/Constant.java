@@ -45,5 +45,9 @@ public class Constant {
     public static final String WISHING = "感谢您使用来家教,祝你生活愉快!";
     //订单类型 , MCHT:通过商户订单号获取红包信息
     public static final String BILL_TYPE = "MCHT";
+    //微信模板
+    public static final String SEND_TEMPLATE_MESSAGE = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=";
+    /**获取access_token*/
+    public static final String ACCESS_TOKEN  = "https://api.weixin.qq.com/cgi-bin/token";
 }
 
