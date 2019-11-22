@@ -124,6 +124,8 @@ public class PayController {
 					}
 
 					String prepay_Id = parseResult.get("prepay_id");
+					
+					logger.info("prepay_id = " + prepay_Id);
 
 					response.put("nonceStr", randomNonceStr);
 					response.put("package", "prepay_id = " + prepay_Id);
