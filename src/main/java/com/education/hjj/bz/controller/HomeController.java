@@ -19,8 +19,6 @@ import com.education.hjj.bz.entity.vo.StudentLogVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.StudentDemandForm;
-import com.education.hjj.bz.service.DemandCourseInfoService;
-import com.education.hjj.bz.service.StudentDemandConnectService;
 import com.education.hjj.bz.service.StudentDemandsService;
 import com.education.hjj.bz.service.StudentLogService;
 import com.education.hjj.bz.service.UserInfoService;
@@ -45,12 +43,6 @@ public class HomeController {
 	@Autowired
 	private StudentLogService studentLogService;
 	
-	@Autowired
-	private StudentDemandConnectService studentDemandConnectService;
-	
-	@Autowired
-	private DemandCourseInfoService demandCourseInfoService;
-	
 
 	@ApiOperation("查询教员登录首页的内容")
 	@RequestMapping(value = "/queryTeacherInfosByHome", method = RequestMethod.POST)
@@ -60,6 +52,8 @@ public class HomeController {
 		Map<String,Object> map = new HashMap<String,Object>();
 		
 		Integer teacherId = form.getTeacherId();
+		
+		logger.info("teacherId : {}" , teacherId);
 		
 		List<StudentDemandVo> fitTeacherOrderList = null;
 		List<StudentDemandVo> studentDemandList = null;
@@ -77,15 +71,6 @@ public class HomeController {
 			
 			//查询适合我的家教需求
 			fitTeacherOrderList = studentDemandsService.queryFitTeacherOrderList(teacherId);
-			
-			//服务的
-			int num = studentDemandConnectService.queryServiceForStudentSuccess(teacherId);
-			
-			map.put("servicePersonNum", num);
-			
-			int serviceHours = demandCourseInfoService.queryServiceForHours(teacherId);
-			
-			map.put("serviceHours", serviceHours);
 			
 			if(fitTeacherOrderList.size() > 0) {
 				map.put("fitTeacherOrderList", fitTeacherOrderList);

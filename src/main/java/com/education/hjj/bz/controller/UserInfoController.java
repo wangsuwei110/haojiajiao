@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.education.hjj.bz.formBean.*;
-import com.education.hjj.bz.mapper.StudentConnectTeacherMapper;
-import com.education.hjj.bz.util.common.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -32,6 +29,13 @@ import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.entity.vo.TeachBranchVo;
 import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
+import com.education.hjj.bz.formBean.PictureForm;
+import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
+import com.education.hjj.bz.formBean.TeacherInfoForm;
+import com.education.hjj.bz.formBean.TeacherInfoReplenishForm;
+import com.education.hjj.bz.formBean.UserInfoForm;
+import com.education.hjj.bz.mapper.StudentConnectTeacherMapper;
+import com.education.hjj.bz.service.DemandCourseInfoService;
 import com.education.hjj.bz.service.ParameterService;
 import com.education.hjj.bz.service.StudentDemandConnectService;
 import com.education.hjj.bz.service.TeachBranchService;
@@ -68,6 +72,9 @@ public class UserInfoController {
 	
 	@Autowired
 	private StudentDemandConnectService studentDemandConnectService;
+	
+	@Autowired
+	private DemandCourseInfoService demandCourseInfoService;
 
 	@ApiOperation("用户信息更新(带图片)")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -394,6 +401,15 @@ public class UserInfoController {
 
 				//学员对教员的评价的最近5条记录
 				map.put("StudentAppraiseForTeacherList", StudentAppraiseForTeacherList);
+				
+				//服务的学员人数
+				int num = studentDemandConnectService.queryServiceForStudentSuccess(Integer.valueOf(teacherId));
+				
+				map.put("servicePersonNum", num);
+				
+				int serviceHours = demandCourseInfoService.queryServiceForHours(Integer.valueOf(teacherId));
+				
+				map.put("serviceHours", serviceHours);
 				
 				return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
 			} 
