@@ -118,12 +118,20 @@ public class WxRedPackController {
 		BigDecimal teacherSurplusMoney = teacherAccountVo.getSurplusMoney();
 		logger.info("当前用户可提现的金额: " + teacherSurplusMoney +" 元");
 		
-		TeacherAccountPo teacherAccountPo = new TeacherAccountPo();
-		teacherAccountPo.setSurplusMoney(new BigDecimal(cashOut));
-		teacherAccountPo.setUpdateTime(new Date());
-		teacherAccountPo.setTeacherId(teacherVo.getTeacherId());
+		BigDecimal surplusMoney = teacherSurplusMoney.subtract(new BigDecimal(cashOut)) ;
+		logger.info("当前用户提现后的账户余额: " + surplusMoney +" 元");
 		
-		int i = userAccountService.updateTeacherAccount(teacherAccountPo);
+		int i = -1;
+		
+		if(surplusMoney.intValue() >= 0) {
+			
+			TeacherAccountPo teacherAccountPo = new TeacherAccountPo();
+			teacherAccountPo.setSurplusMoney(surplusMoney);
+			teacherAccountPo.setUpdateTime(new Date());
+			teacherAccountPo.setTeacherId(teacherVo.getTeacherId());
+			
+			i = userAccountService.updateTeacherAccount(teacherAccountPo);
+		}
 		
 		if(i <= 0) {
 			
