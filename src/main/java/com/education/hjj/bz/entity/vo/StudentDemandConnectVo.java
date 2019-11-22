@@ -48,7 +48,7 @@ public class StudentDemandConnectVo {
     private String chargesStandard;
     @ApiModelProperty(value = "评价")
     private String appraise;
-    @ApiModelProperty(value = "评价时间")
+
     private Date appraiseTime;
 
     public String getAppraise() {

@@ -188,5 +188,9 @@ public class ShiroConfig {
       //home/queryTeacherInfosByHome
         put("/home/queryStudentDemandSignUpTeacher", "anon");
         
+      //teacher/findAllSubject
+        put("/teacher/findAllSubject", "anon"); 
+        
+        
     }};
 }
