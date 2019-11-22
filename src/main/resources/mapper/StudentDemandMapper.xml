@@ -199,10 +199,7 @@
      	<if test="parameterId != null">
 			AND sd.parameter_id= #{parameterId}
      	</if>
-     	<if test="createTime != null">
-			order by create_time desc
-     	</if>
-     	
+     	order by create_time desc
      	<if test="offset != null">
 			<![CDATA[
                 limit #{pageSize} offset #{offset}

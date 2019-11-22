@@ -14,7 +14,7 @@
 	     	<result property="updateUser" column="update_user"/>
 	     	<result property="orderTeachTime" column="order_teach_time"/>
 			<result property="appraise" column="appraise"/>
-			<result property="appraise_time" column="appraiseTime"/>
+			<result property="appraiseTime" column="appraise_time"/>
 	     	<result property="teacherName" column="teacherName"/>
 	     	<result property="chargesStandard" column="charges_standard"/>
     </resultMap>
