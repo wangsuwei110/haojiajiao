@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -136,6 +137,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 		// 插入需求，返回需求id
 		form.setCurrentWeekDay(DateUtil.getWeekOfDate(date));
+		form.setPaymentStreamId(UUID.randomUUID().toString().replaceAll("-", ""));
 		Long orderId = studentDemandMapper.addStudentDemandByTeacher(form);
 
 		// 如果有教员ID，则插入一条关联教员的表数据

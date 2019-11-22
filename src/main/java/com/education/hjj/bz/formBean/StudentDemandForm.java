@@ -107,6 +107,9 @@ public class StudentDemandForm extends PageForm implements Serializable {
     // *******************单独预约********************
     @ApiModelProperty(value = "教员ID",required = true)
     private Integer teacherId;
+    
+    
+    private String paymentStreamId;
 
     public String getCode() {
         return code;
@@ -318,6 +321,13 @@ public class StudentDemandForm extends PageForm implements Serializable {
 	public void setOrderTeachTime(String orderTeachTime) {
 		this.orderTeachTime = orderTeachTime;
 	}
-    
+
+	public String getPaymentStreamId() {
+		return paymentStreamId;
+	}
+
+	public void setPaymentStreamId(String paymentStreamId) {
+		this.paymentStreamId = paymentStreamId;
+	}
     
 }
