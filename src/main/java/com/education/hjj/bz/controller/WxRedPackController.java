@@ -229,7 +229,7 @@ public class WxRedPackController {
 			Map<String, String> parseResult = CommonUtil.parseXml(wxPayResult);
 			
 			logger.info("调试模式_统一下单接口返回package: " + parseResult.get("package"));
-
+			
 			String return_code = parseResult.get("return_code");
 
 			logger.info("调试模式_统一下单接口返回状态码 : " + return_code);
@@ -259,11 +259,18 @@ public class WxRedPackController {
 					// 再次签名，这个签名用于小程序端调用wx.requesetPayment方法
 					String paySign = WXUtils.sign(stringSignTemp, Constant.APP_KEY, "utf-8");
 					
+					String packageMessage = parseResult.get("package");
+					
+					packageMessage = packageMessage.substring(0 , packageMessage.lastIndexOf("&"));
+					
+					logger.info("重新拼接后的package: " + packageMessage);
+					
+					
 					response.put("nonceStr", randomNonceStr);
 					response.put("timeStamp", timeStamp + "");// 这边要将返回的时间戳转化成字符串，不然小程序端调用wx.requestPayment方法会报签名错误
 					response.put("signType", Constant.SIGN_TYPE);
 					response.put("paySign", paySign);//此处获取红包发放时的签名
-					response.put("package", parseResult.get("package"));
+					response.put("package", packageMessage);
 					
 					json.setSuccess(true);
 					json.setData(response);
