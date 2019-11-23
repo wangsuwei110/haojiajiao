@@ -128,7 +128,7 @@ public class PayController {
 					logger.info("prepay_id = " + prepay_Id);
 
 					response.put("nonceStr", randomNonceStr);
-					response.put("package", "prepay_id = " + prepay_Id);
+					response.put("package", "prepay_id=" + prepay_Id);
 
 					Long timeStamp = System.currentTimeMillis() / 1000;
 					response.put("timeStamp", timeStamp + "");// 这边要将返回的时间戳转化成字符串，不然小程序端调用wx.requestPayment方法会报签名错误

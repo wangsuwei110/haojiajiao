@@ -14,7 +14,7 @@ public class Constant {
 
     public static final String URL_UNIFIED_ORDER = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
-    public static final String URL_NOTIFY = Constant.DOMAIN + "/wxpay/wxNotify";
+    public static final String URL_NOTIFY = "https://www.laijiajiaosh.com/wxpay/wxNotify";
 
     public static final String TIME_FORMAT = "yyyyMMddHHmmss";
 
@@ -49,5 +49,21 @@ public class Constant {
     public static final String SEND_TEMPLATE_MESSAGE = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=";
     /**获取access_token*/
     public static final String ACCESS_TOKEN  = "https://api.weixin.qq.com/cgi-bin/token";
+    
+    
+    
+    
+    //提现申请通知
+    public static final String CASH_OUT_MESSAGE = "chWkfUp8KoaOaZdplI_DVfZE1hOkYZh-tYBUuKHnu8k";
+    //提现到账通知
+    public static final String CASH_OUT_TO_ACCOUNT_MESSAGE = "1DIuaSZQTzvHEtIPLgzzSFwoX6UCQxmS_iPg8kcEvQs";
+    //支付通知
+    public static final String PAYMENT_MESSAGE = "EMRecnlKb0CMmCG_fDhU3LEK9fsj4BWgB0CQGZtTEtQ";
+    //课程已被购买通知
+    public static final String PAY_FOR_CLASS = "hWYWzWwSHDOwVP19CkH-gxpihW4sESgMWf7kwcPvlbE";
+    //课程将开始通知
+    public static final String BEGIN_CLASS = "NDvFtNBsjv6WloQIybsQ5VmEx8bd1UwB8GprfprxNhM";
+    //服务时间确认通知
+    public static final String SURE_SERVICE_TIME = "8afIi4QrBF9yCcZ4LUN7n9vGQRMLJ289TjQIU2fEXsQ";
 }
 
