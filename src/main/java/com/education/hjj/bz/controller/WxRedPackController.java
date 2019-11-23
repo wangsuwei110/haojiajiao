@@ -253,17 +253,19 @@ public class WxRedPackController {
 //							+ "&package=prepay_id=" + prepay_Id + "&signType=" + Constant.SIGN_TYPE + "&timeStamp="
 //							+ timeStamp;
 					
-					String stringSignTemp = "appId=" + Constant.APP_ID + "&nonceStr=" + randomNonceStr
-							+ "&package=prepay_id=" + prepay_Id + "&timeStamp="
-							+ timeStamp;
-					// 再次签名，这个签名用于小程序端调用wx.requesetPayment方法
-					String paySign = WXUtils.sign(stringSignTemp, Constant.APP_KEY, "utf-8");
-					
 					String packageMessage = parseResult.get("package");
 					
 					packageMessage = packageMessage.substring(0 , packageMessage.lastIndexOf("&"))+"&appid="+Constant.APP_ID;
 					
 					logger.info("重新拼接后的package: " + packageMessage);
+					
+					String stringSignTemp = "appId=" + Constant.APP_ID + "&nonceStr=" + randomNonceStr
+							+ "&package=" + packageMessage + "&timeStamp="
+							+ timeStamp;
+					// 再次签名，这个签名用于小程序端调用wx.requesetPayment方法
+					String paySign = WXUtils.sign(stringSignTemp, Constant.APP_KEY, "utf-8");
+					
+
 					
 					
 					response.put("nonceStr", randomNonceStr);
