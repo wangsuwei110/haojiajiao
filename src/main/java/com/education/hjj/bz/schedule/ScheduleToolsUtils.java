@@ -33,8 +33,8 @@ public class ScheduleToolsUtils {
 
 	// 每隔1小时执行一次,计算聘用率
 	// @Scheduled(fixedRate = 1000*60*60)
-	@Scheduled(initialDelay=1000*20,fixedRate = 1000*60*1)
-	@Transactional
+//	@Scheduled(initialDelay=1000*20,fixedRate = 1000*60*1)
+//	@Transactional
 	public void calcueEmployRate() {
 		
 		List<TeacherVo> list = userInfoMapper.queryAllTeacherInfos();
