@@ -65,6 +65,7 @@ public class WxRedPackController {
 	@ResponseBody
 	@RequestMapping(value = "/sendRedPack", method = RequestMethod.POST)
 	@ApiOperation("微信发红包")
+	@Transactional
 	public ApiResponse addRedPack(@RequestBody TeacherAccountForm teacherAccountForm) {
 		
 		Json json = new Json();
@@ -265,22 +266,25 @@ public class WxRedPackController {
 					json.setMsg("体现失败 ,原因： "+parseResult.get("return_msg"));
 					
 					logger.error("错误代码  :{}, 错误代码描述:{}" , parseResult.get("err_code") , parseResult.get("err_code_des") );
+					return ApiResponse.success("提现失败 ！", json);
 				}
 				
 				
 			}else{
 				
 				json.setSuccess(false);
-				json.setMsg("体现失败 ,原因： "+parseResult.get("return_msg"));
+				json.setMsg("提现失败 ,原因： "+parseResult.get("return_msg"));
 				
 				logger.error("返回信息: " + parseResult.get("return_msg"));
+				return ApiResponse.success("提现失败 ！", json);
 			}
 		
 		} catch (Exception e) {
 			json.setSuccess(false);
-			json.setMsg("体现失败");
+			json.setMsg("提现失败 ");
 			logger.error("微信红包提现异常，请稍后再试！");
 			e.printStackTrace();
+			return ApiResponse.success("提现失败 ！", json);
 		}
 			 
 		
