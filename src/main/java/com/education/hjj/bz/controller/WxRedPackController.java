@@ -245,18 +245,22 @@ public class WxRedPackController {
 					
 					Long timeStamp = System.currentTimeMillis() / 1000;
 					
-//					String prepay_Id = parseResult.get("prepay_id");
-//					
+					String prepay_Id = parseResult.get("prepay_id");
+					
 //					String stringSignTemp = "appId=" + Constant.APP_ID + "&nonceStr=" + randomNonceStr
 //							+ "&package=prepay_id=" + prepay_Id + "&signType=" + Constant.SIGN_TYPE + "&timeStamp="
 //							+ timeStamp;
-//					// 再次签名，这个签名用于小程序端调用wx.requesetPayment方法
-//					String paySign = WXUtils.sign(stringSignTemp, Constant.APP_KEY, "utf-8").toUpperCase();
+					
+					String stringSignTemp = "appId=" + Constant.APP_ID + "&nonceStr=" + randomNonceStr
+							+ "&package=prepay_id=" + prepay_Id + "&timeStamp="
+							+ timeStamp;
+					// 再次签名，这个签名用于小程序端调用wx.requesetPayment方法
+					String paySign = WXUtils.sign(stringSignTemp, Constant.APP_KEY, "utf-8").toUpperCase();
 					
 					response.put("nonceStr", randomNonceStr);
 					response.put("timeStamp", timeStamp + "");// 这边要将返回的时间戳转化成字符串，不然小程序端调用wx.requestPayment方法会报签名错误
 					response.put("signType", Constant.SIGN_TYPE);
-					response.put("paySign", sign);//此处获取红包发放时的签名
+					response.put("paySign", paySign);//此处获取红包发放时的签名
 					response.put("package", parseResult.get("package"));
 					
 					json.setSuccess(true);
