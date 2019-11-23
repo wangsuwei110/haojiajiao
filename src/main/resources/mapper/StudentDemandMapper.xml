@@ -505,6 +505,8 @@
 			sd.sid = #{demandId}
 		and
 			sdc.status = #{status}
+		AND	
+			sdc.teacher_id = #{teacherId}
 		ORDER BY
 			sd.create_time desc
 	
