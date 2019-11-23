@@ -120,7 +120,7 @@ public class PayController {
 					String return_msg = parseResult.get("return_msg");
 					if (StringUtils.isNotBlank(return_msg) && !return_msg.equals("OK")) {
 						// log.error("统一下单错误！");
-						return null;
+						return ApiResponse.error("统一下单错误！");
 					}
 
 					String prepay_Id = parseResult.get("prepay_id");
@@ -221,7 +221,7 @@ public class PayController {
 
 				} else {
 
-					return ApiResponse.success("支付失败");
+					return ApiResponse.error("支付失败");
 				}
 
 				response.put("appid", Constant.APP_ID);
@@ -235,6 +235,8 @@ public class PayController {
 			json.setSuccess(false);
 			json.setMsg("发起失败");
 			e1.printStackTrace();
+			
+			return ApiResponse.errorData("支付失败", json);
 		}
 
 		return ApiResponse.success("支付成功", json);
