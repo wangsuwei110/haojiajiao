@@ -254,14 +254,28 @@
     </update>
 
     <select id="findStudentDemandInfo" parameterType="java.lang.Integer" resultMap="studentDemandsResultMap">
-        SELECT sd.*, tea.teacher_id
-        FROM student_demand sd
-        INNER JOIN student_demand_connect sdc
-        ON sd.sid = sdc.demand_id
+        SELECT 
+        	sd.*, 
+        	tea.teacher_id,
+        	s.student_name
+        FROM 
+        	student_demand sd
+        INNER JOIN 
+        	student_demand_connect sdc
+        ON 
+        	sd.sid = sdc.demand_id
         AND sdc.status = 4
-        INNER JOIN teacher tea
-        ON sdc.teacher_id = tea.teacher_id
-        WHERE sd.sid = #{demanId}
+        INNER JOIN 
+        	teacher tea
+        ON 
+        	sdc.teacher_id = tea.teacher_id
+        left join
+        	student s
+        on
+        	sd.student_id = s.sid
+        	
+        WHERE 
+        	sd.sid = #{demanId}
     </select>
 
     <!-- 查询需求订单详情 -->
