@@ -261,7 +261,7 @@ public class WxRedPackController {
 					
 					String packageMessage = parseResult.get("package");
 					
-					packageMessage = packageMessage.substring(0 , packageMessage.lastIndexOf("&"));
+					packageMessage = packageMessage.substring(0 , packageMessage.lastIndexOf("&"))+"&appid="+Constant.APP_ID;
 					
 					logger.info("重新拼接后的package: " + packageMessage);
 					
