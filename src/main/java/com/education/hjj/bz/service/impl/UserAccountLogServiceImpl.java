@@ -2,6 +2,8 @@ package com.education.hjj.bz.service.impl;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ public class UserAccountLogServiceImpl implements UserAccountLogService{
 	private UserAccountLogMapper userAccountLogMapper;
 
 	@Override
+	@Transactional
 	public int insertUserAccountLog(TeacherAccountOperateLogPo teacherAccountOperateLogPo) {
 		int  i =userAccountLogMapper.insertUserAccountLog(teacherAccountOperateLogPo);
 		return i;

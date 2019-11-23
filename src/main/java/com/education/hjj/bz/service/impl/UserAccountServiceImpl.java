@@ -2,6 +2,8 @@ package com.education.hjj.bz.service.impl;
 
 import java.text.ParseException;
 
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,7 @@ public class UserAccountServiceImpl implements UserAccountService{
 	}
 
 	@Override
+	@Transactional
 	public int updateTeacherAccount(TeacherAccountPo teacherAccountPo) {
 		
 		int i = UserAccountMapper.updateTeacherAccount(teacherAccountPo);
