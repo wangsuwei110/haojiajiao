@@ -160,7 +160,7 @@ public class TeacherController {
 			return ApiResponse.success("订单报名成功！");
 		}
 		
-		return ApiResponse.success("订单报名失败！");
+		return ApiResponse.error("订单报名失败！");
 	}
 	
 }
