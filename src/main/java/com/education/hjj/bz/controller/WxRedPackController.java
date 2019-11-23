@@ -255,7 +255,7 @@ public class WxRedPackController {
 							+ "&package=prepay_id=" + prepay_Id + "&timeStamp="
 							+ timeStamp;
 					// 再次签名，这个签名用于小程序端调用wx.requesetPayment方法
-					String paySign = WXUtils.sign(stringSignTemp, Constant.APP_KEY, "utf-8").toUpperCase();
+					String paySign = WXUtils.sign(stringSignTemp, Constant.APP_KEY, "utf-8");
 					
 					response.put("nonceStr", randomNonceStr);
 					response.put("timeStamp", timeStamp + "");// 这边要将返回的时间戳转化成字符串，不然小程序端调用wx.requestPayment方法会报签名错误
