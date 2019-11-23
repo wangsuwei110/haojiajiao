@@ -272,13 +272,15 @@ public class PayController {
 		// sb为微信返回的xml
 		String notityXml = sb.toString();
 		
-		
 		String resXml = "";
 		logger.info("接收到的报文：" + notityXml);
 
 		Map map = WXUtils.doXMLParse(notityXml);
 
 		String returnCode = (String) map.get("return_code");
+		
+		logger.info("微信支付的回调结果：" + returnCode);
+		
 		if ("SUCCESS".equals(returnCode)) {
 			// 验证签名是否正确
 			if (WXUtils.verify(WXUtils.createLinkString(map), (String) map.get("sign"), Constant.APP_KEY, "utf-8")) {
