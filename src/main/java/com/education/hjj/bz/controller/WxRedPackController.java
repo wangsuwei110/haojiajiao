@@ -259,7 +259,7 @@ public class WxRedPackController {
 					
 					response.put("nonceStr", randomNonceStr);
 					response.put("timeStamp", timeStamp + "");// 这边要将返回的时间戳转化成字符串，不然小程序端调用wx.requestPayment方法会报签名错误
-					response.put("signType", "md5");
+					response.put("signType", Constant.SIGN_TYPE);
 					response.put("paySign", paySign);//此处获取红包发放时的签名
 					response.put("package", parseResult.get("package"));
 					
