@@ -33,8 +33,8 @@ public class ScheduleToolsUtils {
 
 	// 每隔1小时执行一次,计算聘用率
 	// @Scheduled(fixedRate = 1000*60*60)
-//	@Scheduled(initialDelay=1000*20,fixedRate = 1000*60*1)
-//	@Transactional
+	@Scheduled(initialDelay=1000*20,fixedRate = 1000*60*1)
+	@Transactional
 	public void calcueEmployRate() {
 		
 		List<TeacherVo> list = userInfoMapper.queryAllTeacherInfos();
@@ -66,10 +66,12 @@ public class ScheduleToolsUtils {
 			}
 			
 			//续课率大于等于60%,并且个人积分大于等于100，小于等于300时
-			if (t.getResumptionRate().doubleValue() < 0.60 && Integer.valueOf(t.getTeacherPoints()) < 100) {
+			if (t.getResumptionRate().doubleValue() < 0.60 || Integer.valueOf(t.getTeacherPoints()) < 100) {
 				tPo.setTeacherLevel("T0");
 				tPo.setChargesStandard("100.00元/每课时");
 			}
+			
+			
 			tPo.setUpdateTime(new Date());
 			tPo.setUpdateUser("admin");
 			teacherList.add(tPo);
