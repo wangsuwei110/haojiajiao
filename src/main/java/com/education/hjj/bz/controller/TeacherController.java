@@ -160,6 +160,14 @@ public class TeacherController {
 			return ApiResponse.success("订单报名成功！");
 		}
 		
+		if(i == -3) {
+			return ApiResponse.error("已报名该订单，请不要重复报名该订单！");
+		}
+		
+		if(i == -4) {
+			return ApiResponse.error("该订单已经被锁定，请稍后尝试报名该订单！");
+		}
+		
 		return ApiResponse.error("订单报名失败！");
 	}
 	
