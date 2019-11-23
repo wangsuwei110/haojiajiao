@@ -266,7 +266,7 @@ public class WxRedPackController {
 					json.setMsg("体现失败 ,原因： "+parseResult.get("return_msg"));
 					
 					logger.error("错误代码  :{}, 错误代码描述:{}" , parseResult.get("err_code") , parseResult.get("err_code_des") );
-					return ApiResponse.success("提现失败 ！", json);
+					return ApiResponse.errorData("提现失败 ！", json);
 				}
 				
 				
@@ -276,7 +276,7 @@ public class WxRedPackController {
 				json.setMsg("提现失败 ,原因： "+parseResult.get("return_msg"));
 				
 				logger.error("返回信息: " + parseResult.get("return_msg"));
-				return ApiResponse.success("提现失败 ！", json);
+				return ApiResponse.errorData("提现失败 ！", json);
 			}
 		
 		} catch (Exception e) {
@@ -284,7 +284,7 @@ public class WxRedPackController {
 			json.setMsg("提现失败 ");
 			logger.error("微信红包提现异常，请稍后再试！");
 			e.printStackTrace();
-			return ApiResponse.success("提现失败 ！", json);
+			return ApiResponse.errorData("提现失败 ！", json);
 		}
 			 
 		
