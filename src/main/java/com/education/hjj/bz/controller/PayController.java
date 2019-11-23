@@ -3,6 +3,7 @@ package com.education.hjj.bz.controller;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.*;
 
 import javax.servlet.ServletInputStream;
@@ -167,6 +168,7 @@ public class PayController {
 
 					// 修改当前订单成新订单
 					demandForm.setOrderType(2);
+					demandForm.setOrderMoney(demandVo.getOrderMoney().add(new BigDecimal(0.01)));//写死，先保持和支付金额一致
 					demandForm.setOrderStart(date);
 					demandForm.setUpdateTime(date);
                     demandForm.setCreateTime(date);
