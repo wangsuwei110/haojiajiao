@@ -227,6 +227,8 @@ public class WxRedPackController {
 			logger.info("调试模式_统一下单接口返回XML数据: " + wxPayResult);
 			
 			Map<String, String> parseResult = CommonUtil.parseXml(wxPayResult);
+			
+			logger.info("调试模式_统一下单接口返回package: " + parseResult.get("package"));
 
 			String return_code = parseResult.get("return_code");
 

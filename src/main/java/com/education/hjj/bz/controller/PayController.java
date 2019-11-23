@@ -71,7 +71,6 @@ public class PayController {
 	private UserAccountLogMapper userAccountLogMapper;
 
 
-	@ResponseBody
     @Transactional
 	@RequestMapping(value = "/prepay", method = RequestMethod.POST)
 	@ApiOperation("微信统一下单")
@@ -271,7 +270,7 @@ public class PayController {
 		// sb为微信返回的xml
 		String notityXml = sb.toString();
 		String resXml = "";
-		System.out.println("接收到的报文：" + notityXml);
+		logger.info("接收到的报文：" + notityXml);
 
 		Map map = WXUtils.doXMLParse(notityXml);
 
@@ -291,8 +290,8 @@ public class PayController {
 			resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"
 					+ "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
 		}
-		System.out.println(resXml);
-		System.out.println("微信支付回调数据结束");
+		logger.info(resXml);
+		logger.info("微信支付回调数据结束");
 
 		BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());
 		out.write(resXml.getBytes());
