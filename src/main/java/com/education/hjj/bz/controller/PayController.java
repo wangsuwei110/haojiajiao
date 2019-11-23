@@ -295,7 +295,8 @@ public class PayController {
 		out.flush();
 		out.close();
 	}
-
+	
+	@Transactional
 	private String getOpenId(String code) {
 		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + Constant.APP_ID + "&secret="
 				+ Constant.APP_SECRET + "&code=" + code + "&grant_type=authorization_code";
@@ -332,6 +333,7 @@ public class PayController {
 	 * 
 	 * @param openId
 	 */
+	@Transactional
 	private String unifiedOrder(String openId, String clientIP, String randomNonceStr) {
 
 		try {
@@ -361,6 +363,7 @@ public class PayController {
 		return "";
 	}
 
+	@Transactional
 	private PayInfo createPayInfo(String openId, String clientIP, String randomNonceStr) {
 
 		Date date = new Date();
@@ -392,6 +395,7 @@ public class PayController {
 		return payInfo;
 	}
 
+	@Transactional
 	private String getSign(PayInfo payInfo) throws Exception {
 
 		String stringSignTemp = null;
