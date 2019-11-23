@@ -251,6 +251,7 @@ public class PayController {
 	@RequestMapping(value = "/wxNotify", method = RequestMethod.POST)
 //	@ResponseBody
 	@ApiOperation("微信支付")
+	@Transactional
 	public void wxNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader((ServletInputStream) request.getInputStream()));
