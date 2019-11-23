@@ -257,6 +257,8 @@ public class PayController {
 	@Transactional
 	public void wxNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+		logger.info("微信支付的回调接口：/wxNotify");
+		
 		BufferedReader br = new BufferedReader(new InputStreamReader((ServletInputStream) request.getInputStream()));
 
 		String line = null;
@@ -269,6 +271,8 @@ public class PayController {
 		br.close();
 		// sb为微信返回的xml
 		String notityXml = sb.toString();
+		
+		
 		String resXml = "";
 		logger.info("接收到的报文：" + notityXml);
 
