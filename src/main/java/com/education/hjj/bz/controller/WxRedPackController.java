@@ -273,6 +273,7 @@ public class WxRedPackController {
 					response.put("signType", Constant.SIGN_TYPE);
 					response.put("paySign", paySign);//此处获取红包发放时的签名
 					response.put("package", packageMessage);
+					response.put("mchBillno", mchBillno);
 					
 					json.setSuccess(true);
 					json.setData(response);
