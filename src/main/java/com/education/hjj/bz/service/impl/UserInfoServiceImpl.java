@@ -50,6 +50,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Value("${picture_url}")
 	private String PICTURE_URL;
+	
+	@Value("${default_picture}")
+	private String defaultPicture;
 
 	@Autowired
 	private UserInfoMapper userInfoMapper;
@@ -104,6 +107,11 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 			String pictureTitle = userInfoForm.getPictureTitle();
 			String pictureUrl = userInfoForm.getPictureUrl();
+			
+			if(pictureUrl == null || StringUtils.isBlank(pictureUrl)) {
+				pictureUrl = PICTURE_URL + File.separator + defaultPicture ;
+			}
+			
 			String pictureDesc = userInfoForm.getPictureDesc();
 
 			// 插入到图片表
