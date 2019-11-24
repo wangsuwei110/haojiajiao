@@ -285,6 +285,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		courseInfoForm.setUpdateTime(date);
 		demandCourseInfoMapper.updateNotNull(courseInfoForm);
 
+		logger.info("检索订单"+ courseInfoForm.getSid());
 		// 检索订单
 		StudentDemandVo vo = studentDemandMapper.findDemandByCourseId(courseInfoForm.getSid());
 

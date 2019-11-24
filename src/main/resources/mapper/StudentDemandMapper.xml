@@ -85,7 +85,9 @@
 	</select>
 
 	<select id="findDemandByCourseId" parameterType="integer" resultMap="studentDemandsResultMap">
-		SELECT sd.*, st.student_name
+		SELECT sd.payment_stream_id
+		    , sd.student_id
+			, st.student_name
 		FROM student_demand sd
 		INNER JOIN
 			demand_course_info dci
