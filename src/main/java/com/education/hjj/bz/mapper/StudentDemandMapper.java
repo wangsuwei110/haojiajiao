@@ -29,7 +29,7 @@ public interface StudentDemandMapper {
 
 	List<StudentDemandVo> listDemandAndTeacher(StudentDemandConnectForm demandForm);
 
-	StudentDemandVo findDemandByCourseId(@Param("sid") Integer sid);
+	StudentDemandVo findDemandByCourseId(Integer sid);
 
 	List<StudentDemandVo> queryAllStudentDemandList(StudentDemandForm form);
 	
