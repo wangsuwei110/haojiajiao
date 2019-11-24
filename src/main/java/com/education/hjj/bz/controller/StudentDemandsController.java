@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+import javax.transaction.Transactional;
+
 @Api(tags = { "学员端-学生需求信息" })
 @RestController
 @RequestMapping(value = "/StudentDemand")
@@ -56,24 +58,28 @@ public class StudentDemandsController {
 	}
 	@ApiOperation("确定预约教员与时间")
 	@RequestMapping(value = "/confirmTeacher", method = RequestMethod.POST)
+	@Transactional
 	public ApiResponse confirmTeacher(@RequestBody StudentDemandConnectForm demandForm) {
 		return studentDemandsService.confirmTeacher(demandForm);
 	}
 
 	@ApiOperation("试讲通过或者不通过")
 	@RequestMapping(value = "/updateAdoptStatus", method = RequestMethod.POST)
+	@Transactional
 	public ApiResponse updateAdoptStatus(@RequestBody StudentDemandConnectForm demandForm) {
 		return studentDemandsService.updateAdoptStatus(demandForm);
 	}
 
 	@ApiOperation("支付/续课")
 	@RequestMapping(value = "/payDemand", method = RequestMethod.POST)
+	@Transactional
 	public ApiResponse payDemand(@RequestBody StudentDemandForm demandForm) {
 		return studentDemandsService.payDemand(demandForm);
 	}
 
 	@ApiOperation("结课")
 	@RequestMapping(value = "/conclusion", method = RequestMethod.POST)
+	@Transactional
 	public ApiResponse conclusion(@RequestBody DemandCourseInfoForm demandForm) {
 		
 		logger.info("begin conclusion class.....");
@@ -94,6 +100,7 @@ public class StudentDemandsController {
 	
 	@ApiOperation("教员确定订单试讲时间")
 	@RequestMapping(value = "/updateNewTrialDemand", method = RequestMethod.POST)
+	@Transactional
 	public ApiResponse updateNewTrialDemand(@RequestBody StudentDemandConnectForm demandForm) {
 		
 		int i = studentDemandsService.updateNewTrialDemand(demandForm);
