@@ -9,6 +9,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,8 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/StudentDemand")
 public class StudentDemandsController {
+	
+	private static Logger logger = LoggerFactory.getLogger(StudentDemandsController.class);
 
 	@Autowired
 	private StudentDemandsService studentDemandsService;
@@ -71,6 +75,8 @@ public class StudentDemandsController {
 	@ApiOperation("结课")
 	@RequestMapping(value = "/conclusion", method = RequestMethod.POST)
 	public ApiResponse conclusion(@RequestBody DemandCourseInfoForm demandForm) {
+		
+		logger.info("begin conclusion class.....");
 			return studentDemandsService.conclusion(demandForm);
 	}
 
