@@ -29,6 +29,7 @@ import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
 import com.education.hjj.bz.entity.vo.TeacherAccountVo;
 import com.education.hjj.bz.entity.vo.TeacherInfoPicturesVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
+import com.education.hjj.bz.entity.vo.UniversityVo;
 import com.education.hjj.bz.enums.ImagePath;
 import com.education.hjj.bz.formBean.LoginForm;
 import com.education.hjj.bz.formBean.TeacherInfoForm;
@@ -640,6 +641,12 @@ public class UserInfoServiceImpl implements UserInfoService {
 		}
 		
 		return list;
+	}
+
+	@Override
+	public List<UniversityVo> queryAllSchools() {
+		List<UniversityVo> schoolList = userInfoMapper.queryAllSchools();
+		return schoolList;
 	}
 
 }

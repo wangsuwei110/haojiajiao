@@ -13,6 +13,7 @@ import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
 import com.education.hjj.bz.entity.vo.TeacherAccountVo;
 import com.education.hjj.bz.entity.vo.TeacherInfoPicturesVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
+import com.education.hjj.bz.entity.vo.UniversityVo;
 
 @Mapper
 public interface UserInfoMapper {
@@ -49,4 +50,6 @@ public interface UserInfoMapper {
 	List<TeacherInfoPicturesVo> queryTeacherInfoByType(PicturePo picturePo);
 	
 	List<TeacherVo> queryStudentDemandSignUpTeacher(Integer sid);
+	
+	List<UniversityVo> queryAllSchools();
 }

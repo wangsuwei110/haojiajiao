@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.education.hjj.bz.entity.PicturePo;
 import com.education.hjj.bz.entity.vo.PageVo;
@@ -29,6 +30,7 @@ import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.entity.vo.TeachBranchVo;
 import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
+import com.education.hjj.bz.entity.vo.UniversityVo;
 import com.education.hjj.bz.formBean.PictureForm;
 import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
 import com.education.hjj.bz.formBean.TeacherInfoForm;
@@ -126,6 +128,7 @@ public class UserInfoController {
 			
 			if(teacherVo != null ) {
 				map.put("teacherName", teacherVo.getName());
+				map.put("school", teacherVo.getSchool());
 			}
 			
 			return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
@@ -437,6 +440,17 @@ public class UserInfoController {
 		}
 		
 		return ApiResponse.error("暂无数据！");
+		
+	}
+	
+	@ApiOperation("查询所有学校信息")
+	@RequestMapping(value = "/queryAllSchools", method = RequestMethod.GET)
+	@ResponseBody
+	public ApiResponse queryAllSchools() {
+		
+		List<UniversityVo> list = userInfoService.queryAllSchools();
+		
+		return ApiResponse.success("操作成功！" , JSONObject.toJSON(list));
 		
 	}
 	
