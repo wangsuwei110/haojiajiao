@@ -105,6 +105,16 @@ public class TeacherVo extends BaseVo implements Serializable {
 	@ApiModelProperty(name = "教员的评价或试讲不通过原因")
 	private String appraise;
 
+	@ApiModelProperty(value = "教员的单价")
+	private Double unitPrice;
+
+	public Double getUnitPrice() {
+		return unitPrice;
+	}
+
+	public void setUnitPrice(Double unitPrice) {
+		this.unitPrice = unitPrice;
+	}
 
 	public String getAppraise() {
 		return appraise;

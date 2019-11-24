@@ -15,7 +15,31 @@
 		<result column="create_time" property="createTime"/>
 		<result column="update_time" property="updateTime"/>
 	</resultMap>
-	
+
+	<insert id="insertTeacherAccount" parameterType="com.education.hjj.bz.entity.TeacherAccountPo">
+		INSERT teacher_account
+		INTO (
+			teacher_id
+			,teacher_name
+			,teacher_phone
+			,account_money
+			,surplus_money
+			,status
+			,create_time
+			,create_user
+		) VALUES (
+			#{teacherId}
+			,#{teacherName}
+			,#{teacherPhone}
+			,#{accountMoney}
+			,#{accountMoney}
+			,#{surplusMoney}
+			,#{status}
+			,#{createTime}
+			,#{createUser}
+		)
+	</insert>
+
 	<!-- 查询用户账户余额 -->
     <select id="queryTeacherAccount"  resultMap="teacherAccountInfoResultMap" parameterType="java.lang.Integer">    
         	
@@ -45,5 +69,15 @@
     	where
     		teacher_id = #{teacherId}
     </update>
-    
+
+	<!-- 教员用户提现 -->
+	<update id="updateTeacherAccountMoney" parameterType="com.education.hjj.bz.entity.TeacherAccountPo">
+		update
+			teacher_account
+		set
+			account_money = #{accountMoney},
+			update_time = #{updateTime}
+		where
+			teacher_id = #{teacherId}
+	</update>
 </mapper>

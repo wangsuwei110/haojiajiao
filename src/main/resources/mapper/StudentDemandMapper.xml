@@ -25,6 +25,7 @@
 		<result column="update_time" property="updateTime"/>
 		<result column="update_user" property="updateUser"/>
 		<result column="current_week_day" property="currentWeekDay"/>
+		<result property="paymentStreamId" column="payment_stream_id"/>
 
 		<result column="teacher_id" property="teacherId"/>
 
@@ -80,6 +81,20 @@
 		ON sd.sid = sdc.demand_id
 		WHERE sdc.delete_status = 0
 		AND sd.sid = #{demandId}
+		LIMIT 1
+	</select>
+
+	<select id="findDemandByCourseId" parameterType="integer" resultMap="studentDemandsResultMap">
+		SELECT sd.*, st.student_name
+		FROM student_demand sd
+		INNER JOIN
+			demand_course_info dci
+		ON sd.sid = dci.demand_id
+		AND dci.delete_status = 0
+		INNER JOIN
+			student st
+		ON sd.student_id = st.sid
+		WHERE dci.sid = #{sid}
 	</select>
 
 	<select id="listDemand" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm" resultMap="studentDemandsResultMap">
@@ -254,27 +269,27 @@
     </update>
 
     <select id="findStudentDemandInfo" parameterType="java.lang.Integer" resultMap="studentDemandsResultMap">
-        SELECT 
-        	sd.*, 
+        SELECT
+        	sd.*,
         	tea.teacher_id,
         	s.student_name
-        FROM 
+        FROM
         	student_demand sd
-        INNER JOIN 
+        INNER JOIN
         	student_demand_connect sdc
-        ON 
+        ON
         	sd.sid = sdc.demand_id
         AND sdc.status = 4
-        INNER JOIN 
+        INNER JOIN
         	teacher tea
-        ON 
+        ON
         	sdc.teacher_id = tea.teacher_id
         left join
         	student s
         on
         	sd.student_id = s.sid
-        	
-        WHERE 
+
+        WHERE
         	sd.sid = #{demanId}
     </select>
 
@@ -505,7 +520,7 @@
 			sd.sid = #{demandId}
 		and
 			sdc.status = #{status}
-		AND	
+		AND
 			sdc.teacher_id = #{teacherId}
 		ORDER BY
 			sd.create_time desc

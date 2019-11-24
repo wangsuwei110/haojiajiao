@@ -205,7 +205,11 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	public ApiResponse listTeacher(StudentDemandConnectForm demandForm) {
 		// 根据学员的id查找预约的教员列表信息
 		Map<String, Object> map = new HashMap<>();
-		map.put("teacherList", teacherMapper.listTeacherByStudentId(demandForm.getDemandId()));
+		List<TeacherVo> list = teacherMapper.listTeacherByStudentId(demandForm.getDemandId());
+		list.forEach(f -> {
+			f.setUnitPrice(Double.valueOf(f.getChargesStandard().split("元")[0]));
+		});
+		map.put("teacherList", list);
 
 		// 根据发布的需求，拿出具体的试讲时间
 		StudentDemandVo vo = studentDemandMapper.queryStudentDemandDetailBySid(demandForm.getDemandId());

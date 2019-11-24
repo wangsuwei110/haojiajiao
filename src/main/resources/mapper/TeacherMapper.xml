@@ -51,9 +51,9 @@
 	     	<result property="updateUser" column="update_user"/>
     </resultMap>
 
-	<select id="load" resultMap="teacherResultMap" parameterType="long">
+	<select id="load" resultMap="teacherResultMap" parameterType="integer">
         SELECT * FROM teacher
-        WHERE sid =  #{sid} and status = 1
+        WHERE teacher_id =  #{teacherId} and status = 1
     </select>
 
     <select id="getCount" parameterType="com.education.hjj.bz.formBean.TeacherScreenForm"  resultType="java.lang.Integer">
