@@ -59,6 +59,27 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
     
     private String orderTeachTime;
 
+    // 辅导年级
+    private Integer demandGrade;
+    // 辅导科目
+    private Integer subjectId;
+
+    public Integer getDemandGrade() {
+        return demandGrade;
+    }
+
+    public void setDemandGrade(Integer demandGrade) {
+        this.demandGrade = demandGrade;
+    }
+
+    public Integer getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(Integer subjectId) {
+        this.subjectId = subjectId;
+    }
+
     public Integer getDemandType() {
         return demandType;
     }

@@ -163,6 +163,19 @@
             ]]>
         </if>
     </select>
+
+	<select id="countAlreadyDemand" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm"  resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM student_demand_connect sdc
+		INNER JOIN student_demand sd
+		ON sd.sid = sdc.demand_id
+        WHERE sdc.delete_status = 0
+		AND sdc.teacher_id =  #{teacherId}
+		AND sdc.status in  (3,4)
+		AND sd.demand_grade = #{demandGrade}
+		AND sd.subject_id   = #{subjectId}
+		AND sd.student_id = #{studentId}
+    </select>
     <sql id="listRef">
         <where>
                 <if test="sid != null and sid != ''">

@@ -109,7 +109,8 @@
 		   sd.demand_desc,
 		   sd.demand_grade,
 		   sd.subject_id,
-		   sd.status
+		   sd.status,
+           sd.demand_type
 		from student_demand sd
 		inner join student st
 		on sd.student_id = st.sid

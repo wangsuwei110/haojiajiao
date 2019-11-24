@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.alibaba.fastjson.JSON;
@@ -142,10 +143,23 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 		// 如果有教员ID，则插入一条关联教员的表数据
 		if (form.getTeacherId() != null) {
+			// 判断改教员是否曾经试讲过同等年级同等科目的订单
+			StudentDemandConnectForm alreadyForm = new StudentDemandConnectForm();
+			alreadyForm.setStudentId(form.getStudentId());
+			alreadyForm.setTeacherId(form.getTeacherId());
+			alreadyForm.setStudentId(form.getStudentId());
+			alreadyForm.setSubjectId(form.getSubjectId());
+			alreadyForm.setDemandGrade(form.getDemandGrade());
+			Integer count = connectMapper.countAlreadyDemand(alreadyForm);
+
 			Long newOrderId = studentDemandMapper.findMaxSid();
 			StudentDemandConnectForm connectForm = new StudentDemandConnectForm();
 			connectForm.setCreateTime(date);
-			connectForm.setStatus(1);
+			if (count != null && count > 0) {
+				connectForm.setStatus(7);
+			} else {
+				connectForm.setStatus(1);
+			}
 			connectForm.setDeleteStatus(0);
 			connectForm.setCreateUser(form.getStudentId());
 			connectForm.setDemandId(newOrderId.intValue());
@@ -180,21 +194,30 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			List<StudentDemandConnectVo> connectVos = connectMapper.listConnectInfo(f.getSid());
 			// 判断是否已经有了预约(排除已经预约过，但是未通过的)
 			Optional<StudentDemandConnectVo> op = connectVos.stream()
-					.filter(s -> s.getOrderTeachTime() != null && s.getStatus() != null && s.getStatus() != 3)
+					.filter(s ->  s.getStatus() != null && s.getStatus() != 3)
 					.findFirst();
 			if (op.isPresent()) {
 				f.setSubscribeStatus(op.get().getStatus());
 				f.setTeachName(op.get().getTeacherName());
 				f.setAppraise(op.get().getAppraise());
 				f.setChargesStandard(op.get().getChargesStandard());
+				f.setOrderTeachTime(op.get().getOrderTeachTime());
 
 				// 如果已经过了试讲的试讲时间，则赋值6，前端判断显示试讲通过和试讲不通过
-				if (!new Date().after(DateUtil.addMinute(op.get().getOrderTeachTime(), 5))) {
+				if (op.get().getOrderTeachTime() != null && new Date().after(DateUtil.addMinute(op.get().getOrderTeachTime(), 5))) {
 					f.setSubscribeStatus(6);
 				}
 			} else {
-				// 没有预约成功的，显示预约教员的数量
-				f.setOrderTeachCount(connectVos.size());
+//				// 判断是否已经有了预约(排除已经预约过，但是未通过的)
+//				List<StudentDemandConnectVo> noPass = connectVos.stream()
+//						.filter(s ->  s.getStatus() != null && s.getStatus() == 3).collect(Collectors.toList()).stream()
+//						.sorted((a, b) -> a.getOrderTeachTime().compareTo(b.getOrderTeachTime())).collect(Collectors.toList());
+				if (f.getDemandType() == 1) {
+					f.setSubscribeStatus(3);
+				} else {
+					// 没有预约成功的，显示预约教员的数量
+					f.setOrderTeachCount(org.apache.shiro.util.CollectionUtils.isEmpty(connectVos) ? 0 : connectVos.size());
+				}
 			}
 
 		});

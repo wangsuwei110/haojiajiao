@@ -97,7 +97,7 @@
                  <if test="subjectId != null">
                    subject_id =  #{subjectId},
                  </if>
-		     	 <if test="openId != null">
+		     	 <if test="openId != null and openId != ''">
 	               openId =  #{openId},
        		     </if>
 		     	 <if test="picture != null">

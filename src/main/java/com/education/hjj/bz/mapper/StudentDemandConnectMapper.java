@@ -38,6 +38,8 @@ public interface StudentDemandConnectMapper {
 
     List<StudentDemandConnectVo> list(StudentDemandConnectForm form);
 
+    Integer countAlreadyDemand(StudentDemandConnectForm form);
+
     List<StudentDemandConnectVo> listConnectInfo(@Param("demandId") Integer demandId);
     
     int queryServiceForStudentSuccess(Integer teacherId);

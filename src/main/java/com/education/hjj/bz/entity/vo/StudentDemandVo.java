@@ -38,6 +38,9 @@ public class StudentDemandVo {
     @ApiModelProperty(value = "付费订单开始时间")
     private Date orderStart;
 
+    @ApiModelProperty(value = "付费订单结束时间")
+    private Date orderEndTime;
+
     @ApiModelProperty(value = "订单周数")
     private Integer weekNum;
     
@@ -127,6 +130,13 @@ public class StudentDemandVo {
     //每节课的ID
     private Integer classId;
 
+    public Date getOrderEndTime() {
+        return orderEndTime;
+    }
+
+    public void setOrderEndTime(Date orderEndTime) {
+        this.orderEndTime = orderEndTime;
+    }
 
     public String getPaymentStreamId() {
         return paymentStreamId;
