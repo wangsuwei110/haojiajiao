@@ -84,7 +84,7 @@
 		LIMIT 1
 	</select>
 
-	<select id="findDemandByCourseId" parameterType="integer" resultMap="studentDemandsResultMap">
+	<select id="findDemandByCourseId" parameterType="java.lang.Integer" resultMap="studentDemandsResultMap">
 		SELECT sd.payment_stream_id
 		    , sd.student_id
 			, st.student_name
