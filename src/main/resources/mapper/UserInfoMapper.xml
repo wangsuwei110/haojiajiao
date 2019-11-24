@@ -434,5 +434,29 @@
 			sdc.teacher_id = t.teacher_id
 		WHERE
 			sdc.demand_id = #{sid}
-    </select> 	
+    </select> 
+    
+    
+    <!-- 用用查询映射结果 -->
+	<resultMap id="schoolInfoResultMap" type="com.education.hjj.bz.entity.vo.UniversityVo" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		<result column="sid" property="sid"/>
+		<result column="university_name" property="universityName"/>
+		<result column="province" property="province"/>
+	</resultMap>
+    
+    <!-- 查询所有的学校信息 -->
+    <select id="queryAllSchools" resultMap="schoolInfoResultMap">
+    	SELECT
+			u.sid,
+			u.university_name,
+			u.province
+		
+		FROM
+			university u
+		WHERE
+			1=1
+		ORDER BY
+			u.sid
+    </select>	
 </mapper>
