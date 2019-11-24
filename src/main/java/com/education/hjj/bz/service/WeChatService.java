@@ -6,17 +6,17 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.weixin4j.model.message.template.TemplateData;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.education.hjj.bz.util.DateUtil;
+import com.education.hjj.bz.util.HttpClientUtils;
 import com.education.hjj.bz.util.SendTemplateMessage;
 import com.education.hjj.bz.util.Token;
 import com.education.hjj.bz.util.UrlUtils;
@@ -46,7 +46,7 @@ public class WeChatService {
 		sendTemplateMessage.setData(map);
 		sendTemplateMessage.setEmphasis_keyword("");
 		String json = JSONObject.toJSONString(sendTemplateMessage);
-		String ret = sendPost(Constant.SEND_TEMPLATE_MESSAGE + accessToken, json);
+		String ret = sendPost(Constant.SEND_WX_COMMON_TEMPLATE_MESSAGE + accessToken, json);
 		return JSON.parseObject(ret);
 	}
 
@@ -115,5 +115,144 @@ public class WeChatService {
 		}
 		return result;
 	}
+	
+	/**
+	 * 统一服务消息
+	 * 小程序模板消息,发送服务通知
+	 * @param token 小程序ACCESS_TOKEN
+	 * @param touser 用户openid，可以是小程序的openid，也可以是公众号的openid
+	 * @param template_id 小程序模板消息模板id
+	 * @param page 小程序页面路径
+	 * @param formid 小程序模板消息formid
+	 * @param data 小程序模板消息formid
+	 * @param emphasis_keyword 小程序模板放大关键词
+	 * @return
+	 * @author HGL
+	 */
+	public static JSONObject sendWeappMessage(String token,String touser,String template_id,
+			String page,String formid,JSONObject data){
+		JSONObject obj = new JSONObject();
+		JSONObject weapp_template_msg = new JSONObject();
+		JSONObject result = new JSONObject();
+		try {
+			String url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token="+token;
+			obj.put("touser", touser);
+			weapp_template_msg.put("template_id", template_id);
+			weapp_template_msg.put("page", page);
+			weapp_template_msg.put("form_id", formid);
+			weapp_template_msg.put("data", data);
+			weapp_template_msg.put("emphasis_keyword", data.getJSONObject("keyword1").getString("value"));
+			obj.put("weapp_template_msg", weapp_template_msg);
+			result = HttpClientUtils.Post(url, obj);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	/**
+	 * 统一服务消息
+	 * 公众号模板消息,发送公众号通知
+	 * @param token 小程序ACCESS_TOKEN
+	 * @param touser 用户openid，可以是小程序的openid，也可以是公众号的openid
+	 * @param appid 公众号appid
+	 * @param template_id 公众号模板消息模板id
+	 * @param url 公众号模板消息所要跳转的url
+	 * @param weappid 公众号模板消息所要跳转的小程序appid，小程序的必须与公众号具有绑定关系
+	 * @param pagepath 公众号模板消息所要跳转的小程序页面
+	 * @param data 公众号模板消息的数据
+	 * @return
+	 * @author HGL
+	 */
+	public static JSONObject sendMpMessage(String token,String touser,String appid,
+			String template_id,String url,String weappid,String pagepath,JSONObject data){
+		JSONObject result = new JSONObject();
+		JSONObject obj = new JSONObject();
+		JSONObject mp_template_msg = new JSONObject();
+		JSONObject miniprogram = new JSONObject();
+		try {
+			String path = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token="+token;
+			obj.put("touser", touser);
+			mp_template_msg.put("appid",appid);
+			mp_template_msg.put("template_id", template_id);
+			mp_template_msg.put("url",url);
+			miniprogram.put("appid", weappid);
+			miniprogram.put("pagepath", pagepath);
+			mp_template_msg.put("miniprogram", miniprogram);
+			mp_template_msg.put("data", data);
+			obj.put("mp_template_msg", mp_template_msg);
+			result = HttpClientUtils.Post(path, obj);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static void main(String[] args) {
+		
+		String accessToken = getAccessToken();
+		String toUser = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
+		String template_id = Constant.SEND_WX_COMMON_TEMPLATE_MESSAGE;
+		String page = "";
+		String formid = "wx23215524016696260f2ccad51695273600";
+		String url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token="+accessToken;
+		
+		
+		JSONObject data = new JSONObject();
 
+		Map<String,Object> keyMap1 = new HashMap<String,Object>();
+		keyMap1.put("value","王教员");
+		//添加客户名称
+		data.put("keyword1",keyMap1);
+
+		Map<String,Object> keyMap2 = new HashMap<String,Object>();
+		keyMap2.put("value","上海人");
+		//添加卖方名称
+		data.put("keyword2",keyMap2);
+
+		Map<String,Object> keyMap3 = new HashMap<String,Object>();
+		keyMap3.put("value","浦东新区张江镇");
+		//添加对账月份
+		data.put("keyword3",keyMap3);
+		
+//		String aa = data.getJSONObject("keyword1").getString("value");
+//		
+//		System.out.println(aa);
+		
+		JSONObject obj = new JSONObject();
+		JSONObject weapp_template_msg = new JSONObject();
+		
+		JSONObject mp_template_msg = new JSONObject();
+		JSONObject miniprogram = new JSONObject();
+		JSONObject result = new JSONObject();
+		
+		try {
+			obj.put("touser", toUser);
+			weapp_template_msg.put("weapp_template_msg.template_id", template_id);
+			weapp_template_msg.put("page", page);
+			weapp_template_msg.put("form_id", formid);
+			weapp_template_msg.put("data", data);
+			weapp_template_msg.put("emphasis_keyword", data.getJSONObject("keyword1").getString("value"));
+			obj.put("weapp_template_msg", weapp_template_msg);
+			
+			
+			
+			mp_template_msg.put("appid", Constant.COMMON_APP_ID);
+			mp_template_msg.put("mp_template_msg.template_id", template_id);
+			mp_template_msg.put("url",url);
+			miniprogram.put("appid", Constant.APP_ID);
+			miniprogram.put("pagepath", "");
+			mp_template_msg.put("miniprogram", miniprogram);
+			mp_template_msg.put("data", data);
+			obj.put("mp_template_msg", mp_template_msg);
+			
+			result = HttpClientUtils.Post(url, obj);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(JSONObject.toJSONString(result));
+	}
+	
 }
