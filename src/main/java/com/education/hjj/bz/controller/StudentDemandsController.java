@@ -71,7 +71,7 @@ public class StudentDemandsController {
 	@ApiOperation("结课")
 	@RequestMapping(value = "/conclusion", method = RequestMethod.POST)
 	public ApiResponse conclusion(@RequestBody DemandCourseInfoForm demandForm) {
-			return studentDemandsService.conclusion(demandForm);
+        return studentDemandsService.conclusion(demandForm);
 	}
 
 	@ApiOperation("我的课程")
