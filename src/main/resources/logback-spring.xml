@@ -74,7 +74,7 @@
 
     <!-- 生产环境. -->
     <springProfile name="prod,test,dev">
-        <root level="info">
+        <root level="debug">
             <appender-ref ref="FILEINFO"/>
             <appender-ref ref="FILEERROR"/>
         </root>
