@@ -283,6 +283,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 		courseInfoForm.setStatus(2); // 2:结课状态
 		courseInfoForm.setUpdateTime(date);
+		logger.info("检索订单1"+ courseInfoForm.getSid());
 		demandCourseInfoMapper.updateNotNull(courseInfoForm);
 
 		logger.info("检索订单"+ courseInfoForm.getSid());
