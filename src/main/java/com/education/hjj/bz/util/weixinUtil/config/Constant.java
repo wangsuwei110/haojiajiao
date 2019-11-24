@@ -4,7 +4,9 @@ public class Constant {
 	
 	public static final String DOMAIN = "https://www.laijiajiaosh.com";//配置自己的域名
 
-    public static final String APP_ID = "wx4e6192d8e025df02";
+    public static final String APP_ID = "wx4e6192d8e025df02";//小程序的appId
+    
+    public static final String COMMON_APP_ID = "wxe2b727fd65f6be62";//公众号的appId
 
     public static final String APP_SECRET = "f6d14a0e01657fbe97632a9eb4b2a482";
 
@@ -47,6 +49,10 @@ public class Constant {
     public static final String BILL_TYPE = "MCHT";
     //微信模板
     public static final String SEND_TEMPLATE_MESSAGE = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=";
+    
+    //微信统一服务消息模板
+    public static final String SEND_WX_COMMON_TEMPLATE_MESSAGE = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token=";
+    
     /**获取access_token*/
     public static final String ACCESS_TOKEN  = "https://api.weixin.qq.com/cgi-bin/token";
     
@@ -58,7 +64,7 @@ public class Constant {
     //提现到账通知
     public static final String CASH_OUT_TO_ACCOUNT_MESSAGE = "1DIuaSZQTzvHEtIPLgzzSFwoX6UCQxmS_iPg8kcEvQs";
     //支付通知
-    public static final String PAYMENT_MESSAGE = "EMRecnlKb0CMmCG_fDhU3LEK9fsj4BWgB0CQGZtTEtQ";
+    public static final String PAYMENT_SUCCESS_MESSAGE = "I1-wAFCoM_VPlpIGCagwEvXEv7bCCf--52EoIU39aK0";
     //课程已被购买通知
     public static final String PAY_FOR_CLASS = "hWYWzWwSHDOwVP19CkH-gxpihW4sESgMWf7kwcPvlbE";
     //课程将开始通知

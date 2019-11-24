@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.education.hjj.bz.entity.PicturePo;
 import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
+import com.education.hjj.bz.entity.vo.UniversityVo;
 import com.education.hjj.bz.formBean.LoginForm;
 import com.education.hjj.bz.formBean.TeacherInfoForm;
 import com.education.hjj.bz.formBean.TeacherInfoReplenishForm;
@@ -42,4 +43,6 @@ public interface UserInfoService {
 	int updateUserInfos(TeacherInfoReplenishForm teacherInfoReplenishForm);
 	
 	List<TeacherVo> queryAllTeacherInfos();
+	
+	List<UniversityVo> queryAllSchools();
 }

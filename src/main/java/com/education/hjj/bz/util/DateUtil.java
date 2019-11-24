@@ -160,6 +160,17 @@ public final class DateUtil {
 		return df.format(date);
 	}
 	
+	
+	/**
+	 * 获取时间yyyy年MM月dd
+	 *
+	 * @return
+	 */
+	public static String getStandardDayByYear(Date date) {
+		SimpleDateFormat df = new SimpleDateFormat(FORMAT_SHORT_CN);
+		return df.format(date);
+	}
+	
 	/**
 	 * 获取时间yyyyMMdd
 	 *
