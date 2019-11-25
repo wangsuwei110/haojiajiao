@@ -6,24 +6,27 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.weixin4j.model.message.template.TemplateData;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.education.hjj.bz.util.DateUtil;
 import com.education.hjj.bz.util.HttpClientUtils;
 import com.education.hjj.bz.util.SendTemplateMessage;
+import com.education.hjj.bz.util.SendWXMessageUtils;
 import com.education.hjj.bz.util.Token;
 import com.education.hjj.bz.util.UrlUtils;
 import com.education.hjj.bz.util.weixinUtil.config.Constant;
 
 @Service
 public class WeChatService {
+	
+	private static Logger logger = LoggerFactory.getLogger(WeChatService.class);
 
 	/**
 	 * 发送模板消息sendTemplateMessage 小程序模板消息,发送服务通知
@@ -143,7 +146,7 @@ public class WeChatService {
 			weapp_template_msg.put("data", data);
 			weapp_template_msg.put("emphasis_keyword", data.getJSONObject("keyword1").getString("value"));
 			obj.put("weapp_template_msg", weapp_template_msg);
-			result = HttpClientUtils.Post(url, obj);
+			result = SendWXMessageUtils.post(url, obj);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -181,7 +184,7 @@ public class WeChatService {
 			mp_template_msg.put("miniprogram", miniprogram);
 			mp_template_msg.put("data", data);
 			obj.put("mp_template_msg", mp_template_msg);
-			result = HttpClientUtils.Post(path, obj);
+			result = SendWXMessageUtils.post(path, obj);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -191,10 +194,12 @@ public class WeChatService {
 	public static void main(String[] args) {
 		
 		String accessToken = getAccessToken();
-		String toUser = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
-		String template_id = Constant.SEND_WX_COMMON_TEMPLATE_MESSAGE;
+		String toUser = "oWQvd4uz6jaR7P3OY8UaCcDcGWJI";
+		String template_id = "I1-wAFCoM_VPlpIGCagwEvXEv7bCCf--52EoIU39aK0";
+		
+		String common_template_id ="vBLV5D0zQNq4mZNYIvQ8xo9oqDvnJlwvMYEWEw1atRc";
 		String page = "";
-		String formid = "wx23215524016696260f2ccad51695273600";
+		String formid = "wx2410354776322170ec47d47a1837096200";
 		String url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token="+accessToken;
 		
 		
@@ -228,7 +233,7 @@ public class WeChatService {
 		
 		try {
 			obj.put("touser", toUser);
-			weapp_template_msg.put("weapp_template_msg.template_id", template_id);
+			weapp_template_msg.put("template_id", template_id);
 			weapp_template_msg.put("page", page);
 			weapp_template_msg.put("form_id", formid);
 			weapp_template_msg.put("data", data);
@@ -238,15 +243,17 @@ public class WeChatService {
 			
 			
 			mp_template_msg.put("appid", Constant.COMMON_APP_ID);
-			mp_template_msg.put("mp_template_msg.template_id", template_id);
-			mp_template_msg.put("url",url);
+			mp_template_msg.put("template_id", common_template_id);
+			mp_template_msg.put("url","");
 			miniprogram.put("appid", Constant.APP_ID);
 			miniprogram.put("pagepath", "");
 			mp_template_msg.put("miniprogram", miniprogram);
 			mp_template_msg.put("data", data);
 			obj.put("mp_template_msg", mp_template_msg);
 			
-			result = HttpClientUtils.Post(url, obj);
+			logger.info("obj = "+obj);
+			
+			result = SendWXMessageUtils.post(url, obj);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
