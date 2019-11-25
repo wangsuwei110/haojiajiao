@@ -283,7 +283,7 @@ public class PayController {
 		Map<String,Object> keyMap7 = new HashMap<String,Object>();
 		keyMap7.put("value","已支付");
 		//添加对账月份
-		data.put("keyword3",keyMap7);
+		data.put("keyword7",keyMap7);
 		
 		JSONObject sendRedPackRsult = SendWXMessageUtils.sendMessage(openId, Constant.PAYMENT_SUCCESS_MESSAGE, Constant.COMMON_PAYMENT_SUCCESS_MESSAGE, prepay_Id, data);
 		logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") +" " + sendRedPackRsult.getString("errmsg"));
