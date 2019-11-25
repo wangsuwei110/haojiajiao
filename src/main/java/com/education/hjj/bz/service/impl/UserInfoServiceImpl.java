@@ -489,44 +489,54 @@ public class UserInfoServiceImpl implements UserInfoService {
 		List<Map<String, Object>> lists = new ArrayList<Map<String, Object>>();
 
 		TeacherVo tv = new TeacherVo();
-
-		for (TeacherInfoPicturesVo tp : tps) {
-
-			List<String> pathList = new ArrayList<String>();
-
-			Map<String, Object> pictureMap = new HashMap<String, Object>();
-
-			if (tp != null && tp.getPictureUrl() != null && StringUtils.isNoneBlank(tp.getPictureUrl())) {
-
-				String pictureUrls = tp.getPictureUrl();
-				String[] urls = pictureUrls.split(",");
-
-				for (String dataPath : urls) {
-//					String path = dataPath.substring(dataPath.lastIndexOf('/') + 1);
-					String path = dataPath;
-					pathList.add(path);
-				}
-
-				pictureMap.put("pictureTitle", tp.getPictureTitle());
-				pictureMap.put("pictureUrl", pathList);
-				pictureMap.put("pictureDesc", tp.getPictureDesc());
-
-				lists.add(pictureMap);
-			}
-			tv.setIdCard(tp.getIdCard());
-			tv.setSchool(tp.getSchool());
-			tv.setMajor(tp.getMajor());
-			tv.setIsGraduate(tp.getIsGraduate());
-			tv.setDegree(tp.getDegree());
-			tv.setBeginSchoolTime(tp.getBeginSchoolTime());
-			tv.setTeacherTag(tp.getTeacherTag());
-			tv.setLogonStatus(tp.getLogonStatus());
-
-		}
-
+		
 		Map<String, Object> map = new HashMap<String, Object>(1);
-		map.put("userInfos", tv);
-		map.put("pictures", lists);
+		
+		if(tps.size() > 0) {
+			
+			for (TeacherInfoPicturesVo tp : tps) {
+
+				List<String> pathList = new ArrayList<String>();
+
+				Map<String, Object> pictureMap = new HashMap<String, Object>();
+
+				if (tp != null && tp.getPictureUrl() != null && StringUtils.isNoneBlank(tp.getPictureUrl())) {
+
+					String pictureUrls = tp.getPictureUrl();
+					String[] urls = pictureUrls.split(",");
+
+					for (String dataPath : urls) {
+//						String path = dataPath.substring(dataPath.lastIndexOf('/') + 1);
+						String path = dataPath;
+						pathList.add(path);
+					}
+
+					pictureMap.put("pictureTitle", tp.getPictureTitle());
+					pictureMap.put("pictureUrl", pathList);
+					pictureMap.put("pictureDesc", tp.getPictureDesc());
+
+					lists.add(pictureMap);
+				}
+				tv.setIdCard(tp.getIdCard());
+				tv.setSchool(tp.getSchool());
+				tv.setMajor(tp.getMajor());
+				tv.setIsGraduate(tp.getIsGraduate());
+				tv.setDegree(tp.getDegree());
+				tv.setBeginSchoolTime(tp.getBeginSchoolTime());
+				tv.setTeacherTag(tp.getTeacherTag());
+				tv.setLogonStatus(tp.getLogonStatus());
+
+			}
+
+			
+			map.put("userInfos", tv);
+			map.put("pictures", lists);
+		}else {
+			Integer teacherId = picturePo.getTeacherId();
+			
+			TeacherVo  t = userInfoMapper.queryTeacherHomeInfos(teacherId);
+			map.put("userInfos", t);
+		}
 
 		return map;
 	}
