@@ -257,7 +257,7 @@ public class WxRedPackController {
 					
 					Long timeStamp = System.currentTimeMillis() / 1000;
 					
-					String prepay_Id = parseResult.get("prepay_id");
+//					String prepay_Id = parseResult.get("prepay_id");
 					
 //					String stringSignTemp = "appId=" + Constant.APP_ID + "&nonceStr=" + randomNonceStr
 //							+ "&package=prepay_id=" + prepay_Id + "&signType=" + Constant.SIGN_TYPE + "&timeStamp="
@@ -274,9 +274,6 @@ public class WxRedPackController {
 							+ timeStamp;
 					// 再次签名，这个签名用于小程序端调用wx.requesetPayment方法
 					String paySign = WXUtils.sign(stringSignTemp, Constant.APP_KEY, "utf-8");
-					
-
-					
 					
 					response.put("nonceStr", randomNonceStr);
 					response.put("timeStamp", timeStamp + "");// 这边要将返回的时间戳转化成字符串，不然小程序端调用wx.requestPayment方法会报签名错误
@@ -318,6 +315,8 @@ public class WxRedPackController {
 		
 		//表单提交的formId，发送消息通知用
 		String formId = teacherAccountForm.getFormId();
+		
+		logger.info("提现的formId: " + formId);
 		
 		JSONObject data = new JSONObject();
 
@@ -361,7 +360,7 @@ public class WxRedPackController {
 		//添加对账月份
 		data.put("keyword8",keyMap8);
 		
-		
+		logger.info("发送提现成功的消息提醒......");
 		JSONObject sendRedPackRsult = SendWXMessageUtils.sendMessage(openId, Constant.CASH_OUT_TO_ACCOUNT_MESSAGE, Constant.COMMON_CASH_OUT_TO_ACCOUNT_MESSAGE, formId, data);
 		logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") +" " + sendRedPackRsult.getString("errmsg"));
 		
