@@ -36,6 +36,7 @@ import org.weixin4j.WeixinException;
 
 import com.alibaba.fastjson.JSONObject;
 import com.education.hjj.bz.util.HttpClientUtils;
+import com.education.hjj.bz.util.SendWXMessageUtils;
 import com.education.hjj.bz.util.weixinUtil.CommonUtil;
 import com.education.hjj.bz.util.weixinUtil.HttpUtil;
 import com.education.hjj.bz.util.weixinUtil.MD5Utils;
@@ -85,8 +86,14 @@ public class PayController {
 		logger.info("\n======================================================");
 		logger.info("code: " + code);
 
+		//订单编号
+		String randomOrderId = CommonUtil.getRandomOrderId();
+		
+		String openId = "";
+		String prepay_Id = "";
+		
 		try {
-			String openId = getOpenId(code);
+			openId = getOpenId(code);
 //			String openId = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
 
 			if (StringUtils.isBlank(openId)) {
@@ -103,8 +110,8 @@ public class PayController {
 				logger.error("openId: " + openId + ", clientIP: " + clientIP);
 
 				String randomNonceStr = RandomUtils.generateMixString(32);
-
-				String wxPayResult = unifiedOrder(openId, clientIP, randomNonceStr);
+				
+				String wxPayResult = unifiedOrder(openId, clientIP, randomNonceStr ,randomOrderId);
 
 				Map<String, String> parseResult = CommonUtil.parseXml(wxPayResult);
 
@@ -123,7 +130,7 @@ public class PayController {
 						return ApiResponse.error("统一下单错误！");
 					}
 
-					String prepay_Id = parseResult.get("prepay_id");
+					prepay_Id = parseResult.get("prepay_id");
 					
 					logger.info("prepay_id = " + prepay_Id);
 
@@ -239,6 +246,49 @@ public class PayController {
 			
 			return ApiResponse.errorData("支付失败", json);
 		}
+		
+		
+		JSONObject data = new JSONObject();
+
+		Map<String,Object> keyMap1 = new HashMap<String,Object>();
+		keyMap1.put("value", randomOrderId);
+		//添加客户名称
+		data.put("keyword1",keyMap1);
+
+		Map<String,Object> keyMap2 = new HashMap<String,Object>();
+		keyMap2.put("value", Constant.SEND_NAME);
+		//添加卖方名称
+		data.put("keyword2",keyMap2);
+
+		Map<String,Object> keyMap3 = new HashMap<String,Object>();
+		keyMap3.put("value",DateUtil.getStandardDayByYear(new Date()));
+		//添加对账月份
+		data.put("keyword3",keyMap3);
+		
+		Map<String,Object> keyMap4 = new HashMap<String,Object>();
+		keyMap4.put("value","付款金额：0.01元");
+		//添加对账月份
+		data.put("keyword4",keyMap4);
+		
+		Map<String,Object> keyMap5 = new HashMap<String,Object>();
+		keyMap5.put("value","商品详情：初中二年级数学");
+		//添加对账月份
+		data.put("keyword5",keyMap5);
+		
+		Map<String,Object> keyMap6 = new HashMap<String,Object>();
+		keyMap6.put("value","授课讲师：王老师");
+		//添加对账月份
+		data.put("keyword6",keyMap6);
+		
+		Map<String,Object> keyMap7 = new HashMap<String,Object>();
+		keyMap7.put("value","已支付");
+		//添加对账月份
+		data.put("keyword3",keyMap7);
+		
+		JSONObject sendRedPackRsult = SendWXMessageUtils.sendMessage(openId, Constant.PAYMENT_SUCCESS_MESSAGE, Constant.COMMON_PAYMENT_SUCCESS_MESSAGE, prepay_Id, data);
+		logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") +" " + sendRedPackRsult.getString("errmsg"));
+		
+		
 
 		return ApiResponse.success("支付成功", json);
 	}
@@ -343,13 +393,13 @@ public class PayController {
 	 * @param openId
 	 */
 	@Transactional
-	private String unifiedOrder(String openId, String clientIP, String randomNonceStr) {
+	private String unifiedOrder(String openId, String clientIP, String randomNonceStr , String randomOrderId) {
 
 		try {
 
 			String url = Constant.URL_UNIFIED_ORDER;
 
-			PayInfo payInfo = createPayInfo(openId, clientIP, randomNonceStr);
+			PayInfo payInfo = createPayInfo(openId, clientIP, randomNonceStr , randomOrderId);
 			String md5 = getSign(payInfo);
 			payInfo.setSign(md5);
 
@@ -373,13 +423,11 @@ public class PayController {
 	}
 
 	@Transactional
-	private PayInfo createPayInfo(String openId, String clientIP, String randomNonceStr) {
+	private PayInfo createPayInfo(String openId, String clientIP, String randomNonceStr , String randomOrderId) {
 
 		Date date = new Date();
 		String timeStart = TimeUtils.getFormatTime(date, Constant.TIME_FORMAT);
 		String timeExpire = TimeUtils.getFormatTime(TimeUtils.addDay(date, Constant.TIME_EXPIRE), Constant.TIME_FORMAT);
-
-		String randomOrderId = CommonUtil.getRandomOrderId();
 
 		PayInfo payInfo = new PayInfo();
 		payInfo.setAppid(Constant.APP_ID);
