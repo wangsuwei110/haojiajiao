@@ -61,10 +61,19 @@ public class Constant {
     
     //提现申请通知
     public static final String CASH_OUT_MESSAGE = "chWkfUp8KoaOaZdplI_DVfZE1hOkYZh-tYBUuKHnu8k";
-    //提现到账通知
-    public static final String CASH_OUT_TO_ACCOUNT_MESSAGE = "1DIuaSZQTzvHEtIPLgzzSFwoX6UCQxmS_iPg8kcEvQs";
-    //支付通知
+    
+    
+    //提现申请通知(小程序)
+    public static final String CASH_OUT_TO_ACCOUNT_MESSAGE = "chWkfUp8KoaOaZdplI_DVfZE1hOkYZh-tYBUuKHnu8k";
+    //提现到账通知(公众号)
+    public static final String COMMON_CASH_OUT_TO_ACCOUNT_MESSAGE = "EpofyFiObypjbkrWnVtyyxhy8Gw02RrSs-G5fCIWARo";
+    
+    //支付通知(小程序)
     public static final String PAYMENT_SUCCESS_MESSAGE = "I1-wAFCoM_VPlpIGCagwEvXEv7bCCf--52EoIU39aK0";
+    //支付通知(公众号)
+    public static final String COMMON_PAYMENT_SUCCESS_MESSAGE = "vBLV5D0zQNq4mZNYIvQ8xo9oqDvnJlwvMYEWEw1atRc";
+    
+    
     //课程已被购买通知
     public static final String PAY_FOR_CLASS = "hWYWzWwSHDOwVP19CkH-gxpihW4sESgMWf7kwcPvlbE";
     //课程将开始通知
