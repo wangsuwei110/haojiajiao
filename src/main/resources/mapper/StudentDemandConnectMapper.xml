@@ -142,7 +142,7 @@
     <select id="listConnectInfo" parameterType="java.lang.Integer" resultMap="studentDemandConnectResultMap">
         SELECT
           sdc.*
-          , te.name
+          , te.name AS teacherName
           , te.charges_standard
         FROM
           student_demand_connect sdc

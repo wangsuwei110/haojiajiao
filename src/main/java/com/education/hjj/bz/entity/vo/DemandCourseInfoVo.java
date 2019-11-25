@@ -61,6 +61,17 @@ public class DemandCourseInfoVo {
     @ApiModelProperty(value = "教员的单价")
     private Double unitPrice;
 
+    @ApiModelProperty(value = "课程")
+    private String teachBranchName;
+
+    public String getTeachBranchName() {
+        return teachBranchName;
+    }
+
+    public void setTeachBranchName(String teachBranchName) {
+        this.teachBranchName = teachBranchName;
+    }
+
     public Double getUnitPrice() {
         return unitPrice;
     }

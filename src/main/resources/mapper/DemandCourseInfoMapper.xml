@@ -19,6 +19,7 @@
 
 	     	<result property="teacherName" column="name"/>
 	     	<result property="chargesStandard" column="charges_standard"/>
+	     	<result property="teachBranchName" column="teach_branch_name"/>
     </resultMap>
 
 	<select id="load" resultMap="demandCourseInfoResultMap" parameterType="long">
@@ -132,10 +133,15 @@
     </select>
 
 	<select id="listMyCourseList" parameterType="com.education.hjj.bz.formBean.DemandCourseInfoForm"  resultMap="demandCourseInfoResultMap">
-		SELECT dci.*, tea.name, tea.charges_standard
+		SELECT dci.*, tea.name, tea.charges_standard,tb.teach_branch_name
 		FROM demand_course_info dci
 		INNER JOIN teacher tea
 		ON dci.teacher_id = tea.teacher_id
+		INNER JOIN student_demand sd
+		on sd.sid = dci.demand_id
+		INNER JOIN teach_branch tb
+		on sd.demand_grade = tb.teach_grade_id
+		and sd.subject_id = tb.teach_branch_id
 		WHERE dci.delete_status = 0
 		<if test="demandId != null">
 			AND dci.demand_id = #{demandId}

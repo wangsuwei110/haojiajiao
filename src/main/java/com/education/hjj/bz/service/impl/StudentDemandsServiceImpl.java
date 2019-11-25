@@ -202,6 +202,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 				f.setAppraise(op.get().getAppraise());
 				f.setChargesStandard(op.get().getChargesStandard());
 				f.setOrderTeachTime(op.get().getOrderTeachTime());
+				f.setTeacherId(op.get().getTeacherId());
 
 				// 如果已经过了试讲的试讲时间，则赋值6，前端判断显示试讲通过和试讲不通过
 				if (op.get().getOrderTeachTime() != null && new Date().after(DateUtil.addMinute(op.get().getOrderTeachTime(), 5))) {
