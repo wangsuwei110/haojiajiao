@@ -181,7 +181,7 @@ public class PayController {
 					Long sid = studentDemandMapper.updateOldDemandToNew(demandForm);
 
 					List<DemandCourseInfoForm> courseInfoFormList = new ArrayList<>();
-
+                    StudentDemandVo demand = demandVo;
 					// 根据订单插入每个节课时
 					for (int i = 0; i < demandForm.getWeekNum(); i++) {
 						List<WeekTimeVo> list = JSON.parseArray(demandForm.getTimeRange(), WeekTimeVo.class);
@@ -202,9 +202,9 @@ public class PayController {
 							courseInfoForm.setWeekNum(w.getWeek());
 							courseInfoForm.setTimeNum(w.getTime());
 							courseInfoForm.setDemandId(demandForm.getDemandId());
-							courseInfoForm.setStudentId(demandVo.getStudentId());
-							courseInfoForm.setTeacherId(demandVo.getTeacherId());
-							courseInfoForm.setCreateUser(demandVo.getStudentId().toString());
+							courseInfoForm.setStudentId(demand.getStudentId());
+							courseInfoForm.setTeacherId(demand.getTeacherId());
+							courseInfoForm.setCreateUser(demand.getStudentId().toString());
 
 							courseInfoFormList.add(courseInfoForm);
 						});
