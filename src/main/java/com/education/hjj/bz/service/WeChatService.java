@@ -194,12 +194,12 @@ public class WeChatService {
 	public static void main(String[] args) {
 		
 		String accessToken = getAccessToken();
-		String toUser = "oWQvd4uz6jaR7P3OY8UaCcDcGWJI";
+		String toUser = "oWQvd4rFQFjChqwaKvWfPd1vXT9w";
 		String template_id = "I1-wAFCoM_VPlpIGCagwEvXEv7bCCf--52EoIU39aK0";
 		
 		String common_template_id ="vBLV5D0zQNq4mZNYIvQ8xo9oqDvnJlwvMYEWEw1atRc";
 		String page = "";
-		String formid = "wx2410354776322170ec47d47a1837096200";
+		String formid = "wx260011530182890ff6231e831530510400";
 		String url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token="+accessToken;
 		
 		
