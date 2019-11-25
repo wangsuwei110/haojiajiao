@@ -91,7 +91,7 @@ public class PayController {
 		
 		String openId = "";
 		String prepay_Id = "";
-		
+		StudentDemandVo demandVo = new StudentDemandVo();
 		try {
 			openId = getOpenId(code);
 //			String openId = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
@@ -154,7 +154,7 @@ public class PayController {
 
 					//更新订单信息
 					// 如果是试讲订单，要将试讲订单修改成付费订单
-					StudentDemandVo demandVo = studentDemandMapper.findStudentDemandInfo(demandForm.getDemandId());
+					demandVo = studentDemandMapper.findStudentDemandInfo(demandForm.getDemandId());
 
 					if (demandVo == null) {
 						return ApiResponse.error("订单不符合要求");
@@ -174,7 +174,7 @@ public class PayController {
 
 					// 修改当前订单成新订单
 					demandForm.setOrderType(2);
-					demandForm.setOrderMoney(demandForm.getOrderMoney());//写死，先保持和支付金额一致
+					demandForm.setOrderMoney(demandForm.getOrderMoney());
 					demandForm.setOrderStart(date);
 					demandForm.setUpdateTime(date);
                     demandForm.setCreateTime(date);
@@ -266,17 +266,17 @@ public class PayController {
 		data.put("keyword3",keyMap3);
 		
 		Map<String,Object> keyMap4 = new HashMap<String,Object>();
-		keyMap4.put("value","付款金额：0.01元");
+		keyMap4.put("value","付款金额：" + demandForm.getOrderMoney() +"元");
 		//添加对账月份
 		data.put("keyword4",keyMap4);
 		
 		Map<String,Object> keyMap5 = new HashMap<String,Object>();
-		keyMap5.put("value","商品详情：初中二年级数学");
+		keyMap5.put("value","商品详情：" + demandVo.getTeachBranchName());
 		//添加对账月份
 		data.put("keyword5",keyMap5);
 		
 		Map<String,Object> keyMap6 = new HashMap<String,Object>();
-		keyMap6.put("value","授课讲师：王老师");
+		keyMap6.put("value","授课讲师：" + demandVo.getTeachName());
 		//添加对账月份
 		data.put("keyword6",keyMap6);
 		

@@ -275,9 +275,13 @@
         SELECT
         	sd.*,
         	tea.teacher_id,
-        	s.student_name
+        	s.student_name,
+        	tb.teach_branch_name
         FROM
         	student_demand sd
+		INNER JOIN teach_branch tb
+		on sd.demand_grade = tb.teach_grade_id
+		and sd.subject_id = tb.teach_branch_id
         INNER JOIN
         	student_demand_connect sdc
         ON
