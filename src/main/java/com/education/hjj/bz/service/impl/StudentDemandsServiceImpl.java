@@ -182,6 +182,10 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		// 然后根据列表区判断需求的状态类型
 		// 检索需求报名的教员信息
 		list.forEach(f -> {
+
+		    // 编辑创建时间的格式
+            f.setCreateTimeString(DateUtil.format(f.getCreateTime(), "yyyy-MM-dd hh:mm:ss"));
+
 			// 编辑中文上班时间段
 			f.setTimeRange(CommonUtil.getWeekDesc(f.getTimeRange()));
 			// 编辑年级和科目

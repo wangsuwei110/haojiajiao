@@ -71,6 +71,9 @@ public class StudentDemandVo {
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
+    @ApiModelProperty(value = "创建时间")
+    private String createTimeString;
+
     @ApiModelProperty(value = "创建人")
     private String createUser;
 
@@ -129,6 +132,14 @@ public class StudentDemandVo {
     
     //每节课的ID
     private Integer classId;
+
+    public String getCreateTimeString() {
+        return createTimeString;
+    }
+
+    public void setCreateTimeString(String createTimeString) {
+        this.createTimeString = createTimeString;
+    }
 
     public Date getOrderEndTime() {
         return orderEndTime;
