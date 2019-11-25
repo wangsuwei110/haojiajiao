@@ -32,6 +32,7 @@ import com.education.hjj.bz.service.UserInfoService;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.DateUtil;
 import com.education.hjj.bz.util.HttpClientUtils;
+import com.education.hjj.bz.util.SendWXMessageUtils;
 import com.education.hjj.bz.util.weixinUtil.CommonUtil;
 import com.education.hjj.bz.util.weixinUtil.PayUtils;
 import com.education.hjj.bz.util.weixinUtil.RandomUtils;
@@ -305,7 +306,55 @@ public class WxRedPackController {
 			e.printStackTrace();
 			return ApiResponse.errorData("提现失败 ！", json);
 		}
-			 
+		
+		//表单提交的formId，发送消息通知用
+		String formId = teacherAccountForm.getFormId();
+		
+		JSONObject data = new JSONObject();
+
+		Map<String,Object> keyMap1 = new HashMap<String,Object>();
+		keyMap1.put("value", mchBillno);
+		//添加客户名称
+		data.put("keyword1", keyMap1);
+
+		Map<String,Object> keyMap2 = new HashMap<String,Object>();
+		keyMap2.put("value", DateUtil.covertFromDateToString(new Date()));
+		//添加卖方名称
+		data.put("keyword2", keyMap2);
+
+		Map<String,Object> keyMap3 = new HashMap<String,Object>();
+		keyMap3.put("value", cashOut);
+		//添加对账月份
+		data.put("keyword3",keyMap3);
+		
+		Map<String,Object> keyMap4 = new HashMap<String,Object>();
+		keyMap4.put("value", rebateData);
+		//添加对账月份
+		data.put("keyword4",keyMap4);
+		
+		Map<String,Object> keyMap5 = new HashMap<String,Object>();
+		keyMap5.put("value", cash_out);
+		//添加对账月份
+		data.put("keyword5",keyMap5);
+		
+		Map<String,Object> keyMap6 = new HashMap<String,Object>();
+		keyMap6.put("value", "提现到微信");
+		//添加对账月份
+		data.put("keyword6",keyMap6);
+		
+		Map<String,Object> keyMap7 = new HashMap<String,Object>();
+		keyMap7.put("value","现金红包");
+		//添加对账月份
+		data.put("keyword7",keyMap7);
+		
+		Map<String,Object> keyMap8 = new HashMap<String,Object>();
+		keyMap8.put("value","提现1~3个工作日到账金额");
+		//添加对账月份
+		data.put("keyword8",keyMap8);
+		
+		
+		JSONObject sendRedPackRsult = SendWXMessageUtils.sendMessage(openId, Constant.CASH_OUT_TO_ACCOUNT_MESSAGE, Constant.COMMON_CASH_OUT_TO_ACCOUNT_MESSAGE, formId, data);
+		logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") +" " + sendRedPackRsult.getString("errmsg"));
 		
 		return ApiResponse.success("提现成功！", json);
 		
