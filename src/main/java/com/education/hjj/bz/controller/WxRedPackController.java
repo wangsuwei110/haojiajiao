@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang.StringUtils;
@@ -26,6 +27,7 @@ import com.education.hjj.bz.entity.vo.TeacherAccountVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.enums.RedPackEnum;
 import com.education.hjj.bz.formBean.TeacherAccountForm;
+import com.education.hjj.bz.service.IRedisService;
 import com.education.hjj.bz.service.UserAccountLogService;
 import com.education.hjj.bz.service.UserAccountService;
 import com.education.hjj.bz.service.UserInfoService;
@@ -63,6 +65,9 @@ public class WxRedPackController {
 	@Autowired
 	private UserAccountLogService userAccountLogService;
 	
+	@Resource
+    private IRedisService redisService;
+	
 	@ResponseBody
 	@RequestMapping(value = "/sendRedPack", method = RequestMethod.POST)
 	@ApiOperation("微信发红包")
@@ -83,6 +88,8 @@ public class WxRedPackController {
 		TeacherVo teacherVo =  userInfoService.queryTeacherHomeInfos(String.valueOf(teacherId));
 		
 		String databaseOpenid = teacherVo.getOpenId();
+		
+		String telephone = teacherVo.getTelephone();
 		
 		//String code = teacherAccountForm.getCode();//获取微信服务器授权返回的code值
 		
@@ -161,14 +168,23 @@ public class WxRedPackController {
 		BigDecimal surplusMoney = teacherSurplusMoney.subtract(new BigDecimal(cashOut)) ;
 		logger.info("当前用户提现后的账户余额: " + surplusMoney +" 元");
 		
-		
-		
-		
 		RedpackRequestPo redpackRequestPo =new RedpackRequestPo();
 		
 		redpackRequestPo.setAct_name(Constant.ACT_NAME);
+		
+		
 		//商户订单号
-		String mchBillno = Constant.MCH_ID + DateUtil.getStandardDayByNum(new Date())+new Random().nextInt(10);
+		String mchBillno = "";
+		
+		String redisValue = redisService.getValue(telephone+"_redPack");
+		logger.info("缓存中存储的商户号： " + redisValue );
+		
+		if(redisValue == null || StringUtils.isBlank(redisValue)) {
+			mchBillno = Constant.MCH_ID + DateUtil.getStandardDayByNum(new Date())+new Random().nextInt(10);
+		}else {
+			mchBillno = redisValue;
+		}
+		
 		//流水单号
 		String nonceStr = UUID.randomUUID().toString().replaceAll("-", "");
 		
@@ -363,9 +379,15 @@ public class WxRedPackController {
 					logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") +" " + sendRedPackRsult.getString("errmsg"));
 					
 					
+					if(redisValue != null && StringUtils.isNotBlank(redisValue)) {
+						redisService.delete(telephone+"_redPack");
+					}
+					
 					return ApiResponse.success("提现成功！", json);
 					
 				}else {
+					
+					redisService.setKey(telephone+"_redPack", mchBillno);
 					
 					json.setSuccess(false);
 					json.setMsg("体现失败 ,原因： "+parseResult.get("return_msg"));
