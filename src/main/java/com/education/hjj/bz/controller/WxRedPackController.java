@@ -111,15 +111,23 @@ public class WxRedPackController {
 		
 		BigDecimal cashOutData = new BigDecimal(cashOut);
 		
+		logger.info("当前用户要提现的金额: " + cashOutData +" 元");
+		
 		BigDecimal  rebateData = new BigDecimal(100 * 0.95);//转化为分
 		
-		BigDecimal cash_out = cashOutData.multiply(rebateData).setScale(2, BigDecimal.ROUND_HALF_UP);//实际到账金额（分）
+		
+		BigDecimal cash_out = cashOutData.multiply(rebateData).setScale(0, BigDecimal.ROUND_HALF_UP);//实际到账金额（分）
+		logger.info("当前用户要提现的金额,转化为分: " + cash_out +" 分");
 		
 		BigDecimal cash = cash_out.divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP);//实际到账金额（元）
+		logger.info("当前用户要提现的金额,转化为元: " + cashOutData +" 元");
 		
 		BigDecimal commission_cash = cashOutData.subtract(cash).setScale(2, BigDecimal.ROUND_HALF_UP);//手续费金额（元）
+		logger.info("当前用户要提现的金额手续费: " + commission_cash +" 元");
 		
-		logger.info("当前用户要提现的金额扣除手续费后: " + cash +" 元");
+		System.out.println("当前用户要提现的金额扣除手续费后: " + cash +" 元");
+		
+		System.out.println("----------   "+ cash_out+"分");
 		
 		
 		//教员用户账户余额扣除
