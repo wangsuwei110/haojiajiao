@@ -183,6 +183,7 @@ public class WxRedPackController {
 			redpackRequestPo = JSON.parseObject(redisValue, RedpackRequestPo.class);
 //			redpackRequestPo.setTotal_amount(Integer.valueOf(redpackRequestPo.getTotal_amount()));
 //			redpackRequestPo.setTotal_num(Integer.valueOf(redpackRequestPo.getTotal_num()));
+			
 		}else {
 			//流水单号
 			nonceStr = UUID.randomUUID().toString().replaceAll("-", "");
