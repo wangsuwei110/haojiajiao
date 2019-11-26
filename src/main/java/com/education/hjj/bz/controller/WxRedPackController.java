@@ -73,6 +73,11 @@ public class WxRedPackController {
 		
 		Integer teacherId = teacherAccountForm.getTeacherId();
 		
+		//表单提交的formId，发送消息通知用
+		String formId = teacherAccountForm.getFormId();
+		
+		logger.info("提现的formId: " + formId);
+		
 		logger.info("当前提现教员的id: {}" , teacherId);
 		
 		TeacherVo teacherVo =  userInfoService.queryTeacherHomeInfos(String.valueOf(teacherId));
@@ -90,7 +95,7 @@ public class WxRedPackController {
 //			openId = teacherAccountForm.getOpenId();
 //		}
 		String openId = teacherAccountForm.getOpenId();
-		logger.info("当前提现教员的openid: {} , 注册时的openid；{}" , databaseOpenid);
+		logger.info("当前提现教员的openid: {} , 注册时的openid；{}" ,openId , databaseOpenid);
 		
 		//接收红包用户的openid
 //		String openId = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
@@ -302,13 +307,6 @@ public class WxRedPackController {
 						
 						return ApiResponse.error("系统异常，请稍后再试！");
 					}
-					
-					
-					
-					//表单提交的formId，发送消息通知用
-					String formId = teacherAccountForm.getFormId();
-					
-					logger.info("提现的formId: " + formId);
 					
 					JSONObject data = new JSONObject();
 
