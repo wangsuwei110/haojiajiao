@@ -502,7 +502,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 		boolean flag = false;
 
-		if (list.size() > 0) {
+		if ( list != null && list.size() > 0 ) {
 
 			for (TeacherVo t : list) {
 				if (t.getTeacherId() == teacherId) {
@@ -513,11 +513,14 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 				}
 			}
 
+			map.put("signUpTeacherInfo", list);
+			
+		}else {
+			map.put("signUpTeacherInfo", "");
 		}
 		
 
 		map.put("studentDemandDetail", studentDemandDetail);
-		map.put("signUpTeacherInfo", list);
 		map.put("singUpStatus", flag);
 
 		return map;
