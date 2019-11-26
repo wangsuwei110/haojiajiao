@@ -90,7 +90,7 @@ public class WxRedPackController {
 //			openId = teacherAccountForm.getOpenId();
 //		}
 		String openId = teacherAccountForm.getOpenId();
-		
+		logger.info("当前提现教员的openid: {} , 注册时的openid；{}" , databaseOpenid);
 		
 		//接收红包用户的openid
 //		String openId = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
