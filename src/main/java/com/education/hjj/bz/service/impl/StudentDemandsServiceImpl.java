@@ -499,6 +499,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		StudentDemandVo studentDemandDetail = studentDemandMapper.queryStudentDemandDetailBySid(sid);
 
 		List<TeacherVo> list = userInfoMapper.queryStudentDemandSignUpTeacher(sid);
+		
 
 		boolean flag = false;
 
@@ -519,6 +520,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			map.put("signUpTeacherInfo", "");
 		}
 		
+		logger.info("订单id:{} , 教员id:{} , 报名人数：{} ,是否报过名:{}" , sid , teacherId , list.size() ,flag);
 
 		map.put("studentDemandDetail", studentDemandDetail);
 		map.put("singUpStatus", flag);
