@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
 import com.education.hjj.bz.entity.TeacherAccountPo;
@@ -132,13 +133,6 @@ public class WxRedPackController {
 		BigDecimal commission_cash = cashOutData.subtract(cash).setScale(2, BigDecimal.ROUND_HALF_UP);//手续费金额（元）
 		logger.info("当前用户要提现的金额手续费: " + commission_cash +" 元");
 		
-		String redisCashout = redisService.getValue(telephone+"_redPack_cashout");
-		
-		logger.info("缓存中存储的红包金额： " + redisCashout +"分" );
-		if(redisCashout != null && StringUtils.isNotBlank(redisCashout)) {
-			cash_out = new BigDecimal(redisCashout);
-		}
-		
 		//教员用户账户余额扣除
 		
 		TeacherAccountVo  teacherAccountVo = userAccountService.queryTeacherAccount(teacherId);
@@ -176,15 +170,13 @@ public class WxRedPackController {
 		
 		
 		//商户订单号
-		String mchBillno = "";
+		String mchBillno =  Constant.MCH_ID + DateUtil.getStandardDayByNum(new Date())+new Random().nextInt(10);
 		
 		String redisValue = redisService.getValue(telephone+"_redPack");
 		logger.info("缓存中存储的商户号： " + redisValue );
 		
-		if(redisValue == null || StringUtils.isBlank(redisValue)) {
-			mchBillno = Constant.MCH_ID + DateUtil.getStandardDayByNum(new Date())+new Random().nextInt(10);
-		}else {
-			mchBillno = redisValue;
+		if(redisValue != null || StringUtils.isNotBlank(redisValue)) {
+			redpackRequestPo = JSON.parseObject(redisValue, RedpackRequestPo.class);
 		}
 		
 		//流水单号
@@ -385,18 +377,11 @@ public class WxRedPackController {
 						redisService.delete(telephone+"_redPack");
 					}
 					
-					if(redisCashout != null && StringUtils.isNotBlank(redisCashout)) {
-						redisService.delete(telephone+"_redPack_cashout");
-					}
-					
-					
-					
 					return ApiResponse.success("提现成功！", json);
 					
 				}else {
 					
-					redisService.setKey(telephone+"_redPack", mchBillno);
-					redisService.setKey(telephone+"_redPack_cashout", String.valueOf(cash_out));
+					redisService.setKey(telephone+"_redPack", JSON.toJSONString(redpackRequestPo));
 					
 					json.setSuccess(false);
 					json.setMsg("体现失败 ,原因： "+parseResult.get("return_msg"));
