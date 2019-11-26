@@ -97,7 +97,19 @@ public class StudentDemandsController {
 	public ApiResponse openDemand(@RequestBody StudentDemandConnectForm demandForm) {
 		return studentDemandsService.openDemand(demandForm);
 	}
-	
+
+    @ApiOperation("支付记录")
+    @RequestMapping(value = "/payLog", method = RequestMethod.POST)
+    public ApiResponse payLog(@RequestBody StudentDemandConnectForm demandForm) {
+        return studentDemandsService.payLog(demandForm);
+    }
+
+	@ApiOperation("结束订单")
+	@RequestMapping(value = "/endDemand", method = RequestMethod.POST)
+	public ApiResponse endDemand(@RequestBody StudentDemandConnectForm demandForm) {
+		return studentDemandsService.endDemand(demandForm);
+	}
+
 	@ApiOperation("教员确定订单试讲时间")
 	@RequestMapping(value = "/updateNewTrialDemand", method = RequestMethod.POST)
 	@Transactional

@@ -217,8 +217,8 @@ public class PayController {
 					paymentLog.setPaymentStreamId(randomNonceStr);
 					paymentLog.setPaymentPersonId(demandVo.getStudentId());
 					paymentLog.setPaymentPersonName(demandVo.getStudentName());
-					paymentLog.setPaymentType(1);
-					paymentLog.setPaymentDesc("结课时支付");
+					paymentLog.setPaymentType(3);
+					paymentLog.setPaymentDesc("支付订单");
 					paymentLog.setStatus(0);
 					paymentLog.setCreateTime(date);
 					paymentLog.setCreateUser(demandVo.getStudentName());

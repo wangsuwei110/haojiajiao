@@ -110,12 +110,14 @@
 		   sd.demand_grade,
 		   sd.subject_id,
 		   sd.status,
-           sd.demand_type
+           sd.demand_type,
+		   sd.payment_stream_id
 		from student_demand sd
 		inner join student st
 		on sd.student_id = st.sid
 		WHERE st.delete_status = 0
 		AND st.parent_phone_num = #{parentPhoneNum}
+		AND sd.status <![CDATA[<]]> 3
 		order by
 			sd.create_time desc
 		<if test="offset != null">
@@ -570,6 +572,14 @@
 			
 		WHERE sid = #{demandId}
     </update>
+
+	<!--结束订单-->
+	<update id="endDemand" parameterType="integer">
+		UPDATE
+			student_demand
+		SET status = 3
+		WHERE sid = #{demandId}
+	</update>
     
     <!-- 查询教员课程表 -->
     <select id="queryTimeTableByTeacherId" parameterType="com.education.hjj.bz.entity.StudentDemandPo" resultMap="studentDemandsDetailResultMap">

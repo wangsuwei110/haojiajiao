@@ -110,6 +110,17 @@ public class StudentDemandVo {
     @ApiModelProperty(value = "流水单号")
     private String paymentStreamId;
 
+    @ApiModelProperty(value = "结束订单判断")
+    private Boolean endDemandFlag;
+
+    public Boolean getEndDemandFlag() {
+        return endDemandFlag;
+    }
+
+    public void setEndDemandFlag(Boolean endDemandFlag) {
+        this.endDemandFlag = endDemandFlag;
+    }
+
     private Integer teacherId;
 
     //教学年级名称

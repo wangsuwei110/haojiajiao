@@ -40,7 +40,14 @@
                and payment_type = #{paymentType}
             </if>
        		
-    </select> 
+    </select>
+
+	<select id="listPayLog" parameterType="com.education.hjj.bz.entity.TeacherAccountOperateLogPo" resultMap="teacherAccountLogResultMap">
+		SELECT *
+		FROM teacher_payments_log
+		WHERE payment_stream_id = #{paymentStreamId}
+		AND payment_type = #{paymentType}
+	</select>
     
     <!-- 查询用户账户变化日志列表 -->  
     <select id="queryUserAccountLogDetail"  resultMap="teacherAccountLogResultMap" parameterType="java.lang.Integer">    

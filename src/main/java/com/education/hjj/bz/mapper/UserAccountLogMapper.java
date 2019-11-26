@@ -13,6 +13,8 @@ public interface UserAccountLogMapper {
 	int insertUserAccountLog(TeacherAccountOperateLogPo teacherAccountOperateLogPo);
 	
 	List<TeacherAccountOperateLogVo> queryUserAccountLogList(TeacherAccountOperateLogPo teacherAccountOperateLogPo);
-	
+
+	List<TeacherAccountOperateLogVo> listPayLog(TeacherAccountOperateLogPo paymentStreamId);
+
 	TeacherAccountOperateLogVo queryUserAccountLogDetail(Integer paymentId);
 }

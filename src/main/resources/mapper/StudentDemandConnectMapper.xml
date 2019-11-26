@@ -47,7 +47,7 @@
         </selectKey>
         UPDATE student_demand_connect
         SET status = #{status},
-        update_time  = #{updateTime}
+        	update_time  = #{updateTime}
         Where demand_id = #{demandId}
         AND delete_status = 0
         AND status in (1, 2)

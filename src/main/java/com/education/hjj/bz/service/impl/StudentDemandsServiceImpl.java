@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.alibaba.fastjson.JSON;
@@ -208,6 +207,10 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 				f.setOrderTeachTime(op.get().getOrderTeachTime());
 				f.setTeacherId(op.get().getTeacherId());
 
+				if (StringUtil.isNotBlank(op.get().getChargesStandard())) {
+                    f.setOrderMoney(new BigDecimal(op.get().getChargesStandard().split("元")[0]));
+                }
+
 				// 如果已经过了试讲的试讲时间，则赋值6，前端判断显示试讲通过和试讲不通过
 				if (op.get().getOrderTeachTime() != null && new Date().after(DateUtil.addMinute(op.get().getOrderTeachTime(), 5))) {
 					f.setSubscribeStatus(6);
@@ -220,6 +223,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 				if (f.getDemandType() == 1) {
 					f.setSubscribeStatus(3);
 				} else {
+					f.setEndDemandFlag(true);
 					// 没有预约成功的，显示预约教员的数量
 					f.setOrderTeachCount(org.apache.shiro.util.CollectionUtils.isEmpty(connectVos) ? 0 : connectVos.size());
 				}
@@ -347,7 +351,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		paymentLog.setPaymentStreamId(vo.getPaymentStreamId());
 		paymentLog.setPaymentPersonId(vo.getStudentId());
 		paymentLog.setPaymentPersonName(vo.getStudentName());
-		paymentLog.setPaymentType(1);
+		paymentLog.setPaymentType(3);
 		paymentLog.setPaymentDesc("结课时支付");
 		paymentLog.setStatus(0);
 		paymentLog.setCreateTime(date);
@@ -434,6 +438,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		if (demandForm.getStatus() == null) {
 			return ApiResponse.success("订单状态不能为空");
 		}
+        demandForm.setUpdateTime(new Date());
 		// 试讲通过
 		Long sid = connectMapper.updateStatus(demandForm);
 		if (sid != null) {
@@ -476,6 +481,31 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			return ApiResponse.success("订单开放成功");
 		}
 		return ApiResponse.success("订单开放失败");
+	}
+
+	/**
+	 * 查询支付记录
+	 **/
+	@Override
+	public ApiResponse payLog(StudentDemandConnectForm demandForm) {
+		if (demandForm.getPaymentStreamId() == null) {
+			return ApiResponse.error("订单号不能为空");
+		}
+		TeacherAccountOperateLogPo po = new TeacherAccountOperateLogPo();
+		po.setPaymentStreamId(demandForm.getPaymentStreamId());
+		po.setPaymentType(3);
+
+		return ApiResponse.success(userAccountLogMapper.listPayLog(po));
+	}
+
+	/**
+	 * 查询支付记录
+	 **/
+	@Override
+	public ApiResponse endDemand(StudentDemandConnectForm demandForm) {
+		studentDemandMapper.endDemand(demandForm.getDemandId());
+
+		return ApiResponse.success("已结束订单");
 	}
 
 	@Override
