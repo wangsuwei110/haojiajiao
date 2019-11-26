@@ -1,6 +1,7 @@
 package com.education.hjj.bz.util.weixinUtil.vo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -29,7 +30,7 @@ public class RedpackRequestPo implements Serializable {
 	// 用户openid
 	private String re_openid;
 	// 付款金额
-	private Integer total_amount;
+	private BigDecimal total_amount;
 	// 红包发放总人数
 	private Integer total_num;
 	// 红包祝福语
@@ -119,11 +120,11 @@ public class RedpackRequestPo implements Serializable {
 		this.re_openid = re_openid;
 	}
 
-	public Integer getTotal_amount() {
+	public BigDecimal getTotal_amount() {
 		return total_amount;
 	}
 
-	public void setTotal_amount(Integer total_amount) {
+	public void setTotal_amount(BigDecimal total_amount) {
 		this.total_amount = total_amount;
 	}
 

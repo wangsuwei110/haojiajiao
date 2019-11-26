@@ -106,11 +106,15 @@ public class WxRedPackController {
 		
 		BigDecimal cashOutData = new BigDecimal(cashOut);
 		
-		BigDecimal  rebateData = new BigDecimal(100 * 0.95);
+		BigDecimal  rebateData = new BigDecimal(100 * 0.95);//转化为分
 		
-		int cash_out = cashOutData.multiply(rebateData).setScale(2, BigDecimal.ROUND_HALF_UP).intValue();
+		BigDecimal cash_out = cashOutData.multiply(rebateData).setScale(2, BigDecimal.ROUND_HALF_UP);//实际到账金额（分）
 		
-		logger.info("当前用户要提现的金额扣除手续费后: " + cashOut +" 元");
+		BigDecimal cash = cash_out.divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP);//实际到账金额（元）
+		
+		BigDecimal commission_cash = cashOutData.subtract(cash).setScale(2, BigDecimal.ROUND_HALF_UP);//手续费金额（元）
+		
+		logger.info("当前用户要提现的金额扣除手续费后: " + cash +" 元");
 		
 		
 		//教员用户账户余额扣除
@@ -319,33 +323,33 @@ public class WxRedPackController {
 					data.put("keyword2", keyMap2);
 
 					Map<String,Object> keyMap3 = new HashMap<String,Object>();
-					keyMap3.put("value", cashOut);
-					//添加对账月份
+					keyMap3.put("value", cashOutData);
+					//提现金额
 					data.put("keyword3",keyMap3);
 					
 					Map<String,Object> keyMap4 = new HashMap<String,Object>();
-					keyMap4.put("value", rebateData);
-					//添加对账月份
+					keyMap4.put("value", commission_cash);
+					//提现手续费
 					data.put("keyword4",keyMap4);
 					
 					Map<String,Object> keyMap5 = new HashMap<String,Object>();
-					keyMap5.put("value", cash_out);
-					//添加对账月份
+					keyMap5.put("value", cash);
+					//到账金额
 					data.put("keyword5",keyMap5);
 					
 					Map<String,Object> keyMap6 = new HashMap<String,Object>();
 					keyMap6.put("value", "提现到微信");
-					//添加对账月份
+					//提现方式
 					data.put("keyword6",keyMap6);
 					
 					Map<String,Object> keyMap7 = new HashMap<String,Object>();
 					keyMap7.put("value","现金红包");
-					//添加对账月份
+					//到账类型
 					data.put("keyword7",keyMap7);
 					
 					Map<String,Object> keyMap8 = new HashMap<String,Object>();
 					keyMap8.put("value","提现1~3个工作日到账金额");
-					//添加对账月份
+					//温馨提示
 					data.put("keyword8",keyMap8);
 					
 					logger.info("发送提现成功的消息提醒......");
