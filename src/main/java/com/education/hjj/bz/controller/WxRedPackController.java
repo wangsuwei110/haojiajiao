@@ -168,9 +168,6 @@ public class WxRedPackController {
 		
 		RedpackRequestPo redpackRequestPo =new RedpackRequestPo();
 		
-		redpackRequestPo.setAct_name(Constant.ACT_NAME);
-		
-		
 		//商户订单号
 		String mchBillno =  Constant.MCH_ID + DateUtil.getStandardDayByNum(new Date())+new Random().nextInt(10);
 		
@@ -187,7 +184,7 @@ public class WxRedPackController {
 		}else {
 			//流水单号
 			nonceStr = UUID.randomUUID().toString().replaceAll("-", "");
-			
+			redpackRequestPo.setAct_name(Constant.ACT_NAME);
 			redpackRequestPo.setMch_billno(mchBillno);		
 			redpackRequestPo.setMch_id(Constant.MCH_ID);
 			
