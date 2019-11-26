@@ -54,7 +54,17 @@ public interface StudentDemandsService {
 	 * 开放订单
 	 **/
 	ApiResponse openDemand(StudentDemandConnectForm demandForm);
-	
+
+	/**
+	 * 支付记录
+	 **/
+	ApiResponse payLog(StudentDemandConnectForm demandForm);
+
+	/**
+	 * 结束订单
+	 **/
+	ApiResponse endDemand(StudentDemandConnectForm demandForm);
+
 	Map<String , Object> queryStudentDemandDetailBySid(Integer sid , Integer teacherId);
 	
 	List<StudentDemandVo> queryNewTrialOrderList(Integer teacherId);
