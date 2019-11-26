@@ -171,7 +171,8 @@ public class WxRedPackController {
 		//商户订单号
 		String mchBillno =  Constant.MCH_ID + DateUtil.getStandardDayByNum(new Date())+new Random().nextInt(10);
 		
-		String redisValue = redisService.getValue(telephone+"_redPack");
+		//String redisValue = redisService.getValue(telephone+"_redPack");//临时注释掉
+		String redisValue = "";
 		logger.info("缓存中存储的商户号： " + redisValue );
 		
 		String nonceStr = "";
