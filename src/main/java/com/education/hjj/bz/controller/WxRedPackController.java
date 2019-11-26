@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang.StringUtils;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
 import com.education.hjj.bz.entity.TeacherAccountPo;
@@ -26,6 +28,7 @@ import com.education.hjj.bz.entity.vo.TeacherAccountVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.enums.RedPackEnum;
 import com.education.hjj.bz.formBean.TeacherAccountForm;
+import com.education.hjj.bz.service.IRedisService;
 import com.education.hjj.bz.service.UserAccountLogService;
 import com.education.hjj.bz.service.UserAccountService;
 import com.education.hjj.bz.service.UserInfoService;
@@ -63,6 +66,9 @@ public class WxRedPackController {
 	@Autowired
 	private UserAccountLogService userAccountLogService;
 	
+	@Resource
+    private IRedisService redisService;
+	
 	@ResponseBody
 	@RequestMapping(value = "/sendRedPack", method = RequestMethod.POST)
 	@ApiOperation("微信发红包")
@@ -73,11 +79,18 @@ public class WxRedPackController {
 		
 		Integer teacherId = teacherAccountForm.getTeacherId();
 		
+		//表单提交的formId，发送消息通知用
+		String formId = teacherAccountForm.getFormId();
+		
+		logger.info("提现的formId: " + formId);
+		
 		logger.info("当前提现教员的id: {}" , teacherId);
 		
 		TeacherVo teacherVo =  userInfoService.queryTeacherHomeInfos(String.valueOf(teacherId));
 		
 		String databaseOpenid = teacherVo.getOpenId();
+		
+		String telephone = teacherVo.getTelephone();
 		
 		//String code = teacherAccountForm.getCode();//获取微信服务器授权返回的code值
 		
@@ -90,7 +103,7 @@ public class WxRedPackController {
 //			openId = teacherAccountForm.getOpenId();
 //		}
 		String openId = teacherAccountForm.getOpenId();
-		
+		logger.info("当前提现教员的openid: {} , 注册时的openid；{}" ,openId , databaseOpenid);
 		
 		//接收红包用户的openid
 //		String openId = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
@@ -106,24 +119,45 @@ public class WxRedPackController {
 		
 		BigDecimal cashOutData = new BigDecimal(cashOut);
 		
-		BigDecimal  rebateData = new BigDecimal(100 * 0.95);
+		logger.info("当前用户要提现的金额: " + cashOutData +" 元");
 		
-		int cash_out = cashOutData.multiply(rebateData).setScale(2, BigDecimal.ROUND_HALF_UP).intValue();
+		BigDecimal  rebateData = new BigDecimal(100 * 0.95);//转化为分
 		
-		logger.info("当前用户要提现的金额扣除手续费后: " + cashOut +" 元");
 		
+		int cash_out = cashOutData.multiply(rebateData).intValue();//实际到账金额（分）
+		logger.info("当前用户要提现的金额,转化为分: " + cash_out +" 分");
+		
+		BigDecimal cash = new BigDecimal(cash_out).divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP);//实际到账金额（元） 
+		logger.info("当前用户要提现的金额,转化为元: " + cashOutData +" 元");
+		
+		logger.info("当前用户实际到账金额: " + cash +" 元");
+		
+		BigDecimal commission_cash = cashOutData.subtract(cash).setScale(2, BigDecimal.ROUND_HALF_UP);//手续费金额（元）
+		logger.info("当前用户要提现的金额手续费: " + commission_cash +" 元");
 		
 		//教员用户账户余额扣除
 		
 		TeacherAccountVo  teacherAccountVo = userAccountService.queryTeacherAccount(teacherId);
 		
-		BigDecimal teacherSurplusMoney = teacherAccountVo.getSurplusMoney();
+		BigDecimal teacherSurplusMoney = new BigDecimal(0);
 		
-		if(teacherAccountVo == null || teacherSurplusMoney.intValue() <= 0) {
+		if(teacherAccountVo == null) {
+			
 			logger.error("当前用户账户为空，请充值后再试！");
 			json.setSuccess(false);
 			json.setMsg("提现失败,当前用户账户为空，请充值后再试！");
 			return ApiResponse.error("提现失败,当前用户账户为空，请充值后再试！");
+			
+		}else {
+			
+			teacherSurplusMoney = teacherAccountVo.getSurplusMoney();
+			
+			if(teacherSurplusMoney.intValue() <= 0) {
+				logger.error("当前用户账户余额小于提现余额，请充值后再试！");
+				json.setSuccess(false);
+				json.setMsg("提现失败,当前用户账户余额小于提现余额，请充值后再试！");
+				return ApiResponse.error("提现失败,当前用户账户余额小于提现余额，请充值后再试！");
+			}
 		}
 		
 		
@@ -132,32 +166,23 @@ public class WxRedPackController {
 		BigDecimal surplusMoney = teacherSurplusMoney.subtract(new BigDecimal(cashOut)) ;
 		logger.info("当前用户提现后的账户余额: " + surplusMoney +" 元");
 		
-		int i = -1;
-		
-		if(surplusMoney.intValue() >= 0) {
-			
-			TeacherAccountPo teacherAccountPo = new TeacherAccountPo();
-			teacherAccountPo.setSurplusMoney(surplusMoney);
-			teacherAccountPo.setUpdateTime(new Date());
-			teacherAccountPo.setTeacherId(teacherVo.getTeacherId());
-			
-			i = userAccountService.updateTeacherAccount(teacherAccountPo);
-		}
-		
-		if(i <= 0) {
-			
-			logger.error("当前用户账户扣除失败，请稍后再试！");
-			json.setSuccess(false);
-			json.setMsg("提现失败,请稍后再试！");
-			return ApiResponse.error("提现失败,请稍后再试！");
-		}
-		
-		
 		RedpackRequestPo redpackRequestPo =new RedpackRequestPo();
 		
 		redpackRequestPo.setAct_name(Constant.ACT_NAME);
+		
+		
 		//商户订单号
-		String mchBillno = Constant.MCH_ID + DateUtil.getStandardDayByNum(new Date())+new Random().nextInt(10);
+		String mchBillno =  Constant.MCH_ID + DateUtil.getStandardDayByNum(new Date())+new Random().nextInt(10);
+		
+		String redisValue = redisService.getValue(telephone+"_redPack");
+		logger.info("缓存中存储的商户号： " + redisValue );
+		
+		if(redisValue != null || StringUtils.isNotBlank(redisValue)) {
+			redpackRequestPo = JSON.parseObject(redisValue, RedpackRequestPo.class);
+			redpackRequestPo.setTotal_amount(Integer.valueOf(redpackRequestPo.getTotal_amount()));
+			redpackRequestPo.setTotal_num(Integer.valueOf(redpackRequestPo.getTotal_num()));
+		}
+		
 		//流水单号
 		String nonceStr = UUID.randomUUID().toString().replaceAll("-", "");
 		
@@ -174,34 +199,6 @@ public class WxRedPackController {
 		redpackRequestPo.setWishing(Constant.WISHING);
 		redpackRequestPo.setWxappid(Constant.APP_ID);
 		redpackRequestPo.setScene_id(RedPackEnum.PRODUCT_4.getValue());
-		
-		
-		
-		TeacherAccountOperateLogPo userAccountOperateLogPo = new TeacherAccountOperateLogPo();
-		userAccountOperateLogPo.setPaymentStreamId(nonceStr);
-		userAccountOperateLogPo.setPaymentPersonId(teacherId);
-		userAccountOperateLogPo.setPaymentPersonName(teacherVo.getName());
-		userAccountOperateLogPo.setPaymentType(1);
-		userAccountOperateLogPo.setPaymentAccount(new BigDecimal(cashOut));
-		userAccountOperateLogPo.setPaymentDesc("提现");
-		userAccountOperateLogPo.setStatus(1);
-		userAccountOperateLogPo.setCreateTime(new Date());
-		userAccountOperateLogPo.setCreateUser(teacherVo.getName());
-		userAccountOperateLogPo.setUpdateTime(new Date());
-		userAccountOperateLogPo.setUpdateUser(teacherVo.getName());
-		
-		logger.info("nonceStr = "+nonceStr +" teacherId = "+teacherId +" name= "+teacherVo.getName()+" cashOut= "+cashOut);
-		
-		int userAccountFlag = userAccountLogService.insertUserAccountLog(userAccountOperateLogPo);
-		
-		if(userAccountFlag <= 0) {
-			
-			json.setSuccess(false);
-			json.setMsg("插入教员收支表日志记录失败");
-			logger.error("系统异常，请稍后再试！");
-			
-			return ApiResponse.error("系统异常，请稍后再试！");
-		}
 		
 		//普通红包
 //		redpackRequestPo.setClient_ip("112.65.13.31");
@@ -285,10 +282,53 @@ public class WxRedPackController {
 					json.setSuccess(true);
 					json.setData(response);
 					
-					//表单提交的formId，发送消息通知用
-					String formId = teacherAccountForm.getFormId();
+					//扣款
+					int i = -1;
 					
-					logger.info("提现的formId: " + formId);
+					if(surplusMoney.intValue() >= 0) {
+						
+						TeacherAccountPo teacherAccountPo = new TeacherAccountPo();
+						teacherAccountPo.setSurplusMoney(surplusMoney);
+						teacherAccountPo.setUpdateTime(new Date());
+						teacherAccountPo.setTeacherId(teacherVo.getTeacherId());
+						
+						i = userAccountService.updateTeacherAccount(teacherAccountPo);
+					}
+					
+					if(i <= 0) {
+						
+						logger.error("当前用户账户扣除失败，请稍后再试！");
+						json.setSuccess(false);
+						json.setMsg("提现失败,请稍后再试！");
+						return ApiResponse.error("提现失败,请稍后再试！");
+					}
+					
+					//插入账户日志表
+					TeacherAccountOperateLogPo userAccountOperateLogPo = new TeacherAccountOperateLogPo();
+					userAccountOperateLogPo.setPaymentStreamId(nonceStr);
+					userAccountOperateLogPo.setPaymentPersonId(teacherId);
+					userAccountOperateLogPo.setPaymentPersonName(teacherVo.getName());
+					userAccountOperateLogPo.setPaymentType(1);
+					userAccountOperateLogPo.setPaymentAccount(new BigDecimal(cashOut));
+					userAccountOperateLogPo.setPaymentDesc("提现");
+					userAccountOperateLogPo.setStatus(1);
+					userAccountOperateLogPo.setCreateTime(new Date());
+					userAccountOperateLogPo.setCreateUser(teacherVo.getName());
+					userAccountOperateLogPo.setUpdateTime(new Date());
+					userAccountOperateLogPo.setUpdateUser(teacherVo.getName());
+					
+					logger.info("nonceStr = "+nonceStr +" teacherId = "+teacherId +" name= "+teacherVo.getName()+" cashOut= "+cashOut);
+					
+					int userAccountFlag = userAccountLogService.insertUserAccountLog(userAccountOperateLogPo);
+					
+					if(userAccountFlag <= 0) {
+						
+						json.setSuccess(false);
+						json.setMsg("插入教员收支表日志记录失败");
+						logger.error("系统异常，请稍后再试！");
+						
+						return ApiResponse.error("系统异常，请稍后再试！");
+					}
 					
 					JSONObject data = new JSONObject();
 
@@ -303,33 +343,33 @@ public class WxRedPackController {
 					data.put("keyword2", keyMap2);
 
 					Map<String,Object> keyMap3 = new HashMap<String,Object>();
-					keyMap3.put("value", cashOut);
-					//添加对账月份
+					keyMap3.put("value", cashOutData.setScale(2, BigDecimal.ROUND_HALF_UP));
+					//提现金额
 					data.put("keyword3",keyMap3);
 					
 					Map<String,Object> keyMap4 = new HashMap<String,Object>();
-					keyMap4.put("value", rebateData);
-					//添加对账月份
+					keyMap4.put("value", commission_cash.setScale(2, BigDecimal.ROUND_HALF_UP));
+					//提现手续费
 					data.put("keyword4",keyMap4);
 					
 					Map<String,Object> keyMap5 = new HashMap<String,Object>();
-					keyMap5.put("value", cash_out);
-					//添加对账月份
+					keyMap5.put("value", cash.setScale(2, BigDecimal.ROUND_HALF_UP));
+					//到账金额
 					data.put("keyword5",keyMap5);
 					
 					Map<String,Object> keyMap6 = new HashMap<String,Object>();
 					keyMap6.put("value", "提现到微信");
-					//添加对账月份
+					//提现方式
 					data.put("keyword6",keyMap6);
 					
 					Map<String,Object> keyMap7 = new HashMap<String,Object>();
 					keyMap7.put("value","现金红包");
-					//添加对账月份
+					//到账类型
 					data.put("keyword7",keyMap7);
 					
 					Map<String,Object> keyMap8 = new HashMap<String,Object>();
 					keyMap8.put("value","提现1~3个工作日到账金额");
-					//添加对账月份
+					//温馨提示
 					data.put("keyword8",keyMap8);
 					
 					logger.info("发送提现成功的消息提醒......");
@@ -337,9 +377,15 @@ public class WxRedPackController {
 					logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") +" " + sendRedPackRsult.getString("errmsg"));
 					
 					
+					if(redisValue != null && StringUtils.isNotBlank(redisValue)) {
+						redisService.delete(telephone+"_redPack");
+					}
+					
 					return ApiResponse.success("提现成功！", json);
 					
 				}else {
+					
+					redisService.setKey(telephone+"_redPack", JSON.toJSONString(redpackRequestPo));
 					
 					json.setSuccess(false);
 					json.setMsg("体现失败 ,原因： "+parseResult.get("return_msg"));

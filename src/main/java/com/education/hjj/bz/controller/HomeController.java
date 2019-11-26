@@ -117,6 +117,8 @@ public class HomeController {
 		
 		Integer teacherId = form.getTeacherId();
 		
+		logger.info("订单id:{} , 教员id:{}" , sid , teacherId);
+		
 		//查询学员需求订单详情
 		Map<String,Object> map = studentDemandsService.queryStudentDemandDetailBySid(sid , teacherId);
 		
