@@ -179,6 +179,8 @@ public class WxRedPackController {
 		
 		if(redisValue != null || StringUtils.isNotBlank(redisValue)) {
 			redpackRequestPo = JSON.parseObject(redisValue, RedpackRequestPo.class);
+			redpackRequestPo.setTotal_amount(Integer.valueOf(redpackRequestPo.getTotal_amount()));
+			redpackRequestPo.setTotal_num(Integer.valueOf(redpackRequestPo.getTotal_num()));
 		}
 		
 		//流水单号
