@@ -117,13 +117,25 @@ public class WxRedPackController {
 		
 		TeacherAccountVo  teacherAccountVo = userAccountService.queryTeacherAccount(teacherId);
 		
-		BigDecimal teacherSurplusMoney = teacherAccountVo.getSurplusMoney();
+		BigDecimal teacherSurplusMoney = new BigDecimal(0);
 		
-		if(teacherAccountVo == null || teacherSurplusMoney.intValue() <= 0) {
+		if(teacherAccountVo == null) {
+			
 			logger.error("当前用户账户为空，请充值后再试！");
 			json.setSuccess(false);
 			json.setMsg("提现失败,当前用户账户为空，请充值后再试！");
 			return ApiResponse.error("提现失败,当前用户账户为空，请充值后再试！");
+			
+		}else {
+			
+			teacherSurplusMoney = teacherAccountVo.getSurplusMoney();
+			
+			if(teacherSurplusMoney.intValue() <= 0) {
+				logger.error("当前用户账户余额小于提现余额，请充值后再试！");
+				json.setSuccess(false);
+				json.setMsg("提现失败,当前用户账户余额小于提现余额，请充值后再试！");
+				return ApiResponse.error("提现失败,当前用户账户余额小于提现余额，请充值后再试！");
+			}
 		}
 		
 		
