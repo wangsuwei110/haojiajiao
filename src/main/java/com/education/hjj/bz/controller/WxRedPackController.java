@@ -466,6 +466,7 @@ public class WxRedPackController {
 			checkRedPackRequestPo.setAppid(Constant.APP_ID);
 			checkRedPackRequestPo.setBill_type(Constant.BILL_TYPE);
 			checkRedPackRequestPo.setNonce_str(UUID.randomUUID().toString().replaceAll("-", ""));
+			checkRedPackRequestPo.setMch_billno(mchBillno);
 			
 			String sign = PayUtils.getSign(checkRedPackRequestPo);
 			checkRedPackRequestPo.setSign(sign);
