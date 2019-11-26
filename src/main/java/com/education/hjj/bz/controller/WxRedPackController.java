@@ -172,17 +172,17 @@ public class WxRedPackController {
 		String mchBillno =  Constant.MCH_ID + DateUtil.getStandardDayByNum(new Date())+new Random().nextInt(10);
 		
 		//String redisValue = redisService.getValue(telephone+"_redPack");//临时注释掉
-		String redisValue = "";
-		logger.info("缓存中存储的商户号： " + redisValue );
+//		String redisValue = "";
+//		logger.info("缓存中存储的商户号： " + redisValue );
 		
 		String nonceStr = "";
 		
-		if(redisValue != null || StringUtils.isNotBlank(redisValue)) {
-			redpackRequestPo = JSON.parseObject(redisValue, RedpackRequestPo.class);
-//			redpackRequestPo.setTotal_amount(Integer.valueOf(redpackRequestPo.getTotal_amount()));
-//			redpackRequestPo.setTotal_num(Integer.valueOf(redpackRequestPo.getTotal_num()));
-			
-		}else {
+//		if(redisValue != null || StringUtils.isNotBlank(redisValue)) {
+//			redpackRequestPo = JSON.parseObject(redisValue, RedpackRequestPo.class);
+////			redpackRequestPo.setTotal_amount(Integer.valueOf(redpackRequestPo.getTotal_amount()));
+////			redpackRequestPo.setTotal_num(Integer.valueOf(redpackRequestPo.getTotal_num()));
+//			
+//		}else {
 			//流水单号
 			nonceStr = UUID.randomUUID().toString().replaceAll("-", "");
 			redpackRequestPo.setAct_name(Constant.ACT_NAME);
@@ -217,7 +217,7 @@ public class WxRedPackController {
 				
 				e.printStackTrace();
 			}
-		}
+//		}
 		
 		
 		
@@ -380,15 +380,15 @@ public class WxRedPackController {
 					logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") +" " + sendRedPackRsult.getString("errmsg"));
 					
 					
-					if(redisValue != null && StringUtils.isNotBlank(redisValue)) {
-						redisService.delete(telephone+"_redPack");
-					}
+//					if(redisValue != null && StringUtils.isNotBlank(redisValue)) {
+//						redisService.delete(telephone+"_redPack");
+//					}
 					
 					return ApiResponse.success("提现成功！", json);
 					
 				}else {
 					
-					redisService.setKey(telephone+"_redPack", JSON.toJSONString(redpackRequestPo));
+//					redisService.setKey(telephone+"_redPack", JSON.toJSONString(redpackRequestPo));
 					
 					json.setSuccess(false);
 					json.setMsg("体现失败 ,原因： "+parseResult.get("return_msg"));
