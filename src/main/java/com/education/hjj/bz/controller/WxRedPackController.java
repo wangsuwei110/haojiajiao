@@ -132,10 +132,12 @@ public class WxRedPackController {
 		BigDecimal commission_cash = cashOutData.subtract(cash).setScale(2, BigDecimal.ROUND_HALF_UP);//手续费金额（元）
 		logger.info("当前用户要提现的金额手续费: " + commission_cash +" 元");
 		
-		System.out.println("当前用户要提现的金额扣除手续费后: " + cash +" 元");
+		String redisCashout = redisService.getValue(telephone+"_redPack_cashout");
 		
-		System.out.println("----------   "+ cash_out+"分");
-		
+		logger.info("缓存中存储的红包金额： " + redisCashout +"分" );
+		if(redisCashout != null && StringUtils.isNotBlank(redisCashout)) {
+			cash_out = new BigDecimal(redisCashout);
+		}
 		
 		//教员用户账户余额扣除
 		
@@ -383,11 +385,18 @@ public class WxRedPackController {
 						redisService.delete(telephone+"_redPack");
 					}
 					
+					if(redisCashout != null && StringUtils.isNotBlank(redisCashout)) {
+						redisService.delete(telephone+"_redPack_cashout");
+					}
+					
+					
+					
 					return ApiResponse.success("提现成功！", json);
 					
 				}else {
 					
 					redisService.setKey(telephone+"_redPack", mchBillno);
+					redisService.setKey(telephone+"_redPack_cashout", String.valueOf(cash_out));
 					
 					json.setSuccess(false);
 					json.setMsg("体现失败 ,原因： "+parseResult.get("return_msg"));
