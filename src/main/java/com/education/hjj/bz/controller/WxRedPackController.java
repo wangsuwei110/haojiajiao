@@ -348,17 +348,17 @@ public class WxRedPackController {
 					data.put("keyword2", keyMap2);
 
 					Map<String,Object> keyMap3 = new HashMap<String,Object>();
-					keyMap3.put("value", cashOutData.setScale(2, BigDecimal.ROUND_HALF_UP));
+					keyMap3.put("value", cashOutData.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 					//提现金额
 					data.put("keyword3",keyMap3);
 					
 					Map<String,Object> keyMap4 = new HashMap<String,Object>();
-					keyMap4.put("value", commission_cash.setScale(2, BigDecimal.ROUND_HALF_UP));
+					keyMap4.put("value", commission_cash.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 					//提现手续费
 					data.put("keyword4",keyMap4);
 					
 					Map<String,Object> keyMap5 = new HashMap<String,Object>();
-					keyMap5.put("value", cash.setScale(2, BigDecimal.ROUND_HALF_UP));
+					keyMap5.put("value", cash.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 					//到账金额
 					data.put("keyword5",keyMap5);
 					
