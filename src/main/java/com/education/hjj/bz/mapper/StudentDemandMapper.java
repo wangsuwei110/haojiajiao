@@ -60,4 +60,6 @@ public interface StudentDemandMapper {
 	int updateTimeTableByTeacherId(StudentDemandPo studentDemandPo);
 	
 	int updateDemandSignNum(StudentDemandPo studentDemandPo);
+
+	int endDemand(@Param("demandId") Integer demandId);
 }

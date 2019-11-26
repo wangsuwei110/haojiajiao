@@ -14,7 +14,7 @@ import java.util.Date;
  */
 public class StudentDemandConnectForm extends PageForm implements Serializable {
 
-    private Integer sid;
+    private Long sid;
 
     @ApiModelProperty(value = "需求ID", required = true)
     private Integer demandId;
@@ -63,6 +63,16 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
     private Integer demandGrade;
     // 辅导科目
     private Integer subjectId;
+    @ApiModelProperty(value = "流水单号")
+    private String paymentStreamId;
+
+    public String getPaymentStreamId() {
+        return paymentStreamId;
+    }
+
+    public void setPaymentStreamId(String paymentStreamId) {
+        this.paymentStreamId = paymentStreamId;
+    }
 
     public Integer getDemandGrade() {
         return demandGrade;
@@ -112,11 +122,11 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
         this.createTime = createTime;
     }
 
-    public Integer getSid() {
+    public Long getSid() {
         return sid;
     }
 
-    public void setSid(Integer sid) {
+    public void setSid(Long sid) {
         this.sid = sid;
     }
 
