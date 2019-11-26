@@ -177,46 +177,51 @@ public class WxRedPackController {
 		String redisValue = redisService.getValue(telephone+"_redPack");
 		logger.info("缓存中存储的商户号： " + redisValue );
 		
+		String nonceStr = "";
+		
 		if(redisValue != null || StringUtils.isNotBlank(redisValue)) {
 			redpackRequestPo = JSON.parseObject(redisValue, RedpackRequestPo.class);
-			redpackRequestPo.setTotal_amount(Integer.valueOf(redpackRequestPo.getTotal_amount()));
-			redpackRequestPo.setTotal_num(Integer.valueOf(redpackRequestPo.getTotal_num()));
+//			redpackRequestPo.setTotal_amount(Integer.valueOf(redpackRequestPo.getTotal_amount()));
+//			redpackRequestPo.setTotal_num(Integer.valueOf(redpackRequestPo.getTotal_num()));
+			
+		}else {
+			//流水单号
+			nonceStr = UUID.randomUUID().toString().replaceAll("-", "");
+			
+			redpackRequestPo.setMch_billno(mchBillno);		
+			redpackRequestPo.setMch_id(Constant.MCH_ID);
+			
+			redpackRequestPo.setNonce_str(nonceStr);
+			redpackRequestPo.setNotify_way(Constant.NOTIFY_WAY);
+			redpackRequestPo.setRe_openid(openId);
+			redpackRequestPo.setRemark(Constant.ACT_NAME);
+			redpackRequestPo.setSend_name(Constant.SEND_NAME);
+			redpackRequestPo.setTotal_amount(cash_out);//金额分
+			redpackRequestPo.setTotal_num(1);//一人份
+			redpackRequestPo.setWishing(Constant.WISHING);
+			redpackRequestPo.setWxappid(Constant.APP_ID);
+			redpackRequestPo.setScene_id(RedPackEnum.PRODUCT_4.getValue());
+			
+			//普通红包
+//			redpackRequestPo.setClient_ip("112.65.13.31");
+			
+			String sign ="";
+			
+			try {
+				
+				sign = PayUtils.getSign(redpackRequestPo);
+				
+				logger.info("加密后的sign = " + sign);
+				
+				redpackRequestPo.setSign(sign);
+				
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+			}
 		}
 		
-		//流水单号
-		String nonceStr = UUID.randomUUID().toString().replaceAll("-", "");
 		
-		redpackRequestPo.setMch_billno(mchBillno);		
-		redpackRequestPo.setMch_id(Constant.MCH_ID);
-		
-		redpackRequestPo.setNonce_str(nonceStr);
-		redpackRequestPo.setNotify_way(Constant.NOTIFY_WAY);
-		redpackRequestPo.setRe_openid(openId);
-		redpackRequestPo.setRemark(Constant.ACT_NAME);
-		redpackRequestPo.setSend_name(Constant.SEND_NAME);
-		redpackRequestPo.setTotal_amount(cash_out);//金额分
-		redpackRequestPo.setTotal_num(1);//一人份
-		redpackRequestPo.setWishing(Constant.WISHING);
-		redpackRequestPo.setWxappid(Constant.APP_ID);
-		redpackRequestPo.setScene_id(RedPackEnum.PRODUCT_4.getValue());
-		
-		//普通红包
-//		redpackRequestPo.setClient_ip("112.65.13.31");
-		
-		String sign ="";
-		
-		try {
-			
-			sign = PayUtils.getSign(redpackRequestPo);
-			
-			logger.info("加密后的sign = " + sign);
-			
-			redpackRequestPo.setSign(sign);
-			
-		} catch (Exception e) {
-			
-			e.printStackTrace();
-		}
 		
 		String wxPayResult = null;
 		
