@@ -223,7 +223,7 @@
      	<if test="parameterId != null">
 			AND sd.parameter_id= #{parameterId}
      	</if>
-     	order by create_time desc
+     	order by sd.create_time desc
      	<if test="offset != null">
 			<![CDATA[
                 limit #{pageSize} offset #{offset}
@@ -256,7 +256,7 @@
 		WHERE
 			1=1
      		
-		order by create_time desc
+		order by sd.create_time desc
 		
 		limit 10
     </select>
@@ -410,6 +410,8 @@
 			sdc.order_teach_time is null
 		AND
 			sdc.teacher_id = #{teacherId}
+		ORDER BY
+			sd.create_time desc
     </select>
     
     <!-- 查询用户所有的订单 -->
@@ -476,7 +478,9 @@
 		<result column="demand_address" property="demandAddress"/>
 		<result column="create_time" property="createTime"/>
 		<result column="sign_time" property="signTime"/>
+		<result column="teach_grade_id" property="teachGradeId"/>
 		<result column="teach_grade_name" property="teachGradeName"/>
+		<result column="teach_branch_id" property="teachBranchId"/>
 		<result column="teach_branch_name" property="teachBranchName"/>
 		<result column="order_teach_time" property="orderTeachTime"/>
 		<result column="order_start" property="orderStart"/>
@@ -485,6 +489,8 @@
 		<result column="status" property="status"/>
 		<result column="classId" property="classId"/>
 		<result column="appraise" property="appraise"/>
+		<result column="parameter_id" property="parameterId"/>
+		<result column="parameterName" property="parameterName"/>
 	</resultMap>
     
     <!-- 订单详情 -->
@@ -492,7 +498,9 @@
     	SELECT
 			sd.sid,
 			s.student_name,
+			sd.subject_id as teach_grade_id,
 			tg.teach_grade_name,
+			sd.demand_grade as teach_branch_id,
 			tb.teach_branch_name,
 			date_format(sd.create_time, '%Y-%m-%d %T') as create_time,
 			sd.order_money,
@@ -501,12 +509,15 @@
 			date_format(sdc.create_time, '%Y-%m-%d %T') as sign_time,
 			sd.demand_address,
 			sd.time_range,
+			t.teach_time,
 			sd.class_num,
 			sd.week_num,
 			sd.demand_desc,
 			s.parent_phone_num,
 			sdc.status as demandSignStatus,
-			appraise
+			appraise,
+			sd.parameter_id,
+			p.name as parameterName
 			
 		FROM
 			student_demand_connect sdc
@@ -526,6 +537,14 @@
 			student s
 		ON
 			sd.student_id = s.sid
+		LEFT JOIN
+			parameter p
+		ON
+			sd.parameter_id = p.parameter_id
+		LEFT JOIN
+			teacher t
+		ON
+			sdc.teacher_id = t.teacher_id
 		WHERE
 			
 			sd.sid = #{demandId}
@@ -535,7 +554,6 @@
 			sdc.teacher_id = #{teacherId}
 		ORDER BY
 			sd.create_time desc
-	
     </select>
     
     <!-- 教员接受学员订单,并更新报名表试讲时间和订单状态 -->

@@ -62,7 +62,11 @@
 		AND
 			s.delete_status = 0
 		
+		ORDER BY
+			sl.create_time desc
+		
 		limit 10
+		
 
     </select>
 
