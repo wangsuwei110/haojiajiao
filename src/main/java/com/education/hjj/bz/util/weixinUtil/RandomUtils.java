@@ -65,4 +65,13 @@ public class RandomUtils {
         System.out.println(generateLowerString(32));
         System.out.println(generateUpperString(32));
     }
+    
+    public static String getRandomNickname() {
+		String val = "";
+		Random random = new Random();
+		for (int i = 0; i < 10; i++) {
+			val += String.valueOf(random.nextInt(10));
+		}
+		return val;
+	}
 }
