@@ -240,6 +240,7 @@ public class UserInfoController {
 		}
 		
 		return ApiResponse.error("暂无数据！");
+		
 	}
 	
 	@ApiOperation("查询用户图片信息")
