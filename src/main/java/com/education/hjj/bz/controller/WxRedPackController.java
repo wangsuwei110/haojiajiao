@@ -169,7 +169,7 @@ public class WxRedPackController {
 		RedpackRequestPo redpackRequestPo =new RedpackRequestPo();
 		
 		//商户订单号
-		String mchBillno =  Constant.MCH_ID + DateUtil.getStandardDayByNum(new Date())+new Random().nextInt(10);
+		String mchBillno =  Constant.MCH_ID + DateUtil.getStandardDayByNum(new Date())+RandomUtils.getRandomNickname();
 		
 		String redisValue = redisService.getValue(telephone+"_redPack");
 		logger.info("缓存中存储的商户号： " + redisValue );
