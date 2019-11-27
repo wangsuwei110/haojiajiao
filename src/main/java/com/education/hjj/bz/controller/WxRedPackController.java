@@ -163,7 +163,7 @@ public class WxRedPackController {
 		
 		logger.info("当前用户可提现的金额: " + teacherSurplusMoney +" 元");
 		
-		BigDecimal surplusMoney = teacherSurplusMoney.subtract(new BigDecimal(cashOut)) ;
+		BigDecimal surplusMoney = teacherSurplusMoney.subtract(new BigDecimal(cashOut)).setScale(2, BigDecimal.ROUND_HALF_UP) ;
 		logger.info("当前用户提现后的账户余额: " + surplusMoney +" 元");
 		
 		RedpackRequestPo redpackRequestPo =new RedpackRequestPo();
@@ -311,7 +311,7 @@ public class WxRedPackController {
 					userAccountOperateLogPo.setPaymentPersonId(teacherId);
 					userAccountOperateLogPo.setPaymentPersonName(teacherVo.getName());
 					userAccountOperateLogPo.setPaymentType(1);
-					userAccountOperateLogPo.setPaymentAccount(new BigDecimal(cashOut));
+					userAccountOperateLogPo.setPaymentAccount(new BigDecimal(cashOut).setScale(2, BigDecimal.ROUND_HALF_UP));
 					userAccountOperateLogPo.setPaymentDesc("提现");
 					userAccountOperateLogPo.setStatus(1);
 					userAccountOperateLogPo.setCreateTime(new Date());
