@@ -191,6 +191,14 @@ public class ShiroConfig {
       //teacher/findAllSubject
         put("/teacher/findAllSubject", "anon"); 
         
+        put("/parameter/queryParametersByType", "anon"); 
+        
+        put("/grade/queryAllGradelist", "anon"); 
+        
+        put("/grade/queryAllBranchlist", "anon"); 
+        
+        put("/home/queryAllStudentDemandList", "anon"); 
+        
         
     }};
 }
