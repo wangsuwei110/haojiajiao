@@ -138,9 +138,10 @@
 	</update>
 
 
-    <insert id="addStudentDemandByTeacher" parameterType="com.education.hjj.bz.formBean.StudentDemandForm" >
-		<selectKey resultType="java.lang.Integer" keyProperty="sid" >
-			/*FORCE_MASTER*/ SELECT @@IDENTITY AS sid
+    <insert id="addStudentDemandByTeacher" parameterType="com.education.hjj.bz.formBean.StudentDemandForm"
+			>
+		<selectKey keyProperty="sid" resultType="java.lang.Long" order="AFTER">
+			SELECT LAST_INSERT_ID()
 		</selectKey>
         INSERT INTO student_demand(
 			student_id,
@@ -185,7 +186,8 @@
         	#{createUser},
         	#{updateTime},
         	#{updateUser}
-        )
+
+        ); select @@IDENTITY;
     </insert>
 
 	<!-- 教员首页查询所有的需求订单 -->

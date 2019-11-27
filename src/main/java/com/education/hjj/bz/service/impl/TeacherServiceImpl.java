@@ -151,7 +151,13 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public ApiResponse listSubject(TeachScreenForm form) {
-        return ApiResponse.success(teachLevelMapper.listSubject(form));
+        List<CodeVo> list = teachLevelMapper.listSubject(form);
+        list.forEach(f -> {
+            f.setValue(f.getValue().replace("小学", ""));
+            f.setValue(f.getValue().replace("中学", ""));
+            f.setValue(f.getValue().replace("高中", ""));
+        });
+        return ApiResponse.success(list);
     }
 
     @Override

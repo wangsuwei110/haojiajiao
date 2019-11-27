@@ -80,6 +80,7 @@
         where
           sdc.demand_id = #{demandId}
           AND sdc.delete_status = 0
+          AND tc.audit_status = 1
 
     </select>
 

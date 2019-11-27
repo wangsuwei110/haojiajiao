@@ -19,7 +19,7 @@ public class StudentDemandForm extends PageForm implements Serializable {
 	 */
 	private static final long serialVersionUID = 3965235681881401644L;
 
-    private Integer sid;
+    private Long sid;
 
 	private Integer demandId;
 
@@ -107,8 +107,16 @@ public class StudentDemandForm extends PageForm implements Serializable {
     // *******************单独预约********************
     @ApiModelProperty(value = "教员ID",required = true)
     private Integer teacherId;
-    
-    
+
+
+    public Long getSid() {
+        return sid;
+    }
+
+    public void setSid(Long sid) {
+        this.sid = sid;
+    }
+
     private String paymentStreamId;
 
     public String getCode() {
@@ -117,14 +125,6 @@ public class StudentDemandForm extends PageForm implements Serializable {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public Integer getSid() {
-        return sid;
-    }
-
-    public void setSid(Integer sid) {
-        this.sid = sid;
     }
 
     //试讲时间

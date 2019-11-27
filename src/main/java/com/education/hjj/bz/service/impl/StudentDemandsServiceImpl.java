@@ -139,7 +139,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		// 插入需求，返回需求id
 		form.setCurrentWeekDay(DateUtil.getWeekOfDate(date));
 		form.setPaymentStreamId(UUID.randomUUID().toString().replaceAll("-", ""));
-		Long orderId = studentDemandMapper.addStudentDemandByTeacher(form);
+		studentDemandMapper.addStudentDemandByTeacher(form);
 
 		// 如果有教员ID，则插入一条关联教员的表数据
 		if (form.getTeacherId() != null) {
@@ -152,7 +152,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			alreadyForm.setDemandGrade(form.getDemandGrade());
 			Integer count = connectMapper.countAlreadyDemand(alreadyForm);
 
-			Long newOrderId = studentDemandMapper.findMaxSid();
+			Long newOrderId = form.getSid();
 			StudentDemandConnectForm connectForm = new StudentDemandConnectForm();
 			connectForm.setCreateTime(date);
 			if (count != null && count > 0) {
@@ -181,7 +181,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			studentLogService.addStudentLog(logPo);
 		}
 
-		if (orderId != null) {
+		if (form.getSid() != null) {
 			return ApiResponse.success("订单发布成功，一个工作日内处理");
 		}
 		return ApiResponse.error("订单发布失败，请重新发布");

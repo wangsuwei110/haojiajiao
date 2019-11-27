@@ -20,8 +20,8 @@ public interface StudentDemandMapper {
 //	StudentDemandVo queryStudentDemandDetail(Integer demandId);
 	
 	TeacherVo queryTeacherStudentDemands(Integer demandId);
-	
-	Long addStudentDemandByTeacher(StudentDemandForm form);
+
+	int addStudentDemandByTeacher(StudentDemandForm form);
 
 	Long openDemand(StudentDemandConnectForm demandForm);
 
