@@ -112,14 +112,9 @@ public class StudentDemandVo {
 
     @ApiModelProperty(value = "结束订单判断")
     private Boolean endDemandFlag;
-
-    public Boolean getEndDemandFlag() {
-        return endDemandFlag;
-    }
-
-    public void setEndDemandFlag(Boolean endDemandFlag) {
-        this.endDemandFlag = endDemandFlag;
-    }
+    
+    @ApiModelProperty(value = "区域id",required = true)
+    private Integer parameterId;
 
     private Integer teacherId;
 
@@ -143,6 +138,44 @@ public class StudentDemandVo {
     
     //每节课的ID
     private Integer classId;
+    
+    private Integer teachGradeId;
+    
+    private Integer teachBranchId;
+    
+    private String parameterName;
+    
+    public Integer getTeachGradeId() {
+		return teachGradeId;
+	}
+
+	public void setTeachGradeId(Integer teachGradeId) {
+		this.teachGradeId = teachGradeId;
+	}
+
+	public Integer getTeachBranchId() {
+		return teachBranchId;
+	}
+
+	public void setTeachBranchId(Integer teachBranchId) {
+		this.teachBranchId = teachBranchId;
+	}
+
+	public String getParameterName() {
+		return parameterName;
+	}
+
+	public void setParameterName(String parameterName) {
+		this.parameterName = parameterName;
+	}
+
+	public Boolean getEndDemandFlag() {
+        return endDemandFlag;
+    }
+
+    public void setEndDemandFlag(Boolean endDemandFlag) {
+        this.endDemandFlag = endDemandFlag;
+    }
 
     public String getCreateTimeString() {
         return createTimeString;
@@ -175,9 +208,6 @@ public class StudentDemandVo {
     public void setStudentId(Integer studentId) {
         this.studentId = studentId;
     }
-
-    @ApiModelProperty(value = "区域id",required = true)
-    private Integer parameterId;
 
     public Integer getTeacherId() {
         return teacherId;

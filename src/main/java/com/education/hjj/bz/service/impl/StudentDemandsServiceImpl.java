@@ -703,13 +703,13 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 					String orderEndDate = DateUtil.getAfterDay(
 							DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)), (weekNum - 1) * 7);
 
-					System.out.println(DateUtil.getMonday(DateUtil.getStandardDay(orderStartTime)));
-					System.out.println(DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)));
-					System.out.println("----------");
-					System.out.println(DateUtil.getAfterDay(DateUtil.getMonday(DateUtil.getStandardDay(orderStartTime)),
-							(weekNum - 1) * 7));
-					System.out.println(DateUtil.getAfterDay(DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)),
-							(weekNum - 1) * 7));
+//					System.out.println(DateUtil.getMonday(DateUtil.getStandardDay(orderStartTime)));
+//					System.out.println(DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)));
+//					System.out.println("----------");
+//					System.out.println(DateUtil.getAfterDay(DateUtil.getMonday(DateUtil.getStandardDay(orderStartTime)),
+//							(weekNum - 1) * 7));
+//					System.out.println(DateUtil.getAfterDay(DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)),
+//							(weekNum - 1) * 7));
 
 					studentDemandVo.setOrderStartDate(orderStartDate);
 					studentDemandVo.setOrderEndDate(orderEndDate);
@@ -914,5 +914,101 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		int i = connectMapper.insert(studentDemandConnect);
 		
 		return i;
+	}
+	
+	@Override
+	public Map<String , Object> validateSignParameters(StudentDemandConnectForm demandForm) {
+		
+		boolean flag = true;
+		
+		boolean timeFlag = false;
+		
+		Map<String , Object> map = new HashMap<String , Object>();
+		
+		int teacherId = demandForm.getTeacherId();
+
+		TeacherVo t = userInfoMapper.queryTeacherHomeInfos(teacherId);
+		
+		String teachBranchIdDB = t.getTeachBrance()+","+t.getTeachBranchSlave();
+		
+		int teachBranchId =demandForm.getTeachBranchId();
+		
+		logger.info("订单需求授课科目id:{} , 报名教员的授课科目id: {}" , teachBranchId , teachBranchIdDB);
+		
+			
+		if(!teachBranchIdDB.contains(String.valueOf(teachBranchId))) {
+			flag = false;
+			
+			map.put("validateCode", flag);
+			map.put("validateResult", "该需求的科目不在您的授课范围内，请谨慎报名。");
+			
+			return map;
+		}
+		
+		int teachGradeId = demandForm.getTeachGradeId();
+		String teachGradeIdDB = t.getTeachGrade();
+		
+		logger.info("订单需求授课年级id:{} , 报名教员的授课年级id: {}" , teachGradeId , teachGradeIdDB);
+		
+		if(!teachGradeIdDB.contains(String.valueOf(teachGradeId))) {
+			flag = false;
+			
+			map.put("validateCode", flag);
+			map.put("validateResult", "该需求的年级不在您的授课范围内，请谨慎报名。");
+			
+			return map;
+		}
+		
+		int areaId = demandForm.getParameterId();
+		
+		String teachAddressDB = t.getTeachAddress();
+		
+		logger.info("订单需求授课区域id:{} , 报名教员的授课区域id: {}" , areaId , teachAddressDB);
+		
+		if(teachAddressDB.contains(String.valueOf(areaId))) {
+			
+			flag = false;
+			
+			map.put("validateCode", flag);
+			map.put("validateResult", "该需求的上课区域不在您的授课区域内，请谨慎报名。");
+			
+			return map;
+		}
+		
+		String teachTimeDB = t.getTeachTime();
+		
+		List<TeachTimePo> teachTimePoa = demandForm.getTimeList();
+		
+		List<TeachTimePo> teachTimePob = JSON.parseArray(teachTimeDB, TeachTimePo.class);
+		
+		logger.info("订单需求授课时间:{} , 报名教员的授课时间: {}" , JSON.toJSONString(demandForm.getTimeList()) , teachTimeDB);
+		
+		for(TeachTimePo ttpa:teachTimePoa) {
+			
+			for(TeachTimePo ttpb:teachTimePob) {
+				
+				if(ttpa.getTime().equalsIgnoreCase(ttpb.getTime()) && ttpa.getWeek().equalsIgnoreCase(ttpb.getWeek())) {
+					timeFlag = true;
+				}
+			}
+			
+		}
+		
+		if(timeFlag == false) {
+			
+			flag = false;
+			
+			map.put("validateCode", flag);
+			map.put("validateResult", "该需求的预计上课时段不在您的授课时间内，请谨慎报名。");
+			
+			return map;
+		}
+		
+		
+		map.put("validateCode", true);
+		map.put("validateResult", "可以报名。");
+		
+		return map;
+		
 	}
 }

@@ -82,4 +82,6 @@ public interface StudentDemandsService {
 	int updateTimeTableByTeacherId(StudentDemandPo studentDemandPo);
 	
 	int insert(StudentDemandConnectForm studentDemandConnect);
+	
+	Map<String , Object> validateSignParameters(StudentDemandConnectForm demandForm);
 }

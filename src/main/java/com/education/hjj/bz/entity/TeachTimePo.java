@@ -40,4 +40,17 @@ public class TeachTimePo implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 	
+	@Override
+    public boolean equals(Object object) {
+        
+        if (this == object) {
+            return true;
+        }
+        if (object instanceof TeachTimePo) {
+        	TeachTimePo teachTimePo = (TeachTimePo) object;
+            return this.week.equals(teachTimePo.week) 
+                    && this.time.equals(teachTimePo.time);
+        }
+        return super.equals(object);
+    }
 }

@@ -1,6 +1,9 @@
 package com.education.hjj.bz.controller;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +23,7 @@ import com.education.hjj.bz.formBean.TeacherScreenForm;
 import com.education.hjj.bz.service.StudentDemandsService;
 import com.education.hjj.bz.service.TeacherService;
 import com.education.hjj.bz.util.ApiResponse;
+import com.education.hjj.bz.util.UtilTools;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -134,10 +138,21 @@ public class TeacherController {
 		return ApiResponse.success(studentDemandVo);
 	}
 	
+	@ApiOperation("校验报名参数")
+	@RequestMapping(value = "/validateSignParameters", method = RequestMethod.POST)
+	@ResponseBody
+	public ApiResponse validateSignParameters(@RequestBody StudentDemandConnectForm demandForm) {
+		
+		Map<String , Object> map = studentDemandsService.validateSignParameters(demandForm);
+		
+		return ApiResponse.success(UtilTools.mapToJson(map));
+	}
+	
 	
 	@ApiOperation("确定订单试讲时间和状态")
 	@RequestMapping(value = "/updateNewTrialDemand", method = RequestMethod.POST)
 	@ResponseBody
+	@Transactional
 	public ApiResponse updateNewTrialDemand(@RequestBody StudentDemandConnectForm demandForm) {
 		
 		int i = studentDemandsService.updateNewTrialDemand(demandForm);
@@ -152,6 +167,7 @@ public class TeacherController {
 	@ApiOperation("报名学员发布的需求订单")
 	@RequestMapping(value = "/signUpStudentDemand", method = RequestMethod.POST)
 	@ResponseBody
+	@Transactional
 	public ApiResponse signUpStudentDemand(@RequestBody StudentDemandConnectForm demandForm) {
 		
 		int i = studentDemandsService.insert(demandForm);

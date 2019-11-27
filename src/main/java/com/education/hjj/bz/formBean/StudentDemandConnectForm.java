@@ -3,8 +3,12 @@ package com.education.hjj.bz.formBean;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.education.hjj.bz.entity.TeachTimePo;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 学员发布需求表Form
@@ -65,8 +69,34 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
     private Integer subjectId;
     @ApiModelProperty(value = "流水单号")
     private String paymentStreamId;
+    
+    private Integer parameterId;
+    
+    private Integer teachGradeId;
+    
+    private Integer teachBranchId;
+    
+    @JsonProperty("teachTime")
+	private List<TeachTimePo> timeList;
+    
 
-    public String getPaymentStreamId() {
+    public Integer getTeachGradeId() {
+		return teachGradeId;
+	}
+
+	public void setTeachGradeId(Integer teachGradeId) {
+		this.teachGradeId = teachGradeId;
+	}
+
+	public Integer getTeachBranchId() {
+		return teachBranchId;
+	}
+
+	public void setTeachBranchId(Integer teachBranchId) {
+		this.teachBranchId = teachBranchId;
+	}
+
+	public String getPaymentStreamId() {
         return paymentStreamId;
     }
 
@@ -217,4 +247,18 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
 		this.updateUser = updateUser;
 	}
 
+	public Integer getParameterId() {
+		return parameterId;
+	}
+
+	public void setParameterId(Integer parameterId) {
+		this.parameterId = parameterId;
+	}
+	public List<TeachTimePo> getTimeList() {
+		return timeList;
+	}
+
+	public void setTimeList(List<TeachTimePo> timeList) {
+		this.timeList = timeList;
+	}
 }
