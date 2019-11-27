@@ -1,11 +1,12 @@
 package com.education.hjj.bz.controller;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.education.hjj.bz.entity.StudentLogPo;
+import com.education.hjj.bz.entity.vo.*;
+import com.education.hjj.bz.mapper.StudentMapper;
+import com.education.hjj.bz.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -22,27 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.education.hjj.bz.entity.PicturePo;
-import com.education.hjj.bz.entity.vo.PageVo;
-import com.education.hjj.bz.entity.vo.ParameterVo;
-import com.education.hjj.bz.entity.vo.PictureVo;
-import com.education.hjj.bz.entity.vo.StudentDemandConnectVo;
-import com.education.hjj.bz.entity.vo.StudentDemandVo;
-import com.education.hjj.bz.entity.vo.TeachBranchVo;
-import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
-import com.education.hjj.bz.entity.vo.TeacherVo;
-import com.education.hjj.bz.entity.vo.UniversityVo;
 import com.education.hjj.bz.formBean.PictureForm;
 import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
 import com.education.hjj.bz.formBean.TeacherInfoForm;
 import com.education.hjj.bz.formBean.TeacherInfoReplenishForm;
 import com.education.hjj.bz.formBean.UserInfoForm;
 import com.education.hjj.bz.mapper.StudentConnectTeacherMapper;
-import com.education.hjj.bz.service.DemandCourseInfoService;
-import com.education.hjj.bz.service.ParameterService;
-import com.education.hjj.bz.service.StudentDemandConnectService;
-import com.education.hjj.bz.service.TeachBranchService;
-import com.education.hjj.bz.service.UserInfoService;
-import com.education.hjj.bz.service.UserPictureInfoService;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.DateUtil;
 import com.education.hjj.bz.util.UtilTools;
@@ -77,6 +63,12 @@ public class UserInfoController {
 	
 	@Autowired
 	private DemandCourseInfoService demandCourseInfoService;
+
+	@Autowired
+	private StudentMapper studentMapper;
+
+	@Autowired
+	private StudentLogService studentLogService;
 
 	@ApiOperation("用户信息更新(带图片)")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -179,6 +171,24 @@ public class UserInfoController {
 		if(teacherId != null && StringUtils.isNoneBlank(teacherId)) {
 			
 			teacherVo = userInfoService.queryTeacherHomeInfos(teacherId);
+
+			if (teacherInfoForm.getStudentId() != null) {
+				StudentVo studentVo = studentMapper.load(Long.valueOf(teacherInfoForm.getStudentId()));
+
+
+				// 插入一条浏览教员的日志信息
+				StudentLogPo logPo = new StudentLogPo();
+				logPo.setStudentId(Integer.valueOf(studentVo.getSid().toString()));
+				logPo.setLogType(2); // 登录
+				logPo.setLogContent("最近浏览了" +teacherVo.getName() + "教员的信息");
+				logPo.setStudentName(studentVo.getStudentName());
+				logPo.setStatus(1);
+				logPo.setCreateTime(new Date());
+				logPo.setCreateUser(studentVo.getSid().toString());
+				logPo.setUpdateTime(new Date());
+				logPo.setUpdateUser(studentVo.getSid().toString());
+				studentLogService.addStudentLog(logPo);
+			}
 		}
 
 		Map<String , Object> map = new HashMap<String, Object>(1);

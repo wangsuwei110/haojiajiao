@@ -13,10 +13,10 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import com.alibaba.fastjson.JSON;
-import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
-import com.education.hjj.bz.entity.TeacherAccountPo;
+import com.education.hjj.bz.entity.*;
 import com.education.hjj.bz.entity.vo.*;
 import com.education.hjj.bz.mapper.*;
+import com.education.hjj.bz.service.StudentLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import com.education.hjj.bz.entity.StudentDemandPo;
-import com.education.hjj.bz.entity.TeachTimePo;
 import com.education.hjj.bz.formBean.DemandCourseInfoForm;
 import com.education.hjj.bz.formBean.DemandLogForm;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
@@ -80,6 +78,9 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 	@Autowired
 	private UserAccountLogMapper userAccountLogMapper;
+
+	@Autowired
+	private StudentLogService studentLogService;
 
 	@Override
 	public Map<String, Object> queryStudentDemandDetail(String demandId) {
@@ -164,6 +165,20 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			connectForm.setDemandId(newOrderId.intValue());
 			connectForm.setTeacherId(form.getTeacherId());
 			connectMapper.insert(connectForm);
+
+			TeacherVo teacherVo = teacherMapper.load(form.getTeacherId());
+			// 插入一条预约教员的日志信息
+			StudentLogPo logPo = new StudentLogPo();
+			logPo.setStudentId(Integer.valueOf(studentVo.getSid().toString()));
+			logPo.setLogType(3); // 登录
+			logPo.setLogContent("最近预约了" +teacherVo.getName() + "教员的信息");
+			logPo.setStudentName(studentVo.getStudentName());
+			logPo.setStatus(1);
+			logPo.setCreateTime(new Date());
+			logPo.setCreateUser(studentVo.getSid().toString());
+			logPo.setUpdateTime(new Date());
+			logPo.setUpdateUser(studentVo.getSid().toString());
+			studentLogService.addStudentLog(logPo);
 		}
 
 		if (orderId != null) {

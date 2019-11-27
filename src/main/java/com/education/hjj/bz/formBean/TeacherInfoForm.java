@@ -98,6 +98,16 @@ public class TeacherInfoForm extends PageForm implements Serializable{
 	
 	private Integer isGraduate;
 
+	private Integer studentId;
+
+	public Integer getStudentId() {
+		return studentId;
+	}
+
+	public void setStudentId(Integer studentId) {
+		this.studentId = studentId;
+	}
+
 	public String getNum() {
 		return num;
 	}

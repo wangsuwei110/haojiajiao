@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.education.hjj.bz.entity.StudentLogPo;
+import com.education.hjj.bz.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -34,12 +36,6 @@ import com.education.hjj.bz.formBean.LogoutForm;
 import com.education.hjj.bz.model.UserDto;
 import com.education.hjj.bz.model.common.ResponseBean;
 //import com.education.hjj.bz.redis.RedisService;
-import com.education.hjj.bz.service.ISmsService;
-import com.education.hjj.bz.service.IUserService;
-import com.education.hjj.bz.service.LoginLogService;
-import com.education.hjj.bz.service.PointsLogService;
-import com.education.hjj.bz.service.StudentService;
-import com.education.hjj.bz.service.UserInfoService;
 import com.education.hjj.bz.util.AesCipherUtil;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.Constant;
@@ -98,6 +94,9 @@ public class LoginController {
     
     @Autowired
     private ISmsService smsService;
+
+    @Autowired
+	private StudentLogService studentLogService;
 //
 //    @Autowired
 //	private RedisService redisService;
@@ -324,6 +323,17 @@ public class LoginController {
 			}
 			// 记录学员端客户信息
 //			redisService.cacheValue(RedisContant.STUDENT_INFO + studentVo.getSid(), JSON.toJSONString(studentVo), 35 * 60);
+			StudentLogPo logPo = new StudentLogPo();
+            logPo.setStudentId(Integer.valueOf(studentVo.getSid().toString()));
+            logPo.setLogType(1); // 登录
+			logPo.setLogContent("最近登录了系统");
+			logPo.setStudentName(studentVo.getStudentName());
+			logPo.setStatus(1);
+			logPo.setCreateTime(new Date());
+			logPo.setCreateUser(studentVo.getSid().toString());
+			logPo.setUpdateTime(new Date());
+			logPo.setUpdateUser(studentVo.getSid().toString());
+			studentLogService.addStudentLog(logPo);
 
 			map.put("studentName", studentVo.getStudentName());
 			map.put("studentId", studentVo.getSid());
