@@ -23,8 +23,6 @@ public class PayCashPo implements Serializable{
 	
 	private String check_name;
 	
-	private String re_user_name;
-	
 	private Integer amount;
 	
 	private String desc;
@@ -85,14 +83,6 @@ public class PayCashPo implements Serializable{
 
 	public void setCheck_name(String check_name) {
 		this.check_name = check_name;
-	}
-
-	public String getRe_user_name() {
-		return re_user_name;
-	}
-
-	public void setRe_user_name(String re_user_name) {
-		this.re_user_name = re_user_name;
 	}
 
 	public Integer getAmount() {
