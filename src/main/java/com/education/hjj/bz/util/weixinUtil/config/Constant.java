@@ -33,6 +33,9 @@ public class Constant {
     //红包记录查看接口
     public static final String CHECK_RED_PACK = "https://api.mch.weixin.qq.com/mmpaymkttransfers/gethbinfo";
     
+    //提现到零钱(企业付款到零钱)
+    public static final String PAY_CASH = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
+    
     //证书存放位置
 //    public static final String CERT_PATH ="D:\\1557492101_20191115_cert\\apiclient_cert.p12";
     

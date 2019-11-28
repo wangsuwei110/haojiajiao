@@ -49,6 +49,7 @@ import org.xml.sax.InputSource;
 import com.education.hjj.bz.controller.PayController;
 import com.education.hjj.bz.util.weixinUtil.config.Constant;
 import com.education.hjj.bz.util.weixinUtil.vo.CheckRedPackRequestPo;
+import com.education.hjj.bz.util.weixinUtil.vo.PayCashPo;
 import com.education.hjj.bz.util.weixinUtil.vo.RedpackRequestPo;
 import com.education.hjj.bz.util.weixinUtil.vo.RedpackResponsePo;
 public class WXUtils {
@@ -289,6 +290,10 @@ public class WXUtils {
 			
 			if(Constant.SEND_RED_PACK.equalsIgnoreCase(url)) {
 				xml = XmlParseUtil.beanToXml(param, RedpackRequestPo.class);
+			}
+			
+			if(Constant.PAY_CASH.equalsIgnoreCase(url)) {
+				xml = XmlParseUtil.beanToXml(param, PayCashPo.class);
 			}
  
 			
