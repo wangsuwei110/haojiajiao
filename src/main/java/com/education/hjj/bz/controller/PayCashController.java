@@ -38,9 +38,12 @@ import com.education.hjj.bz.util.weixinUtil.CommonUtil;
 import com.education.hjj.bz.util.weixinUtil.HttpUtil;
 import com.education.hjj.bz.util.weixinUtil.MD5Utils;
 import com.education.hjj.bz.util.weixinUtil.ObjectToMapUntils;
+import com.education.hjj.bz.util.weixinUtil.PayUtils;
 import com.education.hjj.bz.util.weixinUtil.RandomUtils;
 import com.education.hjj.bz.util.weixinUtil.WXUtils;
 import com.education.hjj.bz.util.weixinUtil.config.Constant;
+import com.education.hjj.bz.util.weixinUtil.vo.CheckPaymentToUserPo;
+import com.education.hjj.bz.util.weixinUtil.vo.CheckRedPackPo;
 import com.education.hjj.bz.util.weixinUtil.vo.Json;
 import com.education.hjj.bz.util.weixinUtil.vo.PayCashPo;
 import com.education.hjj.bz.util.weixinUtil.vo.PayInfo;
@@ -164,7 +167,7 @@ public class PayCashController {
 		logger.info("商户订单号： " + partnerTradeNo);
 		// 设备的IP地址
 		String clientIP = CommonUtil.getClientIp(request);
-		//String clientIP ="112.64.61.153";
+		// String clientIP ="112.64.61.153";
 		logger.info("设备的IP： " + clientIP);
 
 		String redisValue = redisService.getValue(telephone + "_payCash");
@@ -315,14 +318,14 @@ public class PayCashController {
 					data.put("keyword8", keyMap8);
 
 					logger.info("发送提现成功的消息提醒......");
-//					JSONObject sendRedPackRsult = SendWXMessageUtils.sendMessage(openId,
-//							Constant.CASH_OUT_TO_ACCOUNT_MESSAGE, Constant.COMMON_CASH_OUT_TO_ACCOUNT_MESSAGE, formId,
-//							data);
-					
 					JSONObject sendRedPackRsult = SendWXMessageUtils.sendMessage(openId,
-							"", Constant.COMMON_CASH_OUT_TO_ACCOUNT_MESSAGE, formId,
+							Constant.CASH_OUT_TO_ACCOUNT_MESSAGE, Constant.COMMON_CASH_OUT_TO_ACCOUNT_MESSAGE, formId,
 							data);
-					
+
+//					JSONObject sendRedPackRsult = SendWXMessageUtils.sendMessage(openId,
+//							"", Constant.COMMON_CASH_OUT_TO_ACCOUNT_MESSAGE, formId,
+//							data);
+
 					logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") + " "
 							+ sendRedPackRsult.getString("errmsg"));
 
@@ -358,6 +361,93 @@ public class PayCashController {
 			return ApiResponse.errorData("提现失败 ！", json);
 		}
 
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/paymentToPocketMoney", method = RequestMethod.POST)
+	@ApiOperation("微信提现到零钱")
+	@Transactional
+	public ApiResponse payCash(@RequestBody CheckRedPackPo checkRedPackPo) {
+
+		Json json = new Json();
+
+		String partner_trade_no = checkRedPackPo.getMch_billno();
+
+		logger.info("商户订单号： {}", partner_trade_no);
+
+		CheckPaymentToUserPo checkPaymentToUserPo = new CheckPaymentToUserPo();
+
+		String nonceStr = UUID.randomUUID().toString().replaceAll("-", "");
+		logger.info("随机字符串 v: " + nonceStr);
+
+		try {
+			checkPaymentToUserPo.setNonce_str(nonceStr);
+			checkPaymentToUserPo.setMch_id(Constant.MCH_ID);
+			checkPaymentToUserPo.setPartner_trade_no(partner_trade_no);
+			checkPaymentToUserPo.setAppid(Constant.APP_ID);
+
+			String sign = PayUtils.getSign(checkPaymentToUserPo);
+			checkPaymentToUserPo.setSign(sign);
+
+			String wxPayResult = WXUtils.httpsXMLPostPay(Constant.CHECK_PAY_CASH, checkPaymentToUserPo,
+					Constant.CERT_PATH, Constant.MCH_ID);
+
+			logger.info("调试模式_统一下单接口返回XML数据: " + wxPayResult);
+
+			Map<String, String> parseResult = CommonUtil.parseXml(wxPayResult);
+
+			String return_code = parseResult.get("return_code");
+
+			logger.info("调试模式_统一下单接口返回状态码 : " + return_code);
+
+			// 返回给移动端需要的参数
+			Map<String, Object> response = new HashMap<String, Object>();
+
+			if (StringUtils.isNotBlank(return_code) && "SUCCESS".equalsIgnoreCase(return_code)) {
+
+				String result_code = parseResult.get("result_code");
+
+				if (StringUtils.isNotBlank(result_code) && "SUCCESS".equalsIgnoreCase(result_code)) {
+
+					response.put("partner_trade_no", parseResult.get("partner_trade_no"));
+					response.put("appid", parseResult.get("appid"));
+					response.put("mch_id", parseResult.get("mch_id"));
+					response.put("detail_id", parseResult.get("detail_id"));
+					response.put("status", parseResult.get("status"));
+					response.put("reason", parseResult.get("reason"));
+					response.put("openid", parseResult.get("openid"));
+					response.put("transfer_name", parseResult.get("transfer_name"));
+					response.put("payment_amount", parseResult.get("payment_amount"));
+					response.put("transfer_time", parseResult.get("transfer_time"));
+					response.put("payment_time", parseResult.get("payment_time"));
+					response.put("desc", parseResult.get("desc"));
+
+					json.setSuccess(true);
+					json.setData(response);
+
+				} else {
+
+					logger.error("错误代码  :{}, 错误代码描述:{}", parseResult.get("err_code"), parseResult.get("err_code_des"));
+					json.setSuccess(false);
+					json.setMsg(parseResult.get("return_msg"));
+					ApiResponse.error("查询微信提现到零钱异常，请稍后再试！");
+				}
+
+			} else {
+				logger.error("返回信息: " + parseResult.get("return_msg"));
+				json.setSuccess(false);
+				json.setMsg(parseResult.get("return_msg"));
+				ApiResponse.error("查询微信提现到零钱异常，请稍后再试！");
+			}
+		} catch (Exception e) {
+			json.setSuccess(false);
+			json.setMsg("查询失败");
+			logger.error("查询微信提现到零钱异常，请稍后再试！");
+			e.printStackTrace();
+			ApiResponse.error("查询微信提现到零钱异常，请稍后再试！");
+		}
+
+		return ApiResponse.success("查询成功！", json);
 	}
 
 	@Transactional
