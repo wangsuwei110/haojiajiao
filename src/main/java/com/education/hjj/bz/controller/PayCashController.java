@@ -71,7 +71,7 @@ public class PayCashController {
 
 	@ResponseBody
 	@RequestMapping(value = "/paymentToPocketMoney", method = RequestMethod.POST)
-	@ApiOperation("微信发红包")
+	@ApiOperation("微信提现到零钱")
 	@Transactional
 	public ApiResponse payCash(HttpServletRequest request, @RequestBody TeacherAccountForm teacherAccountForm) {
 
@@ -315,9 +315,14 @@ public class PayCashController {
 					data.put("keyword8", keyMap8);
 
 					logger.info("发送提现成功的消息提醒......");
+//					JSONObject sendRedPackRsult = SendWXMessageUtils.sendMessage(openId,
+//							Constant.CASH_OUT_TO_ACCOUNT_MESSAGE, Constant.COMMON_CASH_OUT_TO_ACCOUNT_MESSAGE, formId,
+//							data);
+					
 					JSONObject sendRedPackRsult = SendWXMessageUtils.sendMessage(openId,
-							Constant.CASH_OUT_TO_ACCOUNT_MESSAGE, Constant.COMMON_CASH_OUT_TO_ACCOUNT_MESSAGE, formId,
+							"", Constant.COMMON_CASH_OUT_TO_ACCOUNT_MESSAGE, formId,
 							data);
+					
 					logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") + " "
 							+ sendRedPackRsult.getString("errmsg"));
 
