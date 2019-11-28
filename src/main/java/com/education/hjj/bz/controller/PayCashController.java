@@ -214,7 +214,7 @@ public class PayCashController {
 		}
 		
 			
-		String url = Constant.SEND_RED_PACK;
+		String url = Constant.PAY_CASH;
 		
 		logger.info("调用获取证书的方法 " + url);
 		
