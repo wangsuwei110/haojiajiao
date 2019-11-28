@@ -32,10 +32,14 @@
 		<result column="demand_type" property="demandType"/>
 		<result column="parameter_id" property="parameterId"/>
 		<result column="demand_signUp_num" property="demandSignUpNum"/>
+		<result column="teach_grade_id" property="teachGradeId"/>
 		<result column="teach_grade_name" property="teachGradeName"/>
+		<result column="teach_branch_id" property="teachBranchId"/>
 		<result column="teach_branch_name" property="teachBranchName"/>
 		<result column="order_teach_time" property="orderTeachTime"/>
 		<result column="demandSignStatus" property="demandSignStatus"/>
+		
+		<result column="parameterName" property="parameterName"/>
 	</resultMap>
 	
 	
@@ -309,14 +313,18 @@
     	SELECT
 			sd.sid,
 			sd.demand_address,
+			sd.subject_id as teach_grade_id,
 			tg.teach_grade_name,
+			sd.demand_grade as teach_branch_id,
 			tb.teach_branch_name,
 			sd.class_num,
 			sd.time_range,
 			sd.demand_desc,
 			date_format(sd.create_time, '%Y-%m-%d') as create_time,
-			demand_signUp_num,
-			current_week_day
+			sd.demand_signUp_num,
+			sd.current_week_day,
+			sd.parameter_id,
+			p.name as parameterName
 		FROM
 			student_demand sd
 		LEFT JOIN
@@ -327,6 +335,10 @@
 			teach_branch tb
 		ON
 			sd.subject_id = tb.teach_branch_id
+		LEFT JOIN
+			parameter p
+		ON
+			sd.parameter_id = p.parameter_id
 		WHERE
 			1=1
 		and
