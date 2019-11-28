@@ -252,7 +252,7 @@ public class WXUtils {
 		FileInputStream instream = new FileInputStream(new File(certPath));
 		try {
 			
-			logger.info("instream" + instream);
+			logger.info("instream： " + instream);
 			// password是商户号
 			keyStore.load(instream, mchId.toCharArray());
 		} catch (Exception e) {
@@ -266,7 +266,7 @@ public class WXUtils {
 				SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
 		CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
  
-		logger.info("httpclient" + httpclient);
+		logger.info("httpclient： " + httpclient);
 		
 		try {
 			HttpPost httpPost = new HttpPost(url);
@@ -280,7 +280,7 @@ public class WXUtils {
 			// 设置超时时间
 	        httpPost.setConfig(getRequestConfig());
 			
-			logger.info("executing request：" + httpPost.getRequestLine());
+			logger.info("executing request： " + httpPost.getRequestLine());
 			
 			String xml = "";
 			
@@ -289,10 +289,12 @@ public class WXUtils {
 			}
 			
 			if(Constant.SEND_RED_PACK.equalsIgnoreCase(url)) {
+				logger.info("小程序红包提现....");
 				xml = XmlParseUtil.beanToXml(param, RedpackRequestPo.class);
 			}
 			
 			if(Constant.PAY_CASH.equalsIgnoreCase(url)) {
+				logger.info("提现到零钱....");
 				xml = XmlParseUtil.beanToXml(param, PayCashPo.class);
 			}
  

@@ -184,9 +184,6 @@ public class PayCashController {
 		
 		if(redisValue != null || StringUtils.isNotBlank(redisValue)) {
 			payCashPo = JSON.parseObject(redisValue, PayCashPo.class);
-//			redpackRequestPo.setTotal_amount(Integer.valueOf(redpackRequestPo.getTotal_amount()));
-//			redpackRequestPo.setTotal_num(Integer.valueOf(redpackRequestPo.getTotal_num()));
-			
 		}else {
 			
 			payCashPo.setMch_appid(Constant.APP_ID);
