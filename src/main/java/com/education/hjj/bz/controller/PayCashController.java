@@ -92,16 +92,6 @@ public class PayCashController {
 
 		String telephone = teacherVo.getTelephone();
 
-		// String code = teacherAccountForm.getCode();//获取微信服务器授权返回的code值
-
-		// logger.info("code: " + code);
-
-		// String openId = GetWXOpenIdUtil.getOpenId(code);
-
-		// String openId =getOpenId(code);
-//		if(openId == null) {
-//			openId = teacherAccountForm.getOpenId();
-//		}
 		String openId = teacherAccountForm.getOpenId();
 		logger.info("当前提现教员的openid: {} , 注册时的openid；{}", openId, databaseOpenid);
 
@@ -174,6 +164,7 @@ public class PayCashController {
 		logger.info("商户订单号： " + partnerTradeNo);
 		// 设备的IP地址
 		String clientIP = CommonUtil.getClientIp(request);
+		//String clientIP ="112.64.61.153";
 		logger.info("设备的IP： " + clientIP);
 
 		String redisValue = redisService.getValue(telephone + "_payCash");
@@ -192,20 +183,12 @@ public class PayCashController {
 			payCashPo.setOpenid(openId);
 			payCashPo.setCheck_name("NO_CHECK");
 			payCashPo.setAmount(cash_out);
-			payCashPo.setDesc("提现");
+			payCashPo.setDesc("来家教账户提现");
 			payCashPo.setSpbill_create_ip(clientIP);
 
 			try {
-//				String md5 = getSign(payCashPo);
-
-				String stringSignTemp = "appId=" + Constant.APP_ID + "&mch_appid=" + Constant.APP_ID + "&mchid="
-						+ Constant.MCH_ID + "&nonce_str=" + nonceStr + "&nonce_str=" + nonceStr + "&partner_trade_no="
-						+ partnerTradeNo + "&openid=" + openId + "&check_name=" + "NO_CHECK" + "&amount=" + cash_out
-						+ "&desc=" + "提现" + "&spbill_create_ip=" + clientIP;
-				// 再次签名，这个签名用于小程序端调用wx.requesetPayment方法
-				String paySign = WXUtils.sign(stringSignTemp, Constant.APP_KEY, "utf-8");
-
-				payCashPo.setSign(paySign);
+				String md5 = getSign(payCashPo);
+				payCashPo.setSign(md5);
 
 			} catch (Exception e) {
 				json.setSuccess(false);
