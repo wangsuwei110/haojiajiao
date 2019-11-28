@@ -122,8 +122,11 @@ public class StudentDemandsController {
 		}else {
 			return ApiResponse.error("更新失败！");
 		}
-		
-		 
 	}
-	
+
+	@ApiOperation("主页信息")
+	@RequestMapping(value = "/homepageInfo", method = RequestMethod.POST)
+	public ApiResponse homepageInfo(@RequestBody StudentDemandConnectForm demandForm) {
+		return studentDemandsService.homepageInfo(demandForm);
+	}
 }

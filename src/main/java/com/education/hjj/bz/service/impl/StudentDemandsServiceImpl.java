@@ -212,7 +212,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			List<StudentDemandConnectVo> connectVos = connectMapper.listConnectInfo(f.getSid());
 			// 判断是否已经有了预约(排除已经预约过，但是未通过的)
 			Optional<StudentDemandConnectVo> op = connectVos.stream()
-					.filter(s ->  s.getStatus() != null && s.getStatus() != 3)
+					.filter(s ->  s.getStatus() != null && s.getStatus() != 0 && s.getStatus() != 3)
 					.findFirst();
 			if (op.isPresent()) {
 				f.setSubscribeStatus(op.get().getStatus());
@@ -235,7 +235,10 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 //				List<StudentDemandConnectVo> noPass = connectVos.stream()
 //						.filter(s ->  s.getStatus() != null && s.getStatus() == 3).collect(Collectors.toList()).stream()
 //						.sorted((a, b) -> a.getOrderTeachTime().compareTo(b.getOrderTeachTime())).collect(Collectors.toList());
-				if (f.getDemandType() == 1) {
+				// 确认订单只是有教员报名或者没有报名，没有其它状态
+				boolean allStatusIsZero = connectVos.stream()
+						.allMatch(s ->  s.getStatus() == null || s.getStatus() == 0);
+				if (f.getDemandType() == 1 && !allStatusIsZero) {
 					f.setSubscribeStatus(3);
 				} else {
 					f.setEndDemandFlag(true);
@@ -520,6 +523,16 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	public ApiResponse endDemand(StudentDemandConnectForm demandForm) {
 		studentDemandMapper.endDemand(demandForm.getDemandId());
 
+		return ApiResponse.success("已结束订单");
+	}
+
+	/**
+	 * 主页信息
+	 **/
+	@Override
+	public ApiResponse homepageInfo(StudentDemandConnectForm demandForm) {
+		// 检索科目信息
+        teachBranchMapper.queryAllTeachBranchs();
 		return ApiResponse.success("已结束订单");
 	}
 
