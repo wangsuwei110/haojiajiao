@@ -172,7 +172,7 @@ public class PayCashController {
 		
 		//商户订单号
 		String partnerTradeNo = UUID.randomUUID().toString().replaceAll("-", "");
-		
+		logger.info("商户订单号： " + partnerTradeNo );
 		//设备的IP地址
 		String clientIP = CommonUtil.getClientIp(request);
 		logger.info("设备的IP： " + clientIP );
