@@ -9,6 +9,7 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
@@ -176,14 +177,16 @@ public class SendWXMessageUtils {
 		JSONObject result = new JSONObject();
 		
 		try {
-			obj.put("touser", toUser);
-			weapp_template_msg.put("template_id", template_id);
-			weapp_template_msg.put("page", "");
-			weapp_template_msg.put("form_id", formid);
-			weapp_template_msg.put("data", data);
-			weapp_template_msg.put("emphasis_keyword", data.getJSONObject("keyword1").getString("value"));
-			obj.put("weapp_template_msg", weapp_template_msg);
 			
+			if(template_id != null && StringUtils.isNotBlank(template_id)) {
+				obj.put("touser", toUser);
+				weapp_template_msg.put("template_id", template_id);
+				weapp_template_msg.put("page", "");
+				weapp_template_msg.put("form_id", formid);
+				weapp_template_msg.put("data", data);
+				weapp_template_msg.put("emphasis_keyword", data.getJSONObject("keyword1").getString("value"));
+				obj.put("weapp_template_msg", weapp_template_msg);
+			}
 			
 			
 			mp_template_msg.put("appid", Constant.COMMON_APP_ID);

@@ -2,6 +2,12 @@ package com.education.hjj.bz.util.weixinUtil.vo;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "xml")
 public class PayCashPo implements Serializable{
 
 	/**
