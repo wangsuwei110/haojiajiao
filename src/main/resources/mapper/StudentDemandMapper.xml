@@ -294,7 +294,7 @@
         	student_demand_connect sdc
         ON
         	sd.sid = sdc.demand_id
-        AND sdc.status = 4
+        AND sdc.status in (4,7)
         INNER JOIN
         	teacher tea
         ON

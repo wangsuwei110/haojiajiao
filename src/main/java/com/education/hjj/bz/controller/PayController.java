@@ -98,8 +98,8 @@ public class PayController {
 
 			if (StringUtils.isBlank(openId)) {
 				
-				logger.error("获取到openId : " + openId);
-				
+				logger.error("未获取到openId");
+                return ApiResponse.error("未获取到openId,支付失败");
 			} else {
 				
 				openId = openId.replace("\"", "").trim();
@@ -157,6 +157,7 @@ public class PayController {
 					demandVo = studentDemandMapper.findStudentDemandInfo(demandForm.getDemandId());
 
 					if (demandVo == null) {
+						logger.info("订单不符合要求, 必须是试讲通过的订单");
 						return ApiResponse.error("订单不符合要求");
 					}
 					// 记录上个订单的信息
@@ -219,7 +220,7 @@ public class PayController {
 					paymentLog.setPaymentPersonName(demandVo.getStudentName());
 					paymentLog.setPaymentType(3);
 					paymentLog.setPaymentDesc("支付订单");
-					paymentLog.setStatus(0);
+					paymentLog.setStatus(1);
 					paymentLog.setCreateTime(date);
 					paymentLog.setCreateUser(demandVo.getStudentName());
 					paymentLog.setPaymentAccount(demandVo.getOrderMoney());
@@ -243,7 +244,8 @@ public class PayController {
 			json.setSuccess(false);
 			json.setMsg("发起失败");
 			e1.printStackTrace();
-			
+
+			logger.error("支付失败");
 			return ApiResponse.errorData("支付失败", json);
 		}
 		
