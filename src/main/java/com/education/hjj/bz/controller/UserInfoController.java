@@ -171,24 +171,6 @@ public class UserInfoController {
 		if(teacherId != null && StringUtils.isNoneBlank(teacherId)) {
 			
 			teacherVo = userInfoService.queryTeacherHomeInfos(teacherId);
-
-			if (teacherInfoForm.getStudentId() != null) {
-				StudentVo studentVo = studentMapper.load(Long.valueOf(teacherInfoForm.getStudentId()));
-
-
-				// 插入一条浏览教员的日志信息
-				StudentLogPo logPo = new StudentLogPo();
-				logPo.setStudentId(Integer.valueOf(studentVo.getSid().toString()));
-				logPo.setLogType(2); // 登录
-				logPo.setLogContent("最近浏览了" +teacherVo.getName() + "教员的信息");
-				logPo.setStudentName(studentVo.getStudentName());
-				logPo.setStatus(1);
-				logPo.setCreateTime(new Date());
-				logPo.setCreateUser(studentVo.getSid().toString());
-				logPo.setUpdateTime(new Date());
-				logPo.setUpdateUser(studentVo.getSid().toString());
-				studentLogService.addStudentLog(logPo);
-			}
 		}
 
 		Map<String , Object> map = new HashMap<String, Object>(1);
@@ -288,6 +270,23 @@ public class UserInfoController {
 			TeacherVo  teacherVo  = null;
 			if(teacherId != null && StringUtils.isNoneBlank(teacherId)) {
 				teacherVo  = userInfoService.queryTeacherHomeInfos(teacherId);
+
+				if (pictureForm.getStudentId() != null) {
+					StudentVo studentVo = studentMapper.load(Long.valueOf(pictureForm.getStudentId()));
+
+					// 插入一条浏览教员的日志信息
+					StudentLogPo logPo = new StudentLogPo();
+					logPo.setStudentId(Integer.valueOf(studentVo.getSid().toString()));
+					logPo.setLogType(2); // 登录
+					logPo.setLogContent("最近浏览了" +teacherVo.getName() + "教员的信息");
+					logPo.setStudentName(studentVo.getStudentName());
+					logPo.setStatus(1);
+					logPo.setCreateTime(new Date());
+					logPo.setCreateUser(studentVo.getSid().toString());
+					logPo.setUpdateTime(new Date());
+					logPo.setUpdateUser(studentVo.getSid().toString());
+					studentLogService.addStudentLog(logPo);
+				}
 			}
 			
 			String date = teacherVo.getBeginSchoolTime();
