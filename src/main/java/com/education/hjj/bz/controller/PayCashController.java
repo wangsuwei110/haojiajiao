@@ -168,14 +168,14 @@ public class PayCashController {
 		
 		//随机字符串
 		String nonceStr = UUID.randomUUID().toString().replaceAll("-", "");
+		logger.info("随机字符串 v: " + nonceStr );
 		
 		//商户订单号
 		String partnerTradeNo = UUID.randomUUID().toString().replaceAll("-", "");
 		
 		//设备的IP地址
 		String clientIP = CommonUtil.getClientIp(request);
-		
-		String randomNonceStr = RandomUtils.generateMixString(32);
+		logger.info("设备的IP： " + clientIP );
 		
 		String redisValue = redisService.getValue(telephone+"_payCash");
 		logger.info("缓存中存储的商户号： " + redisValue );
