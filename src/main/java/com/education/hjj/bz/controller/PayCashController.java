@@ -364,10 +364,10 @@ public class PayCashController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/paymentToPocketMoney", method = RequestMethod.POST)
+	@RequestMapping(value = "/checkPaymentToPocketMoney", method = RequestMethod.POST)
 	@ApiOperation("微信提现到零钱")
 	@Transactional
-	public ApiResponse payCash(@RequestBody CheckRedPackPo checkRedPackPo) {
+	public ApiResponse checkPayment(@RequestBody CheckRedPackPo checkRedPackPo) {
 
 		Json json = new Json();
 
