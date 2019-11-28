@@ -58,6 +58,11 @@ public class Constant {
     //微信统一服务消息模板
     public static final String SEND_WX_COMMON_TEMPLATE_MESSAGE = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token=";
     
+    //发送微信订阅消息
+    public static final String SEND_WX_SUBSCRIBE_MESSAGE =  "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=";
+    //添加微信订阅消息模板
+    public static final String ADD_WX_TEMPLATE_SUBSCRIBE_MESSAGE = "https://api.weixin.qq.com/wxaapi/newtmpl/addtemplate?access_token=";
+    
     /**获取access_token*/
     public static final String ACCESS_TOKEN  = "https://api.weixin.qq.com/cgi-bin/token";
     
