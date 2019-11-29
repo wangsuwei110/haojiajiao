@@ -218,7 +218,7 @@ public class PayController {
 					logger.info("demandVo.getStudentId():" + demandVo.getStudentId());
 					logger.info("demandVo.getStudentName():" + demandVo.getStudentName());
 					logger.info("date:" + date);
-					logger.info("demandVo.getOrderMoney():" + demandVo.getOrderMoney());
+					logger.info("demandForm.getOrderMoney():" + demandForm.getOrderMoney());
 					logger.info("randomNonceStr:" + randomNonceStr);
 					logger.info("randomNonceStr:" + randomNonceStr);
 
