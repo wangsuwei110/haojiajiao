@@ -228,7 +228,7 @@ public class PayController {
 					paymentLog.setUpdateTime(date);
 					paymentLog.setUpdateUser(demandVo.getStudentName());
 					userAccountLogMapper.insertUserAccountLog(paymentLog);
-
+					logger.info("测试=====================5");
 				} else {
 
 					return ApiResponse.error("支付失败,请检查订单");
