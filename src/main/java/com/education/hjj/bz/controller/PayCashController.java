@@ -365,7 +365,7 @@ public class PayCashController {
 
 	@ResponseBody
 	@RequestMapping(value = "/checkPaymentToPocketMoney", method = RequestMethod.POST)
-	@ApiOperation("微信提现到零钱")
+	@ApiOperation("查询微信提现到零钱状态")
 	@Transactional
 	public ApiResponse checkPayment(@RequestBody CheckRedPackPo checkRedPackPo) {
 
