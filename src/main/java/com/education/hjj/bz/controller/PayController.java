@@ -77,6 +77,11 @@ public class PayController {
 	@ApiOperation("微信统一下单")
 	public ApiResponse prePay(HttpServletRequest request, @RequestBody StudentDemandForm demandForm) {
 
+//		if (demandForm.getOrderMoney() == null) {
+//			logger.info("支付金额不能为空");
+//			return ApiResponse.error("支付金额不能为空");
+//		}
+
 		String code = demandForm.getCode();//获取微信服务器授权返回的code值
 		
 		Json json = new Json();
@@ -232,7 +237,7 @@ public class PayController {
 					paymentLog.setStatus(1);
 					paymentLog.setCreateTime(date);
 					paymentLog.setCreateUser(demandVo.getStudentName());
-					paymentLog.setPaymentAccount(demandForm.getOrderMoney());
+//					paymentLog.setPaymentAccount(demandForm.getOrderMoney());
 					paymentLog.setUpdateTime(date);
 					paymentLog.setUpdateUser(demandVo.getStudentName());
 					userAccountLogMapper.insertUserAccountLog(paymentLog);
