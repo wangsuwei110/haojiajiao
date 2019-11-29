@@ -237,7 +237,7 @@ public class PayController {
 					paymentLog.setStatus(1);
 					paymentLog.setCreateTime(date);
 					paymentLog.setCreateUser(demandVo.getStudentName());
-//					paymentLog.setPaymentAccount(demandForm.getOrderMoney());
+					paymentLog.setPaymentAccount(BigDecimal.ZERO);
 					paymentLog.setUpdateTime(date);
 					paymentLog.setUpdateUser(demandVo.getStudentName());
 					userAccountLogMapper.insertUserAccountLog(paymentLog);
