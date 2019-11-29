@@ -12,7 +12,7 @@ import com.education.hjj.bz.mapper.TeacherMapper;
 import com.education.hjj.bz.service.TeacherService;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.DateUtil;
-import io.swagger.annotations.Api;
+import com.education.hjj.bz.util.common.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -153,9 +153,11 @@ public class TeacherServiceImpl implements TeacherService {
     public ApiResponse listSubject(TeachScreenForm form) {
         List<CodeVo> list = teachLevelMapper.listSubject(form);
         list.forEach(f -> {
-            f.setValue(f.getValue().replace("小学", ""));
-            f.setValue(f.getValue().replace("中学", ""));
-            f.setValue(f.getValue().replace("高中", ""));
+            if (StringUtil.isNotBlank(f.getValue()) && f.getValue().length() > 2) {
+                f.setValue(f.getValue().replace("小学", ""));
+                f.setValue(f.getValue().replace("中学", ""));
+                f.setValue(f.getValue().replace("高中", ""));
+            }
         });
         return ApiResponse.success(list);
     }
