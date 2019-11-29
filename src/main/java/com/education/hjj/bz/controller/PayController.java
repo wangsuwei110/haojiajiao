@@ -232,7 +232,7 @@ public class PayController {
 					paymentLog.setStatus(1);
 					paymentLog.setCreateTime(date);
 					paymentLog.setCreateUser(demandVo.getStudentName());
-					paymentLog.setPaymentAccount(demandVo.getOrderMoney());
+					paymentLog.setPaymentAccount(demandForm.getOrderMoney());
 					paymentLog.setUpdateTime(date);
 					paymentLog.setUpdateUser(demandVo.getStudentName());
 					userAccountLogMapper.insertUserAccountLog(paymentLog);
