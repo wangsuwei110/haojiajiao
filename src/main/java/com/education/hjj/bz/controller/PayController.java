@@ -77,10 +77,10 @@ public class PayController {
 	@ApiOperation("微信统一下单")
 	public ApiResponse prePay(HttpServletRequest request, @RequestBody StudentDemandForm demandForm) {
 
-//		if (demandForm.getOrderMoney() == null) {
-//			logger.info("支付金额不能为空");
-//			return ApiResponse.error("支付金额不能为空");
-//		}
+		if (demandForm.getOrderMoney() == null) {
+			logger.info("支付金额不能为空");
+			return ApiResponse.error("支付金额不能为空");
+		}
 
 		String code = demandForm.getCode();//获取微信服务器授权返回的code值
 		
@@ -159,7 +159,6 @@ public class PayController {
 
 					//更新订单信息
 					// 如果是试讲订单，要将试讲订单修改成付费订单
-					logger.info("需求id=====================" + demandForm.getDemandId());
 					demandVo = studentDemandMapper.findStudentDemandInfo(demandForm.getDemandId());
 
 					if (demandVo == null) {
@@ -175,7 +174,6 @@ public class PayController {
 					logForm.setCreateUser(demandVo.getStudentId().toString());
 
 					demandLogMapper.insert(logForm);
-					logger.info("测试=====================1");
 					Integer weekDay = DateUtil.getWeekOfDate(date);
 					demandForm.setCurrentWeekDay(weekDay);
 
@@ -186,7 +184,6 @@ public class PayController {
 					demandForm.setUpdateTime(date);
                     demandForm.setCreateTime(date);
 					Long sid = studentDemandMapper.updateOldDemandToNew(demandForm);
-					logger.info("测试=====================2");
 					List<DemandCourseInfoForm> courseInfoFormList = new ArrayList<>();
                     StudentDemandVo demand = demandVo;
 					// 根据订单插入每个节课时
@@ -216,16 +213,8 @@ public class PayController {
 							courseInfoFormList.add(courseInfoForm);
 						});
 					}
-					logger.info("测试=====================3");
+
 					demandCourseInfoMapper.insert(courseInfoFormList);
-					logger.info("测试=====================4");
-					logger.info("randomNonceStr:" + randomNonceStr);
-					logger.info("demandVo.getStudentId():" + demandVo.getStudentId());
-					logger.info("demandVo.getStudentName():" + demandVo.getStudentName());
-					logger.info("date:" + date);
-					logger.info("demandForm.getOrderMoney():" + demandForm.getOrderMoney());
-					logger.info("randomNonceStr:" + randomNonceStr);
-					logger.info("randomNonceStr:" + randomNonceStr);
 
 					// 插入一条日志信息，记录结课/支付记录
 					TeacherAccountOperateLogPo paymentLog = new TeacherAccountOperateLogPo();
@@ -237,11 +226,10 @@ public class PayController {
 					paymentLog.setStatus(1);
 					paymentLog.setCreateTime(date);
 					paymentLog.setCreateUser(demandVo.getStudentName());
-					paymentLog.setPaymentAccount(BigDecimal.ZERO);
+					paymentLog.setPaymentAccount(demandForm.getOrderMoney());
 					paymentLog.setUpdateTime(date);
 					paymentLog.setUpdateUser(demandVo.getStudentName());
 					userAccountLogMapper.insertUserAccountLog(paymentLog);
-					logger.info("测试=====================5");
 				} else {
 
 					return ApiResponse.error("支付失败,请检查订单");
