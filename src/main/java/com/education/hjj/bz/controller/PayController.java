@@ -214,6 +214,14 @@ public class PayController {
 					logger.info("测试=====================3");
 					demandCourseInfoMapper.insert(courseInfoFormList);
 					logger.info("测试=====================4");
+					logger.info("randomNonceStr:" + randomNonceStr);
+					logger.info("demandVo.getStudentId():" + demandVo.getStudentId());
+					logger.info("demandVo.getStudentName():" + demandVo.getStudentName());
+					logger.info("date:" + date);
+					logger.info("demandVo.getOrderMoney():" + demandVo.getOrderMoney());
+					logger.info("randomNonceStr:" + randomNonceStr);
+					logger.info("randomNonceStr:" + randomNonceStr);
+
 					// 插入一条日志信息，记录结课/支付记录
 					TeacherAccountOperateLogPo paymentLog = new TeacherAccountOperateLogPo();
 					paymentLog.setPaymentStreamId(randomNonceStr);
