@@ -154,6 +154,7 @@ public class PayController {
 
 					//更新订单信息
 					// 如果是试讲订单，要将试讲订单修改成付费订单
+					logger.info("需求id=====================" + demandForm.getDemandId());
 					demandVo = studentDemandMapper.findStudentDemandInfo(demandForm.getDemandId());
 
 					if (demandVo == null) {
@@ -169,7 +170,7 @@ public class PayController {
 					logForm.setCreateUser(demandVo.getStudentId().toString());
 
 					demandLogMapper.insert(logForm);
-
+					logger.info("测试=====================1");
 					Integer weekDay = DateUtil.getWeekOfDate(date);
 					demandForm.setCurrentWeekDay(weekDay);
 
@@ -180,7 +181,7 @@ public class PayController {
 					demandForm.setUpdateTime(date);
                     demandForm.setCreateTime(date);
 					Long sid = studentDemandMapper.updateOldDemandToNew(demandForm);
-
+					logger.info("测试=====================2");
 					List<DemandCourseInfoForm> courseInfoFormList = new ArrayList<>();
                     StudentDemandVo demand = demandVo;
 					// 根据订单插入每个节课时
@@ -210,9 +211,9 @@ public class PayController {
 							courseInfoFormList.add(courseInfoForm);
 						});
 					}
-
+					logger.info("测试=====================3");
 					demandCourseInfoMapper.insert(courseInfoFormList);
-
+					logger.info("测试=====================4");
 					// 插入一条日志信息，记录结课/支付记录
 					TeacherAccountOperateLogPo paymentLog = new TeacherAccountOperateLogPo();
 					paymentLog.setPaymentStreamId(randomNonceStr);
@@ -230,7 +231,7 @@ public class PayController {
 
 				} else {
 
-					return ApiResponse.error("支付失败");
+					return ApiResponse.error("支付失败,请检查订单");
 				}
 
 				response.put("appid", Constant.APP_ID);
