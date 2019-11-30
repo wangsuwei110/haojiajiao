@@ -692,7 +692,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 								day);
 					}
 
-					if (Integer.valueOf(weekDay) > Integer.valueOf(tp.getWeek())) {
+					if (Integer.valueOf(weekDay) >= Integer.valueOf(tp.getWeek())) {
 						
 						int day = Integer.valueOf(weekDay) - Integer.valueOf(tp.getWeek());
 						
@@ -700,6 +700,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 						
 						lastDateTime = DateUtil.addDay(beforeDay, 7);
 					}
+					
 
 					Map<String, Object> map = new HashMap<>();
 					map.put("week", tp.getWeek());

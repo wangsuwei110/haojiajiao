@@ -42,6 +42,6 @@ public class UserAccountController {
 			return ApiResponse.success("操作成功" , JSON.toJSON(teacherAccountVo));
 		}
 
-		return ApiResponse.error("暂无数据");
+		return ApiResponse.success("暂无数据");
 	}
 }
