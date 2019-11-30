@@ -97,6 +97,7 @@ public class PayController {
 		String openId = "";
 		String prepay_Id = "";
 		StudentDemandVo demandVo = new StudentDemandVo();
+		String randomNonceStr = RandomUtils.generateMixString(32);
 		try {
 			openId = getOpenId(code);
 //			String openId = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
@@ -114,8 +115,6 @@ public class PayController {
 
 				logger.error("openId: " + openId + ", clientIP: " + clientIP);
 
-				String randomNonceStr = RandomUtils.generateMixString(32);
-				
 				String wxPayResult = unifiedOrder(openId, clientIP, randomNonceStr ,randomOrderId, demandForm.getOrderMoney());
 
 				Map<String, String> parseResult = CommonUtil.parseXml(wxPayResult);
@@ -157,93 +156,6 @@ public class PayController {
 					response.put("paySign", paySign);
                     response.put("signType", Constant.SIGN_TYPE);
 
-					//更新订单信息
-					// 如果是试讲订单，要将试讲订单修改成付费订单
-					demandVo = studentDemandMapper.findStudentDemandInfo(demandForm.getDemandId());
-
-					if (demandVo == null) {
-						logger.info("订单不符合要求, 必须是试讲通过的订单");
-						return ApiResponse.error("订单不符合要求");
-					}
-					// 记录上个订单的信息
-					Date date = new Date();
-					DemandLogForm logForm = new DemandLogForm();
-					logForm.setCreateTime(date);
-					logForm.setMark(JSON.toJSONString(demandVo));
-					logForm.setDemandId(demandForm.getDemandId());
-					logForm.setCreateUser(demandVo.getStudentId().toString());
-
-					demandLogMapper.insert(logForm);
-					Integer weekDay = DateUtil.getWeekOfDate(date);
-					demandForm.setCurrentWeekDay(weekDay);
-
-					// 修改当前订单成新订单
-					demandForm.setOrderType(2);
-					demandForm.setOrderMoney(demandForm.getOrderMoney());
-                    demandForm.setPaymentStreamId(randomOrderId);
-					demandForm.setOrderStart(date);
-					demandForm.setUpdateTime(date);
-                    demandForm.setCreateTime(date);
-					Long sid = studentDemandMapper.updateOldDemandToNew(demandForm);
-
-					// 修改订单状态至续课状态：状态变成4
-					StudentDemandConnectForm connectForm = new StudentDemandConnectForm();
-					connectForm.setTeacherId(demandVo.getTeacherId());
-					connectForm.setDemandId(demandVo.getSid());
-					connectForm.setStatus(4);
-					connectMapper.updateByDemandId(connectForm);
-
-
-					List<DemandCourseInfoForm> courseInfoFormList = new ArrayList<>();
-                    StudentDemandVo demand = demandVo;
-
-					// 根据订单插入每个节课时
-					for (int i = 0; i < demandForm.getWeekNum(); i++) {
-						List<WeekTimeVo> list = JSON.parseArray(demandForm.getTimeRange(), WeekTimeVo.class);
-
-						final Integer weekNum = i;
-						list.forEach(w -> {
-							DemandCourseInfoForm courseInfoForm = new DemandCourseInfoForm();
-							if (weekDay >= w.getWeek()) {
-                                Integer week = DateUtil.getWeekOfDate(DateUtil.addDay(date, 7 + 7*weekNum));
-								courseInfoForm.setOrderTeachTime(DateUtil.addDay(date, 7 + 7*weekNum + w.getWeek() - week));
-							} else {
-								courseInfoForm.setOrderTeachTime(DateUtil.addDay(date, w.getWeek() - weekDay + (7*weekNum)));
-							}
-
-							courseInfoForm.setStatus(0);
-							courseInfoForm.setDeleteStatus(0);
-							courseInfoForm.setCreateTime(date);
-							courseInfoForm.setUpdateTime(date);
-							courseInfoForm.setWeekNum(w.getWeek());
-							courseInfoForm.setTimeNum(w.getTime());
-							courseInfoForm.setDemandId(demandForm.getDemandId());
-							courseInfoForm.setStudentId(demand.getStudentId());
-							courseInfoForm.setTeacherId(demand.getTeacherId());
-							courseInfoForm.setCreateUser(demand.getStudentId().toString());
-
-							courseInfoFormList.add(courseInfoForm);
-						});
-					}
-
-
-					demandCourseInfoMapper.insert(courseInfoFormList);
-
-					// 插入一条日志信息，记录结课/支付记录
-					TeacherAccountOperateLogPo paymentLog = new TeacherAccountOperateLogPo();
-					paymentLog.setOrderId(randomOrderId);
-					paymentLog.setPaymentStreamId(randomNonceStr);
-					paymentLog.setPaymentPersonId(demandVo.getStudentId());
-					paymentLog.setPaymentPersonName(demandVo.getStudentName());
-					paymentLog.setPaymentType(3);
-					paymentLog.setPaymentDesc("支付订单");
-					paymentLog.setStatus(1);
-					paymentLog.setCreateTime(date);
-					paymentLog.setCreateUser(demandVo.getStudentName());
-					paymentLog.setPaymentAccount(new BigDecimal(demandForm.getOrderMoney()));
-					paymentLog.setUpdateTime(date);
-					paymentLog.setUpdateUser(demandVo.getStudentName());
-					userAccountLogMapper.insertUserAccountLog(paymentLog);
 				} else {
 
 					return ApiResponse.error("支付失败,请检查订单");
@@ -264,7 +176,95 @@ public class PayController {
 			logger.error("支付失败");
 			return ApiResponse.errorData("支付失败", json);
 		}
-		
+
+		// *******************************逻辑信息**********************************
+
+		//更新订单信息
+		// 如果是试讲订单，要将试讲订单修改成付费订单
+		demandVo = studentDemandMapper.findStudentDemandInfo(demandForm.getDemandId());
+
+		if (demandVo == null) {
+			logger.info("订单不符合要求, 必须是试讲通过的订单");
+			return ApiResponse.error("订单不符合要求");
+		}
+		// 记录上个订单的信息
+		Date date = new Date();
+		DemandLogForm logForm = new DemandLogForm();
+		logForm.setCreateTime(date);
+		logForm.setMark(JSON.toJSONString(demandVo));
+		logForm.setDemandId(demandForm.getDemandId());
+		logForm.setCreateUser(demandVo.getStudentId().toString());
+
+		demandLogMapper.insert(logForm);
+		Integer weekDay = DateUtil.getWeekOfDate(date);
+		demandForm.setCurrentWeekDay(weekDay);
+
+		// 修改当前订单成新订单
+		demandForm.setOrderType(2);
+		demandForm.setOrderMoney(demandForm.getOrderMoney());
+		demandForm.setPaymentStreamId(randomOrderId);
+		demandForm.setOrderStart(date);
+		demandForm.setUpdateTime(date);
+		demandForm.setCreateTime(date);
+		Long sid = studentDemandMapper.updateOldDemandToNew(demandForm);
+
+		// 修改订单状态至续课状态：状态变成4
+		StudentDemandConnectForm connectForm = new StudentDemandConnectForm();
+		connectForm.setTeacherId(demandVo.getTeacherId());
+		connectForm.setDemandId(demandVo.getSid());
+		connectForm.setStatus(4);
+		connectMapper.updateByDemandId(connectForm);
+
+
+		List<DemandCourseInfoForm> courseInfoFormList = new ArrayList<>();
+		StudentDemandVo demand = demandVo;
+
+		// 根据订单插入每个节课时
+		for (int i = 0; i < demandForm.getWeekNum(); i++) {
+			List<WeekTimeVo> list = JSON.parseArray(demandForm.getTimeRange(), WeekTimeVo.class);
+
+			final Integer weekNum = i;
+			list.forEach(w -> {
+				DemandCourseInfoForm courseInfoForm = new DemandCourseInfoForm();
+				if (weekDay >= w.getWeek()) {
+					Integer week = DateUtil.getWeekOfDate(DateUtil.addDay(date, 7 + 7*weekNum));
+					courseInfoForm.setOrderTeachTime(DateUtil.addDay(date, 7 + 7*weekNum + w.getWeek() - week));
+				} else {
+					courseInfoForm.setOrderTeachTime(DateUtil.addDay(date, w.getWeek() - weekDay + (7*weekNum)));
+				}
+
+				courseInfoForm.setStatus(0);
+				courseInfoForm.setDeleteStatus(0);
+				courseInfoForm.setCreateTime(date);
+				courseInfoForm.setUpdateTime(date);
+				courseInfoForm.setWeekNum(w.getWeek());
+				courseInfoForm.setTimeNum(w.getTime());
+				courseInfoForm.setDemandId(demandForm.getDemandId());
+				courseInfoForm.setStudentId(demand.getStudentId());
+				courseInfoForm.setTeacherId(demand.getTeacherId());
+				courseInfoForm.setCreateUser(demand.getStudentId().toString());
+
+				courseInfoFormList.add(courseInfoForm);
+			});
+		}
+
+		demandCourseInfoMapper.insert(courseInfoFormList);
+
+		// 插入一条日志信息，记录结课/支付记录
+		TeacherAccountOperateLogPo paymentLog = new TeacherAccountOperateLogPo();
+		paymentLog.setOrderId(randomOrderId);
+		paymentLog.setPaymentStreamId(randomNonceStr);
+		paymentLog.setPaymentPersonId(demandVo.getStudentId());
+		paymentLog.setPaymentPersonName(demandVo.getStudentName());
+		paymentLog.setPaymentType(3);
+		paymentLog.setPaymentDesc("支付订单");
+		paymentLog.setStatus(1);
+		paymentLog.setCreateTime(date);
+		paymentLog.setCreateUser(demandVo.getStudentName());
+		paymentLog.setPaymentAccount(new BigDecimal(demandForm.getOrderMoney()));
+		paymentLog.setUpdateTime(date);
+		paymentLog.setUpdateUser(demandVo.getStudentName());
+		userAccountLogMapper.insertUserAccountLog(paymentLog);
 		
 		JSONObject data = new JSONObject();
 
