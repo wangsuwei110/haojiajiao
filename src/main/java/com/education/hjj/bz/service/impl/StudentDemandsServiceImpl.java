@@ -29,14 +29,6 @@ import com.education.hjj.bz.formBean.DemandLogForm;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.StudentDemandForm;
 import com.education.hjj.bz.formBean.StudentForm;
-import com.education.hjj.bz.mapper.DemandCourseInfoMapper;
-import com.education.hjj.bz.mapper.DemandLogMapper;
-import com.education.hjj.bz.mapper.StudentDemandConnectMapper;
-import com.education.hjj.bz.mapper.StudentDemandMapper;
-import com.education.hjj.bz.mapper.StudentMapper;
-import com.education.hjj.bz.mapper.TeachBranchMapper;
-import com.education.hjj.bz.mapper.TeacherMapper;
-import com.education.hjj.bz.mapper.UserInfoMapper;
 import com.education.hjj.bz.service.StudentDemandsService;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.DateUtil;
@@ -81,6 +73,9 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 	@Autowired
 	private StudentLogService studentLogService;
+	
+	@Autowired
+	private PointsLogMapper pointsLogMapper;
 
 	@Override
 	public Map<String, Object> queryStudentDemandDetail(String demandId) {
@@ -773,8 +768,22 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		studentDemandForm.setDemandId(demandForm.getDemandId());
 
 		int i = studentDemandMapper.updateNewTrialDemandStatus(studentDemandForm);
+		
+		Integer teacherId = demandForm.getTeacherId();
+		
+		PointsLogPo pointsLogPo = new PointsLogPo();
+		pointsLogPo.setTeacherId(teacherId);
+		pointsLogPo.setGetPointsCounts(10);
+		pointsLogPo.setGetPointsDesc("确定试讲时间");
+		pointsLogPo.setStatus(1);
+		pointsLogPo.setCreateTime(new Date());
+		pointsLogPo.setCreateUser(String.valueOf(teacherId));
+		pointsLogPo.setUpdateTime(new Date());
+		pointsLogPo.setUpdateUser(String.valueOf(teacherId));
 
-		if (i >= 0 && j >= 0) {
+		int k = pointsLogMapper.addTeacherPointsLog(pointsLogPo);
+		
+		if (i >= 0 && j >= 0 && k>0) {
 			return 1;
 		}
 
@@ -878,6 +887,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	}
 
 	@Override
+	@Transactional
 	public int updateTimeTableByTeacherId(StudentDemandPo studentDemandPo) {
 
 
@@ -892,14 +902,34 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			studentDemandPo.setStatus(2);
 		}
 
+		int k = 0;
+		
 		//打卡
 		if(teacherId != null && studentId == null) {
 			studentDemandPo.setStatus(1);
+			
+			PointsLogPo pointsLogPo = new PointsLogPo();
+			pointsLogPo.setTeacherId(teacherId);
+			pointsLogPo.setGetPointsCounts(5);
+			pointsLogPo.setGetPointsDesc("确定试讲时间");
+			pointsLogPo.setStatus(1);
+			pointsLogPo.setCreateTime(new Date());
+			pointsLogPo.setCreateUser(String.valueOf(teacherId));
+			pointsLogPo.setUpdateTime(new Date());
+			pointsLogPo.setUpdateUser(String.valueOf(teacherId));
+
+			k = pointsLogMapper.addTeacherPointsLog(pointsLogPo);
 		}
 
+		 
+		
 		int i = studentDemandMapper.updateTimeTableByTeacherId(studentDemandPo);
+		
+		if (i >= 0 && k>0) {
+			return 1;
+		}
 
-		return i;
+		return -1;
 	}
 
 	@Override

@@ -176,7 +176,8 @@ public class UserInfoController {
 		Map<String , Object> map = new HashMap<String, Object>(1);
 		map.put("teacherName", teacherVo.getName());
 		map.put("teacherLevel", teacherVo.getTeacherLevel());
-		map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
+		//map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
+		map.put("telephone", teacherVo.getTelephone());
 		
 		logger.info("telephone = {}" , map.get("telephone"));
 		
