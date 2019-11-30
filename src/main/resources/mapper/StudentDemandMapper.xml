@@ -275,6 +275,7 @@
               ,order_money = #{orderMoney}
               ,current_week_day = #{currentWeekDay}
               ,create_time = #{createTime}
+              ,payment_stream_id = #{paymentStreamId}
         where sid = #{demandId}
 
     </update>
