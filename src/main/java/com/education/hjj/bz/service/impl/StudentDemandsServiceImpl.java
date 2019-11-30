@@ -17,6 +17,8 @@ import com.education.hjj.bz.entity.*;
 import com.education.hjj.bz.entity.vo.*;
 import com.education.hjj.bz.mapper.*;
 import com.education.hjj.bz.service.StudentLogService;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -590,10 +592,13 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 				break;
 			}
 			
-			if(sd.getStatus() == 0 || sd.getStatus() == 3) {
-				flag = true;
+			if(sd.getStatus() != null && StringUtils.isNoneBlank(sd.getStatus().toString())) {
+				
+				if(sd.getStatus() == 0 || sd.getStatus() == 3) {
+					flag = true;
 
-				break;
+					break;
+				}
 			}
 		}
 		
