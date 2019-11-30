@@ -573,10 +573,34 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			map.put("signUpTeacherInfo", "");
 		}
 		
+		if(studentDemandDetail.getDemandType() == 1) {
+			
+			flag = true;
+			map.put("studentDemandDetail", studentDemandDetail);
+			map.put("singUpStatus", flag);//singUpStatus为false的可以报名
+		}
+		
+		List<StudentDemandVo> sdcList = studentDemandMapper.queryStudentDemandDetailSignStatusBySid(sid);
+		
+		for(StudentDemandVo sd : sdcList) {
+			
+			if(sd.getTeacherId() == teacherId) {
+				flag = true;
+
+				break;
+			}
+			
+			if(sd.getStatus() == 0 || sd.getStatus() == 3) {
+				flag = true;
+
+				break;
+			}
+		}
+		
 		logger.info("订单id:{} , 教员id:{} , 报名人数：{} ,是否报过名:{}" , sid , teacherId , list.size() ,flag);
 
 		map.put("studentDemandDetail", studentDemandDetail);
-		map.put("singUpStatus", flag);
+		map.put("singUpStatus", flag);//singUpStatus为false的可以报名
 
 		return map;
 	}
@@ -933,6 +957,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	}
 
 	@Override
+	@Transactional
 	public int insert(StudentDemandConnectForm studentDemandConnect) {
 		
 		int count = connectMapper.getCount(studentDemandConnect);
@@ -956,7 +981,29 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		
 		int i = connectMapper.insert(studentDemandConnect);
 		
-		return i;
+		Integer demandId = studentDemandConnect.getDemandId();
+		
+		StudentDemandConnectForm sdc = new StudentDemandConnectForm();
+		sdc.setDemandId(demandId);
+		
+		int demandPersonCount = connectMapper.getCount(sdc);
+		
+		
+		
+		StudentDemandPo studentDemandPo = new StudentDemandPo();
+		studentDemandPo.setDemandId(demandId);
+		studentDemandPo.setDemandSignUpNum(demandPersonCount+1);
+		studentDemandPo.setUpdateTime(new Date());
+		
+		
+		
+		int  j = studentDemandMapper.updateDemandSignNum(studentDemandPo);
+		
+		if(i > 0  && j>0) {
+			return 1;
+		}
+		
+		return -1;
 	}
 	
 	@Override
