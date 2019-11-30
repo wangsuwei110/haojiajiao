@@ -348,6 +348,17 @@ public final class DateUtil {
 	public static Date addDay(Date date, int n) {
 		return dateAdd(date, Calendar.DATE, n);
 	}
+	
+	/**
+	 * 在日期上减少天数
+	 *
+	 * @param date 日期
+	 * @param n    要增加的天数
+	 * @return
+	 */
+	public static Date subDay(Date date, int n) {
+		return dateSub(date, Calendar.DATE, n);
+	}
 
 	/**
 	 * 在日期上增加小时
@@ -386,6 +397,19 @@ public final class DateUtil {
 	 * @return
 	 */
 	public static Date dateAdd(Date date, int t, int n) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(t, n);
+		return cal.getTime();
+	}
+	
+	/**
+	 * @param date
+	 * @param t
+	 * @param n
+	 * @return
+	 */
+	public static Date dateSub(Date date, int t, int n) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		cal.add(t, n);
