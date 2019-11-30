@@ -194,6 +194,10 @@ public class UserInfoController {
 		map.put("certificate", teacherVo.getTeacherCertificate() == null?"0":teacherVo.getTeacherCertificate());
 		map.put("experience", teacherVo.getExperience() == null ? "0":teacherVo.getExperience());
 		
+		map.put("major", teacherVo.getMajor());
+		map.put("teacherTag", teacherVo.getTeacherTag());
+		
+		
 		return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
 	}
 	
