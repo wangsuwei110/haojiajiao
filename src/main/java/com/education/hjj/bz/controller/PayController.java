@@ -239,7 +239,7 @@ public class PayController {
 					paymentLog.setStatus(1);
 					paymentLog.setCreateTime(date);
 					paymentLog.setCreateUser(demandVo.getStudentName());
-					paymentLog.setPaymentAccount(demandForm.getOrderMoney());
+					paymentLog.setPaymentAccount(new BigDecimal(demandForm.getOrderMoney()));
 					paymentLog.setUpdateTime(date);
 					paymentLog.setUpdateUser(demandVo.getStudentName());
 					userAccountLogMapper.insertUserAccountLog(paymentLog);
@@ -410,7 +410,7 @@ public class PayController {
 	 * @param openId
 	 */
 	@Transactional
-	private String unifiedOrder(String openId, String clientIP, String randomNonceStr , String randomOrderId, BigDecimal orderMoney) {
+	private String unifiedOrder(String openId, String clientIP, String randomNonceStr , String randomOrderId, String orderMoney) {
 
 		try {
 
@@ -440,7 +440,7 @@ public class PayController {
 	}
 
 	@Transactional
-	private PayInfo createPayInfo(String openId, String clientIP, String randomNonceStr , String randomOrderId, BigDecimal orderMoney) {
+	private PayInfo createPayInfo(String openId, String clientIP, String randomNonceStr , String randomOrderId, String orderMoney) {
 
 		Date date = new Date();
 		String timeStart = TimeUtils.getFormatTime(date, Constant.TIME_FORMAT);
@@ -454,11 +454,11 @@ public class PayController {
 		payInfo.setDevice_info("WEB");
 		payInfo.setNonce_str(randomNonceStr);
 		payInfo.setSign_type(Constant.SIGN_TYPE); // 默认即为MD5
-		payInfo.setBody("课时费");
+		payInfo.setBody("keshifei");
 		payInfo.setAttach("test4luluteam");
 		payInfo.setOut_trade_no(randomOrderId);
-		String money = String.valueOf(orderMoney.multiply(new BigDecimal("100")));
-		logger.info("金额============="+ Integer.valueOf(money.substring(0, money.indexOf("."))));
+		String money = String.valueOf(new BigDecimal(orderMoney).multiply(new BigDecimal("100")));
+		logger.info("金额============="+ Integer.valueOf(money));
 		payInfo.setTotal_fee(Integer.valueOf(money.substring(0, money.indexOf(".")))); // 单位：分
 		payInfo.setSpbill_create_ip(clientIP);
 		payInfo.setTime_start(timeStart);

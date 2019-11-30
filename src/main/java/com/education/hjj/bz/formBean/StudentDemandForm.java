@@ -69,7 +69,7 @@ public class StudentDemandForm extends PageForm implements Serializable {
 
     @ApiModelProperty(value = "订单金额",required = true)
     @NotBlank(message = "订单金额不能为空")
-    private BigDecimal orderMoney;
+    private String orderMoney;
 
     @ApiModelProperty(value = "具体需求",required = true)
     @NotBlank(message = "具体需求不能为空")
@@ -258,11 +258,11 @@ public class StudentDemandForm extends PageForm implements Serializable {
         this.orderType = orderType;
     }
 
-    public BigDecimal getOrderMoney() {
+    public String getOrderMoney() {
         return orderMoney;
     }
 
-    public void setOrderMoney(BigDecimal orderMoney) {
+    public void setOrderMoney(String orderMoney) {
         this.orderMoney = orderMoney;
     }
 
