@@ -25,6 +25,7 @@ import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
 import com.education.hjj.bz.entity.TeacherPo;
 import com.education.hjj.bz.entity.vo.ParameterVo;
 import com.education.hjj.bz.entity.vo.PictureVo;
+import com.education.hjj.bz.entity.vo.TeachBranchVo;
 import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
 import com.education.hjj.bz.entity.vo.TeacherAccountVo;
 import com.education.hjj.bz.entity.vo.TeacherInfoPicturesVo;
@@ -659,6 +660,16 @@ public class UserInfoServiceImpl implements UserInfoService {
 	public List<UniversityVo> queryAllSchools() {
 		List<UniversityVo> schoolList = userInfoMapper.queryAllSchools();
 		return schoolList;
+	}
+
+	@Override
+	public List<TeacherVo> queryAllTeacherInfosByStudent(TeacherPo teacherPo) {
+		
+		List<TeacherVo> list = userInfoMapper.queryAllTeacherInfosByStudent(teacherPo);
+		
+		
+		
+		return list;
 	}
 
 }
