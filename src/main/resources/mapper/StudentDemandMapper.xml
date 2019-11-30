@@ -245,7 +245,7 @@
 			sd.class_num,
 			sd.time_range,
 			sd.demand_desc,
-			date_format(sd.create_time, '%Y-%m-%d') as create_time,
+			sd.create_time,
 			demand_signUp_num
 		FROM
 			student_demand sd
@@ -351,7 +351,7 @@
 			sd.sid,
 			tg.teach_grade_name,
 			tb.teach_branch_name,
-			date_format(sd.create_time, '%Y-%m-%d %T') as create_time,
+			sd.create_time,
 			sdc.status as demandSignStatus
 		FROM
 			student_demand_connect sdc
@@ -409,9 +409,10 @@
 		AND
 			sd.parameter_id like '%t.teach_address%'
 		AND
-			sd.subject_id like '%t.teach_brance%'
-		AND
+			(sd.subject_id like '%t.teach_brance%'
+		OR
 			sd.subject_id like '%t.teach_branch_slave%'
+		)
 		AND
 			sd.demand_grade like '%t.teach_grade%'
 		AND
