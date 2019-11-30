@@ -266,45 +266,45 @@ public class PayController {
 //		paymentLog.setUpdateUser(demandVo.getStudentName());
 //		userAccountLogMapper.insertUserAccountLog(paymentLog);
 //
-//		JSONObject data = new JSONObject();
-//
-//		Map<String,Object> keyMap1 = new HashMap<String,Object>();
-//		keyMap1.put("value", randomOrderId);
-//		//添加客户名称
-//		data.put("keyword1",keyMap1);
-//
-//		Map<String,Object> keyMap2 = new HashMap<String,Object>();
-//		keyMap2.put("value", Constant.SEND_NAME);
-//		//添加卖方名称
-//		data.put("keyword2",keyMap2);
-//
-//		Map<String,Object> keyMap3 = new HashMap<String,Object>();
-//		keyMap3.put("value",DateUtil.getStandardDayByYear(new Date()));
-//		//添加对账月份
-//		data.put("keyword3",keyMap3);
-//
-//		Map<String,Object> keyMap4 = new HashMap<String,Object>();
-//		keyMap4.put("value","付款金额：" + demandForm.getOrderMoney() +"元");
-//		//添加对账月份
-//		data.put("keyword4",keyMap4);
-//
-//		Map<String,Object> keyMap5 = new HashMap<String,Object>();
-//		keyMap5.put("value","商品详情：" + demandVo.getTeachBranchName());
-//		//添加对账月份
-//		data.put("keyword5",keyMap5);
-//
-//		Map<String,Object> keyMap6 = new HashMap<String,Object>();
-//		keyMap6.put("value","授课讲师：" + demandVo.getTeachName());
-//		//添加对账月份
-//		data.put("keyword6",keyMap6);
-//
-//		Map<String,Object> keyMap7 = new HashMap<String,Object>();
-//		keyMap7.put("value","已支付");
-//		//添加对账月份
-//		data.put("keyword7",keyMap7);
-//
-//		JSONObject sendRedPackRsult = SendWXMessageUtils.sendMessage(openId, Constant.PAYMENT_SUCCESS_MESSAGE, Constant.COMMON_PAYMENT_SUCCESS_MESSAGE, prepay_Id, data);
-//		logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") +" " + sendRedPackRsult.getString("errmsg"));
+		JSONObject data = new JSONObject();
+
+		Map<String,Object> keyMap1 = new HashMap<String,Object>();
+		keyMap1.put("value", randomOrderId);
+		//添加客户名称
+		data.put("keyword1",keyMap1);
+
+		Map<String,Object> keyMap2 = new HashMap<String,Object>();
+		keyMap2.put("value", Constant.SEND_NAME);
+		//添加卖方名称
+		data.put("keyword2",keyMap2);
+
+		Map<String,Object> keyMap3 = new HashMap<String,Object>();
+		keyMap3.put("value",DateUtil.getStandardDayByYear(new Date()));
+		//添加对账月份
+		data.put("keyword3",keyMap3);
+
+		Map<String,Object> keyMap4 = new HashMap<String,Object>();
+		keyMap4.put("value","付款金额：" + demandForm.getOrderMoney() +"元");
+		//添加对账月份
+		data.put("keyword4",keyMap4);
+
+		Map<String,Object> keyMap5 = new HashMap<String,Object>();
+		keyMap5.put("value","商品详情：" + demandVo.getTeachBranchName());
+		//添加对账月份
+		data.put("keyword5",keyMap5);
+
+		Map<String,Object> keyMap6 = new HashMap<String,Object>();
+		keyMap6.put("value","授课讲师：" + demandVo.getTeachName());
+		//添加对账月份
+		data.put("keyword6",keyMap6);
+
+		Map<String,Object> keyMap7 = new HashMap<String,Object>();
+		keyMap7.put("value","已支付");
+		//添加对账月份
+		data.put("keyword7",keyMap7);
+
+		JSONObject sendRedPackRsult = SendWXMessageUtils.sendMessage(openId, Constant.PAYMENT_SUCCESS_MESSAGE, Constant.COMMON_PAYMENT_SUCCESS_MESSAGE, prepay_Id, data);
+		logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") +" " + sendRedPackRsult.getString("errmsg"));
 //
 		
 
@@ -374,130 +374,90 @@ public class PayController {
 			if (WXUtils.verify(WXUtils.createLinkString(map), (String) map.get("sign"), Constant.APP_KEY, "utf-8")) {
 				/** 此处添加自己的业务逻辑代码start **/
 
-			// *******************************逻辑信息**********************************
-			logger.info("*********支付代码逻辑***********");
-			//更新订单信息
-			// 如果是试讲订单，要将试讲订单修改成付费订单
-			demandVo = studentDemandMapper.findStudentDemandInfo(demandForm.getDemandId());
+                // *******************************逻辑信息**********************************
+                logger.info("*********支付代码逻辑***********");
+                //更新订单信息
+                // 如果是试讲订单，要将试讲订单修改成付费订单
+                demandVo = studentDemandMapper.findStudentDemandInfo(demandForm.getDemandId());
 
-			// 记录上个订单的信息
-			Date date = new Date();
-			DemandLogForm logForm = new DemandLogForm();
-			logForm.setCreateTime(date);
-			logForm.setMark(JSON.toJSONString(demandVo));
-			logForm.setDemandId(demandForm.getDemandId());
-			logForm.setCreateUser(demandVo.getStudentId().toString());
+                // 记录上个订单的信息
+                Date date = new Date();
+                DemandLogForm logForm = new DemandLogForm();
+                logForm.setCreateTime(date);
+                logForm.setMark(JSON.toJSONString(demandVo));
+                logForm.setDemandId(demandForm.getDemandId());
+                logForm.setCreateUser(demandVo.getStudentId().toString());
 
-			demandLogMapper.insert(logForm);
-			Integer weekDay = DateUtil.getWeekOfDate(date);
-			demandForm.setCurrentWeekDay(weekDay);
+                demandLogMapper.insert(logForm);
+                Integer weekDay = DateUtil.getWeekOfDate(date);
+                demandForm.setCurrentWeekDay(weekDay);
 
-			// 修改当前订单成新订单
-			demandForm.setOrderType(2);
-			demandForm.setOrderMoney(demandForm.getOrderMoney());
-			demandForm.setPaymentStreamId(randomOrderId);
-			demandForm.setOrderStart(date);
-			demandForm.setUpdateTime(date);
-			demandForm.setCreateTime(date);
-			Long sid = studentDemandMapper.updateOldDemandToNew(demandForm);
+                // 修改当前订单成新订单
+                demandForm.setOrderType(2);
+                demandForm.setOrderMoney(demandForm.getOrderMoney());
+                demandForm.setPaymentStreamId(randomOrderId);
+                demandForm.setOrderStart(date);
+                demandForm.setUpdateTime(date);
+                demandForm.setCreateTime(date);
+                Long sid = studentDemandMapper.updateOldDemandToNew(demandForm);
 
-			// 修改订单状态至续课状态：状态变成4
-			StudentDemandConnectForm connectForm = new StudentDemandConnectForm();
-			connectForm.setTeacherId(demandVo.getTeacherId());
-			connectForm.setDemandId(demandVo.getSid());
-			connectForm.setStatus(4);
-			connectMapper.updateByDemandId(connectForm);
+                // 修改订单状态至续课状态：状态变成4
+                StudentDemandConnectForm connectForm = new StudentDemandConnectForm();
+                connectForm.setTeacherId(demandVo.getTeacherId());
+                connectForm.setDemandId(demandVo.getSid());
+                connectForm.setStatus(4);
+                connectMapper.updateByDemandId(connectForm);
 
 
-			List<DemandCourseInfoForm> courseInfoFormList = new ArrayList<>();
-			StudentDemandVo demand = demandVo;
+                List<DemandCourseInfoForm> courseInfoFormList = new ArrayList<>();
+                StudentDemandVo demand = demandVo;
 
-			// 根据订单插入每个节课时
-			for (int i = 0; i < demandForm.getWeekNum(); i++) {
-				List<WeekTimeVo> list = JSON.parseArray(demandForm.getTimeRange(), WeekTimeVo.class);
+                // 根据订单插入每个节课时
+                for (int i = 0; i < demandForm.getWeekNum(); i++) {
+                    List<WeekTimeVo> list = JSON.parseArray(demandForm.getTimeRange(), WeekTimeVo.class);
 
-				final Integer weekNum = i;
-				list.forEach(w -> {
-					DemandCourseInfoForm courseInfoForm = new DemandCourseInfoForm();
-					if (weekDay >= w.getWeek()) {
-						Integer week = DateUtil.getWeekOfDate(DateUtil.addDay(date, 7 + 7*weekNum));
-						courseInfoForm.setOrderTeachTime(DateUtil.addDay(date, 7 + 7*weekNum + w.getWeek() - week));
-					} else {
-						courseInfoForm.setOrderTeachTime(DateUtil.addDay(date, w.getWeek() - weekDay + (7*weekNum)));
-					}
+                    final Integer weekNum = i;
+                    list.forEach(w -> {
+                        DemandCourseInfoForm courseInfoForm = new DemandCourseInfoForm();
+                        if (weekDay >= w.getWeek()) {
+                            Integer week = DateUtil.getWeekOfDate(DateUtil.addDay(date, 7 + 7*weekNum));
+                            courseInfoForm.setOrderTeachTime(DateUtil.addDay(date, 7 + 7*weekNum + w.getWeek() - week));
+                        } else {
+                            courseInfoForm.setOrderTeachTime(DateUtil.addDay(date, w.getWeek() - weekDay + (7*weekNum)));
+                        }
 
-					courseInfoForm.setStatus(0);
-					courseInfoForm.setDeleteStatus(0);
-					courseInfoForm.setCreateTime(date);
-					courseInfoForm.setUpdateTime(date);
-					courseInfoForm.setWeekNum(w.getWeek());
-					courseInfoForm.setTimeNum(w.getTime());
-					courseInfoForm.setDemandId(demandForm.getDemandId());
-					courseInfoForm.setStudentId(demand.getStudentId());
-					courseInfoForm.setTeacherId(demand.getTeacherId());
-					courseInfoForm.setCreateUser(demand.getStudentId().toString());
+                        courseInfoForm.setStatus(0);
+                        courseInfoForm.setDeleteStatus(0);
+                        courseInfoForm.setCreateTime(date);
+                        courseInfoForm.setUpdateTime(date);
+                        courseInfoForm.setWeekNum(w.getWeek());
+                        courseInfoForm.setTimeNum(w.getTime());
+                        courseInfoForm.setDemandId(demandForm.getDemandId());
+                        courseInfoForm.setStudentId(demand.getStudentId());
+                        courseInfoForm.setTeacherId(demand.getTeacherId());
+                        courseInfoForm.setCreateUser(demand.getStudentId().toString());
 
-					courseInfoFormList.add(courseInfoForm);
-				});
-			}
+                        courseInfoFormList.add(courseInfoForm);
+                    });
+                }
 
-			demandCourseInfoMapper.insert(courseInfoFormList);
+                demandCourseInfoMapper.insert(courseInfoFormList);
 
-			// 插入一条日志信息，记录结课/支付记录
-			TeacherAccountOperateLogPo paymentLog = new TeacherAccountOperateLogPo();
-			paymentLog.setOrderId(randomOrderId);
-			paymentLog.setPaymentStreamId(randomNonceStr);
-			paymentLog.setPaymentPersonId(demandVo.getStudentId());
-			paymentLog.setPaymentPersonName(demandVo.getStudentName());
-			paymentLog.setPaymentType(3);
-			paymentLog.setPaymentDesc("支付订单");
-			paymentLog.setStatus(1);
-			paymentLog.setCreateTime(date);
-			paymentLog.setCreateUser(demandVo.getStudentName());
-			paymentLog.setPaymentAccount(new BigDecimal(demandForm.getOrderMoney()));
-			paymentLog.setUpdateTime(date);
-			paymentLog.setUpdateUser(demandVo.getStudentName());
-			userAccountLogMapper.insertUserAccountLog(paymentLog);
-
-			JSONObject data = new JSONObject();
-
-			Map<String,Object> keyMap1 = new HashMap<String,Object>();
-			keyMap1.put("value", randomOrderId);
-			//添加客户名称
-			data.put("keyword1",keyMap1);
-
-			Map<String,Object> keyMap2 = new HashMap<String,Object>();
-			keyMap2.put("value", Constant.SEND_NAME);
-			//添加卖方名称
-			data.put("keyword2",keyMap2);
-
-			Map<String,Object> keyMap3 = new HashMap<String,Object>();
-			keyMap3.put("value",DateUtil.getStandardDayByYear(new Date()));
-			//添加对账月份
-			data.put("keyword3",keyMap3);
-
-			Map<String,Object> keyMap4 = new HashMap<String,Object>();
-			keyMap4.put("value","付款金额：" + demandForm.getOrderMoney() +"元");
-			//添加对账月份
-			data.put("keyword4",keyMap4);
-
-			Map<String,Object> keyMap5 = new HashMap<String,Object>();
-			keyMap5.put("value","商品详情：" + demandVo.getTeachBranchName());
-			//添加对账月份
-			data.put("keyword5",keyMap5);
-
-			Map<String,Object> keyMap6 = new HashMap<String,Object>();
-			keyMap6.put("value","授课讲师：" + demandVo.getTeachName());
-			//添加对账月份
-			data.put("keyword6",keyMap6);
-
-			Map<String,Object> keyMap7 = new HashMap<String,Object>();
-			keyMap7.put("value","已支付");
-			//添加对账月份
-			data.put("keyword7",keyMap7);
-
-			JSONObject sendRedPackRsult = SendWXMessageUtils.sendMessage(openId, Constant.PAYMENT_SUCCESS_MESSAGE, Constant.COMMON_PAYMENT_SUCCESS_MESSAGE, prepay_Id, data);
-			logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") +" " + sendRedPackRsult.getString("errmsg"));
+                // 插入一条日志信息，记录结课/支付记录
+                TeacherAccountOperateLogPo paymentLog = new TeacherAccountOperateLogPo();
+                paymentLog.setOrderId(randomOrderId);
+                paymentLog.setPaymentStreamId(randomNonceStr);
+                paymentLog.setPaymentPersonId(demandVo.getStudentId());
+                paymentLog.setPaymentPersonName(demandVo.getStudentName());
+                paymentLog.setPaymentType(3);
+                paymentLog.setPaymentDesc("支付订单");
+                paymentLog.setStatus(1);
+                paymentLog.setCreateTime(date);
+                paymentLog.setCreateUser(demandVo.getStudentName());
+                paymentLog.setPaymentAccount(new BigDecimal(demandForm.getOrderMoney()));
+                paymentLog.setUpdateTime(date);
+                paymentLog.setUpdateUser(demandVo.getStudentName());
+                userAccountLogMapper.insertUserAccountLog(paymentLog);
 
 				/** 此处添加自己的业务逻辑代码end **/
 
