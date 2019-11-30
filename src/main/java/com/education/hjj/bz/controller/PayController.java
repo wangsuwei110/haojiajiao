@@ -230,6 +230,7 @@ public class PayController {
 
 					// 插入一条日志信息，记录结课/支付记录
 					TeacherAccountOperateLogPo paymentLog = new TeacherAccountOperateLogPo();
+					paymentLog.setOrderId(randomOrderId);
 					paymentLog.setPaymentStreamId(randomNonceStr);
 					paymentLog.setPaymentPersonId(demandVo.getStudentId());
 					paymentLog.setPaymentPersonName(demandVo.getStudentName());

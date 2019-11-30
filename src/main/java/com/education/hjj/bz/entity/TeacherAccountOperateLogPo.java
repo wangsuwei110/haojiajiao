@@ -25,6 +25,16 @@ public class TeacherAccountOperateLogPo extends BasePo implements Serializable{
 	
 	private String paymentDesc;
 
+	private String orderId;
+
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
 
 	public Integer getPaymentId() {
 		return paymentId;
