@@ -116,7 +116,7 @@ public class PayController {
 
 				String randomNonceStr = RandomUtils.generateMixString(32);
 				
-				String wxPayResult = unifiedOrder(openId, clientIP, randomNonceStr ,randomOrderId);
+				String wxPayResult = unifiedOrder(openId, clientIP, randomNonceStr ,randomOrderId, demandForm.getOrderMoney());
 
 				Map<String, String> parseResult = CommonUtil.parseXml(wxPayResult);
 
@@ -399,13 +399,13 @@ public class PayController {
 	 * @param openId
 	 */
 	@Transactional
-	private String unifiedOrder(String openId, String clientIP, String randomNonceStr , String randomOrderId) {
+	private String unifiedOrder(String openId, String clientIP, String randomNonceStr , String randomOrderId, BigDecimal orderMoney) {
 
 		try {
 
 			String url = Constant.URL_UNIFIED_ORDER;
 
-			PayInfo payInfo = createPayInfo(openId, clientIP, randomNonceStr , randomOrderId);
+			PayInfo payInfo = createPayInfo(openId, clientIP, randomNonceStr , randomOrderId, orderMoney);
 			String md5 = getSign(payInfo);
 			payInfo.setSign(md5);
 
@@ -429,7 +429,7 @@ public class PayController {
 	}
 
 	@Transactional
-	private PayInfo createPayInfo(String openId, String clientIP, String randomNonceStr , String randomOrderId) {
+	private PayInfo createPayInfo(String openId, String clientIP, String randomNonceStr , String randomOrderId, BigDecimal orderMoney) {
 
 		Date date = new Date();
 		String timeStart = TimeUtils.getFormatTime(date, Constant.TIME_FORMAT);
@@ -446,7 +446,7 @@ public class PayController {
 		payInfo.setBody("JSAPItest");
 		payInfo.setAttach("test4luluteam");
 		payInfo.setOut_trade_no(randomOrderId);
-		payInfo.setTotal_fee(1);
+		payInfo.setTotal_fee(Integer.valueOf(String.valueOf(orderMoney.multiply(new BigDecimal("100"))))); // 单位：分
 		payInfo.setSpbill_create_ip(clientIP);
 		payInfo.setTime_start(timeStart);
 		payInfo.setTime_expire(timeExpire);
