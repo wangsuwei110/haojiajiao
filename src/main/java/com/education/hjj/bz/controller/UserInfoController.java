@@ -513,6 +513,15 @@ public class UserInfoController {
 				
 				//基本信息
 				//map.put("baseInfo", t);
+				
+				String date = t.getBeginSchoolTime();
+				
+				try {
+					t.setBeginSchoolTime(DateUtil.caculDegree(date));
+				} catch (ParseException e) {
+					logger.info("转换入学日期到年级失败......");
+					e.printStackTrace();
+				}
 			}
 		
 		
