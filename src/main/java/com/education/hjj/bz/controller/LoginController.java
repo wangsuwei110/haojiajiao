@@ -205,7 +205,7 @@ public class LoginController {
 	            teacherVo = userInfoService.queryTeacherInfosByTelephone(phoneNum);
 
 	            map.put("teacherId", teacherVo.getTeacherId());
-	            map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
+	            map.put("telephone", teacherVo.getTelephone());
 	            map.put("registerDate", DateUtil.getStandardDay(teacherVo.getCreateTime()));
 	            map.put("vacationStatus", teacherVo.getVacationStatus());
 	            map.put("teacherLevel", teacherVo.getTeacherLevel());
@@ -252,7 +252,7 @@ public class LoginController {
 
             map.put("teacherName", teacherVo.getName());
             map.put("teacherId", teacherVo.getTeacherId());
-            map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
+            map.put("telephone", teacherVo.getTelephone());
             map.put("registerDate", DateUtil.getStandardDay(teacherVo.getCreateTime()));
             map.put("vacationStatus", teacherVo.getVacationStatus());
             map.put("teacherLevel", teacherVo.getTeacherLevel());
@@ -337,7 +337,7 @@ public class LoginController {
 
 			map.put("studentName", studentVo.getStudentName());
 			map.put("studentId", studentVo.getSid());
-			map.put("telephone", studentVo.getParentPhoneNum().replace(studentVo.getParentPhoneNum().subSequence(3, 7), "****"));
+			map.put("telephone", studentVo.getParentPhoneNum());
 		}
 		
 		//统一处理：如果是已经注册过的用户登录，教员和学生统一将认证信息和权限授权更新。

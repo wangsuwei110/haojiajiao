@@ -176,7 +176,8 @@ public class UserInfoController {
 		Map<String , Object> map = new HashMap<String, Object>(1);
 		map.put("teacherName", teacherVo.getName());
 		map.put("teacherLevel", teacherVo.getTeacherLevel());
-		map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
+		//map.put("telephone", teacherVo.getTelephone().replace(teacherVo.getTelephone().subSequence(3, 7), "****"));
+		map.put("telephone", teacherVo.getTelephone());
 		
 		logger.info("telephone = {}" , map.get("telephone"));
 		
@@ -192,6 +193,10 @@ public class UserInfoController {
 		
 		map.put("certificate", teacherVo.getTeacherCertificate() == null?"0":teacherVo.getTeacherCertificate());
 		map.put("experience", teacherVo.getExperience() == null ? "0":teacherVo.getExperience());
+		
+		map.put("major", teacherVo.getMajor());
+		map.put("teacherTag", teacherVo.getTeacherTag());
+		
 		
 		return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
 	}
