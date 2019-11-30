@@ -73,6 +73,7 @@
           , sdc.appraise
           , teacher_level
           , charges_standard
+          , picture
         FROM
           teacher tc
           INNER JOIN student_demand_connect sdc
