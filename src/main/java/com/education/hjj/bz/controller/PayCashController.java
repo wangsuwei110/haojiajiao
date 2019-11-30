@@ -260,6 +260,7 @@ public class PayCashController {
 					userAccountOperateLogPo.setCreateUser(teacherVo.getName());
 					userAccountOperateLogPo.setUpdateTime(new Date());
 					userAccountOperateLogPo.setUpdateUser(teacherVo.getName());
+					userAccountOperateLogPo.setOrderId(partnerTradeNo);
 
 					logger.info("nonceStr = " + nonceStr + " teacherId = " + teacherId + " name= " + teacherVo.getName()
 							+ " cashOut= " + cashOut);
