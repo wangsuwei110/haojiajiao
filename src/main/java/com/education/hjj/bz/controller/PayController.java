@@ -190,6 +190,7 @@ public class PayController {
 					StudentDemandConnectForm connectForm = new StudentDemandConnectForm();
 					connectForm.setTeacherId(demandVo.getTeacherId());
 					connectForm.setDemandId(demandVo.getSid());
+					connectForm.setStatus(4);
 					connectMapper.updateByDemandId(connectForm);
 
 
