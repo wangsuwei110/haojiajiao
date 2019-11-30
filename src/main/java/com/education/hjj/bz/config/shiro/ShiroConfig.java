@@ -199,6 +199,7 @@ public class ShiroConfig {
         
         put("/home/queryAllStudentDemandList", "anon"); 
         
+        put("/student/findStudent", "anon"); 
         
     }};
 }
