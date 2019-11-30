@@ -62,4 +62,6 @@ public interface StudentDemandMapper {
 	int updateDemandSignNum(StudentDemandPo studentDemandPo);
 
 	int endDemand(@Param("demandId") Integer demandId);
+	
+	List<StudentDemandVo> queryStudentDemandDetailSignStatusBySid(Integer sid);
 }
