@@ -457,9 +457,9 @@ public class PayController {
 		payInfo.setBody("keshifei");
 		payInfo.setAttach("test4luluteam");
 		payInfo.setOut_trade_no(randomOrderId);
-		String money = String.valueOf(new BigDecimal(orderMoney).multiply(new BigDecimal("100")));
+		String money = String.valueOf(new BigDecimal(orderMoney).multiply(new BigDecimal("100")).setScale(0, BigDecimal.ROUND_HALF_UP));
 		logger.info("金额============="+ Integer.valueOf(money));
-		payInfo.setTotal_fee(Integer.valueOf(money.substring(0, money.indexOf(".")))); // 单位：分
+		payInfo.setTotal_fee(Integer.valueOf(money)); // 单位：分
 		payInfo.setSpbill_create_ip(clientIP);
 		payInfo.setTime_start(timeStart);
 		payInfo.setTime_expire(timeExpire);
