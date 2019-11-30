@@ -180,6 +180,7 @@ public class PayController {
 					// 修改当前订单成新订单
 					demandForm.setOrderType(2);
 					demandForm.setOrderMoney(demandForm.getOrderMoney());
+                    demandForm.setPaymentStreamId(randomOrderId);
 					demandForm.setOrderStart(date);
 					demandForm.setUpdateTime(date);
                     demandForm.setCreateTime(date);

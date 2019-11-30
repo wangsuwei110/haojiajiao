@@ -305,6 +305,17 @@ public class LoginController {
 				map.put("studentId", studentVo.getSid());
 				map.put("telephone", studentVo.getParentPhoneNum());
 
+                StudentLogPo logPo = new StudentLogPo();
+                logPo.setStudentId(Integer.valueOf(studentVo.getSid().toString()));
+                logPo.setLogType(1); // 登录
+                logPo.setLogContent("最近登录了系统");
+                logPo.setStudentName(studentVo.getStudentName());
+                logPo.setStatus(1);
+                logPo.setCreateTime(new Date());
+                logPo.setCreateUser(studentVo.getSid().toString());
+                logPo.setUpdateTime(new Date());
+                logPo.setUpdateUser(studentVo.getSid().toString());
+                studentLogService.addStudentLog(logPo);
 				return ApiResponse.success("注册成功" , UtilTools.mapToJson(map));
 			} else {
 				logger.info("该用户为已注册用户");

@@ -133,7 +133,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 		// 插入需求，返回需求id
 		form.setCurrentWeekDay(DateUtil.getWeekOfDate(date));
-		form.setPaymentStreamId(UUID.randomUUID().toString().replaceAll("-", ""));
+
 		studentDemandMapper.addStudentDemandByTeacher(form);
 
 		// 如果有教员ID，则插入一条关联教员的表数据
@@ -221,8 +221,8 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
                     f.setOrderMoney(new BigDecimal(op.get().getChargesStandard().split("元")[0]));
                 }
 
-				// 如果已经过了试讲的试讲时间，则赋值6，前端判断显示试讲通过和试讲不通过
-				if (op.get().getOrderTeachTime() != null && new Date().after(DateUtil.addMinute(op.get().getOrderTeachTime(), 5))) {
+				// 大前提条件：试讲订单 如果已经过了试讲的试讲时间，则赋值6，前端判断显示试讲通过和试讲不通过
+				if (f.getOrderType() != null && f.getOrderType() == 1 && op.get().getOrderTeachTime() != null && new Date().after(DateUtil.addMinute(op.get().getOrderTeachTime(), 5))) {
 					f.setSubscribeStatus(6);
 				}
 			} else {

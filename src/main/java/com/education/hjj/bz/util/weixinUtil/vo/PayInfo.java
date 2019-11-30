@@ -19,7 +19,7 @@ public class PayInfo implements Serializable{
     private String detail;
     private String attach;
     private String out_trade_no;
-    private int total_fee;
+    private Integer total_fee;
     private String spbill_create_ip;
     private String time_start;
     private String time_expire;
@@ -100,11 +100,11 @@ public class PayInfo implements Serializable{
         this.out_trade_no = out_trade_no;
     }
 
-    public int getTotal_fee() {
+    public Integer getTotal_fee() {
         return total_fee;
     }
 
-    public void setTotal_fee(int total_fee) {
+    public void setTotal_fee(Integer total_fee) {
         this.total_fee = total_fee;
     }
 
