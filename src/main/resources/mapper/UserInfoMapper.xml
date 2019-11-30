@@ -374,7 +374,10 @@
     		t.teach_brance,
     		t.teach_branch_slave,
     		t.school,
-    		t.sex
+    		t.sex,
+    		t.create_time,
+    		t.teacher_points
+    		
     	from 
     		teacher t
     	where 
@@ -405,14 +408,23 @@
         <if test="sex != null">
              AND #{sex} = t.sex
         </if>
-        
+        	
+        	 order by  t.create_time desc
     	
     	<if test="teacherPoints != null">
-              order by  t.teacher_points desc
+              ,t.teacher_points desc
         </if>
         <if test="createTime != null">
-              order by  t.create_time desc
+              ,t.create_time desc
         </if>
+       
+        
+        <if test="offset != null">
+            <![CDATA[
+            limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
+        
     </select>
     
     <update id="updateTeachers" parameterType="java.util.List">
