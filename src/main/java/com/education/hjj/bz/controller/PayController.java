@@ -447,7 +447,9 @@ public class PayController {
 		payInfo.setBody("JSAPItest");
 		payInfo.setAttach("test4luluteam");
 		payInfo.setOut_trade_no(randomOrderId);
-		payInfo.setTotal_fee(Integer.valueOf(String.valueOf(orderMoney.multiply(new BigDecimal("100"))))); // 单位：分
+		String money = String.valueOf(orderMoney.multiply(new BigDecimal("100")));
+		logger.info("金额============="+ Integer.valueOf(money.substring(0, money.indexOf("."))));
+		payInfo.setTotal_fee(Integer.valueOf(money.substring(0, money.indexOf(".")))); // 单位：分
 		payInfo.setSpbill_create_ip(clientIP);
 		payInfo.setTime_start(timeStart);
 		payInfo.setTime_expire(timeExpire);
