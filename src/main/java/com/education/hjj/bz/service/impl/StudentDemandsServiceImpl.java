@@ -166,7 +166,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			StudentLogPo logPo = new StudentLogPo();
 			logPo.setStudentId(Integer.valueOf(studentVo.getSid().toString()));
 			logPo.setLogType(3); // 登录
-			logPo.setLogContent("最近预约了" +teacherVo.getName() + "教员的信息");
+			logPo.setLogContent("最近预约了" +teacherVo.getName() + "教员");
 			logPo.setStudentName(studentVo.getStudentName());
 			logPo.setStatus(1);
 			logPo.setCreateTime(new Date());
@@ -268,7 +268,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			timeVo.setWeekDay(w.getWeek());
 			timeVo.setTime(w.getTime());
 			if (weekDay >= w.getWeek()) {
-				timeVo.setDate(DateUtil.addDay(vo.getCreateTime(), 7));
+				timeVo.setDate(DateUtil.addDay(vo.getCreateTime(), 7 + w.getWeek() - weekDay));
 			} else {
 				timeVo.setDate(DateUtil.addDay(vo.getCreateTime(), w.getWeek() - weekDay));
 			}
