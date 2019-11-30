@@ -382,7 +382,7 @@
 		LEFT JOIN	
 			student_demand_connect sdc
 		ON
-			sd.sid = sdc.demandId
+			sd.sid = sdc.demand_id
 		WHERE
 			1=1
 		and
