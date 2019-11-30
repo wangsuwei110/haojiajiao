@@ -594,7 +594,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			
 			if(sd.getStatus() != null && StringUtils.isNoneBlank(sd.getStatus().toString())) {
 				
-				if(sd.getStatus() == 0 || sd.getStatus() == 3) {
+				if(sd.getStatus() != 0 && sd.getStatus() != 3) {
 					flag = true;
 
 					break;
@@ -680,15 +680,25 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 					String weekDay = DateUtil.dateToWeek(DateUtil.getStandardDay(date));
 
 					Date lastDateTime = new Date();
-
+					
 					// 学员所选的授课时段中,存在比当前日期(四)靠后的时间段(一、三、五)
 					if (Integer.valueOf(weekDay) < Integer.valueOf(tp.getWeek())) {
-						lastDateTime = DateUtil.addDay(date,
-								(Integer.valueOf(tp.getWeek()) - Integer.valueOf(weekDay)));
+						
+						int day = Integer.valueOf(tp.getWeek()) -  Integer.valueOf(weekDay);
+						
+						Date afterDay = DateUtil.addDay(date , day);
+						
+						lastDateTime = DateUtil.addDay(afterDay,
+								day);
 					}
 
 					if (Integer.valueOf(weekDay) > Integer.valueOf(tp.getWeek())) {
-						lastDateTime = DateUtil.addDay(date, (Integer.valueOf(tp.getWeek()) + 7));
+						
+						int day = Integer.valueOf(weekDay) - Integer.valueOf(tp.getWeek());
+						
+						Date beforeDay = DateUtil.subDay(date , -day);
+						
+						lastDateTime = DateUtil.addDay(beforeDay, 7);
 					}
 
 					Map<String, Object> map = new HashMap<>();
