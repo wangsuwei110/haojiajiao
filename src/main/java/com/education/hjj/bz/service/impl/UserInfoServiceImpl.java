@@ -568,6 +568,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			String address = teacherInfoReplenishForm.getAddress();
 			String school = teacherInfoReplenishForm.getSchool();
 			Integer sex = teacherInfoReplenishForm.getSex();
+			String teachAddress = teacherInfoReplenishForm.getTeachAddress();
 			
 			Integer teachBrance = null;
 			if(teacherInfoReplenishForm.getTeachBrance() != null && 
@@ -594,6 +595,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			teacher.setUpdateTime(new Date());
 			teacher.setUpdateUser(teacherId);
 			teacher.setTeachLevel(teachLvel);
+			teacher.setTeachAddress(teachAddress);
 			
 			int i = userInfoMapper.updateUserInfo(teacher);
 			
