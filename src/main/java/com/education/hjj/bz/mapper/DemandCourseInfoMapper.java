@@ -4,6 +4,7 @@ import com.education.hjj.bz.entity.vo.DemandCourseInfoVo;
 import com.education.hjj.bz.formBean.DemandCourseInfoForm;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public interface DemandCourseInfoMapper {
 
 	DemandCourseInfoVo load(@Param("sid") Integer sid);
 
+	@Transactional
 	void insert(@Param("demandCourseInfos") List<DemandCourseInfoForm> demandCourseInfos);
 
 	void updateNotNull(DemandCourseInfoForm demandCourseInfo);

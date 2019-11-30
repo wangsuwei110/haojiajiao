@@ -226,6 +226,7 @@ public class PayController {
 						});
 					}
 
+
 					demandCourseInfoMapper.insert(courseInfoFormList);
 
 					// 插入一条日志信息，记录结课/支付记录

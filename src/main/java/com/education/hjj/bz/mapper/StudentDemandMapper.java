@@ -8,6 +8,7 @@ import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.StudentDemandForm;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,11 @@ public interface StudentDemandMapper {
 
 	StudentDemandVo findStudentDemandInfo(Integer demandId);
 
+	@Transactional
 	Long updateOldDemandToNew(StudentDemandForm form);
+
+	@Transactional
+	Long updateAppraise(StudentDemandConnectForm form);
 
 	Long findMaxSid();
 	

@@ -267,6 +267,16 @@
 		limit 10
     </select>
 
+	<update id="updateAppraise" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm">
+		UPDATE student_demand_connect
+		SET appraise = #{appraise}
+		, appraise_time = #{updateTime}
+		where demand_id =#{demandId}
+		AND teacher_id = #{teacherId}
+		AND delete_status = 0
+	</update>
+
+
     <update id="updateOldDemandToNew" parameterType="com.education.hjj.bz.formBean.StudentDemandForm" >
 
         UPDATE student_demand

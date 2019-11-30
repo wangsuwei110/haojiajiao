@@ -129,4 +129,10 @@ public class StudentDemandsController {
 	public ApiResponse homepageInfo(@RequestBody StudentDemandConnectForm demandForm) {
 		return studentDemandsService.homepageInfo(demandForm);
 	}
+
+	@ApiOperation("订单评价")
+	@RequestMapping(value = "/appraise", method = RequestMethod.POST)
+	public ApiResponse appraise(@RequestBody StudentDemandConnectForm demandForm) {
+		return studentDemandsService.appraise(demandForm);
+	}
 }

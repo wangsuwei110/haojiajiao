@@ -5,6 +5,7 @@ import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public interface StudentDemandConnectMapper {
 
 	void updateNotNull(StudentDemandConnectForm studentDemandConnect);
 
+	@Transactional
 	void updateByDemandId(StudentDemandConnectForm studentDemandConnect);
 
 	Long updateStatus(StudentDemandConnectForm studentDemandConnect);

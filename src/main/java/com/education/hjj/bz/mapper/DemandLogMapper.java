@@ -3,6 +3,7 @@ package com.education.hjj.bz.mapper;
 import com.education.hjj.bz.entity.vo.DemandLogVo;
 import com.education.hjj.bz.formBean.DemandLogForm;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public interface DemandLogMapper {
 
 	DemandLogVo load(Long id);
 
+	@Transactional
 	void insert(DemandLogForm demandLog);
 	
     List<DemandLogVo> list(DemandLogForm form);

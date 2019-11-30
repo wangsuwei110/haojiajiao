@@ -70,6 +70,11 @@ public interface StudentDemandsService {
 	 **/
 	ApiResponse homepageInfo(StudentDemandConnectForm demandForm);
 
+	/**
+	 * 主页信息
+	 **/
+	ApiResponse appraise(StudentDemandConnectForm demandForm);
+
 	Map<String , Object> queryStudentDemandDetailBySid(Integer sid , Integer teacherId);
 	
 	List<StudentDemandVo> queryNewTrialOrderList(Integer teacherId);

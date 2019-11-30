@@ -533,6 +533,19 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		return ApiResponse.success("已结束订单");
 	}
 
+	/**
+	 * 主页信息
+	 **/
+	@Override
+	@Transactional
+	public ApiResponse appraise(StudentDemandConnectForm demandForm) {
+
+		demandForm.setUpdateTime(new Date());
+		// 检索科目信息
+        studentDemandMapper.updateAppraise(demandForm);
+		return ApiResponse.success("评价成功");
+	}
+
 	@Override
 	public PageVo<List<StudentDemandVo>> queryAllStudentDemandList(StudentDemandForm form) {
 
