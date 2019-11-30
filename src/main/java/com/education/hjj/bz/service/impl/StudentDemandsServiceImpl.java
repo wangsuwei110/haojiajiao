@@ -218,6 +218,9 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 				f.setChargesStandard(op.get().getChargesStandard());
 				f.setOrderTeachTime(op.get().getOrderTeachTime());
 				f.setTeacherId(op.get().getTeacherId());
+				f.setAppraiseLevel(op.get().getAppraiseLevel());
+				f.setAppraiseTime(op.get().getAppraiseTime());
+
 
 				if (StringUtil.isNotBlank(op.get().getChargesStandard())) {
                     f.setOrderMoney(new BigDecimal(op.get().getChargesStandard().split("元")[0]));

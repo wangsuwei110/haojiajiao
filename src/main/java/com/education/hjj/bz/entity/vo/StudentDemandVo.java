@@ -95,6 +95,12 @@ public class StudentDemandVo {
     @ApiModelProperty(value = "预约教员通过的评价")
     private String appraise;
 
+    @ApiModelProperty(value = "评价等级")
+    private Integer appraiseLevel;
+
+    @ApiModelProperty(value = "评价时间")
+    private Date appraiseTime;
+
     @ApiModelProperty(value = "试讲状态:0:未试讲，1:试讲中;2:试讲通过;3:试讲未通过")
     private Integer subscribeStatus;
 
@@ -144,7 +150,23 @@ public class StudentDemandVo {
     private Integer teachBranchId;
     
     private String parameterName;
-    
+
+    public Integer getAppraiseLevel() {
+        return appraiseLevel;
+    }
+
+    public void setAppraiseLevel(Integer appraiseLevel) {
+        this.appraiseLevel = appraiseLevel;
+    }
+
+    public Date getAppraiseTime() {
+        return appraiseTime;
+    }
+
+    public void setAppraiseTime(Date appraiseTime) {
+        this.appraiseTime = appraiseTime;
+    }
+
     public Integer getTeachGradeId() {
 		return teachGradeId;
 	}

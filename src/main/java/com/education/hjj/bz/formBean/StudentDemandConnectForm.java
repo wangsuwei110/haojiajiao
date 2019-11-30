@@ -39,6 +39,9 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
     @ApiModelProperty(value = "试讲不通过的原因")
     private String appraise;
 
+    @ApiModelProperty(value = "评价等级")
+    private Integer appraiseLevel;
+
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
@@ -78,7 +81,15 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
     
     @JsonProperty("teachTime")
 	private List<TeachTimePo> timeList;
-    
+
+
+    public Integer getAppraiseLevel() {
+        return appraiseLevel;
+    }
+
+    public void setAppraiseLevel(Integer appraiseLevel) {
+        this.appraiseLevel = appraiseLevel;
+    }
 
     public Integer getTeachGradeId() {
 		return teachGradeId;

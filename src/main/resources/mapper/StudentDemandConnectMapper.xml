@@ -17,6 +17,7 @@
 			<result property="appraiseTime" column="appraise_time"/>
 	     	<result property="teacherName" column="teacherName"/>
 	     	<result property="chargesStandard" column="charges_standard"/>
+	     	<result property="appraiseLevel" column="appraise_level"/>
     </resultMap>
 
 	<select id="load" resultMap="studentDemandConnectResultMap" parameterType="long">

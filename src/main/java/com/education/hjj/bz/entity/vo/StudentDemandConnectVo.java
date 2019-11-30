@@ -49,7 +49,18 @@ public class StudentDemandConnectVo {
     @ApiModelProperty(value = "评价")
     private String appraise;
 
+    @ApiModelProperty(value = "评价")
+    private Integer appraiseLevel;
+
     private Date appraiseTime;
+
+    public Integer getAppraiseLevel() {
+        return appraiseLevel;
+    }
+
+    public void setAppraiseLevel(Integer appraiseLevel) {
+        this.appraiseLevel = appraiseLevel;
+    }
 
     public String getAppraise() {
         return appraise;

@@ -271,6 +271,7 @@
 		UPDATE student_demand_connect
 		SET appraise = #{appraise}
 		, appraise_time = #{updateTime}
+		, appraise_level =#{appraiseLevel}
 		where demand_id =#{demandId}
 		AND teacher_id = #{teacherId}
 		AND delete_status = 0
