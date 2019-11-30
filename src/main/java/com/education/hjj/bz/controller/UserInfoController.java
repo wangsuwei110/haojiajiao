@@ -476,6 +476,9 @@ public class UserInfoController {
 			teacherPo.setSex(teacherInfoForm.getSex());
 		}
 		
+		teacherPo.setPageIndex(teacherInfoForm.getPageIndex());
+		teacherPo.setPageSize(teacherInfoForm.getPageSize());
+		
 		List<TeacherVo> list = userInfoService.queryAllTeacherInfosByStudent(teacherPo);
 		
 		if(list.size() > 0) {
