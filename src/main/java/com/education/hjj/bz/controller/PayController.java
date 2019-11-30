@@ -16,11 +16,9 @@ import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.entity.vo.WeekTimeVo;
 import com.education.hjj.bz.formBean.DemandCourseInfoForm;
 import com.education.hjj.bz.formBean.DemandLogForm;
+import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.StudentDemandForm;
-import com.education.hjj.bz.mapper.DemandCourseInfoMapper;
-import com.education.hjj.bz.mapper.DemandLogMapper;
-import com.education.hjj.bz.mapper.StudentDemandMapper;
-import com.education.hjj.bz.mapper.UserAccountLogMapper;
+import com.education.hjj.bz.mapper.*;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.DateUtil;
 import org.slf4j.Logger;
@@ -30,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.weixin4j.WeixinException;
 
@@ -70,6 +67,9 @@ public class PayController {
 
 	@Autowired
 	private UserAccountLogMapper userAccountLogMapper;
+
+	@Autowired
+	private StudentDemandConnectMapper connectMapper;
 
 
     @Transactional
@@ -185,6 +185,14 @@ public class PayController {
 					demandForm.setUpdateTime(date);
                     demandForm.setCreateTime(date);
 					Long sid = studentDemandMapper.updateOldDemandToNew(demandForm);
+
+					// 修改订单状态至续课状态：状态变成4
+					StudentDemandConnectForm connectForm = new StudentDemandConnectForm();
+					connectForm.setTeacherId(demandVo.getTeacherId());
+					connectForm.setDemandId(demandVo.getSid());
+					connectMapper.updateByDemandId(connectForm);
+
+
 					List<DemandCourseInfoForm> courseInfoFormList = new ArrayList<>();
                     StudentDemandVo demand = demandVo;
 

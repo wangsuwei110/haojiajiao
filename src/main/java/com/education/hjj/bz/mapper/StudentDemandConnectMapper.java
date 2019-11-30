@@ -23,6 +23,8 @@ public interface StudentDemandConnectMapper {
 
 	void updateNotNull(StudentDemandConnectForm studentDemandConnect);
 
+	void updateByDemandId(StudentDemandConnectForm studentDemandConnect);
+
 	Long updateStatus(StudentDemandConnectForm studentDemandConnect);
 
 	/** 试讲通过， 其它报名教员状态改为5*/
