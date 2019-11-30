@@ -40,6 +40,7 @@
 		<result column="demandSignStatus" property="demandSignStatus"/>
 		
 		<result column="parameterName" property="parameterName"/>
+		<result column="order_type" property="orderType"/>
 	</resultMap>
 	
 	
@@ -115,7 +116,8 @@
 		   sd.subject_id,
 		   sd.status,
            sd.demand_type,
-		   sd.payment_stream_id
+		   sd.payment_stream_id,
+		   sd.order_type
 		from student_demand sd
 		inner join student st
 		on sd.student_id = st.sid
