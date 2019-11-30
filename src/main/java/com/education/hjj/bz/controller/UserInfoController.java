@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.*;
 
 import com.education.hjj.bz.entity.StudentLogPo;
+import com.education.hjj.bz.entity.TeacherPo;
 import com.education.hjj.bz.entity.vo.*;
 import com.education.hjj.bz.mapper.StudentMapper;
 import com.education.hjj.bz.service.*;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.education.hjj.bz.entity.ParameterPo;
 import com.education.hjj.bz.entity.PicturePo;
 import com.education.hjj.bz.formBean.PictureForm;
 import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
@@ -438,16 +440,93 @@ public class UserInfoController {
 		return ApiResponse.error("暂无数据！");
 	}
 
-	@ApiOperation("查询所有教员信息")
-	@RequestMapping(value = "/queryAllTeacherInfos", method = RequestMethod.GET)
+	@ApiOperation("学员端查询所有教员信息")
+	@RequestMapping(value = "/queryAllTeacherInfosByStudents", method = RequestMethod.POST)
 	@ResponseBody
-	public ApiResponse queryAllTeacherInfos() {
+	public ApiResponse queryAllTeacherInfosByStudents(@RequestBody TeacherInfoForm teacherInfoForm) {
 		
-		List<TeacherVo> list = userInfoService.queryAllTeacherInfos();
+		Map<String , Object> map = new HashMap<String , Object>();
 		
-		PageVo pageVo = new PageVo();
+		TeacherPo teacherPo = new TeacherPo();
+		if(teacherInfoForm.getTeacherPoints() != null && teacherInfoForm.getTeacherPoints() != 0) {
+			teacherPo.setTeacherPoints(teacherInfoForm.getTeacherPoints());
+		}
+		
+		if(teacherInfoForm.getCreateTime() != null && StringUtils.isNotBlank(teacherInfoForm.getCreateTime())) {
+			teacherPo.setCreateTime(new Date());
+		}
+		
+		if(teacherInfoForm.getTeachBrance() != null && StringUtils.isNotBlank(teacherInfoForm.getTeachBrance())) {
+			teacherPo.setTeachBrance(Integer.valueOf(teacherInfoForm.getTeachBrance()));
+		}
+		
+		if(teacherInfoForm.getTeachAddress() != null && StringUtils.isNotBlank(teacherInfoForm.getTeachAddress())) {
+			teacherPo.setTeachAddress(teacherInfoForm.getTeachAddress());
+		}
+		
+		if(teacherInfoForm.getSchool() != null && StringUtils.isNotBlank(teacherInfoForm.getSchool())) {
+			teacherPo.setSchool(teacherInfoForm.getSchool());
+		}
+		
+		if(teacherInfoForm.getIsGraduate() != null) {
+			teacherPo.setIsGraduate(teacherInfoForm.getIsGraduate());
+		}
+		
+		if(teacherInfoForm.getSex() != null) {
+			teacherPo.setSex(teacherInfoForm.getSex());
+		}
+		
+		teacherPo.setPageIndex(teacherInfoForm.getPageIndex());
+		teacherPo.setPageSize(teacherInfoForm.getPageSize());
+		
+		List<TeacherVo> list = userInfoService.queryAllTeacherInfosByStudent(teacherPo);
 		
 		if(list.size() > 0) {
+		
+			for(TeacherVo t:list) {
+				
+				String tags = t.getTeacherTag();
+				logger.info("tags = {}" , tags);
+				List<ParameterVo>  pVoList = null;
+				
+				if( tags !=null && StringUtils.isNoneBlank(tags)) {
+					pVoList = parameterService.queryParameterListsByTypes(tags);
+				}
+				//个人标签
+	//			map.put("chooseTags", pVoList);
+				t.setTeacherTag(JSON.toJSONString(pVoList));
+	
+	
+				String parameterIds = t.getTeachBrance()+","+t.getTeachBranchSlave();
+				
+				logger.info("parameterIds = {}" , parameterIds);
+				
+				List<TeachBranchVo> teachBranchs = null;
+				if(t.getTeachBrance() != null && t.getTeachBranchSlave() != null ) {
+					teachBranchs = teachBranchService.queryCheckedTeachBranchs(parameterIds);
+				}
+				
+				//可教科目
+	//			map.put("teachBranchs", parametersList);
+				
+				t.setTeachBrance(JSON.toJSONString(teachBranchs));
+				
+				//基本信息
+				//map.put("baseInfo", t);
+				
+				String date = t.getBeginSchoolTime();
+				
+				try {
+					t.setBeginSchoolTime(DateUtil.caculDegree(date));
+				} catch (ParseException e) {
+					logger.info("转换入学日期到年级失败......");
+					e.printStackTrace();
+				}
+			}
+		
+		
+			PageVo pageVo = new PageVo();
+		
 			pageVo.setDataList(list);
 			pageVo.setTotal(list.size());
 			

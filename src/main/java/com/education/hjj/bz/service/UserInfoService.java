@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.education.hjj.bz.entity.PicturePo;
+import com.education.hjj.bz.entity.TeacherPo;
 import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.entity.vo.UniversityVo;
@@ -45,4 +46,6 @@ public interface UserInfoService {
 	List<TeacherVo> queryAllTeacherInfos();
 	
 	List<UniversityVo> queryAllSchools();
+	
+	List<TeacherVo> queryAllTeacherInfosByStudent(TeacherPo teacherPo);
 }

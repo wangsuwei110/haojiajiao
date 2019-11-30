@@ -36,6 +36,7 @@
 		<result column="teach_brance" property="teachBrance"/>
 		<result column="teach_branch_slave" property="teachBranchSlave"/>
 		<result column="teach_address" property="teachAddress"/>
+		<result column="is_graduate" property="isGraduate"/>
 		<result column="teach_time" property="teachTime"/>
 		<result column="singUp_count" property="singUpCount"/>
 		<result column="choose_count" property="chooseCount"/>
@@ -353,6 +354,77 @@
     		teacher
     	where 
     		status = 1
+    </select>
+    
+    <!-- 学员端查询所有的教员信息列表 -->
+    <select id="queryAllTeacherInfosByStudent" resultMap="userInfoResultMap" parameterType="com.education.hjj.bz.entity.TeacherPo">
+    	select
+    		t.teacher_id,
+    		t.name,
+    		t.picture,
+    		t.school,
+    		t.teacher_level,
+    		t.teach_brance,
+    		t.teach_branch_slave,
+    		t.logon_status,
+    		t.begin_school_time,
+    		t.teacher_tag,
+    		t.charges_standard,
+    		t.is_graduate,
+    		t.teach_brance,
+    		t.teach_branch_slave,
+    		t.school,
+    		t.sex,
+    		t.create_time,
+    		t.teacher_points
+    		
+    	from 
+    		teacher t
+    	where 
+    		t.status = 1
+    	and
+    		t.logon_status = 1
+    	and
+    		t.audit_status = 1
+    	<if test="teachBrance != null">
+             AND #{teachBrance} = t.teach_brance
+        </if>	
+        <if test="teachBrance != null">
+             OR #{teachBrance} like CONCAT('%',t.teach_branch_slave,'%')
+        </if>	
+        <if test="teachAddress != null">
+        	<![CDATA[
+             AND #{teachAddress} like CONCAT('%',t.teach_address,'%')
+             ]]>
+        </if>
+        <if test="school != null">
+        	<![CDATA[
+             AND #{school} like CONCAT('%',t.school,'%')
+             ]]>
+        </if>
+        <if test="isGraduate != null">
+             AND #{isGraduate}  = t.is_graduate
+        </if>
+        <if test="sex != null">
+             AND #{sex} = t.sex
+        </if>
+        	
+        	 order by  t.create_time desc
+    	
+    	<if test="teacherPoints != null">
+              ,t.teacher_points desc
+        </if>
+        <if test="createTime != null">
+              ,t.create_time desc
+        </if>
+       
+        
+        <if test="offset != null">
+            <![CDATA[
+            limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
+        
     </select>
     
     <update id="updateTeachers" parameterType="java.util.List">

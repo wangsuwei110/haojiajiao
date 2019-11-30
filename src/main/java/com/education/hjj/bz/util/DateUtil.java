@@ -1010,7 +1010,9 @@ public final class DateUtil {
 
 		int cal = (int) ((now - begin) / (24 * 60 * 60 * 1000));
 
-		if (cal > 365 && cal < 730) {
+		if(cal > 0 && cal < 365) {
+			grade = "大一在校";
+		}else if (cal > 365 && cal < 730) {
 			grade = "大二在校";
 		} else if (cal >= 730 && cal < 1095) {
 			grade = "大三在校";

@@ -99,6 +99,8 @@ public class TeacherInfoForm extends PageForm implements Serializable{
 	private Integer isGraduate;
 
 	private Integer studentId;
+	
+	private Integer teacherPoints;
 
 	public Integer getStudentId() {
 		return studentId;
@@ -446,6 +448,14 @@ public class TeacherInfoForm extends PageForm implements Serializable{
 
 	public void setOpenId(String openId) {
 		this.openId = openId;
+	}
+
+	public Integer getTeacherPoints() {
+		return teacherPoints;
+	}
+
+	public void setTeacherPoints(Integer teacherPoints) {
+		this.teacherPoints = teacherPoints;
 	}
 	
 }

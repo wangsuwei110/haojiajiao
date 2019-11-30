@@ -52,4 +52,6 @@ public interface UserInfoMapper {
 	List<TeacherVo> queryStudentDemandSignUpTeacher(Integer sid);
 	
 	List<UniversityVo> queryAllSchools();
+	
+	List<TeacherVo> queryAllTeacherInfosByStudent(TeacherPo teacherPo);
 }
