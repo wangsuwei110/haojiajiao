@@ -199,7 +199,10 @@ public class ShiroConfig {
         
         put("/home/queryAllStudentDemandList", "anon"); 
         
-        put("/student/findStudent", "anon"); 
-        
+        put("/student/findStudent", "anon");
+
+        // 微信支付回调函数
+        put("/weixin/wxNotify", "anon");
+
     }};
 }

@@ -573,6 +573,7 @@ public class PayController {
 		payInfo.setTrade_type("JSAPI");
 		payInfo.setLimit_pay("no_credit");
 		payInfo.setOpenid(openId);
+		payInfo.setNotify_url("https://www.laijiajiaosh.com/weixin/wxNotify");
 
 		return payInfo;
 	}
