@@ -165,4 +165,8 @@ public class Constant {
     public static final String AUDIT_NAME = "audit";
     
     public static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/sns/jscode2session";
+
+
+    // redis中key，订单流水号
+    public static final String ORDER_SERIAL_NUMBER = "order_serial_number";
 }

@@ -1,16 +1,7 @@
 package com.education.hjj.bz.controller;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.math.BigDecimal;
-import java.util.*;
-
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.entity.vo.WeekTimeVo;
@@ -19,8 +10,15 @@ import com.education.hjj.bz.formBean.DemandLogForm;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.StudentDemandForm;
 import com.education.hjj.bz.mapper.*;
-import com.education.hjj.bz.util.ApiResponse;
-import com.education.hjj.bz.util.DateUtil;
+import com.education.hjj.bz.service.IRedisService;
+import com.education.hjj.bz.util.*;
+import com.education.hjj.bz.util.common.StringUtil;
+import com.education.hjj.bz.util.weixinUtil.*;
+import com.education.hjj.bz.util.weixinUtil.config.Constant;
+import com.education.hjj.bz.util.weixinUtil.vo.Json;
+import com.education.hjj.bz.util.weixinUtil.vo.PayInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,23 +29,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.weixin4j.WeixinException;
 
-import com.alibaba.fastjson.JSONObject;
-import com.education.hjj.bz.util.HttpClientUtils;
-import com.education.hjj.bz.util.SendWXMessageUtils;
-import com.education.hjj.bz.util.weixinUtil.CommonUtil;
-import com.education.hjj.bz.util.weixinUtil.HttpUtil;
-import com.education.hjj.bz.util.weixinUtil.MD5Utils;
-import com.education.hjj.bz.util.weixinUtil.ObjectToMapUntils;
-import com.education.hjj.bz.util.weixinUtil.RandomUtils;
-import com.education.hjj.bz.util.weixinUtil.StringUtils;
-import com.education.hjj.bz.util.weixinUtil.TimeUtils;
-import com.education.hjj.bz.util.weixinUtil.WXUtils;
-import com.education.hjj.bz.util.weixinUtil.config.Constant;
-import com.education.hjj.bz.util.weixinUtil.vo.Json;
-import com.education.hjj.bz.util.weixinUtil.vo.PayInfo;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import javax.annotation.Resource;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Api(tags = { "微信" })
 @RestController
@@ -70,6 +60,9 @@ public class PayController {
 
 	@Autowired
 	private StudentDemandConnectMapper connectMapper;
+
+	@Resource
+	private IRedisService redisService;
 
 
     @Transactional
@@ -176,6 +169,7 @@ public class PayController {
 			logger.error("支付失败");
 			return ApiResponse.errorData("支付失败", json);
 		}
+		redisService.cacheHashValue(RedisConstant.ORDER_SERIAL_NUMBER, randomNonceStr, JSON.toJSONString(demandForm), 60 * 60);
 
 //		// *******************************逻辑信息**********************************
 //		logger.info("*********支付代码逻辑***********");
@@ -361,13 +355,21 @@ public class PayController {
 		if ("SUCCESS".equals(returnCode)) {
 			// 验证签名是否正确
 			if (WXUtils.verify(WXUtils.createLinkString(map), (String) map.get("sign"), Constant.APP_KEY, "utf-8")) {
+
+				String demandInfo = redisService.getHashValue(RedisConstant.ORDER_SERIAL_NUMBER, randomNonceStr);
+				if (StringUtil.isBlank(demandInfo)) {
+					logger.info("!!!!!!!!!!!!!!!!!支付成功后，获取订单详情失败!!!!!!!!!!!!!!!!!");
+					return;
+				}
+				StudentDemandForm demandForm = JSON.parseObject(demandInfo, StudentDemandForm.class);
+
 				/** 此处添加自己的业务逻辑代码start **/
 
                 // *******************************逻辑信息**********************************
                 logger.info("caohuan*********支付代码逻辑***********");
                 //更新订单信息
                 // 如果是试讲订单，要将试讲订单修改成付费订单
-                /*demandVo = studentDemandMapper.findStudentDemandInfo(demandForm.getDemandId());
+                demandVo = studentDemandMapper.findStudentDemandInfo(demandForm.getDemandId());
 
                 // 记录上个订单的信息
                 Date date = new Date();
@@ -446,7 +448,7 @@ public class PayController {
                 paymentLog.setPaymentAccount(new BigDecimal(demandForm.getOrderMoney()));
                 paymentLog.setUpdateTime(date);
                 paymentLog.setUpdateUser(demandVo.getStudentName());
-                userAccountLogMapper.insertUserAccountLog(paymentLog);*/
+                userAccountLogMapper.insertUserAccountLog(paymentLog);
 
 				/** 此处添加自己的业务逻辑代码end **/
 
