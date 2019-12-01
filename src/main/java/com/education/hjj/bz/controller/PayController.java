@@ -357,6 +357,7 @@ public class PayController {
 			if (WXUtils.verify(WXUtils.createLinkString(map), (String) map.get("sign"), Constant.APP_KEY, "utf-8")) {
 
 				String demandInfo = redisService.getHashValue(RedisConstant.ORDER_SERIAL_NUMBER, randomNonceStr);
+				logger.info("caohuan*************订单流水号" + randomNonceStr);
 				if (StringUtil.isBlank(demandInfo)) {
 					logger.info("!!!!!!!!!!!!!!!!!支付成功后，获取订单详情失败!!!!!!!!!!!!!!!!!");
 					return;
