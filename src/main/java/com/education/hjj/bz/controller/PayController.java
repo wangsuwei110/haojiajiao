@@ -323,22 +323,9 @@ public class PayController {
 //	@ResponseBody
 	@ApiOperation("微信支付")
 	@Transactional
-	public void wxNotify(HttpServletRequest request, HttpServletResponse response, @RequestBody StudentDemandForm demandForm) throws Exception {
+	public void wxNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		logger.info("微信支付的回调接口：/wxNotify");
-
-		String code = demandForm.getCode();//获取微信服务器授权返回的code值
-
-		System.out.println("code:" + code);
-
-		String openId = getOpenId(code);
-//			String openId = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
-
-		if (StringUtils.isBlank(openId)) {
-
-			logger.error("未获取到openId, 回调失败");
-			return;
-		}
 
 		BufferedReader br = new BufferedReader(new InputStreamReader((ServletInputStream) request.getInputStream()));
 
@@ -354,16 +341,18 @@ public class PayController {
 		String notityXml = sb.toString();
 		
 		String resXml = "";
-		logger.info("接收到的报文：" + notityXml);
+		logger.info("caohuan*****************接收到的报文：" + notityXml);
 
 		Map map = WXUtils.doXMLParse(notityXml);
 
 		String returnCode = (String) map.get("return_code");
-		//订单编号
+        logger.info("caohuan*****************returnCode：" + returnCode);
+        //订单编号
 		String randomOrderId = (String) map.get("out_trade_no");
+        logger.info("caohuan*****************randomOrderId：" + randomOrderId);
 		// 订单流水号
 		String randomNonceStr = (String) map.get("nonce_str");
-
+        logger.info("caohuan*****************randomNonceStr：" + randomNonceStr);
 
 		logger.info("微信支付的回调结果：" + returnCode);
 
@@ -375,10 +364,10 @@ public class PayController {
 				/** 此处添加自己的业务逻辑代码start **/
 
                 // *******************************逻辑信息**********************************
-                logger.info("*********支付代码逻辑***********");
+                logger.info("caohuan*********支付代码逻辑***********");
                 //更新订单信息
                 // 如果是试讲订单，要将试讲订单修改成付费订单
-                demandVo = studentDemandMapper.findStudentDemandInfo(demandForm.getDemandId());
+                /*demandVo = studentDemandMapper.findStudentDemandInfo(demandForm.getDemandId());
 
                 // 记录上个订单的信息
                 Date date = new Date();
@@ -457,7 +446,7 @@ public class PayController {
                 paymentLog.setPaymentAccount(new BigDecimal(demandForm.getOrderMoney()));
                 paymentLog.setUpdateTime(date);
                 paymentLog.setUpdateUser(demandVo.getStudentName());
-                userAccountLogMapper.insertUserAccountLog(paymentLog);
+                userAccountLogMapper.insertUserAccountLog(paymentLog);*/
 
 				/** 此处添加自己的业务逻辑代码end **/
 
