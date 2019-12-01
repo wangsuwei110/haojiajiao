@@ -239,7 +239,7 @@ public class WXUtils {
      * @return 签名结果  
      */   
     public static boolean verify(String text, String sign, String key, String input_charset) {   
-        text = text + key;
+        text = text + "&key=" +key;
         logger.info("caohuan******************test:" + text);
         String mysign = DigestUtils.md5Hex(getContentBytes(text, input_charset));
         logger.info("caohuan**********mysign:" + mysign);
