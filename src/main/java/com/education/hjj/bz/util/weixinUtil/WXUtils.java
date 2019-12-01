@@ -212,9 +212,15 @@ public class WXUtils {
         List<String> keys = new ArrayList<String>(params.keySet());   
         Collections.sort(keys);   
         String prestr = "";   
-        for (int i = 0; i < keys.size(); i++) {   
-            String key = keys.get(i);   
-            String value = params.get(key);   
+        for (int i = 0; i < keys.size(); i++) {
+			String key = keys.get(i);
+			String value = params.get(key);
+
+			if (value == null || value.equals("") || key.equalsIgnoreCase("sign")
+					|| key.equalsIgnoreCase("sign_type")) {
+				continue;
+			}
+
             if (i == keys.size() - 1) {// 拼接时，不包括最后一个&字符   
                 prestr = prestr + key + "=" + value;   
             } else {   
@@ -233,7 +239,8 @@ public class WXUtils {
      * @return 签名结果  
      */   
     public static boolean verify(String text, String sign, String key, String input_charset) {   
-        text = text + key;   
+        text = text + key;
+        logger.info("caohuan******************test:" + text);
         String mysign = DigestUtils.md5Hex(getContentBytes(text, input_charset));
         logger.info("caohuan**********mysign:" + mysign);
         logger.info("caohuan**********sign:" + sign);
