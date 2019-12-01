@@ -353,6 +353,8 @@ public class PayController {
 		StudentDemandVo demandVo = new StudentDemandVo();
 
 		if ("SUCCESS".equals(returnCode)) {
+            logger.info("caohuan*******************map" +WXUtils.createLinkString(map));
+            logger.info("caohuan*******************sign" +map.get("sign"));
 			// 验证签名是否正确
 			if (WXUtils.verify(WXUtils.createLinkString(map), (String) map.get("sign"), Constant.APP_KEY, "utf-8")) {
 

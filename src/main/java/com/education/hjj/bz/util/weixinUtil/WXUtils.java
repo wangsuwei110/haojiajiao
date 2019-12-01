@@ -106,9 +106,9 @@ public class WXUtils {
     
     /**  
      * 签名字符串  
-     * @param text需要签名的字符串  
+     * @param text 需要签名的字符串
      * @param key 密钥  
-     * @param input_charset编码格式  
+     * @param input_charset 编码格式
      * @return 签名结果  
      */   
     public static String sign(String text, String key, String input_charset) {   
@@ -234,7 +234,9 @@ public class WXUtils {
      */   
     public static boolean verify(String text, String sign, String key, String input_charset) {   
         text = text + key;   
-        String mysign = DigestUtils.md5Hex(getContentBytes(text, input_charset));   
+        String mysign = DigestUtils.md5Hex(getContentBytes(text, input_charset));
+        logger.info("caohuan**********mysign:" + mysign);
+        logger.info("caohuan**********sign:" + sign);
         if (mysign.equals(sign)) {
         	logger.info("caohuan****************验证成功");
             return true;
