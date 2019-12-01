@@ -339,7 +339,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		// 检索订单
 		StudentDemandVo vo = studentDemandMapper.findDemandByCourseId(courseInfoForm.getSid());
 
-		// 结课时候，修改教员的总收入金额
+		// 结课时候，修改教员的总收入金额 和可提现金额
 		TeacherAccountVo teacherAccountVo = userAccountMapper.queryTeacherAccount(courseInfoForm.getTeacherId());
 		TeacherVo teacherVo = teacherMapper.load(courseInfoForm.getTeacherId());
 
@@ -351,6 +351,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			po.setCreateTime(date);
 			po.setTeacherName(teacherVo.getName());
 			po.setAccountMoney(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString()));
+			po.setSurplusMoney(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString()));
 			po.setTeacherPhone(teacherVo.getTelephone());
 			po.setCreateUser(teacherVo.getTeacherId().toString());
 
@@ -360,6 +361,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		} else {
 			po.setUpdateTime(date);
 			po.setUpdateUser(courseInfoForm.getTeacherId().toString());
+			po.setSurplusMoney(teacherAccountVo.getSurplusMoney().add(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString())));
 			po.setAccountMoney(teacherAccountVo.getAccountMoney().add(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString())));
 			userAccountMapper.updateTeacherAccountMoney(po);
 		}

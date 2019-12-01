@@ -244,7 +244,7 @@ public class WXUtils {
         String mysign = DigestUtils.md5Hex(getContentBytes(text, input_charset));
         logger.info("caohuan**********mysign:" + mysign);
         logger.info("caohuan**********sign:" + sign);
-        if (mysign.equals(sign)) {
+        if (mysign.equalsIgnoreCase(sign)) {
         	logger.info("caohuan****************验证成功");
             return true;
 		} else {
