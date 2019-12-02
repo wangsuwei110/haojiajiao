@@ -5,10 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.entity.vo.WeekTimeVo;
-import com.education.hjj.bz.formBean.DemandCourseInfoForm;
-import com.education.hjj.bz.formBean.DemandLogForm;
-import com.education.hjj.bz.formBean.StudentDemandConnectForm;
-import com.education.hjj.bz.formBean.StudentDemandForm;
+import com.education.hjj.bz.formBean.*;
 import com.education.hjj.bz.mapper.*;
 import com.education.hjj.bz.service.IRedisService;
 import com.education.hjj.bz.util.*;
@@ -444,7 +441,10 @@ public class PayController {
                 paymentLog.setPaymentPersonId(demandVo.getStudentId());
                 paymentLog.setPaymentPersonName(demandVo.getStudentName());
                 paymentLog.setPaymentType(3);
-                paymentLog.setPaymentDesc("购买"+ demandForm.getWeekNum() + "周" + demandForm.getWeekNum() * demandForm.getClassNum() + "课时");
+
+                // 统计了课时
+				List<WeekTimeVo> list = JSON.parseArray(demandForm.getTimeRange(), WeekTimeVo.class);
+                paymentLog.setPaymentDesc("购买"+ demandForm.getWeekNum() + "周" + demandForm.getWeekNum() * list.size() + "课时");
                 paymentLog.setStatus(1);
                 paymentLog.setCreateTime(date);
                 paymentLog.setCreateUser(demandVo.getStudentName());
