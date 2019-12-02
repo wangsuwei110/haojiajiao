@@ -1020,8 +1020,9 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		StudentDemandConnectForm sdc = new StudentDemandConnectForm();
 		sdc.setDemandId(demandId);
 		
-		int demandPersonCount = connectMapper.getCount(sdc);
+		StudentDemandVo studentDemandVo= studentDemandMapper.queryStudentDemandDetailBySid(demandId);
 		
+		int demandPersonCount = studentDemandVo.getDemandSignStatus();
 		
 		
 		StudentDemandPo studentDemandPo = new StudentDemandPo();
