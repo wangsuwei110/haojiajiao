@@ -3,7 +3,9 @@ package com.education.hjj.bz.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
+import com.education.hjj.bz.entity.TeacherPo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
+import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.entity.vo.WeekTimeVo;
 import com.education.hjj.bz.formBean.*;
 import com.education.hjj.bz.mapper.*;
@@ -34,6 +36,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 @Api(tags = { "微信" })
@@ -60,6 +63,9 @@ public class PayController {
 
 	@Resource
 	private IRedisService redisService;
+	
+	@Autowired
+	private UserInfoMapper userInfoMapper;
 
 
     @Transactional
@@ -399,6 +405,44 @@ public class PayController {
                 connectForm.setStatus(4);
                 connectMapper.updateByDemandId(connectForm);
 
+                
+                Integer teacherId = demandVo.getTeacherId();
+                
+                TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
+        		// 更新教员对所有报名订单的数量
+        		TeacherPo teacherPo = new TeacherPo();
+
+        		teacherPo.setEmployCount(teacherVo.getEmployCount() + 1);
+
+        		int chooseCount = teacherVo.getChooseCount();
+
+        		double newRate = (teacherVo.getEmployCount() + 1) / chooseCount;
+        		
+        		logger.info("employCount={} , chooseCount={} , newRate={}",  teacherVo.getEmployCount() + 1,
+        				chooseCount, newRate);
+
+        		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
+        		logger.info("employRate = {}", bg);
+        		// 更新该教员的聘用率
+        		teacherPo.setEmployRate(bg);
+        		
+        		
+//        		
+//        		int resumptionCount = teacherVo.getResumptionCount() + 1;
+//        		
+//        		double newResumptionRate = resumptionCount / employCount;
+//        		
+//        		logger.info(" employCount={} , resumptionCount={} , newRate={}", employCount,
+//        				resumptionCount, newRate);
+//
+//        		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
+//        		logger.info("employRate = {}", bg);
+//        		
+//        		teacher.setResumptionRate(bg);
+        		
+        		
+
+        		userInfoMapper.updateUserInfo(teacherPo);
 
                 List<DemandCourseInfoForm> courseInfoFormList = new ArrayList<>();
                 StudentDemandVo demand = demandVo;

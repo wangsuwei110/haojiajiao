@@ -1,6 +1,7 @@
 package com.education.hjj.bz.service.impl;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -301,8 +302,22 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			demandForm.setStatus(2);
 		}
 		Long sid = connectMapper.confirmTeacher(demandForm);
+		
+		Integer teacherId = demandForm.getTeacherId();
+		
+		 TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
+ 		// 更新教员对所有报名订单的数量
+ 		TeacherPo teacherPo = new TeacherPo();
 
-		if (sid != null) {
+ 		teacherPo.setChooseCount(teacherVo.getChooseCount() + 1);
+
+ 		logger.info("teacherId = {} , ChooseCountBefore={} , ChooseCountAfter={}", teacherId ,teacherVo.getChooseCount(),
+ 				teacherVo.getChooseCount()+1);
+
+ 		int i = userInfoMapper.updateUserInfo(teacherPo);
+ 		
+
+		if (sid != null && i > 0) {
 			return ApiResponse.success("预约教员成功");
 		}
 
@@ -706,8 +721,10 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 						
 						Date afterDay = DateUtil.addDay(date , day);
 						
-						lastDateTime = DateUtil.addDay(afterDay,
-								day);
+//						lastDateTime = DateUtil.addDay(afterDay,
+//								day);
+						
+						lastDateTime = afterDay;
 					}
 
 					if (Integer.valueOf(weekDay) >= Integer.valueOf(tp.getWeek())) {
