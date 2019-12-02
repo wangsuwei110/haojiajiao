@@ -886,8 +886,8 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 			StudentDemandPo studentDemandPo = new StudentDemandPo();
 			studentDemandPo.setTeacherId(demandForm.getTeacherId());
-			studentDemandPo.setOrderStartDate(orderStartDate);
-			studentDemandPo.setOrderEndDate(orderEndDate);
+			studentDemandPo.setOrderStartDate(orderStartDate+ " 00:00:00");
+			studentDemandPo.setOrderEndDate(orderEndDate+" 23:59:59");
 
 			studentDemandlist = studentDemandMapper.queryTimeTableByTeacherId(studentDemandPo);
 
