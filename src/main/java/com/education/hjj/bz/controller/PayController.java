@@ -426,7 +426,6 @@ public class PayController {
         		// 更新该教员的聘用率
         		teacherPo.setEmployRate(bg);
         		
-        		
 //        		
 //        		int resumptionCount = teacherVo.getResumptionCount() + 1;
 //        		
