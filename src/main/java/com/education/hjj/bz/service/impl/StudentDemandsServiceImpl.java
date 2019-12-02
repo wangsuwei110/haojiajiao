@@ -1008,6 +1008,19 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	@Transactional
 	public int insert(StudentDemandConnectForm studentDemandConnect) {
 		
+		Integer teacherId = studentDemandConnect.getTeacherId();
+		
+		TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
+		
+		int auditStatus = teacherVo.getAuditStatus();
+		
+		logger.info("教员id:{},教员的简历审核状态:{}" , teacherId , auditStatus);
+		
+		if(auditStatus == 0 || auditStatus == 2) {
+			logger.info("您的身份信息还未审核通过，请至“我的”-“简历信息”中完善信息");
+			return -5;
+		}
+		
 		int count = connectMapper.getCount(studentDemandConnect);
 		
 		if(count > 0) {

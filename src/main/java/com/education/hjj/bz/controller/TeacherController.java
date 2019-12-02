@@ -184,6 +184,10 @@ public class TeacherController {
 			return ApiResponse.error("该订单已经被锁定，请稍后尝试报名该订单！");
 		}
 		
+		if(i == -5) {
+			return ApiResponse.error("您的身份信息还未审核通过，请至“我的”-“简历信息”中完善信息！");
+		}
+		
 		return ApiResponse.error("订单报名失败！");
 	}
 	
