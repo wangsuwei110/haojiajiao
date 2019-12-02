@@ -50,6 +50,19 @@ public class StudentDemandPo extends BasePo implements Serializable{
     
     //订单报名人数
     private Integer demandSignUpNum;
+    
+    //是否续课0未续课1已续课
+  	private Integer isResumption;
+  	
+  	
+
+    public Integer getIsResumption() {
+		return isResumption;
+	}
+
+	public void setIsResumption(Integer isResumption) {
+		this.isResumption = isResumption;
+	}
 	
 
 	public Integer getStudentId() {

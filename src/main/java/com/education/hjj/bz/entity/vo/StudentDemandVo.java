@@ -150,8 +150,21 @@ public class StudentDemandVo {
     private Integer teachBranchId;
     
     private String parameterName;
+    
+    //是否续课0未续课1已续课
+  	private Integer isResumption;
+  	
+  	
 
-    public Integer getAppraiseLevel() {
+    public Integer getIsResumption() {
+		return isResumption;
+	}
+
+	public void setIsResumption(Integer isResumption) {
+		this.isResumption = isResumption;
+	}
+
+	public Integer getAppraiseLevel() {
         return appraiseLevel;
     }
 

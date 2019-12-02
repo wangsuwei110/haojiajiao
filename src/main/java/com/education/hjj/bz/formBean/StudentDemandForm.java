@@ -107,6 +107,17 @@ public class StudentDemandForm extends PageForm implements Serializable {
     // *******************单独预约********************
     @ApiModelProperty(value = "教员ID",required = true)
     private Integer teacherId;
+    
+    //是否续课0未续课1已续课
+  	private Integer isResumption;
+
+    public Integer getIsResumption() {
+		return isResumption;
+	}
+
+	public void setIsResumption(Integer isResumption) {
+		this.isResumption = isResumption;
+	}
 
 
     public Long getSid() {
