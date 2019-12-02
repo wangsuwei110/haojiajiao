@@ -444,7 +444,7 @@ public class PayController {
                 paymentLog.setPaymentPersonId(demandVo.getStudentId());
                 paymentLog.setPaymentPersonName(demandVo.getStudentName());
                 paymentLog.setPaymentType(3);
-                paymentLog.setPaymentDesc("支付订单");
+                paymentLog.setPaymentDesc("购买"+ demandForm.getWeekNum() + "周" + demandForm.getWeekNum() * demandForm.getClassNum() + "课时");
                 paymentLog.setStatus(1);
                 paymentLog.setCreateTime(date);
                 paymentLog.setCreateUser(demandVo.getStudentName());
