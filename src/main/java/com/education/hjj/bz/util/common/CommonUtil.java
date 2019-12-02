@@ -54,9 +54,9 @@ public class CommonUtil {
     }
 
     enum Time {
-        MORNING(1, "上午"),
-        AFTERNOON(2, "下午"),
-        NIGHT(3, "晚上");
+        MORNING(0, "上午"),
+        AFTERNOON(1, "下午"),
+        NIGHT(2, "晚上");
 
         private Integer code;
         private String value;
