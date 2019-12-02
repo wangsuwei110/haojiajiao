@@ -721,9 +721,6 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 						
 						Date afterDay = DateUtil.addDay(date , day);
 						
-//						lastDateTime = DateUtil.addDay(afterDay,
-//								day);
-						
 						lastDateTime = afterDay;
 					}
 
