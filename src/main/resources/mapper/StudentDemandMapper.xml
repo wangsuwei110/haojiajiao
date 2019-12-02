@@ -41,6 +41,8 @@
 		
 		<result column="parameterName" property="parameterName"/>
 		<result column="order_type" property="orderType"/>
+		<result column="is_resumption" property="isResumption"/>
+		
 	</resultMap>
 	
 	
@@ -339,7 +341,8 @@
 			sd.current_week_day,
 			sd.parameter_id,
 			p.name as parameterName,
-			sd.demand_type
+			sd.demand_type,
+			is_resumption
 		FROM
 			student_demand sd
 		LEFT JOIN
@@ -660,6 +663,17 @@
     		student_demand
 		SET 
 			demand_signUp_num = #{demandSignUpNum},
+			update_time = #{updateTime}
+			
+		WHERE sid = #{demandId}
+    </update>
+    
+     <!-- 教员接受学员订单,并更新订单表订单状态 -->
+    <update id="updateDemandIsResumption" parameterType="com.education.hjj.bz.entity.StudentDemandPo">
+    	UPDATE 
+    		student_demand
+		SET 
+			is_resumption = #{isResumption},
 			update_time = #{updateTime}
 			
 		WHERE sid = #{demandId}
