@@ -554,7 +554,7 @@ public class PayController {
 		payInfo.setDevice_info("WEB");
 		payInfo.setNonce_str(randomNonceStr);
 		payInfo.setSign_type(Constant.SIGN_TYPE); // 默认即为MD5
-		payInfo.setBody("来家教-订单支付课时费用");
+		payInfo.setBody("课时费");
 		payInfo.setAttach("test4luluteam");
 		payInfo.setOut_trade_no(randomOrderId);
 		String money = String.valueOf(new BigDecimal(orderMoney).multiply(new BigDecimal("100")).setScale(0, BigDecimal.ROUND_HALF_UP));
