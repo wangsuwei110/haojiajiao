@@ -1146,7 +1146,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		logger.info("订单需求授课科目id:{} , 报名教员的授课科目id: {}" , teachBranchId , teachBranchIdDB);
 		
 			
-		if(!teachBranchIdDB.contains(String.valueOf(teachBranchId))) {
+		if(teachBranchIdDB.contains(String.valueOf(teachBranchId)) == false) {
 			flag = false;
 			
 			map.put("validateCode", flag);
@@ -1160,7 +1160,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		
 		logger.info("订单需求授课年级id:{} , 报名教员的授课年级id: {}" , teachGradeId , teachGradeIdDB);
 		
-		if(!teachGradeIdDB.contains(String.valueOf(teachGradeId))) {
+		if(teachGradeIdDB.contains(String.valueOf(teachGradeId)) == false) {
 			flag = false;
 			
 			map.put("validateCode", flag);
@@ -1175,7 +1175,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		
 		logger.info("订单需求授课区域id:{} , 报名教员的授课区域id: {}" , areaId , teachAddressDB);
 		
-		if(teachAddressDB.contains(String.valueOf(areaId))) {
+		if(teachAddressDB.contains(String.valueOf(areaId)) == false) {
 			
 			flag = false;
 			

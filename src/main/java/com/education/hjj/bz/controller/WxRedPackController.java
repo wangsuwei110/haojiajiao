@@ -119,6 +119,11 @@ public class WxRedPackController {
 		
 		BigDecimal cashOutData = new BigDecimal(cashOut);
 		
+		if(cashOutData.compareTo(new BigDecimal(1000)) == 1) {
+			logger.error("单日提现不能超过¥1000，不允许提现！");
+			return ApiResponse.error("单日提现不能超过¥1000");
+		}
+		
 		logger.info("当前用户要提现的金额: " + cashOutData +" 元");
 		
 		BigDecimal  rebateData = new BigDecimal(100 * 0.95);//转化为分
