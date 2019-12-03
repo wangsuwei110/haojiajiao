@@ -209,7 +209,9 @@
 			sd.time_range,
 			sd.demand_desc,
 			date_format(sd.create_time, '%Y-%m-%d') as create_time,
-			demand_signUp_num
+			demand_signUp_num,
+			demand_type
+			
 		FROM
 			student_demand sd
 		LEFT JOIN
@@ -250,7 +252,8 @@
 			sd.time_range,
 			sd.demand_desc,
 			sd.create_time,
-			demand_signUp_num
+			demand_signUp_num,
+			demand_type
 		FROM
 			student_demand sd
 		LEFT JOIN
