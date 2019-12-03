@@ -261,8 +261,17 @@
 			teach_branch tb
 		ON
 			sd.subject_id = tb.teach_branch_id
+		
+		LEFT JOIN
+			student_demand_connect sdc
+		ON
+			sd.sid = sdc.demand_id 
 		WHERE
 			1=1
+     	and
+     		sdc.status != 4
+     	and
+     		sd.status != 3
      		
 		order by sd.create_time desc
 		
