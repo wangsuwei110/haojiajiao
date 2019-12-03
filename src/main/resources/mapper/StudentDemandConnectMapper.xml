@@ -18,6 +18,7 @@
 	     	<result property="teacherName" column="teacherName"/>
 	     	<result property="chargesStandard" column="charges_standard"/>
 	     	<result property="appraiseLevel" column="appraise_level"/>
+	     	<result property="telephone" column="telephone"/>
     </resultMap>
 
 	<select id="load" resultMap="studentDemandConnectResultMap" parameterType="long">
@@ -175,6 +176,7 @@
           sdc.*
           , te.name AS teacherName
           , te.charges_standard
+          , te.telephone
         FROM
           student_demand_connect sdc
         LEFT JOIN teacher te

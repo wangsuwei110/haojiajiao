@@ -150,11 +150,21 @@ public class StudentDemandVo {
     private Integer teachBranchId;
     
     private String parameterName;
+
+    @ApiModelProperty("教员手机号")
+    private String teacherPhone;
     
     //是否续课0未续课1已续课
   	private Integer isResumption;
-  	
-  	
+
+
+    public String getTeacherPhone() {
+        return teacherPhone;
+    }
+
+    public void setTeacherPhone(String teacherPhone) {
+        this.teacherPhone = teacherPhone;
+    }
 
     public Integer getIsResumption() {
 		return isResumption;

@@ -51,6 +51,16 @@ public class StudentDemandConnectVo {
 
     @ApiModelProperty(value = "评价")
     private Integer appraiseLevel;
+    @ApiModelProperty(value = "教员手机号")
+    private String telephone;
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
 
     private Date appraiseTime;
 

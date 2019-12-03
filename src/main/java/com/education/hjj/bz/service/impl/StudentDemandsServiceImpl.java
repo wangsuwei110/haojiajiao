@@ -221,6 +221,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 				f.setTeacherId(op.get().getTeacherId());
 				f.setAppraiseLevel(op.get().getAppraiseLevel());
 				f.setAppraiseTime(op.get().getAppraiseTime());
+				f.setTeacherPhone(op.get().getTelephone());
 
 
 				if (StringUtil.isNotBlank(op.get().getChargesStandard())) {
