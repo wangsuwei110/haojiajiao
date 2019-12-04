@@ -47,6 +47,7 @@
 		<result column="teacher_points" property="teacherPoints"/>
 		<result column="create_time" property="createTime"/>
 		<result column="update_time" property="updateTime"/>
+		<result column="demand_id" property="demandId"/>
 	</resultMap>
 	
 	
@@ -492,13 +493,14 @@
 	
 	<select id="queryStudentDemandSignUpTeacher" parameterType="java.lang.Integer" resultMap="userInfoResultMap">
     	SELECT
-			DISTINCT(demand_id),
+			demand_id,
 			t.name,
 			t.sex,
 			t.picture,
 			t.teacher_level,
 			t.employ_rate,
-			t.resumption_rate
+			t.resumption_rate,
+			t.teacher_id
 		FROM
 			student_demand_connect sdc
 		LEFT JOIN

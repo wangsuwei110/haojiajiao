@@ -685,25 +685,29 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		
 		List<StudentDemandVo> sdcList = studentDemandMapper.queryStudentDemandDetailSignStatusBySid(sid);
 		
-		for(StudentDemandVo sd : sdcList) {
+if(sdcList.size() > 0 && list.size() > 0 ) {
 			
-			if(sd.getTeacherId() == teacherId) {
-				flag = true;
-
-				break;
-			}
-			
-			if(sd.getStatus() != null && StringUtils.isNoneBlank(sd.getStatus().toString())) {
+			for(StudentDemandVo sd : sdcList) {
 				
-				if(sd.getStatus() != 0 && sd.getStatus() != 3) {
+				if(sd.getTeacherId() == teacherId) {
 					flag = true;
 
 					break;
 				}
+				
+				if(sd.getStatus() != null && StringUtils.isNoneBlank(sd.getStatus().toString())) {
+					
+					if(sd.getStatus() != 0 && sd.getStatus() != 3) {
+						flag = true;
+
+						break;
+					}
+				}
 			}
+			
+			logger.info("订单id:{} , 教员id:{} , 报名人数：{} ,是否报过名:{}" , sid , teacherId , list.size() ,flag);
+			
 		}
-		
-		logger.info("订单id:{} , 教员id:{} , 报名人数：{} ,是否报过名:{}" , sid , teacherId , list.size() ,flag);
 
 		map.put("studentDemandDetail", studentDemandDetail);
 		map.put("singUpStatus", flag);//singUpStatus为false的可以报名

@@ -107,6 +107,8 @@ public class TeacherVo extends BaseVo implements Serializable {
 
 	@ApiModelProperty(value = "教员的单价")
 	private Double unitPrice;
+	
+	private Integer demandId;
 
 	public Double getUnitPrice() {
 		return unitPrice;
@@ -483,6 +485,14 @@ public class TeacherVo extends BaseVo implements Serializable {
 
 	public void setResumeComplete(Integer resumeComplete) {
 		this.resumeComplete = resumeComplete;
+	}
+
+	public Integer getDemandId() {
+		return demandId;
+	}
+
+	public void setDemandId(Integer demandId) {
+		this.demandId = demandId;
 	}
 
 }
