@@ -60,8 +60,12 @@ public class Constant {
     
     //发送微信订阅消息
     public static final String SEND_WX_SUBSCRIBE_MESSAGE =  "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=";
-    //添加微信订阅消息模板
+    //组合模板并添加至帐号下的个人模板库
     public static final String ADD_WX_TEMPLATE_SUBSCRIBE_MESSAGE = "https://api.weixin.qq.com/wxaapi/newtmpl/addtemplate?access_token=";
+    //组合模板并添加至帐号下的个人模板库
+    public static final String DELETE_WX_TEMPLATE_SUBSCRIBE_MESSAGE = "https://api.weixin.qq.com/wxaapi/newtmpl/deltemplate?access_token=";
+    //获取当前帐号下的个人模板列表
+    public static final String GET_ALL_WX_TEMPLATE_SUBSCRIBE_MESSAGE = "https://api.weixin.qq.com/wxaapi/newtmpl/gettemplate?access_token=";
     
     /**获取access_token*/
     public static final String ACCESS_TOKEN  = "https://api.weixin.qq.com/cgi-bin/token";
@@ -90,5 +94,33 @@ public class Constant {
     public static final String BEGIN_CLASS = "NDvFtNBsjv6WloQIybsQ5VmEx8bd1UwB8GprfprxNhM";
     //服务时间确认通知
     public static final String SURE_SERVICE_TIME = "8afIi4QrBF9yCcZ4LUN7n9vGQRMLJ289TjQIU2fEXsQ";
+    
+    
+    /**
+     * 微信订阅消息模板
+     */
+    //上课提醒 "课程名称:{{thing1.DATA}}\n上课时间:{{time5.DATA}}\n上课地点:{{thing6.DATA}}\n上课教员:{{name12.DATA}}\n上课学生:{{name10.DATA}}\n"
+    public static final String CLASS_BEGIN_MESSAGE = "tIJJCwfwdGv-mNCU60HetaLFaADvwWX3So0yNeRBOVM";
+    
+  //提现结果通知  "金额:{{amount1.DATA}}\n收款地址:{{thing3.DATA}}\n到账时间:{{date4.DATA}}\n"
+    public static final String CASHOUT_MESSAGE = "UPhBQDD3ckPKFhoDLHuKwDwTRV0YTZkqyZo9ewszwQI";
+    
+  //授课邀请提醒  "授课内容:{{thing1.DATA}}\n温馨提示:{{thing2.DATA}}\n"
+    public static final String CLASS_CONTENT_MESSAGE = "rgndJEZd9POlvDVvBnI2ChxfYYu3xbtwISR7NCVzlNc";
+    
+  //授课预约成功通知 "授课老师:{{name1.DATA}}\n授课时间:{{date3.DATA}}\n课程内容:{{thing4.DATA}}\n"
+    public static final String CLASS_SUBSCRIBE_MESSAGE = "KB10ybjYSdInA9O9sobfhwr6yXxYMIpQ8cBIR0stX2o";
+    
+  //课表更新通知  "温馨提示:{{thing1.DATA}}\n更新时间:{{time2.DATA}}\n"
+    public static final String SCHOOL_TIMETABLE_CHANGE_MESSAGE = "tihkE1aBHVUVz2nkZMHQiBJ-e8LcRKyZhhEpX0VTpuE";
+    
+  //注册审核提醒 "申请人:{{name1.DATA}}\n申请日期:{{date2.DATA}}\n"
+    public static final String AUDIT_REGIST_MESSAGE = "3V-yzSi54QC4_3Wk6Ra106RXJFnV14qlz47ol6bE7tI";
+    
+  //购买成功通知 "课程名称:{{thing2.DATA}}\n订单金额:{{amount3.DATA}}\n购买时间:{{date4.DATA}}\n"
+    public static final String BUY_CLASS_SUCCESS_MESSAGE = "3x11joEYp8Gk7Jl_kEFjLFZ0gg1U7FwFGencGDW_hXY";
+    
+  //注册审核结果通知 "审核结果:{{thing1.DATA}}\n时间:{{date2.DATA}}\n备注:{{thing3.DATA}}\n"
+    public static final String AUDIT_REGIST_RESULT_MESSAGE = "1DIuaSZQTzvHEtIPLgzzSAYqKVZAlJHmuF2h_qORl3c";
 }
 

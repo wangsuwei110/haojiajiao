@@ -2,6 +2,7 @@ package com.education.hjj.bz.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
@@ -10,11 +11,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -154,6 +160,64 @@ public class SendWXMessageUtils {
 	}
 	
 	/**
+	 * 
+	 * @param url
+	 * @param jsonObj
+	 * @return
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	public static JSONObject get(String url) throws Exception{
+		
+		String result = "";
+		
+		logger.info("url= "+url);
+		
+		HttpGet httpGet = new HttpGet(url);
+		
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		
+		HttpResponse response = httpClient.execute(httpGet);
+		result = getHttpEntityContent(response);
+		
+		if(response.getStatusLine().getStatusCode()!=HttpStatus.SC_OK){
+			result = "服务器异常";
+		}
+		
+		logger.info("result= "+result);
+		
+		//输出调用结果
+		if(response != null && response.getStatusLine().getStatusCode() == 200) { 
+			// 生成 JSON 对象
+			JSONObject obj = JSON.parseObject(result);
+			return obj;
+		}
+		
+		return null;
+		
+	}
+	
+	public static String getHttpEntityContent(HttpResponse response) throws UnsupportedOperationException, IOException{
+		String result = "";
+		HttpEntity entity = response.getEntity();
+		if(entity != null){
+			InputStream in = entity.getContent();
+			BufferedReader br = new BufferedReader(new InputStreamReader(in, "utf-8"));
+			StringBuilder strber= new StringBuilder();
+			String line = null;
+			while((line = br.readLine())!=null){
+				strber.append(line+'\n');
+			}
+			br.close();
+			in.close();
+			result = strber.toString();
+		}
+		
+		return result;
+		
+	}
+	
+	/**
 	 * 发送统一消息服务
 	 * @param toUser 被发送方的openId
 	 * @param template_id 小程序消息模板id
@@ -209,5 +273,91 @@ public class SendWXMessageUtils {
 		return result;
 	}
 	
+	public static JSONObject getAllSubscribeMessageTemplates() {
+		
+		String accessToken = getAccessToken();
+		String url = Constant.GET_ALL_WX_TEMPLATE_SUBSCRIBE_MESSAGE + accessToken;
+		
+		JSONObject result = new JSONObject();
+		
+		try {
+			result = get(url);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 	
+	/**
+	 * 发送订阅消息服务
+	 * @param toUser 被发送方的openId
+	 * @param template_id 小程序消息模板id
+	 * @param common_template_id 公众号消息模板id
+	 * @param formid 提交请求时的formId或者支付结果的perpay_id
+	 * @param data 封装的数据
+	 * @return
+	 */
+	public static JSONObject sendSubscribeMessage(String toUser , String template_id , JSONObject data) {
+		
+		String accessToken = getAccessToken();
+		String url = Constant.SEND_WX_SUBSCRIBE_MESSAGE + accessToken;
+		
+		
+		JSONObject obj = new JSONObject();
+		
+		JSONObject result = new JSONObject();
+		
+		try {
+			
+			if(template_id != null && StringUtils.isNotBlank(template_id)) {
+				obj.put("touser", toUser);
+				obj.put("template_id", template_id);
+				obj.put("data", data);
+			}
+			
+			logger.info("obj = "+obj);
+			
+			result = post(url, obj);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	
+	public static void main(String[] args) {
+//		JSONObject result = getAllSubscribeMessageTemplates();
+//		
+//		System.out.println(result);
+		
+		
+		JSONObject data = new JSONObject();
+
+		Map<String, Object> keyMap1 = new HashMap<String, Object>();
+		keyMap1.put("value", "1.50");
+		// 添加客户名称
+		data.put("amount1", keyMap1);
+		
+		Map<String, Object> keyMap2 = new HashMap<String, Object>();
+		keyMap2.put("value", "黄浦区大闸路136号");
+		// 添加客户名称
+		data.put("thing3", keyMap2);
+		
+		Map<String, Object> keyMap3 = new HashMap<String, Object>();
+		keyMap3.put("value", "2019-12-04 12:02");
+		// 添加客户名称
+		data.put("date4", keyMap3);
+		
+		String template="UPhBQDD3ckPKFhoDLHuKwDwTRV0YTZkqyZo9ewszwQI";
+		
+		String openId = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
+		
+		JSONObject  result = sendSubscribeMessage(openId , template , data);
+		
+		System.out.println(result);
+	}
 }
