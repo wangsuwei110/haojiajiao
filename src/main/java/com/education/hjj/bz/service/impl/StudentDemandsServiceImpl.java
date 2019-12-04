@@ -408,117 +408,117 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	public ApiResponse payDemand(StudentDemandForm demandForm) {
 		
 		
-		Integer isResumption = demandForm.getIsResumption();
-		logger.info("是否是续课订单：{}" , isResumption == 1?"是":"否");
-		
-		Integer teacherId = demandForm.getTeacherId();
-		logger.info("教员的id：{}" , teacherId);
-		
-		// 如果是试讲订单，要将试讲订单修改成付费订单
-		StudentDemandVo demandVo = studentDemandMapper.findStudentDemandInfo(demandForm.getDemandId());
-
-		if (demandVo == null) {
-			return ApiResponse.error("订单不符合要求");
-		}
-		
-		// 记录上个订单的信息
-		Date date = new Date();
-		DemandLogForm logForm = new DemandLogForm();
-		logForm.setCreateTime(date);
-		logForm.setMark(JSON.toJSONString(demandVo));
-		logForm.setDemandId(demandForm.getDemandId());
-		logForm.setCreateUser(demandVo.getStudentId().toString());
-
-		demandLogMapper.insert(logForm);
-
-		Integer weekDay = DateUtil.getWeekOfDate(date);
-		demandForm.setCurrentWeekDay(weekDay);
-
-		// 修改当前订单成新订单
-		demandForm.setOrderType(2);
-		demandForm.setOrderStart(date);
-		demandForm.setUpdateTime(date);
-		Long sid = studentDemandMapper.updateOldDemandToNew(demandForm);
-		
-		if(isResumption ==1 ) {
-			
-			StudentDemandVo  studentDemandVo  = studentDemandMapper.queryStudentDemandDetailBySid(demandForm.getDemandId());
-			
-			StudentDemandPo studentDemandPo = new StudentDemandPo();
-			
-			int resumption = studentDemandVo.getIsResumption();
-			//判断该订单是否已经续课，0未续课，1已续课
-			if(resumption == 0) {			
-				studentDemandPo.setIsResumption(1);
-			}
-			studentDemandPo.setDemandId(demandForm.getDemandId());
-			studentDemandPo.setUpdateTime(new Date());
-			
-			studentDemandMapper.updateDemandIsResumption(studentDemandPo);
-			
-			
-			
-			TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
-			
-			TeacherPo teacher =new TeacherPo ();
-
-			teacher.setTeacherId(teacherId);
-			
-			//如果当前订单没有续过课,则本次续课时将该教员的所记录的续课的总数+1,
-			//如果续过课,则续课总数不变。
-			if(isResumption == 0) {
-				teacher.setResumptionCount(teacherVo.getResumptionCount()+1);
-			}
-			
-			int employCount = teacherVo.getEmployCount();
-			
-			int resumptionCount = teacherVo.getResumptionCount();
-			
-			double newRate = resumptionCount / employCount;
-			
-			logger.info(" employCount={} , resumptionCount={} , newRate={}", employCount,
-					resumptionCount, newRate);
-
-			BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
-			logger.info("employRate = {}", bg);
-			
-			teacher.setResumptionRate(bg);
-			
-			// 更新该教员的续课率
-			int j = userInfoMapper.updateUserInfo(teacher);
-		}
-
-		List<DemandCourseInfoForm> courseInfoFormList = new ArrayList<>();
-
-		// 根据订单插入每个节课时
-		for (int i = 0; i < demandForm.getWeekNum(); i++) {
-			List<WeekTimeVo> list = JSON.parseArray(demandForm.getTimeRange(), WeekTimeVo.class);
-
-			final Integer weekNum = i;
-			list.forEach(w -> {
-				DemandCourseInfoForm courseInfoForm = new DemandCourseInfoForm();
-				if (weekDay >= w.getWeek()) {
-					courseInfoForm.setOrderTeachTime(DateUtil.addDay(date, 7 + 7*weekNum));
-				} else {
-					courseInfoForm.setOrderTeachTime(DateUtil.addDay(date, w.getWeek() - weekDay + (7*weekNum)));
-				}
-
-				courseInfoForm.setStatus(0);
-				courseInfoForm.setDeleteStatus(0);
-				courseInfoForm.setCreateTime(date);
-				courseInfoForm.setUpdateTime(date);
-				courseInfoForm.setWeekNum(w.getWeek());
-				courseInfoForm.setTimeNum(w.getTime());
-				courseInfoForm.setDemandId(demandForm.getDemandId());
-				courseInfoForm.setStudentId(demandVo.getStudentId());
-				courseInfoForm.setTeacherId(demandVo.getTeacherId());
-				courseInfoForm.setCreateUser(demandVo.getStudentId().toString());
-
-				courseInfoFormList.add(courseInfoForm);
-			});
-		}
-
-		demandCourseInfoMapper.insert(courseInfoFormList);
+//		Integer isResumption = demandForm.getIsResumption();
+//		logger.info("是否是续课订单：{}" , isResumption == 1?"是":"否");
+//
+//		Integer teacherId = demandForm.getTeacherId();
+//		logger.info("教员的id：{}" , teacherId);
+//
+//		// 如果是试讲订单，要将试讲订单修改成付费订单
+//		StudentDemandVo demandVo = studentDemandMapper.findStudentDemandInfo(demandForm.getDemandId());
+//
+//		if (demandVo == null) {
+//			return ApiResponse.error("订单不符合要求");
+//		}
+//
+//		// 记录上个订单的信息
+//		Date date = new Date();
+//		DemandLogForm logForm = new DemandLogForm();
+//		logForm.setCreateTime(date);
+//		logForm.setMark(JSON.toJSONString(demandVo));
+//		logForm.setDemandId(demandForm.getDemandId());
+//		logForm.setCreateUser(demandVo.getStudentId().toString());
+//
+//		demandLogMapper.insert(logForm);
+//
+//		Integer weekDay = DateUtil.getWeekOfDate(date);
+//		demandForm.setCurrentWeekDay(weekDay);
+//
+//		// 修改当前订单成新订单
+//		demandForm.setOrderType(2);
+//		demandForm.setOrderStart(date);
+//		demandForm.setUpdateTime(date);
+//		Long sid = studentDemandMapper.updateOldDemandToNew(demandForm);
+//
+//		if(isResumption ==1 ) {
+//
+//			StudentDemandVo  studentDemandVo  = studentDemandMapper.queryStudentDemandDetailBySid(demandForm.getDemandId());
+//
+//			StudentDemandPo studentDemandPo = new StudentDemandPo();
+//
+//			int resumption = studentDemandVo.getIsResumption();
+//			//判断该订单是否已经续课，0未续课，1已续课
+//			if(resumption == 0) {
+//				studentDemandPo.setIsResumption(1);
+//			}
+//			studentDemandPo.setDemandId(demandForm.getDemandId());
+//			studentDemandPo.setUpdateTime(new Date());
+//
+//			studentDemandMapper.updateDemandIsResumption(studentDemandPo);
+//
+//
+//
+//			TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
+//
+//			TeacherPo teacher =new TeacherPo ();
+//
+//			teacher.setTeacherId(teacherId);
+//
+//			//如果当前订单没有续过课,则本次续课时将该教员的所记录的续课的总数+1,
+//			//如果续过课,则续课总数不变。
+//			if(isResumption == 0) {
+//				teacher.setResumptionCount(teacherVo.getResumptionCount()+1);
+//			}
+//
+//			int employCount = teacherVo.getEmployCount();
+//
+//			int resumptionCount = teacherVo.getResumptionCount();
+//
+//			double newRate = resumptionCount / employCount;
+//
+//			logger.info(" employCount={} , resumptionCount={} , newRate={}", employCount,
+//					resumptionCount, newRate);
+//
+//			BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
+//			logger.info("employRate = {}", bg);
+//
+//			teacher.setResumptionRate(bg);
+//
+//			// 更新该教员的续课率
+//			int j = userInfoMapper.updateUserInfo(teacher);
+//		}
+//
+//		List<DemandCourseInfoForm> courseInfoFormList = new ArrayList<>();
+//
+//		// 根据订单插入每个节课时
+//		for (int i = 0; i < demandForm.getWeekNum(); i++) {
+//			List<WeekTimeVo> list = JSON.parseArray(demandForm.getTimeRange(), WeekTimeVo.class);
+//
+//			final Integer weekNum = i;
+//			list.forEach(w -> {
+//				DemandCourseInfoForm courseInfoForm = new DemandCourseInfoForm();
+//				if (weekDay >= w.getWeek()) {
+//					courseInfoForm.setOrderTeachTime(DateUtil.addDay(date, 7 + 7*weekNum));
+//				} else {
+//					courseInfoForm.setOrderTeachTime(DateUtil.addDay(date, w.getWeek() - weekDay + (7*weekNum)));
+//				}
+//
+//				courseInfoForm.setStatus(0);
+//				courseInfoForm.setDeleteStatus(0);
+//				courseInfoForm.setCreateTime(date);
+//				courseInfoForm.setUpdateTime(date);
+//				courseInfoForm.setWeekNum(w.getWeek());
+//				courseInfoForm.setTimeNum(w.getTime());
+//				courseInfoForm.setDemandId(demandForm.getDemandId());
+//				courseInfoForm.setStudentId(demandVo.getStudentId());
+//				courseInfoForm.setTeacherId(demandVo.getTeacherId());
+//				courseInfoForm.setCreateUser(demandVo.getStudentId().toString());
+//
+//				courseInfoFormList.add(courseInfoForm);
+//			});
+//		}
+//
+//		demandCourseInfoMapper.insert(courseInfoFormList);
 		
 		
 
@@ -534,8 +534,8 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		}
         demandForm.setUpdateTime(new Date());
 		// 试讲通过
-		Long sid = connectMapper.updateStatus(demandForm);
-		if (sid != null) {
+//		Long sid = connectMapper.updateStatus(demandForm);
+//		if (sid != null) {
 			// 试讲不通过，返回三个形态信息
 			if (demandForm.getStatus() == 3) {
 				// 首先查下订单类型，区分是快速请家教或者单独预约，如果是快速请家教，再区分当前试讲未通过是不是唯一报名的教员
@@ -554,13 +554,11 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 					}
 				}
 			}
-			// 试讲通过，则将其它报名的订单全部改成5
-			demandForm.setStatus(5);
-			connectMapper.updateStatusAndPass(demandForm);
+
 
 			return ApiResponse.success("状态修改成功");
-		}
-		return ApiResponse.success("状态修改失败");
+//		}
+//		return ApiResponse.success("状态修改失败");
 	}
 
 	/**

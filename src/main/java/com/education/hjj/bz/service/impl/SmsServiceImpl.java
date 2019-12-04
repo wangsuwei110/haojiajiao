@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.education.hjj.bz.formBean.VerificationCodeForm;
+import com.education.hjj.bz.mapper.VerificationCodeMapper;
 import com.education.hjj.bz.util.common.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +51,8 @@ public class SmsServiceImpl implements ISmsService{
     
     @Value("${aliyun.sms.templateCode}")
     private  String TEMPLATECODE;
+
+    private VerificationCodeMapper codeMapper;
     
     private static final String signName = "来家教";
     
@@ -140,6 +144,8 @@ public class SmsServiceImpl implements ISmsService{
         }
 		
 		String identifyCode;
+
+
         //1. 判断是否缓存该账号验证码
         String returnCode = redisService.getValue(Constant.SMS_LOGIN_IDENTIFY_CODE+mobile);
         if (!StringUtils.isEmpty(returnCode)) {
@@ -157,6 +163,12 @@ public class SmsServiceImpl implements ISmsService{
             //短信发送成功后存入redis
             if (response != null && Constant.SMS_SEND_STATUS_OK.equalsIgnoreCase(response.getCode()) && StringUtils.isEmpty(returnCode)) {
                 redisService.setKey( Constant.SMS_LOGIN_IDENTIFY_CODE+mobile, identifyCode);
+
+                VerificationCodeForm form = new VerificationCodeForm();
+                form.setPhone(mobile);
+                form.setCode(identifyCode);
+                form.setCreateTime(new Date());
+                codeMapper.insertCode(form);
             }
             map.put("msg", "短信发送成功！");
             return map;

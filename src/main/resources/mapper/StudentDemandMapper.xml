@@ -307,7 +307,7 @@
 
     </update>
 
-    <select id="findStudentDemandInfo" parameterType="java.lang.Integer" resultMap="studentDemandsResultMap">
+    <select id="findStudentDemandInfo" parameterType="com.education.hjj.bz.formBean.StudentDemandForm" resultMap="studentDemandsResultMap">
         SELECT
         	sd.*,
         	tea.teacher_id,
@@ -322,7 +322,6 @@
         	student_demand_connect sdc
         ON
         	sd.sid = sdc.demand_id
-        AND sdc.status in (4,7)
         INNER JOIN
         	teacher tea
         ON
@@ -333,7 +332,8 @@
         	sd.student_id = s.sid
 
         WHERE
-        	sd.sid = #{demanId}
+        	sd.sid = #{demandId}
+        AND tea.teacher_id = #{teacherId}
     </select>
 
     <!-- 查询需求订单详情 -->

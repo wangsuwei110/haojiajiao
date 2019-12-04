@@ -286,7 +286,7 @@ public class PayController {
                 logger.info("caohuan*********支付代码逻辑***********");
                 //更新订单信息
                 // 如果是试讲订单，要将试讲订单修改成付费订单
-                demandVo = studentDemandMapper.findStudentDemandInfo(demandForm.getDemandId());
+                demandVo = studentDemandMapper.findStudentDemandInfo(demandForm);
 
                 // 记录上个订单的信息
                 Date date = new Date();
@@ -316,7 +316,11 @@ public class PayController {
                 connectForm.setStatus(4);
                 connectMapper.updateByDemandId(connectForm);
 
-                // TODO: 暂时注释掉，等待素伟后续看
+				// 试讲通过，则将其它报名的订单全部改成5
+				connectForm.setTeacherId(demandVo.getTeacherId());
+				connectForm.setStatus(5);
+				connectMapper.updateStatusAndPass(connectForm);
+
                 Integer teacherId = demandVo.getTeacherId();
                 
                 TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
@@ -336,21 +340,6 @@ public class PayController {
         		logger.info("employRate = {}", bg);
         		// 更新该教员的聘用率
         		teacherPo.setEmployRate(bg);
-        		
-//        		
-//        		int resumptionCount = teacherVo.getResumptionCount() + 1;
-//        		
-//        		double newResumptionRate = resumptionCount / employCount;
-//        		
-//        		logger.info(" employCount={} , resumptionCount={} , newRate={}", employCount,
-//        				resumptionCount, newRate);
-//
-//        		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
-//        		logger.info("employRate = {}", bg);
-//        		
-//        		teacher.setResumptionRate(bg);
-        		
-        		
 
         		userInfoMapper.updateUserInfo(teacherPo);
 

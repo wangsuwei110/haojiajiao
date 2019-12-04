@@ -17,17 +17,35 @@ public class Test {
 
 	public static void main(String[] args) {
 
-		double d = formatDouble2(0.8934);
-		System.out.println(d);
-		
-		String b = String.format("%.2f", d);
-		System.out.println(b);
-		
-		BigDecimal cc = new BigDecimal(12.63).setScale(2, RoundingMode.DOWN);
-		
-		System.out.println("cc = "+cc.toString());
-		
-		System.out.println(UUIDUtils.getRandomNumBySub());;
+	    String s = "0.89";
+	    String s1 = "100.01";
+
+
+
+        System.out.println(new BigDecimal(s).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_UP));
+        System.out.println(new BigDecimal(s1));
+
+
+
+		BigDecimal orderMoney = new BigDecimal("0.89");
+		System.out.println(orderMoney.multiply(new BigDecimal("100")));
+
+		String money = String.valueOf(orderMoney.multiply(new BigDecimal("100")));
+		System.out.println(money.substring(0, money.indexOf(".")));
+		System.out.println(Integer.valueOf(money.substring(0, money.indexOf("."))));
+
+
+//		double d = formatDouble2(0.8934);
+//		System.out.println(d);
+//
+//		String b = String.format("%.2f", d);
+//		System.out.println(b);
+//
+//		BigDecimal cc = new BigDecimal(12.63).setScale(2, RoundingMode.DOWN);
+//
+//		System.out.println("cc = "+cc.toString());
+//
+//		System.out.println(UUIDUtils.getRandomNumBySub());;
 	}
 	
 	public static void method_add()
