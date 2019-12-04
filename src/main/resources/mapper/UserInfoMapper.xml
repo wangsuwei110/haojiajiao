@@ -134,6 +134,7 @@
 			t.teacher_points,
 			t.singUp_count,
 			t.choose_count,
+			t.employ_count,
 			t.employ_rate,
 			t.resumption_count,
 			t.resumption_rate,
