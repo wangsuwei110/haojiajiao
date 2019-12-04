@@ -358,7 +358,7 @@
     </select>
     
     <!-- 学员端查询所有的教员信息列表 -->
-    <select id="queryAllTeacherInfosByStudent" resultMap="userInfoResultMap" parameterType="com.education.hjj.bz.entity.TeacherPo">
+    <select id="queryAllTeacherInfosByStudent" resultMap="userInfoResultMap" parameterType="com.education.hjj.bz.formBean.StudentTeacherInfoForm">
     	select
     		t.teacher_id,
     		t.name,
@@ -391,11 +391,11 @@
              AND #{teachBrance} = t.teach_brance
         </if>	
         <if test="teachBrance != null">
-             OR #{teachBrance} like CONCAT('%',t.teach_branch_slave,'%')
+             OR #{teachBrance} in (t.teach_branch_slave)
         </if>	
         <if test="teachAddress != null">
         	<![CDATA[
-             AND #{teachAddress} like CONCAT('%',t.teach_address,'%')
+             AND #{teachAddress} in (t.teach_address)
              ]]>
         </if>
         <if test="school != null">
