@@ -163,7 +163,7 @@ public class SmsServiceImpl implements ISmsService{
             //短信发送成功后存入redis
             if (response != null && Constant.SMS_SEND_STATUS_OK.equalsIgnoreCase(response.getCode()) && StringUtils.isEmpty(returnCode)) {
                 redisService.setKey( Constant.SMS_LOGIN_IDENTIFY_CODE+mobile, identifyCode);
-
+                logger.info("caohuan******************"+ "phone:" + mobile + ",code" + identifyCode);
                 VerificationCodeForm form = new VerificationCodeForm();
                 form.setPhone(mobile);
                 form.setCode(identifyCode);
