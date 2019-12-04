@@ -208,7 +208,7 @@
 			sd.class_num,
 			sd.time_range,
 			sd.demand_desc,
-			date_format(sd.create_time, '%Y-%m-%d') as create_time,
+			sd.create_time,
 			demand_signUp_num,
 			demand_type
 			
@@ -265,10 +265,6 @@
 		ON
 			sd.subject_id = tb.teach_branch_id
 		
-		LEFT JOIN
-			student_demand_connect sdc
-		ON
-			sd.sid = sdc.demand_id 
 		WHERE
 			1=1
      		
