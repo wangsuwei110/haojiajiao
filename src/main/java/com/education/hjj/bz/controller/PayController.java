@@ -317,7 +317,7 @@ public class PayController {
                 connectMapper.updateByDemandId(connectForm);
 
                 // TODO: 暂时注释掉，等待素伟后续看
-              /*  Integer teacherId = demandVo.getTeacherId();
+                Integer teacherId = demandVo.getTeacherId();
                 
                 TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
         		// 更新教员对所有报名订单的数量
@@ -352,7 +352,7 @@ public class PayController {
         		
         		
 
-        		userInfoMapper.updateUserInfo(teacherPo);*/
+        		userInfoMapper.updateUserInfo(teacherPo);
 
                 List<DemandCourseInfoForm> courseInfoFormList = new ArrayList<>();
                 StudentDemandVo demand = demandVo;
