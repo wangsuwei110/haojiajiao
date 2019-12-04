@@ -68,7 +68,7 @@ public interface StudentDemandsService {
 	/**
 	 * 主页信息
 	 **/
-	ApiResponse homepageInfo(StudentDemandConnectForm demandForm);
+	ApiResponse homepageInfo();
 
 	/**
 	 * 主页信息

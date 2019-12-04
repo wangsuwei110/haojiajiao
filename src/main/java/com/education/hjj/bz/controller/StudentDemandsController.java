@@ -126,8 +126,8 @@ public class StudentDemandsController {
 
 	@ApiOperation("主页信息")
 	@RequestMapping(value = "/homepageInfo", method = RequestMethod.POST)
-	public ApiResponse homepageInfo(@RequestBody StudentDemandConnectForm demandForm) {
-		return studentDemandsService.homepageInfo(demandForm);
+	public ApiResponse homepageInfo() {
+		return studentDemandsService.homepageInfo();
 	}
 
 	@ApiOperation("订单评价")

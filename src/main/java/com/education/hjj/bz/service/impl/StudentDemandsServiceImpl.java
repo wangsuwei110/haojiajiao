@@ -3,19 +3,15 @@ package com.education.hjj.bz.service.impl;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.alibaba.fastjson.JSON;
 import com.education.hjj.bz.entity.*;
 import com.education.hjj.bz.entity.vo.*;
+import com.education.hjj.bz.enums.MainSubjectEnum;
 import com.education.hjj.bz.mapper.*;
 import com.education.hjj.bz.service.StudentLogService;
 
@@ -604,10 +600,25 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	 * 主页信息
 	 **/
 	@Override
-	public ApiResponse homepageInfo(StudentDemandConnectForm demandForm) {
+	public ApiResponse homepageInfo() {
 		// 检索科目信息
-        teachBranchMapper.queryAllTeachBranchs();
-		return ApiResponse.success("已结束订单");
+		List<TeachBranchVo> branchVos = teachBranchMapper.queryAllTeachBranchs();
+		List<CodeInfoVo> codeInfoVos = branchVos.stream().map(m ->
+				new CodeInfoVo(m.getTeachBranchId().toString(), m.getTeachBranchName())).collect(Collectors.toList());
+		List<String> mainList = Arrays.stream(MainSubjectEnum.values()).map(mv -> mv.getValue()).collect(Collectors.toList());
+		List<CodeInfoVo> collects = codeInfoVos.stream().filter(f ->
+				!mainList.stream().anyMatch(s -> f.getValue().contains(s))).collect(Collectors.toList());
+
+		mainList.forEach(m -> {
+			CodeInfoVo vo = new CodeInfoVo();
+			String code = codeInfoVos.stream().filter(f ->
+					f.getValue().contains(m)).map(p -> p.getKey()).collect(Collectors.joining(","));
+			vo.setKey(code);
+			vo.setValue(m);
+			collects.add(vo);
+		});
+
+		return ApiResponse.success(collects);
 	}
 
 	/**
