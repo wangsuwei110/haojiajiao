@@ -291,11 +291,9 @@ public class SendWXMessageUtils {
 	}
 	
 	/**
-	 * 发送订阅消息服务
+	 * 发送订阅消息服务公共模板
 	 * @param toUser 被发送方的openId
 	 * @param template_id 小程序消息模板id
-	 * @param common_template_id 公众号消息模板id
-	 * @param formid 提交请求时的formId或者支付结果的perpay_id
 	 * @param data 封装的数据
 	 * @return
 	 */
@@ -330,34 +328,34 @@ public class SendWXMessageUtils {
 	
 	
 	public static void main(String[] args) {
-//		JSONObject result = getAllSubscribeMessageTemplates();
-//		
-//		System.out.println(result);
-		
-		
-		JSONObject data = new JSONObject();
-
-		Map<String, Object> keyMap1 = new HashMap<String, Object>();
-		keyMap1.put("value", "1.50");
-		// 添加客户名称
-		data.put("amount1", keyMap1);
-		
-		Map<String, Object> keyMap2 = new HashMap<String, Object>();
-		keyMap2.put("value", "黄浦区大闸路136号");
-		// 添加客户名称
-		data.put("thing3", keyMap2);
-		
-		Map<String, Object> keyMap3 = new HashMap<String, Object>();
-		keyMap3.put("value", "2019-12-04 12:02");
-		// 添加客户名称
-		data.put("date4", keyMap3);
-		
-		String template="UPhBQDD3ckPKFhoDLHuKwDwTRV0YTZkqyZo9ewszwQI";
-		
-		String openId = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
-		
-		JSONObject  result = sendSubscribeMessage(openId , template , data);
+		JSONObject result = getAllSubscribeMessageTemplates();
 		
 		System.out.println(result);
+		
+		
+//		JSONObject data = new JSONObject();
+//
+//		Map<String, Object> keyMap1 = new HashMap<String, Object>();
+//		keyMap1.put("value", "1.50");
+//		// 添加客户名称
+//		data.put("amount1", keyMap1);
+//		
+//		Map<String, Object> keyMap2 = new HashMap<String, Object>();
+//		keyMap2.put("value", "黄浦区大闸路136号");
+//		// 添加客户名称
+//		data.put("thing3", keyMap2);
+//		
+//		Map<String, Object> keyMap3 = new HashMap<String, Object>();
+//		keyMap3.put("value", "2019-12-04 12:02");
+//		// 添加客户名称
+//		data.put("date4", keyMap3);
+//		
+//		String template="UPhBQDD3ckPKFhoDLHuKwDwTRV0YTZkqyZo9ewszwQI";
+//		
+//		String openId = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
+//		
+//		JSONObject  result = sendSubscribeMessage(openId , template , data);
+//		
+//		System.out.println(result);
 	}
 }

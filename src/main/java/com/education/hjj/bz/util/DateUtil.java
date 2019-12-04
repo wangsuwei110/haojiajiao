@@ -923,6 +923,25 @@ public final class DateUtil {
 		}
 		return newDate;
 	}
+	
+	/**
+	 * 将传进来的Date参数转换成String日期类型返回
+	 *
+	 * @param date
+	 * @return
+	 */
+	public static String covertFromDateToShortString(Date date) {
+		SimpleDateFormat df = new SimpleDateFormat(FORMAT_YYYY_MM_DD_HH_MM);
+		String newDate = "";
+		if (date != null && !"".equals(date)) {
+			try {
+				newDate = df.format(date);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return newDate;
+	}
 
 	/**
 	 * 计算剩余时间

@@ -35,19 +35,15 @@ import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.DateUtil;
 import com.education.hjj.bz.util.SendWXMessageUtils;
 import com.education.hjj.bz.util.weixinUtil.CommonUtil;
-import com.education.hjj.bz.util.weixinUtil.HttpUtil;
 import com.education.hjj.bz.util.weixinUtil.MD5Utils;
 import com.education.hjj.bz.util.weixinUtil.ObjectToMapUntils;
 import com.education.hjj.bz.util.weixinUtil.PayUtils;
-import com.education.hjj.bz.util.weixinUtil.RandomUtils;
 import com.education.hjj.bz.util.weixinUtil.WXUtils;
 import com.education.hjj.bz.util.weixinUtil.config.Constant;
 import com.education.hjj.bz.util.weixinUtil.vo.CheckPaymentToUserPo;
 import com.education.hjj.bz.util.weixinUtil.vo.CheckRedPackPo;
 import com.education.hjj.bz.util.weixinUtil.vo.Json;
 import com.education.hjj.bz.util.weixinUtil.vo.PayCashPo;
-import com.education.hjj.bz.util.weixinUtil.vo.PayInfo;
-import com.education.hjj.bz.util.weixinUtil.vo.RedpackRequestPo;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -275,9 +271,12 @@ public class PayCashController {
 
 						return ApiResponse.error("系统异常，请稍后再试！");
 					}
-
+					
+					/*
+					 * 被注释掉的方法是发送统一消息模板消息
+					 *
 					JSONObject data = new JSONObject();
-
+					 
 					Map<String, Object> keyMap1 = new HashMap<String, Object>();
 					keyMap1.put("value", partnerTradeNo);
 					// 添加客户名称
@@ -326,7 +325,27 @@ public class PayCashController {
 //					JSONObject sendRedPackRsult = SendWXMessageUtils.sendMessage(openId,
 //							"", Constant.COMMON_CASH_OUT_TO_ACCOUNT_MESSAGE, formId,
 //							data);
-
+					*/
+					
+					JSONObject data = new JSONObject();
+					
+					Map<String, Object> keyMap1 = new HashMap<String, Object>();
+					keyMap1.put("value", cashOutData.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					// 金额
+					data.put("amount1", keyMap1);
+					
+					Map<String, Object> keyMap2 = new HashMap<String, Object>();
+					keyMap2.put("value", "微信零钱");
+					// 收款地址
+					data.put("thing3", keyMap2);
+					
+					Map<String, Object> keyMap3 = new HashMap<String, Object>();
+					keyMap3.put("value", DateUtil.covertFromDateToShortString(new Date()));
+					// 到账时间
+					data.put("date4", keyMap3);
+					
+					JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(openId, Constant.CASHOUT_MESSAGE, data);
+					
 					logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") + " "
 							+ sendRedPackRsult.getString("errmsg"));
 
