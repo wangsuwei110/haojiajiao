@@ -1,13 +1,12 @@
 package com.education.hjj.bz.controller;
 
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import com.education.hjj.bz.entity.StudentLogPo;
-import com.education.hjj.bz.entity.TeacherPo;
-import com.education.hjj.bz.entity.vo.*;
-import com.education.hjj.bz.mapper.StudentMapper;
-import com.education.hjj.bz.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -23,14 +22,33 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.education.hjj.bz.entity.ParameterPo;
 import com.education.hjj.bz.entity.PicturePo;
+import com.education.hjj.bz.entity.StudentLogPo;
+import com.education.hjj.bz.entity.vo.PageVo;
+import com.education.hjj.bz.entity.vo.ParameterVo;
+import com.education.hjj.bz.entity.vo.PictureVo;
+import com.education.hjj.bz.entity.vo.StudentDemandConnectVo;
+import com.education.hjj.bz.entity.vo.StudentDemandVo;
+import com.education.hjj.bz.entity.vo.StudentVo;
+import com.education.hjj.bz.entity.vo.TeachBranchVo;
+import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
+import com.education.hjj.bz.entity.vo.TeacherVo;
+import com.education.hjj.bz.entity.vo.UniversityVo;
 import com.education.hjj.bz.formBean.PictureForm;
 import com.education.hjj.bz.formBean.StudentConnectTeacherForm;
+import com.education.hjj.bz.formBean.StudentTeacherInfoForm;
 import com.education.hjj.bz.formBean.TeacherInfoForm;
 import com.education.hjj.bz.formBean.TeacherInfoReplenishForm;
 import com.education.hjj.bz.formBean.UserInfoForm;
 import com.education.hjj.bz.mapper.StudentConnectTeacherMapper;
+import com.education.hjj.bz.mapper.StudentMapper;
+import com.education.hjj.bz.service.DemandCourseInfoService;
+import com.education.hjj.bz.service.ParameterService;
+import com.education.hjj.bz.service.StudentDemandConnectService;
+import com.education.hjj.bz.service.StudentLogService;
+import com.education.hjj.bz.service.TeachBranchService;
+import com.education.hjj.bz.service.UserInfoService;
+import com.education.hjj.bz.service.UserPictureInfoService;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.DateUtil;
 import com.education.hjj.bz.util.UtilTools;
@@ -440,46 +458,14 @@ public class UserInfoController {
 		return ApiResponse.error("暂无数据！");
 	}
 
+	
 	@ApiOperation("学员端查询所有教员信息")
 	@RequestMapping(value = "/queryAllTeacherInfosByStudents", method = RequestMethod.POST)
 	@ResponseBody
-	public ApiResponse queryAllTeacherInfosByStudents(@RequestBody TeacherInfoForm teacherInfoForm) {
+	public ApiResponse queryAllTeacherInfosByStudents(@RequestBody StudentTeacherInfoForm studentTeacherInfoForm) {
 		
-		Map<String , Object> map = new HashMap<String , Object>();
 		
-		TeacherPo teacherPo = new TeacherPo();
-		if(teacherInfoForm.getTeacherPoints() != null && teacherInfoForm.getTeacherPoints() != 0) {
-			teacherPo.setTeacherPoints(teacherInfoForm.getTeacherPoints());
-		}
-		
-		if(teacherInfoForm.getCreateTime() != null && StringUtils.isNotBlank(teacherInfoForm.getCreateTime())) {
-			teacherPo.setCreateTime(new Date());
-		}
-		
-		if(teacherInfoForm.getTeachBrance() != null && StringUtils.isNotBlank(teacherInfoForm.getTeachBrance())) {
-			teacherPo.setTeachBrance(Integer.valueOf(teacherInfoForm.getTeachBrance()));
-		}
-		
-		if(teacherInfoForm.getTeachAddress() != null && StringUtils.isNotBlank(teacherInfoForm.getTeachAddress())) {
-			teacherPo.setTeachAddress(teacherInfoForm.getTeachAddress());
-		}
-		
-		if(teacherInfoForm.getSchool() != null && StringUtils.isNotBlank(teacherInfoForm.getSchool())) {
-			teacherPo.setSchool(teacherInfoForm.getSchool());
-		}
-		
-		if(teacherInfoForm.getIsGraduate() != null) {
-			teacherPo.setIsGraduate(teacherInfoForm.getIsGraduate());
-		}
-		
-		if(teacherInfoForm.getSex() != null) {
-			teacherPo.setSex(teacherInfoForm.getSex());
-		}
-		
-		teacherPo.setPageIndex(teacherInfoForm.getPageIndex());
-		teacherPo.setPageSize(teacherInfoForm.getPageSize());
-		
-		List<TeacherVo> list = userInfoService.queryAllTeacherInfosByStudent(teacherPo);
+		List<TeacherVo> list = userInfoService.queryAllTeacherInfosByStudent(studentTeacherInfoForm);
 		
 		if(list.size() > 0) {
 		

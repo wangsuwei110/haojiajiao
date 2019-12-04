@@ -3,7 +3,6 @@ package com.education.hjj.bz.service.impl;
 import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +24,6 @@ import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
 import com.education.hjj.bz.entity.TeacherPo;
 import com.education.hjj.bz.entity.vo.ParameterVo;
 import com.education.hjj.bz.entity.vo.PictureVo;
-import com.education.hjj.bz.entity.vo.TeachBranchVo;
 import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
 import com.education.hjj.bz.entity.vo.TeacherAccountVo;
 import com.education.hjj.bz.entity.vo.TeacherInfoPicturesVo;
@@ -33,6 +31,7 @@ import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.entity.vo.UniversityVo;
 import com.education.hjj.bz.enums.ImagePath;
 import com.education.hjj.bz.formBean.LoginForm;
+import com.education.hjj.bz.formBean.StudentTeacherInfoForm;
 import com.education.hjj.bz.formBean.TeacherInfoForm;
 import com.education.hjj.bz.formBean.TeacherInfoReplenishForm;
 import com.education.hjj.bz.formBean.UserInfoForm;
@@ -663,11 +662,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
 
 	@Override
-	public List<TeacherVo> queryAllTeacherInfosByStudent(TeacherPo teacherPo) {
+	public List<TeacherVo> queryAllTeacherInfosByStudent(StudentTeacherInfoForm studentTeacherInfoForm) {
 		
-		List<TeacherVo> list = userInfoMapper.queryAllTeacherInfosByStudent(teacherPo);
-		
-		
+		List<TeacherVo> list = userInfoMapper.queryAllTeacherInfosByStudent(studentTeacherInfoForm);
 		
 		return list;
 	}

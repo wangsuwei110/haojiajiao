@@ -14,6 +14,7 @@ import com.education.hjj.bz.entity.vo.TeacherAccountVo;
 import com.education.hjj.bz.entity.vo.TeacherInfoPicturesVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.entity.vo.UniversityVo;
+import com.education.hjj.bz.formBean.StudentTeacherInfoForm;
 
 @Mapper
 public interface UserInfoMapper {
@@ -53,5 +54,7 @@ public interface UserInfoMapper {
 	
 	List<UniversityVo> queryAllSchools();
 	
-	List<TeacherVo> queryAllTeacherInfosByStudent(TeacherPo teacherPo);
+//	List<TeacherVo> queryAllTeacherInfosByStudent(TeacherPo teacherPo);
+	
+	List<TeacherVo> queryAllTeacherInfosByStudent(StudentTeacherInfoForm studentTeacherInfoForm);
 }
