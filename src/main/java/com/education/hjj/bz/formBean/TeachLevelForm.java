@@ -3,6 +3,7 @@ package com.education.hjj.bz.formBean;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
 
+import java.io.Serializable;
 import java.util.Date;
 /**
  * 教学学段表Form
@@ -10,10 +11,15 @@ import java.util.Date;
  * @创建者：sys
  * @创建时间：2019-10-13 13:31:41
  */
-public class TeachLevelForm {
+public class TeachLevelForm implements Serializable{
 
 
-    @ApiModelProperty(value = "教学学段表主键id",required = true)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3526095026006391246L;
+
+	@ApiModelProperty(value = "教学学段表主键id",required = true)
     private Long teachLevelId;
 
     @ApiModelProperty(value = "教学学段名称",required = true)
@@ -33,6 +39,8 @@ public class TeachLevelForm {
 
     @ApiModelProperty(value = "修改人",required = true)
     private String updateUser;
+    
+    private Integer teacherId;
 
 
     public Long getTeachLevelId() {
@@ -87,6 +95,12 @@ public class TeachLevelForm {
         this.updateUser = updateUser;
     }
 
+	public Integer getTeacherId() {
+		return teacherId;
+	}
 
+	public void setTeacherId(Integer teacherId) {
+		this.teacherId = teacherId;
+	}
 
 }
