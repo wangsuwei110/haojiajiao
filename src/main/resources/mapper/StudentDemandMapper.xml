@@ -271,10 +271,6 @@
 			sd.sid = sdc.demand_id 
 		WHERE
 			1=1
-     	and
-     		sdc.status != 4
-     	and
-     		sd.status != 3
      		
 		order by sd.create_time desc
 		
@@ -459,8 +455,8 @@
 			sd.class_num,
 			sd.time_range,
 			sd.demand_desc,
-			date_format(sd.create_time, '%Y-%m-%d') as create_time,
-			demand_signUp_num
+			sd.create_time,
+			sd.demand_signUp_num
 
 		FROM
 			student_demand sd
@@ -480,23 +476,25 @@
 			teacher t
 		ON
 			sdc.teacher_id = t.teacher_id
-		AND
-			sd.parameter_id like '%t.teach_address%'
-		AND
-			(sd.subject_id like '%t.teach_brance%'
-		OR
-			sd.subject_id like '%t.teach_branch_slave%'
-		)
-		AND
-			sd.demand_grade like '%t.teach_grade%'
-		AND
-			t.`status` = 1
+		
 		WHERE
 			sd.demand_type = 2
+		AND
+			t.`status` = 1
 		AND
 			sdc.order_teach_time is null
 		AND
 			sdc.teacher_id = #{teacherId}
+		AND
+			sd.parameter_id in (t.teach_address)
+		AND
+			(sd.subject_id in (t.teach_brance)
+		OR
+			sd.subject_id in (t.teach_branch_slave)
+		)
+		AND
+			sd.demand_grade in (t.teach_grade)
+		
 		ORDER BY
 			sd.create_time desc
     </select>

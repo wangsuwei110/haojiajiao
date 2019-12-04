@@ -216,6 +216,7 @@ public class UserInfoController {
 		
 		map.put("major", teacherVo.getMajor());
 		map.put("teacherTag", teacherVo.getTeacherTag());
+		map.put("teacherTime", teacherVo.getTeachTime());
 		
 		
 		return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
