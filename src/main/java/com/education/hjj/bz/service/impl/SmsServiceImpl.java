@@ -1,21 +1,5 @@
 package com.education.hjj.bz.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import com.education.hjj.bz.formBean.VerificationCodeForm;
-import com.education.hjj.bz.mapper.VerificationCodeMapper;
-import com.education.hjj.bz.util.common.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
 import com.alibaba.fastjson.JSON;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
@@ -26,12 +10,25 @@ import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
+import com.education.hjj.bz.formBean.VerificationCodeForm;
+import com.education.hjj.bz.mapper.VerificationCodeMapper;
 import com.education.hjj.bz.service.IRedisService;
 import com.education.hjj.bz.service.ISmsService;
-import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.Constant;
 import com.education.hjj.bz.util.IdentifyCodeUtil;
 import com.education.hjj.bz.util.RegUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class SmsServiceImpl implements ISmsService{
@@ -52,6 +49,7 @@ public class SmsServiceImpl implements ISmsService{
     @Value("${aliyun.sms.templateCode}")
     private  String TEMPLATECODE;
 
+    @Autowired
     private VerificationCodeMapper codeMapper;
     
     private static final String signName = "来家教";
