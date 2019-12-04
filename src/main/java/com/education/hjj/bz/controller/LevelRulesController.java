@@ -55,7 +55,7 @@ public class LevelRulesController {
 		map.put("teacherLevel", JSON.toJSON(teacherVo.getTeacherLevel()));
 		map.put("teacherPoints", JSON.toJSON(teacherVo.getTeacherPoints()));
 
-		return ApiResponse.success(list);
+		return ApiResponse.success(JSON.toJSON(map));
 	}
 
 }
