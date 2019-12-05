@@ -8,8 +8,10 @@
 		<!-- column代表数据库列名，property代表实体类属性名 -->
 		<result column="complaint_suggestion_id" property="complaintSuggestionId"/>
 		<result column="person_id" property="personId"/>
+		<result column="name" property="name"/>
 		<result column="type" property="type"/>
 		<result column="content" property="content"/>
+		<result column="pictures" property="pictures"/>
 		<result column="telephone" property="telephone"/>
 		<result column="create_time" property="createTime"/>
 	</resultMap>
@@ -22,6 +24,7 @@
 				type,
 				content,
 				telephone,
+				pictures,
 				status,
 				create_time,
 				create_user,
@@ -33,6 +36,7 @@
 				#{type},
 				#{content},
 				#{telephone},
+				#{pictures},
 				#{status},
 				#{createTime},
 				#{createUser},
@@ -47,8 +51,8 @@
         update
         	teacher_complaints_suggestions
         set
-        	reply = #{reply},
-        	status = #{status}
+        	
+        	status = #{status},
         	update_time = #{updateTime},
         	update_user = #{updateUser}
         where
@@ -65,7 +69,7 @@
 			type,
 			content,
 			telephone,
-			reply,
+			pictures,
 			status,
 			create_time
 		from
@@ -79,6 +83,31 @@
     
     </select>
     
+    <!-- 教务端查询所有的未回复的投诉与建议 -->
+    <select id="queryAllComplaintSuggestionByEducational" resultMap="complaintSuggestionResultMap" parameterType=" com.education.hjj.bz.formBean.ComplaintSuggestionForm">
+    	SELECT 
+			tcs.complaint_suggestion_id,
+			t.name,
+			t.telephone,
+			tcs.content,
+			tcs.create_time
+		
+		FROM
+			teacher_complaints_suggestions tcs
+		LEFT JOIN
+			teacher t
+		ON
+			tcs.person_id = t.teacher_id
+		ORDER BY 
+			tcs.create_time ASC	
+		<if test="offset != null">
+            <![CDATA[
+            limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
+    
+    </select>
+    
     <!-- 查询一条未回复的投诉与建议 -->
      <select id="queryComplaintSuggestionById" resultMap="complaintSuggestionResultMap" parameterType="java.lang.Integer">
     	select
@@ -87,7 +116,7 @@
 			type,
 			content,
 			telephone,
-			reply,
+			pictures,
 			status,
 			create_time
 		from

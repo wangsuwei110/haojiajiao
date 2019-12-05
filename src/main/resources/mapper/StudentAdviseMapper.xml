@@ -5,6 +5,8 @@
     <resultMap id="studentAdviseResultMap" type="com.education.hjj.bz.entity.vo.StudentAdviseVo">
 	     	<result property="sid" column="sid"/>
 	     	<result property="studentId" column="student_id"/>
+	     	<result property="studentName" column="student_name"/>
+	     	<result property="parentPhoneNum" column="parent_phone_num"/>
 	     	<result property="adviseDesc" column="advise_desc"/>
 	     	<result property="createTime" column="create_time"/>
 	     	<result property="createUser" column="create_user"/>
@@ -94,4 +96,25 @@
                 </if>
         </where>
     </sql>
+    
+    <select id="queryAllStudentAdviseByEducational" parameterType="com.education.hjj.bz.formBean.StudentAdviseForm"  resultMap="studentAdviseResultMap">
+       SELECT 
+			s.student_name,
+			s.parent_phone_num,
+			sa.create_time,
+			sa.advise_desc
+		FROM 
+			student_advise sa
+		LEFT JOIN
+			student s
+		ON
+			sa.student_id = s.sid
+		ORDER BY 
+			sa.create_time ASC
+        <if test="offset != null">
+            <![CDATA[
+            limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
+    </select>
 </mapper>
