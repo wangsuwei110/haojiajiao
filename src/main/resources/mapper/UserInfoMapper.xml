@@ -358,6 +358,42 @@
     		status = 1
     </select>
     
+    <!-- 教务段查询所有待审核的教员信息列表 -->
+    <select id="queryAllTeacherInfosByEducational" resultMap="userInfoResultMap" parameterType="com.education.hjj.bz.formBean.StudentTeacherInfoForm">
+    	select
+			t.teacher_id,
+			t.name,
+			t.picture,
+			t.sex,
+			t.telephone,
+			t.create_time,
+			t.school,
+			t.major,
+			t.begin_school_time,
+			t.logon_status,
+			t.audit_status	
+			
+		from 
+			teacher t
+		where 
+			t.status = 1
+		and
+			t.audit_status = 0
+		and
+			t.idcard is not null
+		and
+			t.major is not null
+		
+		order by  t.create_time desc
+		
+		<if test="offset != null">
+            <![CDATA[
+            limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
+        
+    </select>
+    
     <!-- 学员端查询所有的教员信息列表 -->
     <select id="queryAllTeacherInfosByStudent" resultMap="userInfoResultMap" parameterType="com.education.hjj.bz.formBean.StudentTeacherInfoForm">
     	select

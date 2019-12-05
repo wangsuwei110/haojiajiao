@@ -48,4 +48,7 @@ public interface UserInfoService {
 	List<UniversityVo> queryAllSchools();
 	
 	List<TeacherVo> queryAllTeacherInfosByStudent(StudentTeacherInfoForm studentTeacherInfoForm);
+	
+	//查询所有教员信息
+	List<Map<String , Object>> queryAllTeacherInfosByEducational(StudentTeacherInfoForm studentTeacherInfoForm);
 }

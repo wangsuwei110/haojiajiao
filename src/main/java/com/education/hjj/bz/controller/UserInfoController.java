@@ -535,4 +535,14 @@ public class UserInfoController {
 		
 	}
 	
+	@ApiOperation("教务端查询所有待审核教员信息")
+	@RequestMapping(value = "/queryAllTeacherInfosByEducational", method = RequestMethod.POST)
+	@ResponseBody
+	public ApiResponse queryAllTeacherInfosByEducational(@RequestBody StudentTeacherInfoForm studentTeacherInfoForm) {
+		
+		List<Map<String, Object>>  list = userInfoService.queryAllTeacherInfosByEducational(studentTeacherInfoForm);
+		
+		return ApiResponse.success("操作成功！" , JSONObject.toJSON(list));
+	}
+	
 }

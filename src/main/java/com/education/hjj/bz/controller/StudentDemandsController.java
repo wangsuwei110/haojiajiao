@@ -1,5 +1,6 @@
 package com.education.hjj.bz.controller;
 
+import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.formBean.DemandCourseInfoForm;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.StudentDemandForm;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.transaction.Transactional;
@@ -134,5 +136,19 @@ public class StudentDemandsController {
 	@RequestMapping(value = "/appraise", method = RequestMethod.POST)
 	public ApiResponse appraise(@RequestBody StudentDemandConnectForm demandForm) {
 		return studentDemandsService.appraise(demandForm);
+	}
+	
+	@ApiOperation("教员未确定订单试讲时间超过一小时订单列表")
+	@RequestMapping(value = "/queryAllNewTrialDemandTimeOut", method = RequestMethod.POST)
+	@Transactional
+	public ApiResponse queryAllNewTrialDemandTimeOut(@RequestBody StudentDemandConnectForm studentDemandConnectForm) {
+		
+		List<StudentDemandVo> list = studentDemandsService.queryAllWaitForTrailTimeDemandOrderList(studentDemandConnectForm);
+		
+		if(list.size() > 0) {
+			return ApiResponse.success("查询成功!");
+		}else {
+			return ApiResponse.success("暂无数据！");
+		}
 	}
 }

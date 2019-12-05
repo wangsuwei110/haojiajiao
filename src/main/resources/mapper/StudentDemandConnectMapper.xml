@@ -319,4 +319,73 @@
 		limit 5
     </select>
     
+    
+    <!-- 用用查询映射结果 -->
+	<resultMap id="waitForTrailTimeDemandOrdersResultMap" type="com.education.hjj.bz.entity.vo.StudentDemandVo" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		<result column="sid" property="sid"/>
+		<result column="demand_id" property="demandId"/>
+		<result column="teacherName" property="teacherName"/>
+		<result column="telephone" property="telephone"/>
+		<result column="student_name" property="studentName"/>
+		<result column="parent_phone_num" property="parentPhoneNum"/>
+		<result column="create_time" property="createTime"/>
+		<result column="teach_grade_name" property="teachGradeName"/>
+		<result column="teach_branch_name" property="teachBranchName"/>
+		<result column="time_range" property="timeRange"/>
+	</resultMap>
+    
+    <!-- 教务段查询超过一小时未确认试讲时间的订单 -->
+    <select id="queryAllWaitForTrailTimeDemandOrderList" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm" resultMap="waitForTrailTimeDemandOrdersResultMap">
+    
+    	SELECT
+			sd.sid,
+			sdc.demand_id,
+			t.`name` as teacherName,
+			t.telephone,
+			s.student_name,
+			s.parent_phone_num,
+			sd.create_time,
+			tg.teach_grade_name,
+			tb.teach_branch_name,
+			sd.time_range
+	
+		FROM
+			student_demand_connect sdc
+		LEFT JOIN
+			student_demand sd
+		ON
+			sdc.demand_id = sd.sid
+		LEFT JOIN
+			teach_grade tg
+		ON
+			sd.demand_grade = tg.teach_grade_id
+		LEFT JOIN
+			teach_branch tb
+		ON
+			sd.subject_id = tb.teach_branch_id
+		LEFT JOIN
+			student s
+		ON
+			sd.student_id = s.sid
+		LEFT JOIN
+			teacher t
+		ON
+			sdc.teacher_id = t.teacher_id
+		WHERE
+			sdc.status = 1
+		AND
+			sdc.order_teach_time is NULL
+		AND
+			sdc.create_time <![CDATA[>]]> #{createTime}
+		
+		ORDER BY
+				sd.create_time asc
+		<if test="offset != null">
+            <![CDATA[
+            limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
+    </select>
+    
 </mapper>

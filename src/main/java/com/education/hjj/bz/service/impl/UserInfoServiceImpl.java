@@ -669,4 +669,55 @@ public class UserInfoServiceImpl implements UserInfoService {
 		return list;
 	}
 
+	@Override
+	public List<Map<String , Object>> queryAllTeacherInfosByEducational(StudentTeacherInfoForm studentTeacherInfoForm) {
+		
+		List<TeacherVo> teacherList = userInfoMapper.queryAllTeacherInfosByEducational(studentTeacherInfoForm);
+		
+		List<Map<String , Object>> teacherMapList = new ArrayList<Map<String,Object>>();
+		
+		if(teacherList != null && teacherList.size() > 0) {
+			
+			for(TeacherVo t:teacherList) {
+				
+				Integer teacherId = t.getTeacherId();
+				
+				List<PictureVo> degreePictureList = new ArrayList<PictureVo>();
+				List<PictureVo> cardPictureList = new ArrayList<PictureVo>();
+				
+				List<PictureVo> pictureList = userPictureInfoMapper.queryUserPicturesByteacherId(teacherId);
+				
+				Map<String , Object> map = new HashMap<String , Object>();
+				
+				for(PictureVo p : pictureList) {
+					
+					String urls = p.getPictureUrl();
+					
+					if(p.getPictureType() == 2) {
+						p.setPictureUrl(urls);
+						cardPictureList.add(p);
+					}
+					
+					if(p.getPictureType() == 3) {
+						p.setPictureUrl(urls);
+						degreePictureList.add(p);						
+					}
+					
+				}
+				
+				map.put("teacherInfo", t);
+				//个人身份证图片
+				map.put("cardPictureList", cardPictureList);
+				
+				//个人学历图片
+				map.put("degreePictureList", degreePictureList);
+				
+				teacherMapList.add(map);
+				
+			}
+		}
+		
+		return teacherMapList;
+	}
+
 }

@@ -1235,4 +1235,13 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		return map;
 		
 	}
+
+	@Override
+	public List<StudentDemandVo> queryAllWaitForTrailTimeDemandOrderList(
+			StudentDemandConnectForm studentDemandConnectForm) {
+		
+		List<StudentDemandVo> list = connectMapper.queryAllWaitForTrailTimeDemandOrderList(studentDemandConnectForm);
+		
+		return list;
+	}
 }
