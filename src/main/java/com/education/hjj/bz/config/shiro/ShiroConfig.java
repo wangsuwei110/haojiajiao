@@ -156,6 +156,7 @@ public class ShiroConfig {
         put("/user/getOpenId", "anon");
 
         put("/user/login", "anon");
+        put("/user/getUserIdentity", "anon");
         put("/user/unauth", "anon");
         put("/user/error", "anon");
        

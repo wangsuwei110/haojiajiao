@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.education.hjj.bz.entity.StudentLogPo;
+import com.education.hjj.bz.formBean.StudentDemandForm;
+import com.education.hjj.bz.mapper.StudentMapper;
+import com.education.hjj.bz.mapper.TeacherMapper;
 import com.education.hjj.bz.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -19,11 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.alibaba.fastjson.JSONObject;
 import com.education.hjj.bz.entity.PointsLogPo;
@@ -97,6 +96,12 @@ public class LoginController {
 
     @Autowired
 	private StudentLogService studentLogService;
+
+    @Autowired
+	private StudentMapper studentMapper;
+
+    @Autowired
+	private TeacherMapper teacherMapper;
 //
 //    @Autowired
 //	private RedisService redisService;
@@ -107,7 +112,62 @@ public class LoginController {
 		this.userUtil = userUtil;
 		this.userService = userService;
 	}
-    
+
+
+	/**
+	 *
+	 * 根据code获取用户信息
+	 *
+	 **/
+	@ApiOperation("获取用户信息")
+	@PostMapping("/getUserIdentity")
+	public ApiResponse getUserInfo(@RequestBody StudentDemandForm demandForm) {
+		String code = demandForm.getCode();//获取微信服务器授权返回的code值
+		String openId = getOpenId(code);
+
+		Integer studentCount = studentMapper.findByOpenId(openId);
+		if (studentCount != null && studentCount > 0) {
+			return ApiResponse.success(1);
+		}
+
+		Integer teacherCount = teacherMapper.findByOpenId(openId);
+		if (teacherCount != null && teacherCount > 0) {
+			return ApiResponse.success(2);
+		}
+		return ApiResponse.error("当前用户为注册");
+	}
+
+	@Transactional
+	String getOpenId(String code) {
+		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + com.education.hjj.bz.util.weixinUtil.config.Constant.APP_ID + "&secret="
+				+ com.education.hjj.bz.util.weixinUtil.config.Constant.APP_SECRET + "&code=" + code + "&grant_type=authorization_code";
+
+		Map<String, String> urlData = new HashMap<String, String>();
+
+		urlData.put("appid", com.education.hjj.bz.util.weixinUtil.config.Constant.APP_ID);// 小程序id
+		urlData.put("secret", com.education.hjj.bz.util.weixinUtil.config.Constant.APP_SECRET);// 小程序key
+		urlData.put("js_code", code);// 小程序传过来的code
+		urlData.put("grant_type", "authorization_code");// 固定值这样写就行
+
+		String openid;
+
+		try {
+			String jsonStr = HttpClientUtils.doGet(url, urlData);
+
+			logger.info("jsonStr = {}", jsonStr);
+
+			openid = JSONObject.parseObject(jsonStr).getString("openid");
+
+			String unionid = JSONObject.parseObject(jsonStr).getString("unionid");
+			logger.info("openid = {}, unionid = {}", openid, unionid);
+
+			return openid;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
     
     /**
      * 获取当前登录用户信息

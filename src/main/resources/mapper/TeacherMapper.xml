@@ -56,6 +56,12 @@
         WHERE teacher_id =  #{teacherId} and status = 1
     </select>
 
+    <select id="findByOpenId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM teacher
+        WHERE openId = #{openId}
+    </select>
+
     <select id="getCount" parameterType="com.education.hjj.bz.formBean.TeacherScreenForm"  resultType="java.lang.Integer">
         SELECT count(0)
         FROM teacher

@@ -20,6 +20,8 @@ public interface TeacherMapper {
 
     int getCount(TeacherScreenForm form);
 
+    int findByOpenId(@Param("openId") String openId);
+
     List<TeacherVo> list(TeacherScreenForm form);
 
     List<TeacherVo> listTeacher(TeacherScreenForm form);

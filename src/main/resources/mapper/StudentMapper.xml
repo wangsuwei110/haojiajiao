@@ -43,6 +43,12 @@
           t3.grade_name AS gradeName
     </sql>
 
+    <select id="findByOpenId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM student
+        WHERE openId = #{openId}
+    </select>
+
     <select id="loadAll" resultMap="studentResultMap" parameterType="long">
       select
         <include refid="selectColumn"/>

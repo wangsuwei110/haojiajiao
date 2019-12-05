@@ -31,4 +31,6 @@ public interface StudentMapper {
     int getCount(StudentForm form);
 
     List<StudentVo> loadAll(Long id);
+
+    int findByOpenId(@Param("openId") String openId);
 }
