@@ -70,6 +70,24 @@ public class UserAccountLogController {
 		return ApiResponse.success("查询成功", JSON.toJSON(teacherAccountOperateLogVo));
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/queryUserAccountLogListByEducational", method = RequestMethod.POST)
+	@ApiOperation("教员收支明细查询")
+	public ApiResponse queryUserAccountLogListByEducational(@RequestBody TeacherAccountLogForm teacherAccountLogForm) {
+		
+		
+		
+		List<TeacherAccountOperateLogVo> list  = userAccountLogService.queryUserAccountLogListByEducational(teacherAccountLogForm);
+		
+		if(list != null && list.size() > 0) {
+			return ApiResponse.success("查询成功", JSON.toJSON(list));
+		}else {
+			return ApiResponse.success("暂无数据！");
+		}
+		
+		
+	}
+	
 	
 
 }

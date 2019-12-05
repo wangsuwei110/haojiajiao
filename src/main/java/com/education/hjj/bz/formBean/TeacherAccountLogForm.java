@@ -2,7 +2,7 @@ package com.education.hjj.bz.formBean;
 
 import java.io.Serializable;
 
-public class TeacherAccountLogForm implements Serializable{
+public class TeacherAccountLogForm extends PageForm implements Serializable{
 
 	/**
 	 * 

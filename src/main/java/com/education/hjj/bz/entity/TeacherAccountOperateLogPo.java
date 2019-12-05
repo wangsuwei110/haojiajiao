@@ -26,6 +26,8 @@ public class TeacherAccountOperateLogPo extends BasePo implements Serializable{
 	private String paymentDesc;
 
 	private String orderId;
+	
+	private String telephone;
 
 
 	public String getOrderId() {
@@ -90,6 +92,14 @@ public class TeacherAccountOperateLogPo extends BasePo implements Serializable{
 
 	public void setPaymentStreamId(String paymentStreamId) {
 		this.paymentStreamId = paymentStreamId;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 	
 }

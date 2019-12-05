@@ -1240,6 +1240,9 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 	public List<StudentDemandVo> queryAllWaitForTrailTimeDemandOrderList(
 			StudentDemandConnectForm studentDemandConnectForm) {
 		
+		Date createTime = DateUtil.addHour(new Date(), -1);
+		studentDemandConnectForm.setCreateTime(createTime);
+		
 		List<StudentDemandVo> list = connectMapper.queryAllWaitForTrailTimeDemandOrderList(studentDemandConnectForm);
 		
 		return list;

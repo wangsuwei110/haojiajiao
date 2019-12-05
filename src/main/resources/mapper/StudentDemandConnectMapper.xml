@@ -377,7 +377,7 @@
 		AND
 			sdc.order_teach_time is NULL
 		AND
-			sdc.create_time <![CDATA[>]]> #{createTime}
+			sdc.create_time <![CDATA[<]]> #{createTime}
 		
 		ORDER BY
 				sd.create_time asc
