@@ -1122,7 +1122,7 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		
 		StudentDemandVo studentDemandVo= studentDemandMapper.queryStudentDemandDetailBySid(demandId);
 		
-		int demandPersonCount = studentDemandVo.getDemandSignStatus();
+		int demandPersonCount = studentDemandVo.getDemandSignUpNum();
 		
 		
 		StudentDemandPo studentDemandPo = new StudentDemandPo();
