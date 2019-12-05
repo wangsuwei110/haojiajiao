@@ -15,6 +15,7 @@
 		<result column="payment_account" property="paymentAccount"/>
 		<result column="payment_desc" property="paymentDesc"/>
 		<result column="create_time" property="createTime"/>
+		<result column="telephone" property="telephone"/>
 	</resultMap>
 	
     
@@ -103,5 +104,41 @@
     		#{updateUser}
     	)
     </insert>
+    
+    <!-- 教务端查询用户账户变化日志列表,单日提现大于800的 -->  
+    <select id="queryUserAccountLogListByEducational"  resultMap="teacherAccountLogResultMap" parameterType="com.education.hjj.bz.formBean.TeacherAccountLogForm">    
+        	
+       	select
+			tpl.payment_id, 
+			tpl.payment_stream_id,
+			tpl.payment_person_id,
+			t.telephone,
+			tpl.payment_person_name,
+			tpl.payment_type,
+			tpl.payment_account,
+			tpl.payment_desc,
+			tpl.create_time
+		FROM
+			teacher_payments_log tpl
+		left join
+			teacher t
+		ON	
+			tpl.payment_person_id = t.teacher_id
+		WHERE
+			tpl.status =1
+		AND
+			tpl.payment_type = 1
+		AND
+			tpl.payment_account <![CDATA[>]]> 800
+			
+		ORDER BY
+				tpl.create_time desc
+		<if test="offset != null">
+            <![CDATA[
+            limit #{pageSize} offset #{offset}
+            ]]>
+        </if>
+       		
+    </select>
     
 </mapper>
