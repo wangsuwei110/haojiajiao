@@ -530,8 +530,8 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		}
         demandForm.setUpdateTime(new Date());
 		// 试讲通过
-//		Long sid = connectMapper.updateStatus(demandForm);
-//		if (sid != null) {
+		Long sid = connectMapper.updateStatus(demandForm);
+		if (sid != null) {
 			// 试讲不通过，返回三个形态信息
 			if (demandForm.getStatus() == 3) {
 				// 首先查下订单类型，区分是快速请家教或者单独预约，如果是快速请家教，再区分当前试讲未通过是不是唯一报名的教员
@@ -553,8 +553,8 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 
 			return ApiResponse.success("状态修改成功");
-//		}
-//		return ApiResponse.success("状态修改失败");
+		}
+		return ApiResponse.success("状态修改失败");
 	}
 
 	/**
@@ -591,6 +591,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	 **/
 	@Override
 	public ApiResponse endDemand(StudentDemandConnectForm demandForm) {
+
 		studentDemandMapper.endDemand(demandForm.getDemandId());
 
 		return ApiResponse.success("已结束订单");

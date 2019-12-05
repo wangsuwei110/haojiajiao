@@ -65,7 +65,7 @@ public class StudentDemandsController {
 		return studentDemandsService.confirmTeacher(demandForm);
 	}
 
-	@ApiOperation("试讲通过或者不通过")
+	@ApiOperation("试讲不通过")
 	@RequestMapping(value = "/updateAdoptStatus", method = RequestMethod.POST)
 	@Transactional
 	public ApiResponse updateAdoptStatus(@RequestBody StudentDemandConnectForm demandForm) {
