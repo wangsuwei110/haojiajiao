@@ -1122,7 +1122,7 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		
 		StudentDemandVo studentDemandVo= studentDemandMapper.queryStudentDemandDetailBySid(demandId);
 		
-		int demandPersonCount = studentDemandVo.getDemandSignStatus();
+		int demandPersonCount = studentDemandVo.getDemandSignUpNum();
 		
 		
 		StudentDemandPo studentDemandPo = new StudentDemandPo();
@@ -1143,6 +1143,10 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 	
 	@Override
 	public Map<String , Object> validateSignParameters(StudentDemandConnectForm demandForm) {
+		
+		logger.info("报名的教员id:{},订单id:{},前端传值--授课科目id:{} , 授课年级id: {} , 授课区域id{} , 授课时间{}" ,
+				demandForm.getTeacherId() , demandForm.getDemandId() , demandForm.getTeachBranchId() , demandForm.getTeachGradeId()
+				,demandForm.getParameterId() , JSON.toJSONString(demandForm.getTimeList()));
 		
 		boolean flag = true;
 		
