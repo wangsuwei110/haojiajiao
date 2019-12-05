@@ -83,7 +83,7 @@ public interface StudentDemandsService {
 	
 	StudentDemandVo queryStudemtDemandDetail(StudentDemandConnectForm demandForm);
 	
-	List<StudentDemandVo> queryFitTeacherOrderList(Integer teacherId);
+	List<StudentDemandVo> queryFitTeacherOrderList();
 	
 	int updateNewTrialDemand(StudentDemandConnectForm demandForm);
 	

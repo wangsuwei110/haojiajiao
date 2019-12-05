@@ -252,8 +252,9 @@
 			sd.time_range,
 			sd.demand_desc,
 			sd.create_time,
-			demand_signUp_num,
-			demand_type
+			sd.demand_signUp_num,
+			sd.demand_type,
+			sd.status
 		FROM
 			student_demand sd
 		LEFT JOIN
@@ -442,55 +443,26 @@
     </select>
     
     <!-- 适合我的家教需求订单列表 -->
-    <select id="queryFitTeacherOrderList" parameterType="java.lang.Integer" resultMap="studentDemandsResultMap">
+    <select id="queryFitTeacherOrderList"  resultMap="studentDemandsResultMap">
     	SELECT
 			sd.sid,
 			sd.demand_address,
-			tg.teach_grade_name,
-			tb.teach_branch_name,
+			sd.demand_grade,
+			sd.subject_id,
 			sd.class_num,
 			sd.time_range,
 			sd.demand_desc,
 			sd.create_time,
-			sd.demand_signUp_num
-
+			sd.demand_signUp_num,
+			sd.demand_type
+			
 		FROM
 			student_demand sd
-		LEFT JOIN
-			teach_grade tg
-		ON	
-			sd.demand_grade = tg.teach_grade_id 
-		LEFT JOIN
-			teach_branch tb
-		ON
-			sd.subject_id = tb.teach_branch_id
-		LEFT JOIN
-			student_demand_connect sdc
-		ON
-			sd.sid = sdc.demand_id
-		LEFT JOIN
-			teacher t
-		ON
-			sdc.teacher_id = t.teacher_id
 		
 		WHERE
 			sd.demand_type = 2
 		AND
-			t.`status` = 1
-		AND
-			sdc.order_teach_time is null
-		AND
-			sdc.teacher_id = #{teacherId}
-		AND
-			sd.parameter_id in (t.teach_address)
-		AND
-			(sd.subject_id in (t.teach_brance)
-		OR
-			sd.subject_id in (t.teach_branch_slave)
-		)
-		AND
-			sd.demand_grade in (t.teach_grade)
-		
+			sd.status in(1,2) 
 		ORDER BY
 			sd.create_time desc
     </select>

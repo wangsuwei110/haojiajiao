@@ -414,7 +414,8 @@
     		t.school,
     		t.sex,
     		t.create_time,
-    		t.teacher_points
+    		t.teacher_points,
+    		t.teach_address
     		
     	from 
     		teacher t

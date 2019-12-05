@@ -497,7 +497,6 @@ public class UserInfoController {
 	//			map.put("teachBranchs", parametersList);
 				
 				t.setTeachBrance(JSON.toJSONString(teachBranchs));
-				
 				//基本信息
 				//map.put("baseInfo", t);
 				

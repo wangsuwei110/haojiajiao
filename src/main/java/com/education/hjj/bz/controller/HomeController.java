@@ -1,5 +1,6 @@
 package com.education.hjj.bz.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +56,8 @@ public class HomeController {
 		
 		logger.info("teacherId : {}" , teacherId);
 		
-		List<StudentDemandVo> fitTeacherOrderList = null;
 		List<StudentDemandVo> studentDemandList = null;
+		List<StudentDemandVo> fitTeacherOrderTargetList = new ArrayList<StudentDemandVo>();
 		if(teacherId != null) {
 			
 			//教员信息
@@ -70,10 +71,28 @@ public class HomeController {
 			map.put("newTrialStudentDemandList", newTrialStudentDemandList);
 			
 			//查询适合我的家教需求
-			fitTeacherOrderList = studentDemandsService.queryFitTeacherOrderList(teacherId);
+			List<StudentDemandVo> fitTeacherOrderList = studentDemandsService.queryFitTeacherOrderList();
+			
+			String teachAddress = teacherVo.getTeachAddress();
+			String teachBranch = teacherVo.getTeachBrance() + ","+teacherVo.getTeachBranchSlave();
+			String teachGrade = teacherVo.getTeachGrade();
+			
+			for(StudentDemandVo fsdv:fitTeacherOrderList) {
+				
+				Integer subject = fsdv.getSubjectId();
+				Integer demandGrade = fsdv.getDemandGrade();
+				Integer addressId = fsdv.getParameterId();
+				
+				if(teachAddress.contains(String.valueOf(addressId)) && teachBranch.contains(String.valueOf(subject)) 
+						&& teachGrade.contains(String.valueOf(demandGrade))) {
+					
+					fitTeacherOrderTargetList.add(fsdv);
+				}
+				
+			}
 			
 			if(fitTeacherOrderList.size() > 0) {
-				map.put("fitTeacherOrderList", fitTeacherOrderList);
+				map.put("fitTeacherOrderList", fitTeacherOrderTargetList);
 			}else {
 				//查询所有的订单信息列表
 				 studentDemandList = studentDemandsService.queryAllStudentDemandListBy10(form);
