@@ -879,8 +879,8 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 	}
 
 	@Override
-	public List<StudentDemandVo> queryFitTeacherOrderList(Integer teacherId) {
-		List<StudentDemandVo> list = studentDemandMapper.queryFitTeacherOrderList(teacherId);
+	public List<StudentDemandVo> queryFitTeacherOrderList() {
+		List<StudentDemandVo> list = studentDemandMapper.queryFitTeacherOrderList();
 		return list;
 	}
 

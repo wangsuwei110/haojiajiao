@@ -50,7 +50,7 @@ public interface StudentDemandMapper {
 	
 	List<StudentDemandVo> queryNewTrialOrderList(Integer teacherId);
 	
-	List<StudentDemandVo> queryFitTeacherOrderList(Integer teacherId);
+	List<StudentDemandVo> queryFitTeacherOrderList();
 	
 	List<StudentDemandVo> queryUserDemandsList(Map<String, Object> map);
 	
