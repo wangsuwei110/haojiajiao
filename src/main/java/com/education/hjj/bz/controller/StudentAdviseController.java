@@ -1,9 +1,14 @@
 package com.education.hjj.bz.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.education.hjj.bz.entity.vo.StudentAdviseVo;
 import com.education.hjj.bz.formBean.StudentAdviseForm;
 import com.education.hjj.bz.service.StudentAdviseService;
 import com.education.hjj.bz.util.ApiResponse;
 import io.swagger.annotations.Api;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,5 +33,16 @@ public class StudentAdviseController {
 	public ApiResponse add(@RequestBody StudentAdviseForm form) {
 		studentAdviseService.add(form);
 		return ApiResponse.success("提交成功");
+    }
+	
+	@PostMapping("/queryAllStudentAdviseByEducational")
+	@ResponseBody
+	public ApiResponse queryAllStudentAdviseByEducational(@RequestBody StudentAdviseForm form) {
+		List<StudentAdviseVo>  list = studentAdviseService.queryAllStudentAdviseByEducational(form);
+		
+		if(list != null && list.size() > 0) {
+			return ApiResponse.success("查询成功" , JSON.toJSON(list));
+		}
+		return ApiResponse.success("暂无数据！");
     }
 }

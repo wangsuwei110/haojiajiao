@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.education.hjj.bz.entity.ComplaintSuggestionPo;
 import com.education.hjj.bz.entity.vo.ComplaintSuggestionVo;
+import com.education.hjj.bz.formBean.ComplaintSuggestionForm;
 
 @Mapper
 public interface ComplaintSuggestionMapper {
@@ -17,4 +18,6 @@ public interface ComplaintSuggestionMapper {
 	ComplaintSuggestionVo queryComplaintSuggestionById(int complaintSuggestionId);
 	
 	List<ComplaintSuggestionVo> queryAllComplaintSuggestion();
+	
+	List<ComplaintSuggestionVo> queryAllComplaintSuggestionByEducational(ComplaintSuggestionForm complaintSuggestionForm);
 }

@@ -209,6 +209,8 @@ public class LoginController {
 	            map.put("registerDate", DateUtil.getStandardDay(teacherVo.getCreateTime()));
 	            map.put("vacationStatus", teacherVo.getVacationStatus());
 	            map.put("teacherLevel", teacherVo.getTeacherLevel());
+	            map.put("auditStatus", teacherVo.getAuditStatus());
+	            map.put("logonStatus", teacherVo.getLogonStatus());
 	            map.put("employRate", teacherVo.getEmployRate()+"%");
 	            map.put("resumptionRate", teacherVo.getResumptionRate()+"%");
 	          
@@ -256,6 +258,8 @@ public class LoginController {
             map.put("registerDate", DateUtil.getStandardDay(teacherVo.getCreateTime()));
             map.put("vacationStatus", teacherVo.getVacationStatus());
             map.put("teacherLevel", teacherVo.getTeacherLevel());
+            map.put("auditStatus", teacherVo.getAuditStatus());
+            map.put("logonStatus", teacherVo.getLogonStatus());
             map.put("employRate", teacherVo.getEmployRate()+"%");
             map.put("resumptionRate", teacherVo.getResumptionRate()+"%");
             

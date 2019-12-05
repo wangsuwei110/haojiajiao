@@ -79,4 +79,11 @@ public class ComplaintSuggestionServiceImpl implements ComplaintSuggestionServic
 		return list;
 	}
 
+	@Override
+	public List<ComplaintSuggestionVo> queryAllComplaintSuggestionByEducational(
+			ComplaintSuggestionForm complaintSuggestionForm) {
+		List<ComplaintSuggestionVo> list = complaintSuggestionMapper.queryAllComplaintSuggestionByEducational(complaintSuggestionForm);
+		return list;
+	}
+
 }

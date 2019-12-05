@@ -35,4 +35,10 @@ public class StudentAdviseServiceImpl implements StudentAdviseService {
         return list;
     }
 
+	@Override
+	public List<StudentAdviseVo> queryAllStudentAdviseByEducational(StudentAdviseForm studentAdviseForm) {
+		List<StudentAdviseVo> list = studentAdviseMapper.queryAllStudentAdviseByEducational(studentAdviseForm);
+		return list;
+	}
+
  }

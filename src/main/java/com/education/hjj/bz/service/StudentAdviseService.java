@@ -26,5 +26,7 @@ public interface StudentAdviseService{
     * @return
     */
     List<StudentAdviseVo> listPage(StudentAdviseForm form);
+    
+    List<StudentAdviseVo> queryAllStudentAdviseByEducational(StudentAdviseForm studentAdviseForm);
 
 }

@@ -18,4 +18,6 @@ public interface StudentAdviseMapper {
 	void insert(StudentAdviseForm studentAdvise);
 
     List<StudentAdviseVo> list(StudentAdviseForm form);
+    
+    List<StudentAdviseVo> queryAllStudentAdviseByEducational(StudentAdviseForm studentAdviseForm);
 }

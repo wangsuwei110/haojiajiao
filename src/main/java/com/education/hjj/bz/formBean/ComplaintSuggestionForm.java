@@ -2,7 +2,7 @@ package com.education.hjj.bz.formBean;
 
 import java.io.Serializable;
 
-public class ComplaintSuggestionForm implements Serializable{
+public class ComplaintSuggestionForm extends PageForm implements Serializable{
 
 	/**
 	 * 
@@ -25,6 +25,9 @@ public class ComplaintSuggestionForm implements Serializable{
 	
 	//内容回复
 	private String reply;
+	
+	//身份
+    private String identity;
 
 	public String getPersonId() {
 		return personId;
@@ -72,6 +75,14 @@ public class ComplaintSuggestionForm implements Serializable{
 
 	public void setComplaintSuggestionId(Integer complaintSuggestionId) {
 		this.complaintSuggestionId = complaintSuggestionId;
+	}
+
+	public String getIdentity() {
+		return identity;
+	}
+
+	public void setIdentity(String identity) {
+		this.identity = identity;
 	}
 
 }

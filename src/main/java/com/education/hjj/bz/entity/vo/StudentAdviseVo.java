@@ -26,6 +26,14 @@ public class StudentAdviseVo {
 
     @ApiModelProperty(value = "创建人")
     private String createUser;
+    
+    //学员名称
+    private String studentName;
+    
+    //父母手机号
+    private String parentPhoneNum;
+    //身份
+    private String identity;
 
 
     public Long getSid() {
@@ -63,6 +71,30 @@ public class StudentAdviseVo {
     public void setCreateUser(String createUser) {
         this.createUser = createUser;
     }
+
+	public String getStudentName() {
+		return studentName;
+	}
+
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
+	}
+
+	public String getParentPhoneNum() {
+		return parentPhoneNum;
+	}
+
+	public void setParentPhoneNum(String parentPhoneNum) {
+		this.parentPhoneNum = parentPhoneNum;
+	}
+
+	public String getIdentity() {
+		return identity;
+	}
+
+	public void setIdentity(String identity) {
+		this.identity = identity;
+	}
 
 
 

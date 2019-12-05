@@ -85,5 +85,18 @@ public class ComplaintSuggestionController {
 
 		return ApiResponse.success("暂无数据！");
 	}
+	
+	@ApiOperation("教务端查找所有的建议与投诉")
+	@RequestMapping(value = "/queryAllComplaintSuggestionByEducational", method = RequestMethod.POST)
+	public ApiResponse queryAllComplaintSuggestionByEducational(@RequestBody ComplaintSuggestionForm complaintSuggestionForm) {
+		
+		List<ComplaintSuggestionVo>  list = complaintSuggestionService.queryAllComplaintSuggestionByEducational(complaintSuggestionForm);
+		
+		if(list.size() > 0) {
+			return ApiResponse.success("操作成功！" , JSON.toJSON(list));
+		}
+
+		return ApiResponse.success("暂无数据！");
+	}
 
 }
