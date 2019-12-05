@@ -84,7 +84,7 @@
     </select>
     
     <!-- 教务端查询所有的未回复的投诉与建议 -->
-    <select id="queryAllComplaintSuggestionByEducational" resultMap="complaintSuggestionResultMap" parameterType=" com.education.hjj.bz.formBean.ComplaintSuggestionForm">
+    <select id="queryAllComplaintSuggestionByEducational" resultMap="complaintSuggestionResultMap" parameterType="com.education.hjj.bz.formBean.ComplaintSuggestionForm">
     	SELECT 
 			tcs.complaint_suggestion_id,
 			t.name,
