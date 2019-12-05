@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
 import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
+import com.education.hjj.bz.formBean.TeacherAccountLogForm;
 import com.education.hjj.bz.mapper.UserAccountLogMapper;
 import com.education.hjj.bz.service.UserAccountLogService;
 
@@ -35,6 +36,15 @@ public class UserAccountLogServiceImpl implements UserAccountLogService{
 	public TeacherAccountOperateLogVo queryUserAccountLogDetail(Integer paymentId) {
 		TeacherAccountOperateLogVo teacherAccountOperateLogVo = userAccountLogMapper.queryUserAccountLogDetail(paymentId);
 		return teacherAccountOperateLogVo;
+	}
+
+	@Override
+	public List<TeacherAccountOperateLogVo> queryUserAccountLogListByEducational(
+			TeacherAccountLogForm teacherAccountLogForm) {
+		
+		List<TeacherAccountOperateLogVo> list = userAccountLogMapper.queryUserAccountLogListByEducational(teacherAccountLogForm);
+		
+		return list;
 	}
 
 }
