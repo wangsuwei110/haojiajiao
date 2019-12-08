@@ -120,7 +120,7 @@ public class StudentDemandsController {
 		
 		int i = studentDemandsService.updateNewTrialDemand(demandForm);
 		
-		logger.info("教员确定订单试讲时间,试讲时间：{}" , JSON.toJSONString(demandForm.getTimeList()));
+		logger.info("教员确定订单试讲时间,试讲时间：{}" , JSON.toJSONString(demandForm.getTimeList().get(0).getTime()));
 		
 		if(i > 0) {
 			return ApiResponse.success("更新成功!");
