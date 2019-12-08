@@ -311,7 +311,7 @@ public class LoginController {
 				int p = pointsLogService.addTeacherPointsLog(teacherId , pointsLogPo);
 				
 				if(p < 0 ) {
-					logger.error("记录用户登录时获取的积分日志失败...");
+					logger.info("记录用户登录时获取的积分日志失败...");
 				}
 				
 			}
