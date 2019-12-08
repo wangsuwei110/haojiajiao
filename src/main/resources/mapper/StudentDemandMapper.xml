@@ -450,6 +450,8 @@
 			sd.demand_address,
 			sd.demand_grade,
 			sd.subject_id,
+			tg.teach_grade_name,
+			tb.teach_branch_name,
 			sd.class_num,
 			sd.time_range,
 			sd.demand_desc,
@@ -460,6 +462,14 @@
 			
 		FROM
 			student_demand sd
+		LEFT JOIN
+			teach_grade tg
+		ON	
+			sd.demand_grade = tg.teach_grade_id 
+		LEFT JOIN
+			teach_branch tb
+		ON
+			sd.subject_id = tb.teach_branch_id
 		
 		WHERE
 			sd.demand_type = 2
