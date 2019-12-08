@@ -93,7 +93,7 @@ public class HomeController {
 				
 			}
 			
-			if(fitTeacherOrderList.size() > 0) {
+			if(fitTeacherOrderTargetList.size() > 0) {
 				map.put("fitTeacherOrderList", fitTeacherOrderTargetList);
 			}else {
 				//查询所有的订单信息列表
