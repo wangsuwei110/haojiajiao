@@ -50,6 +50,7 @@ public class StudentServiceImpl implements StudentService {
 
         studentForm.setParentPhoneNum(loginForm.getLoginPhone());
         studentForm.setSex(loginForm.getGender());
+        studentForm.setOpenId(loginForm.getOpenId());//增加首次注册时的openId插入
         studentForm.setPicture(loginForm.getHeadPicture());
  	    studentForm.setCreateTime(new Date());
  	    studentForm.setUpdateTime(new Date());
