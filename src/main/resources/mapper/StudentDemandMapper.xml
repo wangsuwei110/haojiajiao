@@ -455,7 +455,8 @@
 			sd.demand_desc,
 			sd.create_time,
 			sd.demand_signUp_num,
-			sd.demand_type
+			sd.demand_type,
+			sd.parameter_id
 			
 		FROM
 			student_demand sd
