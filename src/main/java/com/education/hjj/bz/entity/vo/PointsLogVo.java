@@ -14,6 +14,8 @@ public class PointsLogVo implements Serializable{
 	
 	private Integer getPointsCounts;
 	
+	private Integer getPointsType;
+	
 	private String getPointsDesc;
 	
 	private String createTime;
@@ -48,6 +50,14 @@ public class PointsLogVo implements Serializable{
 
 	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
+	}
+
+	public Integer getGetPointsType() {
+		return getPointsType;
+	}
+
+	public void setGetPointsType(Integer getPointsType) {
+		this.getPointsType = getPointsType;
 	}
 
 

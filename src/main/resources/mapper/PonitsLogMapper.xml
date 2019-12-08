@@ -21,7 +21,7 @@
 			tpl.get_points_counts,
 			tpl.get_points_type,
 			tpl.get_points_desc,
-			date_format(tpl.create_time, '%Y-%m-%d %T') as create_time
+			tpl.create_time
 		from 
 		
 			teacher_points_log tpl

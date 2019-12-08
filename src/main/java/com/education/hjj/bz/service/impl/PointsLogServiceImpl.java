@@ -70,13 +70,19 @@ public class PointsLogServiceImpl implements PointsLogService{
 		
 		logger.info("teacherId = {} , existTeacherPoints = {} " , teacherId , tv.getTeacherPoints());
 		
-		TeacherPo teacherPo = new TeacherPo();
-		teacherPo.setTeacherId(teacherId);
-		teacherPo.setTeacherPoints(tv.getTeacherPoints() + pointsLogPo.getGetPointsCounts());
-		teacherPo.setUpdateTime(new Date());
-		teacherPo.setUpdateUser("admin");
 		
-		int  j = userInfoMapper.updateUserInfo(teacherPo);
+		int  j = 0;
+		
+		if(i > 0) {
+			TeacherPo teacherPo = new TeacherPo();
+			teacherPo.setTeacherId(teacherId);
+			teacherPo.setTeacherPoints(tv.getTeacherPoints() + pointsLogPo.getGetPointsCounts());
+			teacherPo.setUpdateTime(new Date());
+			teacherPo.setUpdateUser("admin");
+			
+			j = userInfoMapper.updateUserInfo(teacherPo);
+		}
+		
 		
 		if(i > 0 && j > 0) {
 			return 1;
