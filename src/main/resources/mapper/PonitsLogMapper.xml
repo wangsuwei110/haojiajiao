@@ -8,6 +8,7 @@
 		<!-- column代表数据库列名，property代表实体类属性名 -->
 		<result column="teacher_id" property="teacherId"/>
 		<result column="get_points_counts" property="getPointsCounts"/>
+		<result column="get_points_type" property="getPointsType"/>
 		<result column="get_points_desc" property="getPointsDesc"/>
 		<result column="create_time" property="createTime"/>
 	</resultMap>
@@ -18,6 +19,7 @@
         select 
         	tpl.teacher_id,
 			tpl.get_points_counts,
+			tpl.get_points_type,
 			tpl.get_points_desc,
 			date_format(tpl.create_time, '%Y-%m-%d %T') as create_time
 		from 
@@ -28,6 +30,12 @@
 			tpl.status=1
 		and
 			tpl.teacher_id = #{teacherId}
+		<if test="createTime != null">
+	      and  create_time >  #{createTime}
+        </if>
+        <if test="createTime != null">
+	      and  get_points_type =  #{getPointsType}
+        </if>
 		<if test="offset != null">
             <![CDATA[
                limit #{pageSize} offset #{offset}
@@ -41,6 +49,7 @@
     	insert into teacher_points_log(
     		teacher_id,
     		get_points_counts,
+    		get_points_type,
     		get_points_desc,
     		status,
     		create_time,
@@ -51,6 +60,7 @@
     	values(
     		#{teacherId},
     		#{getPointsCounts},
+    		#{getPointsType},
     		#{getPointsDesc},
     		#{status},
 			#{createTime},

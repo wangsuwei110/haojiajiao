@@ -921,6 +921,7 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		PointsLogPo pointsLogPo = new PointsLogPo();
 		pointsLogPo.setTeacherId(teacherId);
 		pointsLogPo.setGetPointsCounts(10);
+		pointsLogPo.setGetPointsType(1);
 		pointsLogPo.setGetPointsDesc("确定试讲时间");
 		pointsLogPo.setStatus(1);
 		pointsLogPo.setCreateTime(new Date());
@@ -1058,6 +1059,7 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 			PointsLogPo pointsLogPo = new PointsLogPo();
 			pointsLogPo.setTeacherId(teacherId);
 			pointsLogPo.setGetPointsCounts(5);
+			pointsLogPo.setGetPointsType(2);
 			pointsLogPo.setGetPointsDesc("确定试讲时间");
 			pointsLogPo.setStatus(1);
 			pointsLogPo.setCreateTime(new Date());

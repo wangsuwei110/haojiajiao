@@ -32,6 +32,7 @@ import com.education.hjj.bz.enums.ErrorEnum;
 import com.education.hjj.bz.enums.PonitsLog;
 import com.education.hjj.bz.formBean.LoginForm;
 import com.education.hjj.bz.formBean.LogoutForm;
+import com.education.hjj.bz.formBean.PointsLogForm;
 import com.education.hjj.bz.model.UserDto;
 import com.education.hjj.bz.model.common.ResponseBean;
 //import com.education.hjj.bz.redis.RedisService;
@@ -293,9 +294,12 @@ public class LoginController {
 				
 				Integer teacherId = teacherVo.getTeacherId();
 				
+				
+				
 				PointsLogPo pointsLogPo = new PointsLogPo();
 				pointsLogPo.setTeacherId(teacherId);
 				pointsLogPo.setGetPointsCounts(PonitsLog.OPEN_SYSTEM.getType());
+				pointsLogPo.setGetPointsType(0);
 				pointsLogPo.setGetPointsDesc(PonitsLog.OPEN_SYSTEM.getValue());
 				pointsLogPo.setStatus(1);
 				pointsLogPo.setCreateTime(new Date());

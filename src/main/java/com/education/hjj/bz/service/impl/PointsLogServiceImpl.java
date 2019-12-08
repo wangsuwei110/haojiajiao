@@ -1,9 +1,7 @@
 package com.education.hjj.bz.service.impl;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.education.hjj.bz.controller.LoginController;
 import com.education.hjj.bz.entity.PointsLogPo;
 import com.education.hjj.bz.entity.TeacherPo;
 import com.education.hjj.bz.entity.vo.PageVo;
@@ -21,6 +18,7 @@ import com.education.hjj.bz.formBean.PointsLogForm;
 import com.education.hjj.bz.mapper.PointsLogMapper;
 import com.education.hjj.bz.mapper.UserInfoMapper;
 import com.education.hjj.bz.service.PointsLogService;
+import com.education.hjj.bz.util.DateUtil;
 
 @Service
 public class PointsLogServiceImpl implements PointsLogService{
@@ -52,7 +50,21 @@ public class PointsLogServiceImpl implements PointsLogService{
 		logger.info("teacherId = {} , getPoints = {} , getPointsDesc = {}" , 
 				teacherId , pointsLogPo.getGetPointsCounts() , pointsLogPo.getGetPointsDesc());
 		
-		int i = pointsLogMapper.addTeacherPointsLog(pointsLogPo);
+		
+		PointsLogForm pointsLogForm = new PointsLogForm();
+		pointsLogForm.setTeacherId(teacherId);
+		pointsLogForm.setGetPointsType(0);
+		pointsLogForm.setCreateTime(DateUtil.getStandardDay(new Date()));
+		
+		List<PointsLogVo> list = pointsLogMapper.queryAllPointsLogByTeacherId(pointsLogForm);
+		
+		int i = 0;
+		
+		if(list != null && list.size() > 0) {
+			logger.info("当天已经登陆过，不再重复记录积分！");
+		}else {
+			i = pointsLogMapper.addTeacherPointsLog(pointsLogPo);
+		}
 		
 		TeacherVo tv = userInfoMapper.queryTeacherHomeInfos(teacherId);
 		

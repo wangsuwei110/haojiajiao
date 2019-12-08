@@ -15,6 +15,8 @@ public class PointsLogPo extends BasePo implements Serializable{
 	
 	private String getPointsDesc;
 	
+	private Integer getPointsType;
+	
 
 	public Integer getTeacherId() {
 		return teacherId;
@@ -38,6 +40,14 @@ public class PointsLogPo extends BasePo implements Serializable{
 
 	public void setGetPointsDesc(String getPointsDesc) {
 		this.getPointsDesc = getPointsDesc;
+	}
+
+	public Integer getGetPointsType() {
+		return getPointsType;
+	}
+
+	public void setGetPointsType(Integer getPointsType) {
+		this.getPointsType = getPointsType;
 	}
 
 }
