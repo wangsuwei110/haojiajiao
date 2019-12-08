@@ -31,7 +31,7 @@
 		and
 			tpl.teacher_id = #{teacherId}
 		<if test="createTime != null">
-	      and  create_time >  #{createTime}
+	      and  create_time <![CDATA[ >  ]]> #{createTime}
         </if>
         <if test="createTime != null">
 	      and  get_points_type =  #{getPointsType}
