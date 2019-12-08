@@ -1,5 +1,6 @@
 package com.education.hjj.bz.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.formBean.DemandCourseInfoForm;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
@@ -118,6 +119,8 @@ public class StudentDemandsController {
 	public ApiResponse updateNewTrialDemand(@RequestBody StudentDemandConnectForm demandForm) {
 		
 		int i = studentDemandsService.updateNewTrialDemand(demandForm);
+		
+		logger.info("教员确定订单试讲时间,试讲时间：{}" , JSON.toJSONString(demandForm.getTimeList()));
 		
 		if(i > 0) {
 			return ApiResponse.success("更新成功!");
