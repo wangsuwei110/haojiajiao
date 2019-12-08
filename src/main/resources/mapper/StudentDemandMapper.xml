@@ -209,8 +209,9 @@
 			sd.time_range,
 			sd.demand_desc,
 			sd.create_time,
-			demand_signUp_num,
-			demand_type
+			sd.demand_signUp_num,
+			sd.demand_type,
+			sd.status
 			
 		FROM
 			student_demand sd
