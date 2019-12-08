@@ -63,6 +63,8 @@ public class HomeController {
 			//教员信息
 			TeacherVo teacherVo = userInfoService.queryTeacherHomeInfos(String.valueOf(teacherId));
 			map.put("teacherLevel", teacherVo.getTeacherLevel());
+			map.put("auditStatus", teacherVo.getAuditStatus());
+			map.put("logonStatus", teacherVo.getLogonStatus());
 			map.put("employRate",  teacherVo.getEmployRate()+"%");
 			map.put("resumptionRate", teacherVo.getResumptionRate()+"%");
 			
