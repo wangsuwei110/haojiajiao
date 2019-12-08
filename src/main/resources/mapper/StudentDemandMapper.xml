@@ -374,9 +374,9 @@
     	SELECT
 			sd.sid,
 			sd.demand_address,
-			sd.subject_id as teach_grade_id,
+			sd.subject_id as teach_branch_id,
 			tg.teach_grade_name,
-			sd.demand_grade as teach_branch_id,
+			sd.demand_grade as teach_grade_id,
 			tb.teach_branch_name,
 			sd.class_num,
 			sd.time_range,
