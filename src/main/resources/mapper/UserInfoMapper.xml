@@ -294,7 +294,7 @@
                 update_time = #{updateTime},
             </if>
             <if test="updateUser != null">
-                update_user = #{updateUser},
+                update_user = #{updateUser}
             </if>
             
             

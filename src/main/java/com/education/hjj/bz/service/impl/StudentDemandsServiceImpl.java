@@ -307,6 +307,8 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
  		TeacherPo teacherPo = new TeacherPo();
 
  		teacherPo.setChooseCount(teacherVo.getChooseCount() + 1);
+ 		teacherPo.setTeacherId(teacherId);
+ 		teacherPo.setUpdateTime(new Date());
 
  		logger.info("teacherId = {} , ChooseCountBefore={} , ChooseCountAfter={}", teacherId ,teacherVo.getChooseCount(),
  				teacherVo.getChooseCount()+1);

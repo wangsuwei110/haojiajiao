@@ -24,7 +24,7 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
     private Integer demandId;
 
     @ApiModelProperty(value = "确定预约时间", required = true)
-    private Date confirmDate;
+    private String confirmDate;
 
     @ApiModelProperty(value = "学员ID", required = true)
     @NotBlank(message = "学员ID不能为空")
@@ -211,11 +211,11 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
         this.teacherId = teacherId;
     }
 
-    public Date getConfirmDate() {
+    public String getConfirmDate() {
         return confirmDate;
     }
 
-    public void setConfirmDate(Date confirmDate) {
+    public void setConfirmDate(String confirmDate) {
         this.confirmDate = confirmDate;
     }
 
