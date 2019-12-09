@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.education.hjj.bz.entity.vo.PageVo;
 import com.education.hjj.bz.entity.vo.TeacherLevelRuleVo;
+import com.education.hjj.bz.formBean.TeachLevelForm;
 import com.education.hjj.bz.mapper.LevelRulesMapper;
 import com.education.hjj.bz.service.LevelRulesService;
 
@@ -17,9 +18,9 @@ public class LevelRulesServiceImpl implements LevelRulesService{
 	private LevelRulesMapper levelRulesMapper;
 
 	@Override
-	public PageVo<List<TeacherLevelRuleVo>> queryAllLevelRules() {
+	public PageVo<List<TeacherLevelRuleVo>> queryAllLevelRules(TeachLevelForm teachLevelForm) {
 		
-		List<TeacherLevelRuleVo> list = levelRulesMapper.queryAllLevelRules();
+		List<TeacherLevelRuleVo> list = levelRulesMapper.queryAllLevelRules(teachLevelForm);
 		
 		PageVo page = new PageVo();
 		page.setTotal(list.size());

@@ -14,7 +14,7 @@
 	</resultMap>
 	
     <!-- 根据教员id查询教员账户收入信息 -->  
-    <select id="queryAllLevelRules"  resultMap="levelRulesResultMap" >    
+    <select id="queryAllLevelRules"  resultMap="levelRulesResultMap" parameterType="com.education.hjj.bz.formBean.TeachLevelForm">    
         	
         select 
 			teacher_level_id,

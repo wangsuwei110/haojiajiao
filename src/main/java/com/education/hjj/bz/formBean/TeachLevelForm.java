@@ -11,7 +11,7 @@ import java.util.Date;
  * @创建者：sys
  * @创建时间：2019-10-13 13:31:41
  */
-public class TeachLevelForm implements Serializable{
+public class TeachLevelForm extends PageForm implements Serializable{
 
 
     /**

@@ -43,7 +43,7 @@ public class LevelRulesController {
 		
 		Map<String , Object> map = new HashMap<String , Object>();
 
-		PageVo<List<TeacherLevelRuleVo>> list = levelRulesService.queryAllLevelRules();
+		PageVo<List<TeacherLevelRuleVo>> list = levelRulesService.queryAllLevelRules(teachLevelForm);
 		
 		map.put("levelRules", JSON.toJSON(list));
 		
