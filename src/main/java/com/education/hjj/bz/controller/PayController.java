@@ -288,6 +288,7 @@ public class PayController {
                 // 如果是试讲订单，要将试讲订单修改成付费订单
                 demandVo = studentDemandMapper.findStudentDemandInfo(demandForm);
 
+                logger.info("caohuan*********记录上个订单***********");
                 // 记录上个订单的信息
                 Date date = new Date();
                 DemandLogForm logForm = new DemandLogForm();
@@ -300,6 +301,7 @@ public class PayController {
                 Integer weekDay = DateUtil.getWeekOfDate(date);
                 demandForm.setCurrentWeekDay(weekDay);
 
+                logger.info("caohuan*********修改上个订单***********");
                 // 修改当前订单成新订单
                 demandForm.setOrderType(2);
                 demandForm.setOrderMoney(demandForm.getOrderMoney());
@@ -309,6 +311,7 @@ public class PayController {
                 demandForm.setCreateTime(date);
                 Long sid = studentDemandMapper.updateOldDemandToNew(demandForm);
 
+                logger.info("caohuan*********修改订单状态至续课状态：状态变成4***********");
                 // 修改订单状态至续课状态：状态变成4
                 StudentDemandConnectForm connectForm = new StudentDemandConnectForm();
                 connectForm.setTeacherId(demandVo.getTeacherId());
@@ -316,6 +319,7 @@ public class PayController {
                 connectForm.setStatus(4);
                 connectMapper.updateByDemandId(connectForm);
 
+                logger.info("caohuan*********则将其它报名的订单全部改成5***********");
 				// 试讲通过，则将其它报名的订单全部改成5
 				connectForm.setTeacherId(demandVo.getTeacherId());
 				connectForm.setStatus(5);
