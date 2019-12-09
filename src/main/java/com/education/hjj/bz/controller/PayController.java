@@ -335,8 +335,11 @@ public class PayController {
 
         		int chooseCount = teacherVo.getChooseCount();
 
-        		double newRate = (teacherVo.getEmployCount() + 1) / chooseCount;
-        		
+				double newRate = 0;
+				if (chooseCount != 0) {
+					newRate = (teacherVo.getEmployCount() + 1) / chooseCount;
+				}
+
         		logger.info("employCount={} , chooseCount={} , newRate={}",  teacherVo.getEmployCount() + 1,
         				chooseCount, newRate);
 
