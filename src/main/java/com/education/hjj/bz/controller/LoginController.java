@@ -292,27 +292,27 @@ public class LoginController {
 					return ApiResponse.error("登录失败...");
 				}
 				
-				Integer teacherId = teacherVo.getTeacherId();
+//				Integer teacherId = teacherVo.getTeacherId();
 				
-				
-				
-				PointsLogPo pointsLogPo = new PointsLogPo();
-				pointsLogPo.setTeacherId(teacherId);
-				pointsLogPo.setGetPointsCounts(PonitsLog.OPEN_SYSTEM.getType());
-				pointsLogPo.setGetPointsType(0);
-				pointsLogPo.setGetPointsDesc(PonitsLog.OPEN_SYSTEM.getValue());
-				pointsLogPo.setStatus(1);
-				pointsLogPo.setCreateTime(new Date());
-				pointsLogPo.setCreateUser(teacherVo.getName());
-				pointsLogPo.setUpdateTime(new Date());
-				pointsLogPo.setUpdateUser(teacherVo.getName());
-				
-				logger.info("记录用户登录时获取的积分日志");
-				int p = pointsLogService.addTeacherPointsLog(teacherId , pointsLogPo);
-				
-				if(p < 0 ) {
-					logger.info("记录用户登录时获取的积分日志失败...");
-				}
+//				
+//				
+//				PointsLogPo pointsLogPo = new PointsLogPo();
+//				pointsLogPo.setTeacherId(teacherId);
+//				pointsLogPo.setGetPointsCounts(PonitsLog.OPEN_SYSTEM.getType());
+//				pointsLogPo.setGetPointsType(0);
+//				pointsLogPo.setGetPointsDesc(PonitsLog.OPEN_SYSTEM.getValue());
+//				pointsLogPo.setStatus(1);
+//				pointsLogPo.setCreateTime(new Date());
+//				pointsLogPo.setCreateUser(teacherVo.getName());
+//				pointsLogPo.setUpdateTime(new Date());
+//				pointsLogPo.setUpdateUser(teacherVo.getName());
+//				
+//				logger.info("记录用户登录时获取的积分日志");
+//				int p = pointsLogService.addTeacherPointsLog(teacherId , pointsLogPo);
+//				
+//				if(p < 0 ) {
+//					logger.info("记录用户登录时获取的积分日志失败...");
+//				}
 				
 			}
 

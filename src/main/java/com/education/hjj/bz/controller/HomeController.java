@@ -1,6 +1,7 @@
 package com.education.hjj.bz.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,12 +15,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.education.hjj.bz.entity.PointsLogPo;
 import com.education.hjj.bz.entity.vo.PageVo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.entity.vo.StudentLogVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
+import com.education.hjj.bz.enums.PonitsLog;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.StudentDemandForm;
+import com.education.hjj.bz.service.PointsLogService;
 import com.education.hjj.bz.service.StudentDemandsService;
 import com.education.hjj.bz.service.StudentLogService;
 import com.education.hjj.bz.service.UserInfoService;
@@ -44,6 +48,9 @@ public class HomeController {
 	@Autowired
 	private StudentLogService studentLogService;
 	
+	@Autowired
+	private PointsLogService pointsLogService;
+	
 
 	@ApiOperation("查询教员登录首页的内容")
 	@RequestMapping(value = "/queryTeacherInfosByHome", method = RequestMethod.POST)
@@ -62,6 +69,25 @@ public class HomeController {
 			
 			//教员信息
 			TeacherVo teacherVo = userInfoService.queryTeacherHomeInfos(String.valueOf(teacherId));
+			
+			PointsLogPo pointsLogPo = new PointsLogPo();
+			pointsLogPo.setTeacherId(teacherId);
+			pointsLogPo.setGetPointsCounts(PonitsLog.OPEN_SYSTEM.getType());
+			pointsLogPo.setGetPointsType(0);
+			pointsLogPo.setGetPointsDesc(PonitsLog.OPEN_SYSTEM.getValue());
+			pointsLogPo.setStatus(1);
+			pointsLogPo.setCreateTime(new Date());
+			pointsLogPo.setCreateUser(teacherVo.getName());
+			pointsLogPo.setUpdateTime(new Date());
+			pointsLogPo.setUpdateUser(teacherVo.getName());
+			
+			logger.info("记录用户登录时获取的积分日志");
+			int p = pointsLogService.addTeacherPointsLog(teacherId , pointsLogPo);
+			
+			if(p < 0 ) {
+				logger.info("记录用户登录时获取的积分日志失败...");
+			}
+			
 			map.put("teacherLevel", teacherVo.getTeacherLevel());
 			map.put("auditStatus", teacherVo.getAuditStatus());
 			map.put("logonStatus", teacherVo.getLogonStatus());
