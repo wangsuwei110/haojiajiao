@@ -17,8 +17,8 @@
 	</resultMap>
 
 	<insert id="insertTeacherAccount" parameterType="com.education.hjj.bz.entity.TeacherAccountPo">
-		INSERT teacher_account
-		INTO (
+		INSERT INTO teacher_account
+		 (
 			teacher_id
 			,teacher_name
 			,teacher_phone
@@ -27,16 +27,19 @@
 			,status
 			,create_time
 			,create_user
+			,update_time
+			,update_user
 		) VALUES (
 			#{teacherId}
 			,#{teacherName}
 			,#{teacherPhone}
 			,#{accountMoney}
-			,#{accountMoney}
 			,#{surplusMoney}
 			,#{status}
 			,#{createTime}
 			,#{createUser}
+			,#{updateTime}
+			,#{updateUser}
 		)
 	</insert>
 

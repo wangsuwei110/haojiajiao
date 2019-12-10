@@ -370,13 +370,16 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		po.setTeacherId(courseInfoForm.getTeacherId());
 		if (teacherAccountVo == null) {
 
-			po.setStatus(0);
+			po.setStatus(1);
 			po.setCreateTime(date);
 			po.setTeacherName(teacherVo.getName());
 			po.setAccountMoney(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString()));
 			po.setSurplusMoney(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString()));
 			po.setTeacherPhone(teacherVo.getTelephone());
 			po.setCreateUser(teacherVo.getTeacherId().toString());
+			po.setUpdateUser(teacherVo.getTeacherId().toString());
+			po.setUpdateTime(date);
+			po.setCreateTime(date);
 
 			// 如果没有数据，则插入一条教员收支数据
 			userAccountMapper.insertTeacherAccount(po);
