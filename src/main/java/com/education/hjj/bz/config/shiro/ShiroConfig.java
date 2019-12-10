@@ -207,6 +207,12 @@ public class ShiroConfig {
         
         // 学员端首页
         put("/StudentDemand/homepageInfo", "anon");
+        
+        // 查询所有的大学
+        put("/teacher/listUniversity", "anon");
+        
+        // 学员端查询所有的教员信息
+        put("/userInfo/queryAllTeacherInfosByStudents", "anon");
 
     }};
 }
