@@ -1074,7 +1074,6 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 	@Transactional
 	public int updateTimeTableByTeacherId(StudentDemandPo studentDemandPo) {
 
-
 		studentDemandPo.setUpdateTime(new Date());
 
 		Integer teacherId = studentDemandPo.getTeacherId();
