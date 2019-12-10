@@ -129,7 +129,7 @@ public class StudentDemandVo {
     //教学科目名称
     private String teachBranchName;
     //报名时间
-    private String signTime;
+    private Date signTime;
     //联系手机号
     private String parentPhoneNum;
 
@@ -492,11 +492,11 @@ public class StudentDemandVo {
 		this.teachBranchName = teachBranchName;
 	}
 
-	public String getSignTime() {
+	public Date getSignTime() {
 		return signTime;
 	}
 
-	public void setSignTime(String signTime) {
+	public void setSignTime(Date signTime) {
 		this.signTime = signTime;
 	}
 

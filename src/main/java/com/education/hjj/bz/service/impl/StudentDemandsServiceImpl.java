@@ -287,34 +287,43 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	@Override
 	@Transactional
 	public ApiResponse confirmTeacher(StudentDemandConnectForm demandForm) {
-
-		// 单独预约的需求，确定教员时，订单变成试讲中
-		if (demandForm.getDemandType() == null) {
-
-			return ApiResponse.error("必须确定单独试讲或者快速请家教");
-		} else if (demandForm.getDemandType() == 1) {
-			// 单独预约
-			demandForm.setStatus(1);
-		} else {
-			demandForm.setStatus(2);
-		}
-		Long sid = connectMapper.confirmTeacher(demandForm);
 		
 		Integer teacherId = demandForm.getTeacherId();
 		
-		 TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
- 		// 更新教员对所有报名订单的数量
+		TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
+		
+		int i = 0 ;
+		
+		// 更新教员对所有报名订单的数量
  		TeacherPo teacherPo = new TeacherPo();
 
  		teacherPo.setChooseCount(teacherVo.getChooseCount() + 1);
  		teacherPo.setTeacherId(teacherId);
  		teacherPo.setUpdateTime(new Date());
-
+ 		
  		logger.info("teacherId = {} , ChooseCountBefore={} , ChooseCountAfter={}", teacherId ,teacherVo.getChooseCount(),
  				teacherVo.getChooseCount()+1);
 
- 		int i = userInfoMapper.updateUserInfo(teacherPo);
+		// 单独预约的需求，确定教员时，订单变成试讲中
+		if (demandForm.getDemandType() == null) {
+
+			return ApiResponse.error("必须确定单独试讲或者快速请家教");
+			
+		} else if (demandForm.getDemandType() == 1) {
+			// 单独预约
+			demandForm.setStatus(1);
+			
+		} else {
+			demandForm.setStatus(2);
+			
+			logger.info("快速请家教的时候： teacherId = {} , ChooseCountBefore={} , ChooseCountAfter={}", teacherId ,teacherVo.getChooseCount(),
+	 				teacherVo.getChooseCount()+1);
+		}
+		
+		i = userInfoMapper.updateUserInfo(teacherPo);
  		
+		Long sid = connectMapper.confirmTeacher(demandForm);
+		
 
 		if (sid != null && i > 0) {
 			return ApiResponse.success("预约教员成功");
@@ -931,7 +940,19 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 
 		int k = pointsLogMapper.addTeacherPointsLog(pointsLogPo);
 		
-		if (i >= 0 && j >= 0 && k>0) {
+		
+		
+		
+		TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
+		TeacherPo teacher = new TeacherPo();
+		teacher.setTeacherId(teacherId);
+		teacher.setTeacherPoints(teacherVo.getTeacherPoints() + 10);
+		teacher.setUpdateTime(new Date());
+		teacher.setUpdateUser(teacherVo.getName());
+		logger.info("教员ID = {} , beforeTeacherPoints = {} , afterTeacherPoints = {}" , demandForm.getTeacherId() , teacherVo.getTeacherPoints() , teacherVo.getTeacherPoints()+10);
+		int m = userInfoMapper.updateUserInfo(teacher);
+		
+		if (i >= 0 && j >= 0 && k>0 && m> 0) {
 			return 1;
 		}
 
@@ -1038,7 +1059,6 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 	@Transactional
 	public int updateTimeTableByTeacherId(StudentDemandPo studentDemandPo) {
 
-
 		studentDemandPo.setUpdateTime(new Date());
 
 		Integer teacherId = studentDemandPo.getTeacherId();
@@ -1051,6 +1071,7 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		}
 
 		int k = 0;
+		int l = 0; 
 		
 		//打卡
 		if(teacherId != null && studentId == null) {
@@ -1068,13 +1089,24 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 			pointsLogPo.setUpdateUser(String.valueOf(teacherId));
 
 			k = pointsLogMapper.addTeacherPointsLog(pointsLogPo);
+			
+			TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
+			
+			//增加教员积分
+			TeacherPo teacher = new TeacherPo();
+			teacher.setTeacherId(teacherId);
+			teacher.setTeacherPoints(teacherVo.getTeacherPoints() + 5);
+			teacher.setUpdateTime(new Date());
+			teacher.setUpdateUser(teacherVo.getName());
+			
+			userInfoMapper.updateUserInfo(teacher);
 		}
 
 		 
 		
 		int i = studentDemandMapper.updateTimeTableByTeacherId(studentDemandPo);
 		
-		if (i >= 0 && k>0) {
+		if (i >= 0 && k>0 && l > 0) {
 			return 1;
 		}
 

@@ -720,4 +720,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 		return teacherMapList;
 	}
 
+	@Override
+	public int updateUserInfo(TeacherPo teacher) {
+		int i = userInfoMapper.updateUserInfo(teacher);
+		return i;
+	}
+
 }
