@@ -287,34 +287,59 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	@Override
 	@Transactional
 	public ApiResponse confirmTeacher(StudentDemandConnectForm demandForm) {
+		
+		Integer teacherId = demandForm.getTeacherId();
+		
+		TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
+		
+		int i = 0 ;
+		
+		// 更新教员对所有报名订单的数量
+ 		TeacherPo teacherPo = new TeacherPo();
+
+ 		teacherPo.setChooseCount(teacherVo.getChooseCount() + 1);
+ 		teacherPo.setTeacherId(teacherId);
+
+ 		logger.info("teacherId = {} , ChooseCountBefore={} , ChooseCountAfter={}", teacherId ,teacherVo.getChooseCount(),
+ 				teacherVo.getChooseCount()+1);
 
 		// 单独预约的需求，确定教员时，订单变成试讲中
 		if (demandForm.getDemandType() == null) {
 
 			return ApiResponse.error("必须确定单独试讲或者快速请家教");
+			
 		} else if (demandForm.getDemandType() == 1) {
 			// 单独预约
 			demandForm.setStatus(1);
+			
+			//被聘用次数+1
+			teacherPo.setEmployCount(teacherVo.getEmployCount() + 1);
+
+			//计算后的被聘用率
+			double 	newRate = (teacherVo.getEmployCount() + 1) / (teacherVo.getChooseCount() + 1);
+
+    		logger.info("重新计算后的被聘用数：employCount={} , 重新计算后的被选择试讲数：chooseCount={} , 重新计算后的被聘用率：newRate={}",  teacherVo.getEmployCount() + 1,
+    				teacherVo.getChooseCount() + 1, newRate);
+    		
+    		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
+    		
+    		logger.info("employRate = {}", bg);
+    		// 更新该教员的聘用率
+    		teacherPo.setEmployRate(bg);
+    		teacherPo.setUpdateTime(new Date());
+
+    		i = userInfoMapper.updateUserInfo(teacherPo);
+			
 		} else {
 			demandForm.setStatus(2);
+	 		
 		}
+		
+		
+ 		
+ 		
 		Long sid = connectMapper.confirmTeacher(demandForm);
 		
-		Integer teacherId = demandForm.getTeacherId();
-		
-		 TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
- 		// 更新教员对所有报名订单的数量
- 		TeacherPo teacherPo = new TeacherPo();
-
- 		teacherPo.setChooseCount(teacherVo.getChooseCount() + 1);
- 		teacherPo.setTeacherId(teacherId);
- 		teacherPo.setUpdateTime(new Date());
-
- 		logger.info("teacherId = {} , ChooseCountBefore={} , ChooseCountAfter={}", teacherId ,teacherVo.getChooseCount(),
- 				teacherVo.getChooseCount()+1);
-
- 		int i = userInfoMapper.updateUserInfo(teacherPo);
- 		
 
 		if (sid != null && i > 0) {
 			return ApiResponse.success("预约教员成功");
