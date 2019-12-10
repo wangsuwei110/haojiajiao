@@ -958,13 +958,14 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		
 		
 		
+		
 		TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
 		TeacherPo teacher = new TeacherPo();
 		teacher.setTeacherId(teacherId);
 		teacher.setTeacherPoints(teacherVo.getTeacherPoints() + 10);
 		teacher.setUpdateTime(new Date());
 		teacher.setUpdateUser(teacherVo.getName());
-		
+		logger.info("教员ID = {} , beforeTeacherPoints = {} , afterTeacherPoints = {}" , demandForm.getTeacherId() , teacherVo.getTeacherPoints() , teacherVo.getTeacherPoints()+10);
 		int m = userInfoMapper.updateUserInfo(teacher);
 		
 		if (i >= 0 && j >= 0 && k>0 && m> 0) {
