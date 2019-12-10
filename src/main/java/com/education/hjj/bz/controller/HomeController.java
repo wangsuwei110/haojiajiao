@@ -85,18 +85,18 @@ public class HomeController {
 			logger.info("记录用户登录时获取的积分日志");
 			int p = pointsLogService.addTeacherPointsLog(teacherId , pointsLogPo);
 			
-			if(p < 0 ) {
+			if(p <= 0 ) {
 				logger.info("记录用户登录时获取的积分日志失败...");
+			}else {
+				//增加教员积分
+				TeacherPo teacher = new TeacherPo();
+				teacher.setTeacherId(teacherId);
+				teacher.setTeacherPoints(teacherVo.getTeacherPoints() + 1);
+				teacher.setUpdateTime(new Date());
+				teacher.setUpdateUser(teacherVo.getName());
+				
+				userInfoService.updateUserInfo(teacher);
 			}
-			
-			//增加教员积分
-			TeacherPo teacher = new TeacherPo();
-			teacher.setTeacherId(teacherId);
-			teacher.setTeacherPoints(teacherVo.getTeacherPoints() + 10);
-			teacher.setUpdateTime(new Date());
-			teacher.setUpdateUser(teacherVo.getName());
-			
-			userInfoService.updateUserInfo(teacher);
 			
 			map.put("teacherLevel", teacherVo.getTeacherLevel());
 			map.put("auditStatus", teacherVo.getAuditStatus());
