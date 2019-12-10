@@ -425,6 +425,14 @@
     		t.logon_status = 1
     	and
     		t.audit_status = 1
+		<if test="branchs != null and branchs != ''">
+			AND (
+				FIND_IN_SET(t.teach_brance, #{branchs}) <![CDATA[>]]> 0
+				<foreach collection="branchList"  item="item">
+					or FIND_IN_SET(#{item}, t.teach_branch_slave) <![CDATA[>]]> 0
+				</foreach>
+			)
+		</if>
     	<if test="teachBrance != null">
              AND #{teachBrance} = t.teach_brance
         </if>	
@@ -456,8 +464,7 @@
         <if test="createTime != null">
               ,t.create_time desc
         </if>
-       
-        
+
         <if test="offset != null">
             <![CDATA[
             limit #{pageSize} offset #{offset}

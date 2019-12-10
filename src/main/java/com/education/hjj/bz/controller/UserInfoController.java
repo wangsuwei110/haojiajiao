@@ -1,18 +1,17 @@
 package com.education.hjj.bz.controller;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import com.education.hjj.bz.mapper.TeachBranchMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -89,6 +88,9 @@ public class UserInfoController {
 
 	@Autowired
 	private StudentLogService studentLogService;
+
+	@Autowired
+	private TeachBranchMapper teachBranchMapper;
 
 	@ApiOperation("用户信息更新(带图片)")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -464,8 +466,27 @@ public class UserInfoController {
 	@RequestMapping(value = "/queryAllTeacherInfosByStudents", method = RequestMethod.POST)
 	@ResponseBody
 	public ApiResponse queryAllTeacherInfosByStudents(@RequestBody StudentTeacherInfoForm studentTeacherInfoForm) {
-		
-		
+		Map<String, Object> map = new HashMap<>();
+		// 判断是否有学员id，如果有，则修改branchs的内容
+		if (studentTeacherInfoForm.getStudentId() != null) {
+			StudentVo vo = studentMapper.load(studentTeacherInfoForm.getStudentId());
+			TeachBranchVo teachBranchVo = teachBranchMapper.queryByBranchId(vo.getSubjectId());
+
+			// 回显用
+			map.put("studentGrade", vo.getGrade());
+			map.put("studentLevel", teachBranchVo.getTeachLevelId());
+			map.put("studentSubjectId", vo.getSubjectId());
+
+			// 如果用户id不为空，则拿用户的年级id去匹配选择的科目
+			List<Integer> list = teachBranchMapper.queryListByBranchId(vo.getSubjectId());
+			list = list.stream().filter(f -> f != null && studentTeacherInfoForm.getBranchs().contains(f.toString())).collect(Collectors.toList());
+
+			if (!CollectionUtils.isEmpty(list)) {
+				studentTeacherInfoForm.setBranchs(StringUtils.join(list, ","));
+			}
+		}
+		studentTeacherInfoForm.setBranchList(Arrays.asList(studentTeacherInfoForm.getBranchs().split(",")));
+
 		List<TeacherVo> list = userInfoService.queryAllTeacherInfosByStudent(studentTeacherInfoForm);
 		
 		if(list.size() > 0) {
@@ -515,6 +536,8 @@ public class UserInfoController {
 		
 			pageVo.setDataList(list);
 			pageVo.setTotal(list.size());
+
+            map.put("pageVo", pageVo);
 			
 			return ApiResponse.success("操作成功！",pageVo);
 		}

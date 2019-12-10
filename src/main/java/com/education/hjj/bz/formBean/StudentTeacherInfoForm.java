@@ -1,6 +1,7 @@
 package com.education.hjj.bz.formBean;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class StudentTeacherInfoForm extends PageForm implements Serializable{
 
@@ -22,6 +23,37 @@ public class StudentTeacherInfoForm extends PageForm implements Serializable{
 	private String createTime;
 	
 	private Integer sex;
+
+	private Long studentId;
+
+	private String branchs;
+
+	private List<String> branchList;
+
+	public List<String> getBranchList() {
+		return branchList;
+	}
+
+	public void setBranchList(List<String> branchList) {
+		this.branchList = branchList;
+	}
+
+	public String getBranchs() {
+
+		return branchs;
+	}
+
+	public void setBranchs(String branchs) {
+		this.branchs = branchs;
+	}
+
+	public Long getStudentId() {
+		return studentId;
+	}
+
+	public void setStudentId(Long studentId) {
+		this.studentId = studentId;
+	}
 
 	public Integer getTeachBrance() {
 		return teachBrance;

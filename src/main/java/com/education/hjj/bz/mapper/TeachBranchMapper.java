@@ -17,4 +17,8 @@ public interface TeachBranchMapper {
 	List<TeachBranchVo> queryAllTeachBranchs();
 	
 	List<TeachBranchVo> queryCheckedTeachBranchs(List<TeachBranchPo> parameterIds);
+
+	TeachBranchVo queryByBranchId(Integer teachBranchId);
+
+	List<Integer> queryListByBranchId(Integer teachBranchId);
 }

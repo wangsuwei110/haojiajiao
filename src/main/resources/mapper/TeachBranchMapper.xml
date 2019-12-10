@@ -27,7 +27,21 @@
 			tb.teach_branch_id 
 
     </select>
-    
+
+	<select id="queryByBranchId" parameterType="integer" resultMap="TeachBranchsResultMap">
+		SELECT *
+		FROM teach_branch
+		WHERE teach_branch_id = #{teachBranchId}
+	</select>
+
+	<select id="queryListByBranchId" parameterType="integer" resultType="java.lang.Integer">
+		SELECT t2.teach_branch_id
+		FROM teach_branch t1
+		inner join teach_branch t2
+		on t1.teach_grade_id = t2.teach_grade_id
+		and t1.teach_level_id = t2.teach_level_id
+		WHERE t1.teach_branch_id = #{teachBranchId}
+	</select>
      <select id="queryCheckedTeachBranchs"  resultMap="TeachBranchsResultMap" parameterType="java.util.List">    
         select 
 			tb.teach_branch_id,
