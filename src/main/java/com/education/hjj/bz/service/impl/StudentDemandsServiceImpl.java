@@ -299,7 +299,8 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
  		teacherPo.setChooseCount(teacherVo.getChooseCount() + 1);
  		teacherPo.setTeacherId(teacherId);
-
+ 		teacherPo.setUpdateTime(new Date());
+ 		
  		logger.info("teacherId = {} , ChooseCountBefore={} , ChooseCountAfter={}", teacherId ,teacherVo.getChooseCount(),
  				teacherVo.getChooseCount()+1);
 
@@ -312,31 +313,14 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			// 单独预约
 			demandForm.setStatus(1);
 			
-			//区分快速请家教盒直接预约时，被选择当石江沅的数目统一加1，聘用率计算在此只计算被指定为试讲员时计算，快速请家教时不计算
-			//被聘用次数+1
-			teacherPo.setEmployCount(teacherVo.getEmployCount() + 1);
-
-			//计算后的被聘用率
-			double 	newRate = (teacherVo.getEmployCount() + 1) / (teacherVo.getChooseCount() + 1);
-
-    		logger.info("teacherId = {} , 指定教员的时候，重新计算后的被聘用数：employCount={} , 重新计算后的被选择试讲数：chooseCount={} , 重新计算后的被聘用率：newRate={}", teacherId , teacherVo.getEmployCount() + 1,
-    				teacherVo.getChooseCount() + 1, newRate);
-    		
-    		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
-    		
-    		logger.info("employRate = {}", bg);
-    		// 更新该教员的聘用率
-    		teacherPo.setEmployRate(bg);
-    		teacherPo.setUpdateTime(new Date());
-
-    		i = userInfoMapper.updateUserInfo(teacherPo);
-			
 		} else {
 			demandForm.setStatus(2);
 			
 			logger.info("快速请家教的时候： teacherId = {} , ChooseCountBefore={} , ChooseCountAfter={}", teacherId ,teacherVo.getChooseCount(),
 	 				teacherVo.getChooseCount()+1);
 		}
+		
+		i = userInfoMapper.updateUserInfo(teacherPo);
  		
 		Long sid = connectMapper.confirmTeacher(demandForm);
 		
