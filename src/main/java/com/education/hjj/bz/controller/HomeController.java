@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.education.hjj.bz.entity.PointsLogPo;
+import com.education.hjj.bz.entity.TeacherPo;
 import com.education.hjj.bz.entity.vo.PageVo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.entity.vo.StudentLogVo;
@@ -87,6 +88,15 @@ public class HomeController {
 			if(p < 0 ) {
 				logger.info("记录用户登录时获取的积分日志失败...");
 			}
+			
+			//增加教员积分
+			TeacherPo teacher = new TeacherPo();
+			teacher.setTeacherId(teacherId);
+			teacher.setTeacherPoints(teacherVo.getTeacherPoints() + 10);
+			teacher.setUpdateTime(new Date());
+			teacher.setUpdateUser(teacherVo.getName());
+			
+			userInfoService.updateUserInfo(teacher);
 			
 			map.put("teacherLevel", teacherVo.getTeacherLevel());
 			map.put("auditStatus", teacherVo.getAuditStatus());

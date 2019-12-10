@@ -956,7 +956,18 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 
 		int k = pointsLogMapper.addTeacherPointsLog(pointsLogPo);
 		
-		if (i >= 0 && j >= 0 && k>0) {
+		
+		
+		TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
+		TeacherPo teacher = new TeacherPo();
+		teacher.setTeacherId(teacherId);
+		teacher.setTeacherPoints(teacherVo.getTeacherPoints() + 10);
+		teacher.setUpdateTime(new Date());
+		teacher.setUpdateUser(teacherVo.getName());
+		
+		int m = userInfoMapper.updateUserInfo(teacher);
+		
+		if (i >= 0 && j >= 0 && k>0 && m> 0) {
 			return 1;
 		}
 
@@ -1076,6 +1087,7 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		}
 
 		int k = 0;
+		int l = 0; 
 		
 		//打卡
 		if(teacherId != null && studentId == null) {
@@ -1093,13 +1105,24 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 			pointsLogPo.setUpdateUser(String.valueOf(teacherId));
 
 			k = pointsLogMapper.addTeacherPointsLog(pointsLogPo);
+			
+			TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
+			
+			//增加教员积分
+			TeacherPo teacher = new TeacherPo();
+			teacher.setTeacherId(teacherId);
+			teacher.setTeacherPoints(teacherVo.getTeacherPoints() + 5);
+			teacher.setUpdateTime(new Date());
+			teacher.setUpdateUser(teacherVo.getName());
+			
+			userInfoMapper.updateUserInfo(teacher);
 		}
 
 		 
 		
 		int i = studentDemandMapper.updateTimeTableByTeacherId(studentDemandPo);
 		
-		if (i >= 0 && k>0) {
+		if (i >= 0 && k>0 && l > 0) {
 			return 1;
 		}
 
