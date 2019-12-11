@@ -172,7 +172,15 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public ApiResponse findAllSubject(TeachScreenForm form) {
-        return ApiResponse.success(teachLevelMapper.findAllSubject(form));
+        List<CodeVo>  list = teachLevelMapper.findAllSubject(form);
+
+        Collections.sort(list, new Comparator<CodeVo>() {
+            @Override
+            public int compare(CodeVo o1, CodeVo o2) {
+                return replaceNumOther(o1.getValue()) - replaceNumOther(o2.getValue());
+            }
+        });
+        return ApiResponse.success(list);
     }
 
     @Override
@@ -230,6 +238,26 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     private int replaceNum(String value) {
+        switch (value.substring(0, 1)) {
+            case "一" :
+                return 1;
+            case "二" :
+                return 2;
+            case "三" :
+                return 3;
+            case "四" :
+                return 4;
+            case "五" :
+                return 5;
+            case "六" :
+                return 6;
+            default:
+                return 7;
+        }
+    }
+
+    private int replaceNumOther(String value) {
+ 	    value = value.replace("小学", "").replace("初中", "").replace("高中", "");
         switch (value.substring(0, 1)) {
             case "一" :
                 return 1;
