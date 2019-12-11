@@ -957,6 +957,34 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		teacher.setUpdateTime(new Date());
 		teacher.setUpdateUser(teacherVo.getName());
 		logger.info("教员ID = {} , beforeTeacherPoints = {} , afterTeacherPoints = {}" , demandForm.getTeacherId() , teacherVo.getTeacherPoints() , teacherVo.getTeacherPoints()+10);
+		
+		
+		// 更新教员对所有报名订单的数量
+
+		teacher.setChooseCount(teacherVo.getChooseCount() + 1);
+		teacher.setTeacherId(teacherId);
+		teacher.setUpdateTime(new Date());
+ 		
+ 		logger.info("teacherId = {} , ChooseCountBefore={} , ChooseCountAfter={}", teacherId ,teacherVo.getChooseCount(),
+ 				teacherVo.getChooseCount()+1);
+ 		
+ 		teacher.setEmployCount(teacherVo.getEmployCount() + 1);
+
+		int chooseCount = teacherVo.getChooseCount();
+
+		double newRate = 0;
+		if (chooseCount != 0) {
+			newRate = (teacherVo.getEmployCount() + 1) / chooseCount;
+		}
+
+		logger.info("employCount={} , chooseCount={} , newRate={}",  teacherVo.getEmployCount() + 1,
+				chooseCount, newRate);
+
+		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
+		logger.info("employRate = {}", bg);
+		// 更新该教员的聘用率
+		teacher.setEmployRate(bg);
+		
 		int m = userInfoMapper.updateUserInfo(teacher);
 		
 		if (i >= 0 && j >= 0 && k>0 && m> 0) {
