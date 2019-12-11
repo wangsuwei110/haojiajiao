@@ -485,7 +485,9 @@ public class UserInfoController {
 				studentTeacherInfoForm.setBranchs(StringUtils.join(list, ","));
 			}
 		}
-		studentTeacherInfoForm.setBranchList(Arrays.asList(studentTeacherInfoForm.getBranchs().split(",")));
+		if (StringUtils.isNotEmpty(studentTeacherInfoForm.getBranchs())) {
+            studentTeacherInfoForm.setBranchList(Arrays.asList(studentTeacherInfoForm.getBranchs().split(",")));
+        }
 
 		List<TeacherVo> list = userInfoService.queryAllTeacherInfosByStudent(studentTeacherInfoForm);
 		

@@ -428,7 +428,7 @@
 		<if test="branchs != null and branchs != ''">
 			AND (
 				FIND_IN_SET(t.teach_brance, #{branchs}) <![CDATA[>]]> 0
-				<foreach collection="branchList"  item="item">
+				<foreach collection="branchList" item="item">
 					or FIND_IN_SET(#{item}, t.teach_branch_slave) <![CDATA[>]]> 0
 				</foreach>
 			)
