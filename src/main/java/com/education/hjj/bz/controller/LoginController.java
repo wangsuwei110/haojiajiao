@@ -291,29 +291,6 @@ public class LoginController {
 				}else {
 					return ApiResponse.error("登录失败...");
 				}
-				
-//				Integer teacherId = teacherVo.getTeacherId();
-				
-//				
-//				
-//				PointsLogPo pointsLogPo = new PointsLogPo();
-//				pointsLogPo.setTeacherId(teacherId);
-//				pointsLogPo.setGetPointsCounts(PonitsLog.OPEN_SYSTEM.getType());
-//				pointsLogPo.setGetPointsType(0);
-//				pointsLogPo.setGetPointsDesc(PonitsLog.OPEN_SYSTEM.getValue());
-//				pointsLogPo.setStatus(1);
-//				pointsLogPo.setCreateTime(new Date());
-//				pointsLogPo.setCreateUser(teacherVo.getName());
-//				pointsLogPo.setUpdateTime(new Date());
-//				pointsLogPo.setUpdateUser(teacherVo.getName());
-//				
-//				logger.info("记录用户登录时获取的积分日志");
-//				int p = pointsLogService.addTeacherPointsLog(teacherId , pointsLogPo);
-//				
-//				if(p < 0 ) {
-//					logger.info("记录用户登录时获取的积分日志失败...");
-//				}
-				
 			}
 
             map.put("teacherName", teacherVo.getName());
@@ -373,17 +350,6 @@ public class LoginController {
 				map.put("studentId", studentVo.getSid());
 				map.put("telephone", studentVo.getParentPhoneNum());
 
-                /*StudentLogPo logPo = new StudentLogPo();
-                logPo.setStudentId(Integer.valueOf(studentVo.getSid().toString()));
-                logPo.setLogType(1); // 登录
-                logPo.setLogContent("最近登录了系统");
-                logPo.setStudentName(studentVo.getStudentName());
-                logPo.setStatus(1);
-                logPo.setCreateTime(new Date());
-                logPo.setCreateUser(studentVo.getSid().toString());
-                logPo.setUpdateTime(new Date());
-                logPo.setUpdateUser(studentVo.getSid().toString());
-                studentLogService.addStudentLog(logPo);*/
 				return ApiResponse.success("注册成功" , UtilTools.mapToJson(map));
 			} else {
 				logger.info("该用户为已注册用户");

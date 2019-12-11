@@ -24,6 +24,9 @@ public class StudentVo {
     @ApiModelProperty(value = "学员年级")
     private Integer grade;
 
+    @ApiModelProperty(value = "学员学段")
+    private Integer teachLevel;
+
     @ApiModelProperty(value = "学员年级")
     private String gradeName;
 
@@ -53,6 +56,14 @@ public class StudentVo {
 
     @ApiModelProperty(value = "修改人")
     private String updateUser;
+
+    public Integer getTeachLevel() {
+        return teachLevel;
+    }
+
+    public void setTeachLevel(Integer teachLevel) {
+        this.teachLevel = teachLevel;
+    }
 
     public Integer getSubjectId() {
         return subjectId;

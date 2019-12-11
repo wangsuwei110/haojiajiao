@@ -33,6 +33,9 @@ public class StudentForm implements Serializable {
     @NotBlank(message = "学员年级不能为空")
     private Integer grade;
 
+    @ApiModelProperty(value = "学员学段")
+    private Integer teachLevel;
+
     @ApiModelProperty(value = "科目",required = true)
     private Integer subjectId;
 
@@ -65,6 +68,14 @@ public class StudentForm implements Serializable {
 
     @ApiModelProperty(value = "修改人",required = true)
     private String updateUser;
+
+    public Integer getTeachLevel() {
+        return teachLevel;
+    }
+
+    public void setTeachLevel(Integer teachLevel) {
+        this.teachLevel = teachLevel;
+    }
 
     public Integer getFindType() {
         return findType;

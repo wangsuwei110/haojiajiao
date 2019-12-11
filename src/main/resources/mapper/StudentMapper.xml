@@ -7,6 +7,7 @@
 	     	<result property="studentName" column="student_name"/>
 	     	<result property="sex" column="sex"/>
 	     	<result property="grade" column="grade"/>
+	     	<result property="teachLevel" column="teach_level"/>
 	     	<result property="subjectId" column="subject_id"/>
 	     	<result property="openId" column="openId"/>
 	     	<result property="picture" column="picture"/>
@@ -40,6 +41,7 @@
           t1.update_time,
           t1.update_user,
           t1.grade,
+          t1.teach_level,
           t3.grade_name AS gradeName
     </sql>
 
@@ -99,6 +101,9 @@
        		     </if>
 		     	 <if test="grade != null">
 	               grade =  #{grade},
+       		     </if>
+                 <if test="teachLevel != null">
+                     teach_level =  #{teachLevel},
        		     </if>
                  <if test="subjectId != null">
                    subject_id =  #{subjectId},
