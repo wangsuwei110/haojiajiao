@@ -174,12 +174,14 @@ public class TeacherServiceImpl implements TeacherService {
     public ApiResponse findAllSubject(TeachScreenForm form) {
         List<CodeVo>  list = teachLevelMapper.findAllSubject(form);
 
-        Collections.sort(list, new Comparator<CodeVo>() {
-            @Override
-            public int compare(CodeVo o1, CodeVo o2) {
-                return replaceNumOther(o1.getValue()) - replaceNumOther(o2.getValue());
-            }
-        });
+        if (StringUtils.isNotEmpty(form.getTeachLevel())) {
+            Collections.sort(list, new Comparator<CodeVo>() {
+                @Override
+                public int compare(CodeVo o1, CodeVo o2) {
+                    return replaceNumOther(o1.getValue()) - replaceNumOther(o2.getValue());
+                }
+            });
+        }
         return ApiResponse.success(list);
     }
 
