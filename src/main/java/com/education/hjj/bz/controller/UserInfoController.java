@@ -468,7 +468,9 @@ public class UserInfoController {
 	public ApiResponse queryAllTeacherInfosByStudents(@RequestBody StudentTeacherInfoForm studentTeacherInfoForm) {
 		Map<String, Object> map = new HashMap<>();
 		// 判断是否有学员id，如果有，则修改branchs的内容
-		if (studentTeacherInfoForm.getStudentId() != null) {
+		if (studentTeacherInfoForm.getStudentId() != null
+                && StringUtils.isNotEmpty(studentTeacherInfoForm.getBranchs())) {
+
 			StudentVo vo = studentMapper.load(studentTeacherInfoForm.getStudentId());
 			TeachBranchVo teachBranchVo = teachBranchMapper.queryByBranchId(vo.getSubjectId());
 
@@ -484,10 +486,8 @@ public class UserInfoController {
 			if (!CollectionUtils.isEmpty(list)) {
 				studentTeacherInfoForm.setBranchs(StringUtils.join(list, ","));
 			}
-		}
-		if (StringUtils.isNotEmpty(studentTeacherInfoForm.getBranchs())) {
             studentTeacherInfoForm.setBranchList(Arrays.asList(studentTeacherInfoForm.getBranchs().split(",")));
-        }
+		}
 
 		List<TeacherVo> list = userInfoService.queryAllTeacherInfosByStudent(studentTeacherInfoForm);
 		
