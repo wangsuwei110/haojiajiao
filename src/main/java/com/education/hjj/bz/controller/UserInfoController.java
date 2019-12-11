@@ -479,9 +479,11 @@ public class UserInfoController {
 			map.put("studentLevel", teachBranchVo.getTeachLevelId());
 			map.put("studentSubjectId", vo.getSubjectId());
 
+			List<String> brancheList = Arrays.asList(studentTeacherInfoForm.getBranchs().split(","));
+
 			// 如果用户id不为空，则拿用户的年级id去匹配选择的科目
 			List<Integer> list = teachBranchMapper.queryListByBranchId(vo.getSubjectId());
-			list = list.stream().filter(f -> f != null && studentTeacherInfoForm.getBranchs().contains(f.toString())).collect(Collectors.toList());
+			list = list.stream().filter(f -> f != null && brancheList.contains(f.toString())).collect(Collectors.toList());
 
 			if (!CollectionUtils.isEmpty(list)) {
 				studentTeacherInfoForm.setBranchs(StringUtils.join(list, ","));
