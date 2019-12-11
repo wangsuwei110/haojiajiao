@@ -1000,7 +1000,7 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 			data.put("name1", keyMap1);
 			
 			Map<String, Object> keyMap2 = new HashMap<String, Object>();
-			keyMap2.put("value", orderTeachTime +"上门试讲");
+			keyMap2.put("value", orderTeachTime);
 			// 授课时间
 			data.put("date3", keyMap2);
 			
