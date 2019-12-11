@@ -18,7 +18,7 @@ public class PointsLogVo implements Serializable{
 	
 	private String getPointsDesc;
 	
-	private String createTime;
+	private Date createTime;
 
 	public Integer getTeacherId() {
 		return teacherId;
@@ -44,11 +44,11 @@ public class PointsLogVo implements Serializable{
 		this.getPointsDesc = getPointsDesc;
 	}
 
-	public String getCreateTime() {
+	public Date getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 
