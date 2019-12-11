@@ -24,6 +24,7 @@ import com.education.hjj.bz.formBean.TeacherStudentOrderForm;
 import com.education.hjj.bz.mapper.OrderMapper;
 import com.education.hjj.bz.mapper.UserInfoMapper;
 import com.education.hjj.bz.service.OrderService;
+import com.education.hjj.bz.util.RegUtils;
 import com.education.hjj.bz.util.UUIDUtils;
 
 @Service
@@ -353,9 +354,9 @@ public class OrderServiceImpl implements OrderService {
 				chooseCount, newRate);
 
 		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
-		logger.info("employRate = {}", bg);
+		logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
 		// 更新该教员的聘用率
-		teacherPo.setEmployRate(bg);
+		teacherPo.setEmployRate(RegUtils.doubleToPersent().format(bg));
 
 		int k = userInfoMapper.updateUserInfo(teacherPo);
 
@@ -443,7 +444,7 @@ public class OrderServiceImpl implements OrderService {
 		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
 		logger.info("employRate = {}", bg);
 		
-		teacher.setResumptionRate(bg);
+		teacher.setResumptionRate(RegUtils.doubleToPersent().format(bg));
 		
 		// 更新该教员的续课率
 		int j = userInfoMapper.updateUserInfo(teacher);

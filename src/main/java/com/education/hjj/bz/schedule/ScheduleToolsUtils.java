@@ -45,28 +45,30 @@ public class ScheduleToolsUtils {
 			TeacherPo tPo = new TeacherPo();
 			tPo.setTeacherId(Integer.valueOf(t.getTeacherId()));
 			
+			String resumptionRate = t.getResumptionRate().split("%")[0];
+			
 			//续课率大于等于60%,并且个人积分大于等于100，小于等于300时
-			if (t.getResumptionRate().doubleValue() >= 0.60 && Integer.valueOf(t.getTeacherPoints()) >= 100
+			if (Double.valueOf(resumptionRate) >= 60 && Integer.valueOf(t.getTeacherPoints()) >= 100
 					&& Integer.valueOf(t.getTeacherPoints()) <= 300) {
 				tPo.setTeacherLevel("T1");
 				tPo.setChargesStandard("120.00元/每课时");
 			}
 			
 			//续课率大于等于60%,并且个人积分大于等于100，小于等于300时
-			if (t.getResumptionRate().doubleValue() >= 0.70 && Integer.valueOf(t.getTeacherPoints()) >= 301
+			if (Double.valueOf(resumptionRate) >= 70 && Integer.valueOf(t.getTeacherPoints()) >= 301
 					&& Integer.valueOf(t.getTeacherPoints()) <= 600) {
 				tPo.setTeacherLevel("T2");
 				tPo.setChargesStandard("160.00元/每课时");
 			}
 			
 			//续课率大于等于60%,并且个人积分大于等于100，小于等于300时
-			if (t.getResumptionRate().doubleValue() >= 0.80 && Integer.valueOf(t.getTeacherPoints()) >= 601) {
+			if (Double.valueOf(resumptionRate) >= 80 && Integer.valueOf(t.getTeacherPoints()) >= 601) {
 				tPo.setTeacherLevel("T3");
 				tPo.setChargesStandard("200.00元/每课时");
 			}
 			
 			//续课率大于等于60%,并且个人积分大于等于100，小于等于300时
-			if (t.getResumptionRate().doubleValue() < 0.60 || Integer.valueOf(t.getTeacherPoints()) < 100) {
+			if (Double.valueOf(resumptionRate) < 60 || Integer.valueOf(t.getTeacherPoints()) < 100) {
 				tPo.setTeacherLevel("T0");
 				tPo.setChargesStandard("100.00元/每课时");
 			}
