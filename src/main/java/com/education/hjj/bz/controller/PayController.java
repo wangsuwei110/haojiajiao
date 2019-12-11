@@ -330,6 +330,7 @@ public class PayController {
                 TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
         		// 更新教员对所有报名订单的数量
         		TeacherPo teacherPo = new TeacherPo();
+        		teacherPo.setTeacherId(teacherId);
 
         		teacherPo.setEmployCount(teacherVo.getEmployCount() + 1);
 

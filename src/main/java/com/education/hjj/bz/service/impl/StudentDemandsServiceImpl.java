@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.education.hjj.bz.entity.*;
 import com.education.hjj.bz.entity.vo.*;
 import com.education.hjj.bz.enums.MainSubjectEnum;
@@ -31,8 +32,10 @@ import com.education.hjj.bz.formBean.StudentForm;
 import com.education.hjj.bz.service.StudentDemandsService;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.DateUtil;
+import com.education.hjj.bz.util.SendWXMessageUtils;
 import com.education.hjj.bz.util.common.CommonUtil;
 import com.education.hjj.bz.util.common.StringUtil;
+import com.education.hjj.bz.util.weixinUtil.config.Constant;
 
 @Service
 @Transactional
@@ -903,8 +906,9 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 	public int updateNewTrialDemand(StudentDemandConnectForm demandForm) {
 
 		String orderTeachTime = demandForm.getOrderTeachTime();
+		Integer demandId = demandForm.getDemandId();
 		
-		logger.info("教员ID = {} , 确定的试讲时间 = {}" , demandForm.getTeacherId() , orderTeachTime);
+		logger.info("教员ID = {} ,订单id = {} , 确定的试讲时间 = {}" , demandForm.getTeacherId() , demandId , orderTeachTime);
 
 //		String nowDate = DateUtil.getStandardDay(new Date());
 //
@@ -956,6 +960,31 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		int m = userInfoMapper.updateUserInfo(teacher);
 		
 		if (i >= 0 && j >= 0 && k>0 && m> 0) {
+			
+			StudentDemandVo sdv = studentDemandMapper.queryStudentDemandDetailBySid(demandId);
+			
+			JSONObject data = new JSONObject();
+			
+			Map<String, Object> keyMap1 = new HashMap<String, Object>();
+			keyMap1.put("value", teacherVo.getName());
+			// 授课老师
+			data.put("name1", keyMap1);
+			
+			Map<String, Object> keyMap2 = new HashMap<String, Object>();
+			keyMap2.put("value", orderTeachTime +"上门试讲");
+			// 授课时间
+			data.put("date3", keyMap2);
+			
+			Map<String, Object> keyMap3 = new HashMap<String, Object>();
+			keyMap3.put("value", sdv.getTeachBranchName());
+			// 课程内容
+			data.put("thing4", keyMap3);
+			
+			JSONObject sendRsult = SendWXMessageUtils.sendSubscribeMessage(teacherVo.getOpenId(), Constant.CLASS_SUBSCRIBE_MESSAGE, data);
+			
+			logger.info("预约成功消息发送的结果： " + sendRsult.getString("errcode") + " "
+					+ sendRsult.getString("errmsg"));
+			
 			return 1;
 		}
 
