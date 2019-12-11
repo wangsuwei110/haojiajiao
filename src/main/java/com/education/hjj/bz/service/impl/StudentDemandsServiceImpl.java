@@ -962,6 +962,7 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		if (i >= 0 && j >= 0 && k>0 && m> 0) {
 			
 			StudentDemandVo sdv = studentDemandMapper.queryStudentDemandDetailBySid(demandId);
+			String studentOpenId = sdv.getOpenId();
 			
 			JSONObject data = new JSONObject();
 			
@@ -980,7 +981,9 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 			// 课程内容
 			data.put("thing4", keyMap3);
 			
-			JSONObject sendRsult = SendWXMessageUtils.sendSubscribeMessage(teacherVo.getOpenId(), Constant.CLASS_SUBSCRIBE_MESSAGE, data);
+			logger.info("教员ID = {} , 订单id = {} , 学员id = {} , 试讲时间  =  {}  , 课程内容 = {}" , demandForm.getTeacherId() , demandId , sdv.getStudentId() , orderTeachTime , sdv.getTeachBranchName());
+			
+			JSONObject sendRsult = SendWXMessageUtils.sendSubscribeMessage(studentOpenId, Constant.CLASS_SUBSCRIBE_MESSAGE, data);
 			
 			logger.info("预约成功消息发送的结果： " + sendRsult.getString("errcode") + " "
 					+ sendRsult.getString("errmsg"));

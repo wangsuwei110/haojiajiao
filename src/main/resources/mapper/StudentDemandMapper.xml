@@ -42,7 +42,7 @@
 		<result column="parameterName" property="parameterName"/>
 		<result column="order_type" property="orderType"/>
 		<result column="is_resumption" property="isResumption"/>
-		
+		<result column="openId" property="openId"/>
 	</resultMap>
 	
 	
@@ -348,7 +348,9 @@
 			sd.parameter_id,
 			p.name as parameterName,
 			sd.demand_type,
-			is_resumption
+			is_resumption,
+			s.openId,
+			sd.student_id
 		FROM
 			student_demand sd
 		LEFT JOIN
@@ -363,6 +365,10 @@
 			parameter p
 		ON
 			sd.parameter_id = p.parameter_id
+		LEFT JOIN
+			student s
+		ON
+			sd.student_id = s.sid
 		WHERE
 			1=1
 		and
