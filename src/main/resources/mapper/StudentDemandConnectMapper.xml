@@ -293,6 +293,13 @@
 			sd.order_start desc
 		limit 5
     </select>
+
+	<select id="listGoodApprise" resultMap="studentDemandConnectResultMap">
+		SELECT *
+		FROM student_demand_connect sdc
+		WHERE sdc.appraise_level = 1
+		order by sdc.appraise_time desc
+	</select>
     
     <!-- 查询最近前5条学员对教员的评价记录 -->
     <select id="queryStudentAppraiseForTeacher" parameterType="java.lang.Integer" resultMap="studentDemandConnectResultMap">
