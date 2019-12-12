@@ -23,8 +23,8 @@
         SELECT <include refid="selectColumn"/>
         FROM student t1
         LEFT JOIN
-        grade t3
-        on t3.sid = t1.grade
+            teach_grade t3
+        on t3.teach_grade_id = t1.grade
         WHERE t1.sid =  #{sid} and delete_status = 0
     </select>
 
@@ -42,7 +42,7 @@
           t1.update_user,
           t1.grade,
           t1.teach_level,
-          t3.grade_name AS gradeName
+          t3.teach_grade_name AS gradeName
     </sql>
 
     <select id="findByOpenId" parameterType="java.lang.String" resultType="java.lang.Integer">
