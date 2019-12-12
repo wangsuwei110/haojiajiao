@@ -1,5 +1,6 @@
 package com.education.hjj.bz.util;
 
+import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -338,5 +339,17 @@ public class RegUtils {
             return false;  
         }  
         return isMatch(QQ, str);  
-    }  
+    } 
+    
+    
+    /**
+     * 将小数转换为百分比
+     * @return
+     */
+    public static DecimalFormat doubleToPersent() {
+    	
+    	DecimalFormat df = new DecimalFormat("0.00%");
+    	
+    	return df;
+    }
 }

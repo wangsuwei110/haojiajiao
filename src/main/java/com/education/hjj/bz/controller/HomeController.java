@@ -101,8 +101,8 @@ public class HomeController {
 			map.put("teacherLevel", teacherVo.getTeacherLevel());
 			map.put("auditStatus", teacherVo.getAuditStatus());
 			map.put("logonStatus", teacherVo.getLogonStatus());
-			map.put("employRate",  teacherVo.getEmployRate()+"%");
-			map.put("resumptionRate", teacherVo.getResumptionRate()+"%");
+			map.put("employRate",  teacherVo.getEmployRate());
+			map.put("resumptionRate", teacherVo.getResumptionRate());
 			
 			//查询新的试讲订单列表
 			List<StudentDemandVo> newTrialStudentDemandList = studentDemandsService.queryNewTrialOrderList(teacherId);

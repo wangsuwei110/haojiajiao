@@ -272,8 +272,8 @@ public class LoginController {
 	            map.put("teacherLevel", teacherVo.getTeacherLevel());
 	            map.put("auditStatus", teacherVo.getAuditStatus());
 	            map.put("logonStatus", teacherVo.getLogonStatus());
-	            map.put("employRate", teacherVo.getEmployRate()+"%");
-	            map.put("resumptionRate", teacherVo.getResumptionRate()+"%");
+	            map.put("employRate", teacherVo.getEmployRate());
+	            map.put("resumptionRate", teacherVo.getResumptionRate());
 	          
 	            logger.info("telephone = {}" , map.get("telephone"));
 		        return ApiResponse.success("注册成功" , UtilTools.mapToJson(map));
@@ -301,8 +301,8 @@ public class LoginController {
             map.put("teacherLevel", teacherVo.getTeacherLevel());
             map.put("auditStatus", teacherVo.getAuditStatus());
             map.put("logonStatus", teacherVo.getLogonStatus());
-            map.put("employRate", teacherVo.getEmployRate()+"%");
-            map.put("resumptionRate", teacherVo.getResumptionRate()+"%");
+            map.put("employRate", teacherVo.getEmployRate());
+            map.put("resumptionRate", teacherVo.getResumptionRate());
             
             logger.info("telephone = {} , teacherLevel = {}" , map.get("telephone") , map.get("teacherLevel"));
 		// 学员端

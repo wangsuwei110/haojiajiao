@@ -2,6 +2,7 @@ package com.education.hjj.bz.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.education.hjj.bz.entity.StudentDemandPo;
 import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
 import com.education.hjj.bz.entity.TeacherPo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
@@ -324,30 +325,76 @@ public class PayController {
 				connectForm.setTeacherId(demandVo.getTeacherId());
 				connectForm.setStatus(5);
 				connectMapper.updateStatusAndPass(connectForm);
-
-                Integer teacherId = demandVo.getTeacherId();
-                
-                TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
-        		// 更新教员对所有报名订单的数量
-        		TeacherPo teacherPo = new TeacherPo();
-        		teacherPo.setTeacherId(teacherId);
-
-        		teacherPo.setEmployCount(teacherVo.getEmployCount() + 1);
-
-        		int chooseCount = teacherVo.getChooseCount();
-
-				double newRate = 0;
-				if (chooseCount != 0) {
-					newRate = (teacherVo.getEmployCount() + 1) / chooseCount;
+				
+				Integer teacherId = demandVo.getTeacherId();
+				TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
+				
+				TeacherPo teacherPo = new TeacherPo();
+				teacherPo.setTeacherId(teacherId);
+				
+				
+				Integer isResumption = demandForm.getIsResumption();
+				
+				if(isResumption != null && isResumption == 1) {
+					
+					logger.info("续课支付...");
+					
+					StudentDemandVo demandVos = studentDemandMapper.queryStudentDemandDetailBySid(demandForm.getDemandId());
+					
+					StudentDemandPo studentDemandPo = new StudentDemandPo();
+					
+					int resumption = demandVos.getIsResumption();
+					//判断该订单是否已经续课，0未续课，1已续课
+					if(resumption == 0) {
+						studentDemandPo.setIsResumption(1);
+					}
+					studentDemandPo.setDemandId(demandForm.getDemandId());
+					studentDemandPo.setUpdateTime(new Date());
+		
+					studentDemandMapper.updateDemandIsResumption(studentDemandPo);
+					
+					if(isResumption == 0) {
+						teacherPo.setResumptionCount(teacherVo.getResumptionCount()+1);
+					}
+		
+					double employCount = teacherVo.getEmployCount();
+		
+					double resumptionCount = teacherVo.getResumptionCount();
+		
+					double newRate = resumptionCount / employCount;
+		
+					logger.info(" employCount={} , resumptionCount={} , newRate={}", employCount,
+							resumptionCount, newRate);
+		
+					BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
+					logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
+		
+					teacherPo.setResumptionRate(RegUtils.doubleToPersent().format(bg));
 				}
 
-        		logger.info("employCount={} , chooseCount={} , newRate={}",  teacherVo.getEmployCount() + 1,
-        				chooseCount, newRate);
+				if(isResumption != null && isResumption == 0) {
+					logger.info("正常支付...");
+					
+					// 更新教员对所有报名订单的数量
+	        		
+	        		teacherPo.setEmployCount(teacherVo.getEmployCount() + 1);
 
-        		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
-        		logger.info("employRate = {}", bg);
-        		// 更新该教员的聘用率
-        		teacherPo.setEmployRate(bg);
+	        		double chooseCount = teacherVo.getChooseCount();
+
+					double newRate = 0;
+					if (chooseCount != 0) {
+						newRate = (teacherVo.getEmployCount() + 1) / chooseCount;
+					}
+
+	        		logger.info("employCount={} , chooseCount={} , newRate={}",  teacherVo.getEmployCount() + 1,
+	        				chooseCount, newRate);
+
+	        		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
+	        		logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
+	        		// 更新该教员的聘用率
+	        		teacherPo.setEmployRate(RegUtils.doubleToPersent().format(bg));
+	        		
+				}
 
         		userInfoMapper.updateUserInfo(teacherPo);
 

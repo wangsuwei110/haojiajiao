@@ -88,9 +88,9 @@ public class TeacherPo extends BasePo implements Serializable{
 	
 	private Integer teacherPoints;
 	
-	private BigDecimal employRate;
+	private String employRate;
 	
-	private BigDecimal resumptionRate;	
+	private String resumptionRate;	
 	
 	private Integer singUpCount;
 	
@@ -399,19 +399,19 @@ public class TeacherPo extends BasePo implements Serializable{
 		this.teacherPoints = teacherPoints;
 	}
 
-	public BigDecimal getEmployRate() {
+	public String getEmployRate() {
 		return employRate;
 	}
 
-	public void setEmployRate(BigDecimal employRate) {
+	public void setEmployRate(String employRate) {
 		this.employRate = employRate;
 	}
 
-	public BigDecimal getResumptionRate() {
+	public String getResumptionRate() {
 		return resumptionRate;
 	}
 
-	public void setResumptionRate(BigDecimal resumptionRate) {
+	public void setResumptionRate(String resumptionRate) {
 		this.resumptionRate = resumptionRate;
 	}
 

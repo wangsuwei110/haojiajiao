@@ -32,6 +32,7 @@ import com.education.hjj.bz.formBean.StudentForm;
 import com.education.hjj.bz.service.StudentDemandsService;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.DateUtil;
+import com.education.hjj.bz.util.RegUtils;
 import com.education.hjj.bz.util.SendWXMessageUtils;
 import com.education.hjj.bz.util.common.CommonUtil;
 import com.education.hjj.bz.util.common.StringUtil;
@@ -981,9 +982,9 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 				chooseCount, newRate);
 
 		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
-		logger.info("employRate = {}", bg);
+		logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
 		// 更新该教员的聘用率
-		teacher.setEmployRate(bg);
+		teacher.setEmployRate(RegUtils.doubleToPersent().format(bg));
 		
 		int m = userInfoMapper.updateUserInfo(teacher);
 		
