@@ -96,4 +96,6 @@ public interface StudentDemandsService {
 	Map<String , Object> validateSignParameters(StudentDemandConnectForm demandForm);
 	
 	List<StudentDemandVo> queryAllWaitForTrailTimeDemandOrderList(StudentDemandConnectForm studentDemandConnectForm);
+
+	ApiResponse queryGoodApprise();
 }

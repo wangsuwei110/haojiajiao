@@ -154,4 +154,14 @@ public class StudentDemandsController {
 			return ApiResponse.success("暂无数据！");
 		}
 	}
+
+	@ApiOperation("最新发布的好评")
+	@RequestMapping(value = "/queryGoodApprise", method = RequestMethod.POST)
+	@Transactional
+	public ApiResponse queryGoodApprise() {
+
+		return ApiResponse.success(studentDemandsService.queryGoodApprise());
+
+
+	}
 }

@@ -49,7 +49,9 @@ public interface StudentDemandConnectMapper {
     int queryServiceForStudentSuccess(Integer teacherId);
     
     List<StudentDemandConnectVo> queryStudentAppraiseForTeacher(Integer teacherId);
-    
+
+    List<StudentDemandConnectVo> listGoodApprise();
+
     List<StudentDemandVo> queryServiceForStudentByTeacherId(Integer teacherId);
     
     List<StudentDemandVo> queryAllWaitForTrailTimeDemandOrderList(StudentDemandConnectForm studentDemandConnectForm);

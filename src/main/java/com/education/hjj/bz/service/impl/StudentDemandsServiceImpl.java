@@ -653,6 +653,15 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		return ApiResponse.success("评价成功");
 	}
 
+	/**
+	 *
+	 * 最新发布的好评
+	 **/
+	@Override
+	public ApiResponse queryGoodApprise() {
+		return ApiResponse.success(connectMapper.listGoodApprise());
+	}
+
 	@Override
 	public PageVo<List<StudentDemandVo>> queryAllStudentDemandList(StudentDemandForm form) {
 
