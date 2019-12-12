@@ -333,29 +333,47 @@ public class SendWXMessageUtils {
 //		System.out.println(result);
 		
 		
+//		JSONObject data = new JSONObject();
+//
+//		Map<String, Object> keyMap1 = new HashMap<String, Object>();
+//		keyMap1.put("value", "1.50");
+//		// 添加客户名称
+//		data.put("amount1", keyMap1);
+//		
+//		Map<String, Object> keyMap2 = new HashMap<String, Object>();
+//		keyMap2.put("value", "黄浦区大闸路136号");
+//		// 添加客户名称
+//		data.put("thing3", keyMap2);
+//		
+//		Map<String, Object> keyMap3 = new HashMap<String, Object>();
+//		keyMap3.put("value", "2019-12-04 12:02:02");
+//		// 添加客户名称
+//		data.put("date4", keyMap3);
+//		
+//		String template="UPhBQDD3ckPKFhoDLHuKwDwTRV0YTZkqyZo9ewszwQI";
+//		
+//		String openId = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
+		
 		JSONObject data = new JSONObject();
-
+		
 		Map<String, Object> keyMap1 = new HashMap<String, Object>();
-		keyMap1.put("value", "1.50");
-		// 添加客户名称
-		data.put("amount1", keyMap1);
+		keyMap1.put("value", "武八六");
+		// 授课老师
+		data.put("name1", keyMap1);
 		
 		Map<String, Object> keyMap2 = new HashMap<String, Object>();
-		keyMap2.put("value", "黄浦区大闸路136号");
-		// 添加客户名称
-		data.put("thing3", keyMap2);
+		keyMap2.put("value", "2019-12-14 12:00:00 上门试讲");
+		// 授课时间
+		data.put("date3", keyMap2);
 		
 		Map<String, Object> keyMap3 = new HashMap<String, Object>();
-		keyMap3.put("value", "2019-12-04 12:02:02");
-		// 添加客户名称
-		data.put("date4", keyMap3);
+		keyMap3.put("value", "小学一年级数学");
+		// 课程内容
+		data.put("thing4", keyMap3);
 		
-		String template="UPhBQDD3ckPKFhoDLHuKwDwTRV0YTZkqyZo9ewszwQI";
+		JSONObject sendRsult = SendWXMessageUtils.sendSubscribeMessage("oWQvd4uz6jaR7P3OY8UaCcDcGWJI", Constant.CLASS_SUBSCRIBE_MESSAGE, data);
 		
-		String openId = "oWQvd4hQGST1gQz3hQLeEZhDjb8g";
 		
-		JSONObject  result = sendSubscribeMessage(openId , template , data);
-		
-		System.out.println(result);
+		System.out.println(sendRsult);
 	}
 }
