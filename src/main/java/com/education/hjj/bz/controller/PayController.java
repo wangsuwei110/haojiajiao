@@ -337,7 +337,7 @@ public class PayController {
 				
 				if(isResumption != null && isResumption == 1) {
 					
-					logger.info("续课支付...");
+					logger.info("续课支付...isResumption = "+isResumption);
 					
 					StudentDemandVo demandVos = studentDemandMapper.queryStudentDemandDetailBySid(demandForm.getDemandId());
 					
