@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.education.hjj.bz.entity.PicturePo;
 import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
@@ -17,6 +18,7 @@ import com.education.hjj.bz.entity.vo.UniversityVo;
 import com.education.hjj.bz.formBean.StudentTeacherInfoForm;
 
 @Mapper
+@Transactional
 public interface UserInfoMapper {
 	//新增教员，注册时使用
 	int insertUserInfo(TeacherPo teacher);

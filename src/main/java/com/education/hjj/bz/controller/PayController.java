@@ -345,35 +345,42 @@ public class PayController {
 					
 					int resumption = demandVos.getIsResumption();
 					//判断该订单是否已经续课，0未续课，1已续课
-					if(resumption == 0) {
-						studentDemandPo.setIsResumption(1);
-					}
-					studentDemandPo.setDemandId(demandForm.getDemandId());
-					studentDemandPo.setUpdateTime(new Date());
-		
-					studentDemandMapper.updateDemandIsResumption(studentDemandPo);
 					
-					if(isResumption == 0) {
+					logger.info("续课支付...resumption = "+resumption);
+					logger.info(" 是否是第一次续课？{} " , resumption == 0?"是":"否");
+					
+					if(resumption == 0) {
+						
+						studentDemandPo.setIsResumption(1);
+						
+						studentDemandPo.setDemandId(demandForm.getDemandId());
+						studentDemandPo.setUpdateTime(new Date());
+			
+						studentDemandMapper.updateDemandIsResumption(studentDemandPo);
+						
 						teacherPo.setResumptionCount(teacherVo.getResumptionCount()+1);
+						
+						double employCount = teacherVo.getEmployCount();
+						
+						double resumptionCount = teacherVo.getResumptionCount();
+			
+						double newRate = (resumptionCount+1) / employCount;
+			
+						logger.info(" employCount={} , resumptionCount={} , newRate={}", employCount,
+								resumptionCount, newRate);
+			
+						BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
+						logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
+			
+						teacherPo.setResumptionRate(RegUtils.doubleToPersent().format(bg));
+						
+						userInfoMapper.updateUserInfo(teacherPo);
 					}
-		
-					double employCount = teacherVo.getEmployCount();
-		
-					double resumptionCount = teacherVo.getResumptionCount();
-		
-					double newRate = resumptionCount / employCount;
-		
-					logger.info(" employCount={} , resumptionCount={} , newRate={}", employCount,
-							resumptionCount, newRate);
-		
-					BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
-					logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
-		
-					teacherPo.setResumptionRate(RegUtils.doubleToPersent().format(bg));
+					
 				}
 
 				if(isResumption != null && isResumption == 0) {
-					logger.info("正常支付...");
+					logger.info("正常支付...isResumption = " + isResumption);
 					
 					// 更新教员对所有报名订单的数量
 	        		
@@ -394,9 +401,10 @@ public class PayController {
 	        		// 更新该教员的聘用率
 	        		teacherPo.setEmployRate(RegUtils.doubleToPersent().format(bg));
 	        		
+	        		userInfoMapper.updateUserInfo(teacherPo);
 				}
 
-        		userInfoMapper.updateUserInfo(teacherPo);
+        		
 
                 List<DemandCourseInfoForm> courseInfoFormList = new ArrayList<>();
                 StudentDemandVo demand = demandVo;

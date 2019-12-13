@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
+@Transactional
 public interface StudentDemandMapper {
 
 //	List<StudentDemandVo> queryStudentDemands(StudentDemandPo studentDemandPo);
