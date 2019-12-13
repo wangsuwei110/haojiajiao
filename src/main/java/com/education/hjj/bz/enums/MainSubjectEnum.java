@@ -11,6 +11,8 @@ public enum MainSubjectEnum {
 	OLYMPIAD(6,"奥数"),
 	GEOGRAPHY(7,"地理"),
 	HISTORY(8,"历史"),
+	POLITICS(9,"政治"),
+	USERIDENTITY(10,"高数"),
 	;
 
 	private Integer code;

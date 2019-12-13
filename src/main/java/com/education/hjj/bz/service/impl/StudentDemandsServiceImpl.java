@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.education.hjj.bz.entity.*;
 import com.education.hjj.bz.entity.vo.*;
 import com.education.hjj.bz.enums.MainSubjectEnum;
+import com.education.hjj.bz.enums.SubjectPictureEnum;
 import com.education.hjj.bz.mapper.*;
 import com.education.hjj.bz.service.StudentLogService;
 
@@ -625,7 +626,9 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		List<TeachBranchVo> branchVos = teachBranchMapper.queryAllTeachBranchs();
 		List<CodeInfoVo> codeInfoVos = branchVos.stream().map(m ->
 				new CodeInfoVo(m.getTeachBranchId().toString(), m.getTeachBranchName())).collect(Collectors.toList());
+
 		List<String> mainList = Arrays.stream(MainSubjectEnum.values()).map(mv -> mv.getValue()).collect(Collectors.toList());
+
 		List<CodeInfoVo> collects = codeInfoVos.stream().filter(f ->
 				!mainList.stream().anyMatch(s -> f.getValue().contains(s))).collect(Collectors.toList());
 
@@ -635,6 +638,10 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 					f.getValue().contains(m)).map(p -> p.getKey()).collect(Collectors.joining(","));
 			vo.setKey(code);
 			vo.setValue(m);
+            Optional<SubjectPictureEnum> op = Arrays.stream(SubjectPictureEnum.values()).filter(f -> f.getCode().equalsIgnoreCase(m)).findFirst();
+            if (op.isPresent()) {
+                vo.setPictureName(op.get().getValue());
+            }
 			collects.add(vo);
 		});
 
