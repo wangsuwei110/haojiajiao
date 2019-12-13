@@ -107,8 +107,19 @@ public class TeacherVo extends BaseVo implements Serializable {
 
 	@ApiModelProperty(value = "教员的单价")
 	private Double unitPrice;
+
+	@ApiModelProperty(value = "曾经是否试讲通过")
+	private boolean passFlag;
 	
 	private Integer demandId;
+
+	public Boolean getPassFlag() {
+		return passFlag;
+	}
+
+	public void setPassFlag(Boolean passFlag) {
+		this.passFlag = passFlag;
+	}
 
 	public Double getUnitPrice() {
 		return unitPrice;

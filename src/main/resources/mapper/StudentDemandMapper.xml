@@ -330,6 +330,22 @@
         AND tea.teacher_id = #{teacherId}
     </select>
 
+	<!--查询该订单同年级同科目的曾经试讲通过的教员id-->
+	<select id="listTeacherByOldInfo" parameterType="integer" resultType="java.lang.Integer">
+		select sdc.teacher_id
+		from student_demand sd
+		inner join student_demand_connect sdc
+		on sd.sid = sdc.demand_id
+		inner join (
+			select sd.demand_grade, sd.subject_id, sd.student_id
+			from student_demand sd
+			where sd.sid = #{demandId}
+		)t on sd.demand_grade = t.demand_grade
+		and sd.subject_id = t.subject_id
+		and sd.student_id = t.student_id
+		where sdc.status = 4
+	</select>
+
     <!-- 查询需求订单详情 -->
     <select id="queryStudentDemandDetailBySid" parameterType="java.lang.Integer" resultMap="studentDemandsResultMap">
     	SELECT

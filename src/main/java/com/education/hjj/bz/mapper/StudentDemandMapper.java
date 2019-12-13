@@ -39,6 +39,8 @@ public interface StudentDemandMapper {
 	
 	StudentDemandVo queryStudentDemandDetailBySid(Integer sid);
 
+	List<Integer> listTeacherByOldInfo(Integer demandId);
+
 	StudentDemandVo findStudentDemandInfo(StudentDemandForm form);
 
 	@Transactional

@@ -259,9 +259,22 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		// 根据学员的id查找预约的教员列表信息
 		Map<String, Object> map = new HashMap<>();
 		List<TeacherVo> list = teacherMapper.listTeacherByStudentId(demandForm.getDemandId());
-		list.forEach(f -> {
-			f.setUnitPrice(Double.valueOf(f.getChargesStandard().split("元")[0]));
-		});
+
+		// 查询当前订单的同年级同科目的曾经预约通过的教员信息
+		List<Integer> teacherList = studentDemandMapper.listTeacherByOldInfo(demandForm.getDemandId());
+
+		if (!CollectionUtils.isEmpty(teacherList)) {
+			list.forEach(f -> {
+				f.setUnitPrice(Double.valueOf(f.getChargesStandard().split("元")[0]));
+				if (teacherList.contains(f.getTeacherId())) {
+					f.setPassFlag(Boolean.TRUE);
+				}
+			});
+		} else {
+			list.forEach(f -> {
+				f.setUnitPrice(Double.valueOf(f.getChargesStandard().split("元")[0]));
+			});
+		}
 		map.put("teacherList", list);
 
 		// 根据发布的需求，拿出具体的试讲时间
