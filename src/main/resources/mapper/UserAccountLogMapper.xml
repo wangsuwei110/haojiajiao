@@ -46,7 +46,7 @@
 	<select id="listPayLog" parameterType="com.education.hjj.bz.entity.TeacherAccountOperateLogPo" resultMap="teacherAccountLogResultMap">
 		SELECT *
 		FROM teacher_payments_log
-		WHERE order_id = #{paymentStreamId}
+		WHERE demand_id = #{demandId}
 		AND payment_type = #{paymentType}
 	</select>
     
@@ -77,6 +77,7 @@
     	keyProperty="id" useGeneratedKeys="true">
     	insert into teacher_payments_log(
     		order_id,
+    		demand_id,
     		payment_stream_id,
     		payment_person_id,
 			payment_person_name,
@@ -91,6 +92,7 @@
     				
     	)values(
     		#{orderId},
+    		#{demandId},
     		#{paymentStreamId},
     		#{paymentPersonId},
     		#{paymentPersonName},

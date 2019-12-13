@@ -452,6 +452,7 @@ public class PayController {
 				List<WeekTimeVo> list = JSON.parseArray(demandForm.getTimeRange(), WeekTimeVo.class);
                 paymentLog.setPaymentDesc("购买"+ demandForm.getWeekNum() + "周" + demandForm.getWeekNum() * list.size() + "课时");
                 paymentLog.setStatus(1);
+				paymentLog.setDemandId(demandForm.getDemandId());
                 paymentLog.setCreateTime(date);
                 paymentLog.setCreateUser(demandVo.getStudentName());
                 paymentLog.setPaymentAccount(new BigDecimal(demandForm.getOrderMoney()));

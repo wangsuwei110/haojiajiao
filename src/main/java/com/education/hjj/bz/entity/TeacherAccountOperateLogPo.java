@@ -12,7 +12,9 @@ public class TeacherAccountOperateLogPo extends BasePo implements Serializable{
 	private static final long serialVersionUID = -5826890993157196018L;
 
 	private Integer paymentId;
-	
+
+	private Integer demandId;
+
 	private String paymentStreamId;
 	
 	private Integer paymentPersonId;
@@ -29,6 +31,14 @@ public class TeacherAccountOperateLogPo extends BasePo implements Serializable{
 	
 	private String telephone;
 
+
+	public Integer getDemandId() {
+		return demandId;
+	}
+
+	public void setDemandId(Integer demandId) {
+		this.demandId = demandId;
+	}
 
 	public String getOrderId() {
 		return orderId;

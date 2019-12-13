@@ -594,11 +594,12 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	 **/
 	@Override
 	public ApiResponse payLog(StudentDemandConnectForm demandForm) {
-		if (demandForm.getPaymentStreamId() == null) {
+		if (demandForm.getDemandId() == null) {
 			return ApiResponse.error("订单号不能为空");
 		}
 		TeacherAccountOperateLogPo po = new TeacherAccountOperateLogPo();
 		po.setPaymentStreamId(demandForm.getPaymentStreamId());
+		po.setDemandId(demandForm.getDemandId());
 		po.setPaymentType(3);
 
 		return ApiResponse.success(userAccountLogMapper.listPayLog(po));
