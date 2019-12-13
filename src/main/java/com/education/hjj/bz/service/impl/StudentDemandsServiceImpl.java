@@ -978,25 +978,28 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		
 		
 		// 更新教员对所有报名订单的数量
+		Integer beforeChooseCount = teacherVo.getChooseCount();
+		Integer afterChooseCount = teacherVo.getChooseCount() + 1;
+		Integer beforeEmployCount = teacherVo.getEmployCount();
+		Integer afterEmployCount = teacherVo.getEmployCount() + 1;
 
-		teacher.setChooseCount(teacherVo.getChooseCount() + 1);
+		teacher.setChooseCount(afterChooseCount);
 		teacher.setTeacherId(teacherId);
 		teacher.setUpdateTime(new Date());
  		
- 		logger.info("teacherId = {} , ChooseCountBefore={} , ChooseCountAfter={}", teacherId ,teacherVo.getChooseCount(),
- 				teacherVo.getChooseCount()+1);
+ 		logger.info("teacherId = {} , ChooseCountBefore={} , ChooseCountAfter={}", teacherId , beforeChooseCount,
+ 				afterChooseCount);
  		
- 		teacher.setEmployCount(teacherVo.getEmployCount() + 1);
-
-		int chooseCount = teacherVo.getChooseCount();
+ 		teacher.setEmployCount(afterEmployCount);
 
 		double newRate = 0;
-		if (chooseCount != 0) {
-			newRate = (teacherVo.getEmployCount() + 1) / chooseCount;
+		
+		if (afterChooseCount != 0) {
+			newRate = (afterEmployCount) / afterChooseCount;
 		}
 
-		logger.info("employCount={} , chooseCount={} , newRate={}",  teacherVo.getEmployCount() + 1,
-				chooseCount, newRate);
+		logger.info("teacherId = {} ,beforeEmployCount = {} , afterEmployCount={} , afterChooseCount={} , EmployRate={}", 
+				teacherId , beforeEmployCount ,	afterEmployCount, afterChooseCount, newRate);
 
 		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
 		logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
