@@ -386,7 +386,7 @@ public class PayController {
 	        		
 	        		teacherPo.setEmployCount(teacherVo.getEmployCount() + 1);
 
-	        		double chooseCount = teacherVo.getChooseCount();
+	        		int chooseCount = teacherVo.getChooseCount();
 
 					double newRate = 0;
 					if (chooseCount != 0) {
