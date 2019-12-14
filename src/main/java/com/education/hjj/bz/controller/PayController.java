@@ -467,7 +467,7 @@ public class PayController {
                 teacherPaymentLog.setPaymentPersonName(teacherVo.getName());
                 teacherPaymentLog.setPaymentType(0);
                 teacherPaymentLog.setPaymentAccount(new BigDecimal(demandForm.getOrderMoney()));
-                teacherPaymentLog.setPaymentDesc("收入");;
+                teacherPaymentLog.setPaymentDesc("购买"+ demandForm.getWeekNum() + "周" + demandForm.getWeekNum() * list.size() + "课时");;
                 teacherPaymentLog.setStatus(1);
                 teacherPaymentLog.setCreateTime(new Date());
                 teacherPaymentLog.setCreateUser(demandVo.getStudentName());
