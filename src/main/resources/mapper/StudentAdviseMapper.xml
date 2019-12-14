@@ -32,6 +32,9 @@
 		     	 <if test="studentId != null">
 	               student_id =  #{studentId},
        		     </if>
+       		     <if test="isContact != null">
+	               is_contact =  #{isContact},
+       		     </if>
 		     	 <if test="adviseDesc != null">
 	               advise_desc =  #{adviseDesc},
        		     </if>
@@ -109,6 +112,8 @@
 			student s
 		ON
 			sa.student_id = s.sid
+		where
+			sa.is_contact = 0
 		ORDER BY 
 			sa.create_time ASC
         <if test="offset != null">

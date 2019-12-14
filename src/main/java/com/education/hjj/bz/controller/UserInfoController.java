@@ -23,6 +23,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.education.hjj.bz.entity.PicturePo;
 import com.education.hjj.bz.entity.StudentLogPo;
+import com.education.hjj.bz.entity.TeacherPo;
 import com.education.hjj.bz.entity.vo.PageVo;
 import com.education.hjj.bz.entity.vo.ParameterVo;
 import com.education.hjj.bz.entity.vo.PictureVo;
@@ -569,6 +570,27 @@ public class UserInfoController {
 		List<Map<String, Object>>  list = userInfoService.queryAllTeacherInfosByEducational(studentTeacherInfoForm);
 		
 		return ApiResponse.success("操作成功！" , JSONObject.toJSON(list));
+	}
+	
+	@ApiOperation("教务端审核员审核待审核教员信息")
+	@RequestMapping(value = "/auditTeacherInfosByEducational", method = RequestMethod.POST)
+	@ResponseBody
+	public ApiResponse auditTeacherInfosByEducational(@RequestBody TeacherInfoForm teacherInfoForm) {
+		
+		TeacherPo teacher = new TeacherPo();
+		teacher.setTeacherId(Integer.valueOf(teacherInfoForm.getTeacherId()));
+		teacher.setAuditStatus(1);
+		teacher.setAuditDesc(teacherInfoForm.getAuditDesc());
+		teacher.setUpdateTime(new Date());
+		teacher.setUpdateUser(teacherInfoForm.getTeacherId());
+		
+		int i = userInfoService.updateUserInfo(teacher);
+		
+		if(i > 0) {
+			return ApiResponse.success("操作成功！");
+		}
+		
+		return ApiResponse.error("操作失败！");
 	}
 	
 }

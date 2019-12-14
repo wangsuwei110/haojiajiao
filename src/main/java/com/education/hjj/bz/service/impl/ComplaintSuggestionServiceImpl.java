@@ -86,4 +86,10 @@ public class ComplaintSuggestionServiceImpl implements ComplaintSuggestionServic
 		return list;
 	}
 
+	@Override
+	public int updateComplaintSuggestionByEducational(ComplaintSuggestionForm complaintSuggestionForm) {
+		int i = complaintSuggestionMapper.updateComplaintSuggestionByEducational(complaintSuggestionForm);
+		return i;
+	}
+
 }

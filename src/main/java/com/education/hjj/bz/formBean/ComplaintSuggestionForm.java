@@ -28,6 +28,8 @@ public class ComplaintSuggestionForm extends PageForm implements Serializable{
 	
 	//身份
     private String identity;
+    
+    private Integer isContact;
 
 	public String getPersonId() {
 		return personId;
@@ -83,6 +85,14 @@ public class ComplaintSuggestionForm extends PageForm implements Serializable{
 
 	public void setIdentity(String identity) {
 		this.identity = identity;
+	}
+
+	public Integer getIsContact() {
+		return isContact;
+	}
+
+	public void setIsContact(Integer isContact) {
+		this.isContact = isContact;
 	}
 
 }

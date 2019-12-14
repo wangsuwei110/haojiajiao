@@ -141,7 +141,7 @@ public class StudentDemandsController {
 		return studentDemandsService.appraise(demandForm);
 	}
 	
-	@ApiOperation("教员未确定订单试讲时间超过一小时订单列表")
+	@ApiOperation("教务端教员未确定订单试讲时间超过一小时订单列表")
 	@RequestMapping(value = "/queryAllNewTrialDemandTimeOut", method = RequestMethod.POST)
 	@Transactional
 	public ApiResponse queryAllNewTrialDemandTimeOut(@RequestBody StudentDemandConnectForm studentDemandConnectForm) {
@@ -152,6 +152,20 @@ public class StudentDemandsController {
 			return ApiResponse.success("查询成功!");
 		}else {
 			return ApiResponse.success("暂无数据！");
+		}
+	}
+	
+	@ApiOperation("教务端确定待试讲的订单是否联系")
+	@RequestMapping(value = "/updateStudentDemandConnectByStatus", method = RequestMethod.POST)
+	@Transactional
+	public ApiResponse updateStudentDemandConnectByStatus(@RequestBody StudentDemandConnectForm studentDemandConnectForm) {
+		
+		int i = studentDemandsService.updateStudentDemandConnectByStatus(studentDemandConnectForm);
+		
+		if(i > 0) {
+			return ApiResponse.success("操作成功!");
+		}else {
+			return ApiResponse.error("操作失败！");
 		}
 	}
 

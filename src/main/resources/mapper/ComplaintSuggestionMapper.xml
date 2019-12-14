@@ -98,6 +98,8 @@
 			teacher t
 		ON
 			tcs.person_id = t.teacher_id
+		where
+			tcs.is_contact = 0
 		ORDER BY 
 			tcs.create_time ASC	
 		<if test="offset != null">
@@ -107,6 +109,20 @@
         </if>
     
     </select>
+    
+    <!--教务端处理投诉与建议 -->
+    <update id="updateComplaintSuggestionByEducational" parameterType="com.education.hjj.bz.formBean.ComplaintSuggestionForm">
+        
+        update
+        	teacher_complaints_suggestions
+        set
+        	
+        	is_contact = #{isContact},
+        	update_time = #{updateTime},
+        	update_user = #{updateUser}
+        where
+        	complaint_suggestion_id = #{complaintSuggestionId}
+    </update>
     
     <!-- 查询一条未回复的投诉与建议 -->
      <select id="queryComplaintSuggestionById" resultMap="complaintSuggestionResultMap" parameterType="java.lang.Integer">

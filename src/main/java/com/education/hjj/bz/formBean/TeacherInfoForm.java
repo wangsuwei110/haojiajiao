@@ -72,6 +72,8 @@ public class TeacherInfoForm extends PageForm implements Serializable{
 	
 	private Integer auditStatus;
 	
+	private String auditDesc;
+	
 	private String teacherProfile;
 	
 	private String teacherCertificate;
@@ -456,6 +458,14 @@ public class TeacherInfoForm extends PageForm implements Serializable{
 
 	public void setTeacherPoints(Integer teacherPoints) {
 		this.teacherPoints = teacherPoints;
+	}
+
+	public String getAuditDesc() {
+		return auditDesc;
+	}
+
+	public void setAuditDesc(String auditDesc) {
+		this.auditDesc = auditDesc;
 	}
 	
 }

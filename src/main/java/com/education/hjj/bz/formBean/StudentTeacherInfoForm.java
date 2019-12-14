@@ -29,6 +29,8 @@ public class StudentTeacherInfoForm extends PageForm implements Serializable{
 	private String branchs;
 
 	private List<String> branchList;
+	
+	private Integer teacherId;
 
 	public List<String> getBranchList() {
 		return branchList;
@@ -110,6 +112,13 @@ public class StudentTeacherInfoForm extends PageForm implements Serializable{
 	public void setSex(Integer sex) {
 		this.sex = sex;
 	}
-	
+
+	public Integer getTeacherId() {
+		return teacherId;
+	}
+
+	public void setTeacherId(Integer teacherId) {
+		this.teacherId = teacherId;
+	}
 	
 }

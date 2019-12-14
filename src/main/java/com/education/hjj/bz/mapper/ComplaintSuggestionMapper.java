@@ -20,4 +20,6 @@ public interface ComplaintSuggestionMapper {
 	List<ComplaintSuggestionVo> queryAllComplaintSuggestion();
 	
 	List<ComplaintSuggestionVo> queryAllComplaintSuggestionByEducational(ComplaintSuggestionForm complaintSuggestionForm);
+	
+	int updateComplaintSuggestionByEducational(ComplaintSuggestionForm complaintSuggestionForm);
 }

@@ -98,5 +98,18 @@ public class ComplaintSuggestionController {
 
 		return ApiResponse.success("暂无数据！");
 	}
+	
+	@ApiOperation("教务端查找所有的建议与投诉")
+	@RequestMapping(value = "/updateComplaintSuggestionByEducational", method = RequestMethod.POST)
+	public ApiResponse updateComplaintSuggestionByEducational(@RequestBody ComplaintSuggestionForm complaintSuggestionForm) {
+		
+		int i = complaintSuggestionService.updateComplaintSuggestionByEducational(complaintSuggestionForm);
+		
+		if(i > 0) {
+			return ApiResponse.success("操作成功！");
+		}
+
+		return ApiResponse.error("操作失败！");
+	}
 
 }

@@ -382,6 +382,8 @@
 		WHERE
 			sdc.status = 1
 		AND
+			sdc.is_contact = 0
+		AND
 			sdc.order_teach_time is NULL
 		AND
 			sdc.create_time <![CDATA[<]]> #{createTime}
@@ -394,5 +396,16 @@
             ]]>
         </if>
     </select>
+    
+    <!-- 教务端确定待试讲的订单是否联系 -->
+    <update id="updateStudentDemandConnectByStatus" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm">
+    	UPDATE 
+    		student_demand_connect
+        SET 
+        	isContact = #{isContact},
+        	update_time  = #{updateTime}
+        Where 
+        	sid = #{sid}
+    </update>
     
 </mapper>

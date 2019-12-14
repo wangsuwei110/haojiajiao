@@ -1,7 +1,6 @@
 package com.education.hjj.bz.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 public class TeacherPo extends BasePo implements Serializable{
 
@@ -67,6 +66,8 @@ public class TeacherPo extends BasePo implements Serializable{
 	private Integer logonStatus;
 	
 	private Integer auditStatus;
+	
+	private String auditDesc;
 	
 	private Integer resumeComplete;
 	
@@ -463,5 +464,12 @@ public class TeacherPo extends BasePo implements Serializable{
 		this.resumeComplete = resumeComplete;
 	}
 
-	
+	public String getAuditDesc() {
+		return auditDesc;
+	}
+
+	public void setAuditDesc(String auditDesc) {
+		this.auditDesc = auditDesc;
+	}
+
 }

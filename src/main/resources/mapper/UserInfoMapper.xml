@@ -238,6 +238,10 @@
             <if test="auditStatus != null">
                 audit_status = #{auditStatus},
             </if>
+            <if test="auditDesc != null">
+                audit_desc = #{auditDesc},
+            </if>
+            
             <if test="resumeComplete != null">
                 resume_complete = #{resumeComplete},
             </if>

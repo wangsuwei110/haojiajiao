@@ -1385,4 +1385,10 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		
 		return list;
 	}
+
+	@Override
+	public int updateStudentDemandConnectByStatus(StudentDemandConnectForm studentDemandConnectForm) {
+		int i = connectMapper.updateStudentDemandConnectByStatus(studentDemandConnectForm);
+		return i;
+	}
 }

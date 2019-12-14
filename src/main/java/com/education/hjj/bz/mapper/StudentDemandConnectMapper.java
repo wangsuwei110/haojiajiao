@@ -54,5 +54,9 @@ public interface StudentDemandConnectMapper {
 
     List<StudentDemandVo> queryServiceForStudentByTeacherId(Integer teacherId);
     
+    //教务端确定待试讲的订单未确定试讲时间超过一小时的订单
     List<StudentDemandVo> queryAllWaitForTrailTimeDemandOrderList(StudentDemandConnectForm studentDemandConnectForm);
+    
+    //教务端确定待试讲的订单是否联系
+    int updateStudentDemandConnectByStatus(StudentDemandConnectForm studentDemandConnectForm);
 }

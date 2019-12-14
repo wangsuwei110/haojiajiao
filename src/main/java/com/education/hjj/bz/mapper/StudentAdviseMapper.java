@@ -20,4 +20,6 @@ public interface StudentAdviseMapper {
     List<StudentAdviseVo> list(StudentAdviseForm form);
     
     List<StudentAdviseVo> queryAllStudentAdviseByEducational(StudentAdviseForm studentAdviseForm);
+    
+    int updateNotNull(StudentAdviseForm studentAdviseForm);
 }

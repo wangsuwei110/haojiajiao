@@ -25,6 +25,8 @@ public class StudentAdviseForm{
     @ApiModelProperty(value = "创建人",required = true)
     @NotBlank(message = "创建人不能为空")
     private String createUser;
+    
+    private Integer isContact;
 
 
     public String getStudentId() {
@@ -55,4 +57,13 @@ public class StudentAdviseForm{
     public void setCreateUser(String createUser) {
         this.createUser = createUser;
     }
+
+	public Integer getIsContact() {
+		return isContact;
+	}
+
+	public void setIsContact(Integer isContact) {
+		this.isContact = isContact;
+	}
+    
 }

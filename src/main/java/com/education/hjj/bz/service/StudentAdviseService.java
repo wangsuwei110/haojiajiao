@@ -28,5 +28,7 @@ public interface StudentAdviseService{
     List<StudentAdviseVo> listPage(StudentAdviseForm form);
     
     List<StudentAdviseVo> queryAllStudentAdviseByEducational(StudentAdviseForm studentAdviseForm);
+    
+    int updateNotNull(StudentAdviseForm studentAdviseForm);
 
 }

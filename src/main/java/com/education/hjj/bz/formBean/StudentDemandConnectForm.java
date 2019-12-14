@@ -82,6 +82,7 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
     @JsonProperty("teachTime")
 	private List<TeachTimePo> timeList;
 
+    private Integer isContact;
 
     public Integer getAppraiseLevel() {
         return appraiseLevel;
@@ -272,4 +273,13 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
 	public void setTimeList(List<TeachTimePo> timeList) {
 		this.timeList = timeList;
 	}
+
+	public Integer getIsContact() {
+		return isContact;
+	}
+
+	public void setIsContact(Integer isContact) {
+		this.isContact = isContact;
+	}
+	
 }

@@ -41,4 +41,10 @@ public class StudentAdviseServiceImpl implements StudentAdviseService {
 		return list;
 	}
 
+	@Override
+	public int updateNotNull(StudentAdviseForm studentAdviseForm) {
+		int i = studentAdviseMapper.updateNotNull(studentAdviseForm);
+		return i;
+	}
+
  }
