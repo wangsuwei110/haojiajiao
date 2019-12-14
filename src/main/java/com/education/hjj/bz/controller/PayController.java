@@ -447,7 +447,6 @@ public class PayController {
                 paymentLog.setPaymentPersonId(demandVo.getStudentId());
                 paymentLog.setPaymentPersonName(demandVo.getStudentName());
                 paymentLog.setPaymentType(3);
-
                 // 统计了课时
 				List<WeekTimeVo> list = JSON.parseArray(demandForm.getTimeRange(), WeekTimeVo.class);
                 paymentLog.setPaymentDesc("购买"+ demandForm.getWeekNum() + "周" + demandForm.getWeekNum() * list.size() + "课时");
@@ -458,6 +457,20 @@ public class PayController {
                 paymentLog.setPaymentAccount(new BigDecimal(demandForm.getOrderMoney()));
                 paymentLog.setUpdateTime(date);
                 paymentLog.setUpdateUser(demandVo.getStudentName());
+                userAccountLogMapper.insertUserAccountLog(paymentLog);
+                
+                // 插入一条日志信息，记录被支付人
+                TeacherAccountOperateLogPo teacherPaymentLog = new TeacherAccountOperateLogPo();
+                teacherPaymentLog.setOrderId(randomOrderId);
+                teacherPaymentLog.setPaymentStreamId(randomNonceStr);
+                teacherPaymentLog.setPaymentPersonId(teacherId);
+                teacherPaymentLog.setPaymentPersonName(teacherVo.getName());
+                teacherPaymentLog.setPaymentType(0);
+                teacherPaymentLog.setPaymentAccount(new BigDecimal(demandForm.getOrderMoney()));
+                teacherPaymentLog.setPaymentDesc("收入");;
+                teacherPaymentLog.setStatus(1);
+                teacherPaymentLog.setCreateTime(new Date());
+                teacherPaymentLog.setCreateUser(demandVo.getStudentName());
                 userAccountLogMapper.insertUserAccountLog(paymentLog);
 
 				/** 此处添加自己的业务逻辑代码end **/
