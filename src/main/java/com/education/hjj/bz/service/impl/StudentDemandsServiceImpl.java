@@ -1003,21 +1003,21 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
  		logger.info("teacherId = {} , ChooseCountBefore={} , ChooseCountAfter={}", teacherId , beforeChooseCount,
  				afterChooseCount);
  		
- 		teacher.setEmployCount(afterEmployCount);
+// 		teacher.setEmployCount(afterEmployCount);
 
-		double newRate = 0;
-		
-		if (afterChooseCount != 0) {
-			newRate = (afterEmployCount) / afterChooseCount;
-		}
-
-		logger.info("teacherId = {} ,beforeEmployCount = {} , afterEmployCount={} , afterChooseCount={} , EmployRate={}", 
-				teacherId , beforeEmployCount ,	afterEmployCount, afterChooseCount, newRate);
-
-		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
-		logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
-		// 更新该教员的聘用率
-		teacher.setEmployRate(RegUtils.doubleToPersent().format(bg));
+//		double newRate = 0;
+//		
+//		if (afterChooseCount != 0) {
+//			newRate = (afterEmployCount) / afterChooseCount;
+//		}
+//
+//		logger.info("teacherId = {} ,beforeEmployCount = {} , afterEmployCount={} , afterChooseCount={} , EmployRate={}", 
+//				teacherId , beforeEmployCount ,	afterEmployCount, afterChooseCount, newRate);
+//
+//		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
+//		logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
+//		// 更新该教员的聘用率
+//		teacher.setEmployRate(RegUtils.doubleToPersent().format(bg));
 		
 		int m = userInfoMapper.updateUserInfo(teacher);
 		
