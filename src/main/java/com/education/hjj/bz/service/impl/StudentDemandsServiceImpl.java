@@ -561,6 +561,13 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			return ApiResponse.success("订单状态不能为空");
 		}
         demandForm.setUpdateTime(new Date());
+        
+        if(demandForm.getAppraise() != null && StringUtils.isNoneBlank(demandForm.getAppraise())) {
+        	logger.info("评价描述：{}" , demandForm.getAppraise());
+        	demandForm.setAppraiseTime(new Date());
+        }
+        
+        
 		// 试讲通过
 		Long sid = connectMapper.updateStatus(demandForm);
 		if (sid != null) {
