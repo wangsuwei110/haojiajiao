@@ -154,7 +154,7 @@ public class HomeController {
 		return ApiResponse.success(map);
 	}
 	
-	@ApiOperation("查询所有需求订单的内容")
+	@ApiOperation("查询所有需求订单列表")
 	@RequestMapping(value = "/queryAllStudentDemandList", method = RequestMethod.POST)
 	@ResponseBody
 	public ApiResponse queryAllStudentDemandList(@RequestBody StudentDemandForm form) {

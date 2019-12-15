@@ -234,6 +234,9 @@
      	<if test="parameterId != null">
 			AND sd.parameter_id= #{parameterId}
      	</if>
+     	<if test="demandType != null">
+			AND sd.demand_type= #{demandType}
+     	</if>
      	order by sd.create_time desc
      	<if test="offset != null">
 			<![CDATA[
