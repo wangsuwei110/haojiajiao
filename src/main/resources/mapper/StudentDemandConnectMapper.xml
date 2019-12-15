@@ -48,7 +48,14 @@
             SELECT @@IDENTITY AS sid
         </selectKey>
         UPDATE student_demand_connect
-        SET status = #{status},
+        SET 
+        	status = #{status},
+        	 <if test="appraise != null">
+               appraise =  #{appraise},
+      		 </if>
+	     	 <if test="appraiseTime != null">
+               appraise_time =  #{appraiseTime},
+      		 </if>
         	update_time  = #{updateTime}
         Where demand_id = #{demandId}
         AND delete_status = 0

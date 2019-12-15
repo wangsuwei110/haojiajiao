@@ -38,6 +38,8 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
 
     @ApiModelProperty(value = "试讲不通过的原因")
     private String appraise;
+    
+    private Date appraiseTime;
 
     @ApiModelProperty(value = "评价等级")
     private Integer appraiseLevel;
@@ -280,6 +282,14 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
 
 	public void setIsContact(Integer isContact) {
 		this.isContact = isContact;
+	}
+
+	public Date getAppraiseTime() {
+		return appraiseTime;
+	}
+
+	public void setAppraiseTime(Date appraiseTime) {
+		this.appraiseTime = appraiseTime;
 	}
 	
 }
