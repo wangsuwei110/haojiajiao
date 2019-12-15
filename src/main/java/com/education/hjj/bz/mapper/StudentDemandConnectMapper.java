@@ -1,5 +1,6 @@
 package com.education.hjj.bz.mapper;
 
+import com.education.hjj.bz.entity.StudentDemandPo;
 import com.education.hjj.bz.entity.vo.StudentDemandConnectVo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
@@ -59,4 +60,10 @@ public interface StudentDemandConnectMapper {
     
     //教务端确定待试讲的订单是否联系
     int updateStudentDemandConnectByStatus(StudentDemandConnectForm studentDemandConnectForm);
+    
+    //查询所有已确认试讲时间但未开始试讲的订单
+    List<StudentDemandVo> queryAllTrailDemandOrderListNotBegin(StudentDemandPo studentDemandPo);
+    
+    //查询所有已下单支付但未开始讲课的订单
+    List<StudentDemandVo> queryAllDemandOrderListNotBegin(StudentDemandPo studentDemandPo);
 }

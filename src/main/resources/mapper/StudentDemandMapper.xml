@@ -367,7 +367,7 @@
 			sd.parameter_id,
 			p.name as parameterName,
 			sd.demand_type,
-			is_resumption,
+			sd.is_resumption,
 			s.openId,
 			sd.student_id
 		FROM

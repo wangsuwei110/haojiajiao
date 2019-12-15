@@ -1332,6 +1332,29 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		int  j = studentDemandMapper.updateDemandSignNum(studentDemandPo);
 		
 		if(i > 0  && j>0) {
+			
+//			String studentDemandVo.getStudentId();
+//			
+//			JSONObject data = new JSONObject();
+//			
+//			Map<String, Object> keyMap1 = new HashMap<String, Object>();
+//			keyMap1.put("value", teachBranchName);
+//			// 课程名称
+//			data.put("thing1", keyMap1);
+//			
+//			Map<String, Object> keyMap2 = new HashMap<String, Object>();
+//			keyMap2.put("value", TeachTime);
+//			// 上课时间
+//			data.put("time5", keyMap2);
+//			
+//			
+//			JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(openId, Constant.CLASS_BEGIN_MESSAGE, data);
+//			
+//			logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") + " "
+//					+ sendRedPackRsult.getString("errmsg"));
+			
+			
+			
 			return 1;
 		}
 		

@@ -122,5 +122,11 @@ public class Constant {
     
   //注册审核结果通知 "审核结果:{{thing1.DATA}}\n时间:{{date2.DATA}}\n备注:{{thing3.DATA}}\n"
     public static final String AUDIT_REGIST_RESULT_MESSAGE = "1DIuaSZQTzvHEtIPLgzzSAYqKVZAlJHmuF2h_qORl3c";
+    
+  //报名人数更新提醒 "报名人数:12\n截止时间:2019-11-12 16:00\n"
+    public static final String CHANGE_SIGN_NUM_RESULT_MESSAGE = "hWYWzWwSHDOwVP19CkH-g43SltRkR9QwxLYEom62VUI";
+    
+  //报名状态变更通知 "报名结果:您的课程报名成功！\n备注:恭喜您通过活动报名审核，请尽快与监护人确认是否出行 点击详情查看活动出行须知\n"
+    public static final String CHANGE_SIGN_STATUS_RESULT_MESSAGE = "x8RRaxzYPJd4HIoNWpmPNQI--U642a8hnsmWJLplNrk";
 }
 
