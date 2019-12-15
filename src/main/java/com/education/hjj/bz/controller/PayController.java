@@ -401,6 +401,20 @@ public class PayController {
 	        		// 更新该教员的聘用率
 	        		teacherPo.setEmployRate(RegUtils.doubleToPersent().format(bg));
 	        		
+	        		
+	        		//更新教员的续课率
+					double resumptionCount = teacherVo.getResumptionCount();
+					
+					double resumptionRate = (resumptionCount) / (teacherVo.getEmployCount() + 1);
+					
+					logger.info(" employCount={} , resumptionCount={} , newRate={}", teacherVo.getEmployCount(),
+							resumptionCount, newRate);
+		
+					BigDecimal bgr = new BigDecimal(resumptionRate).setScale(2, RoundingMode.DOWN);
+					logger.info("employRate = {}", RegUtils.doubleToPersent().format(bgr));
+		
+					teacherPo.setResumptionRate(RegUtils.doubleToPersent().format(bgr));
+	        		
 	        		userInfoMapper.updateUserInfo(teacherPo);
 				}
 
