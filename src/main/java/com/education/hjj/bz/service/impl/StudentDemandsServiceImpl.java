@@ -1333,25 +1333,29 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		
 		if(i > 0  && j>0) {
 			
-//			String studentDemandVo.getStudentId();
-//			
-//			JSONObject data = new JSONObject();
-//			
-//			Map<String, Object> keyMap1 = new HashMap<String, Object>();
-//			keyMap1.put("value", teachBranchName);
-//			// 课程名称
-//			data.put("thing1", keyMap1);
-//			
-//			Map<String, Object> keyMap2 = new HashMap<String, Object>();
-//			keyMap2.put("value", TeachTime);
-//			// 上课时间
-//			data.put("time5", keyMap2);
-//			
-//			
-//			JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(openId, Constant.CLASS_BEGIN_MESSAGE, data);
-//			
-//			logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") + " "
-//					+ sendRedPackRsult.getString("errmsg"));
+			String openId = studentDemandVo.getOpenId();
+			
+			int demandSignUpNum = studentDemandVo.getDemandSignUpNum();
+			
+			logger.info("订单号：{}，之前的报名人数：{}，之后的报名人数：{}" ,demandId , demandSignUpNum ,demandSignUpNum+1);
+			
+			JSONObject data = new JSONObject();
+			
+			Map<String, Object> keyMap1 = new HashMap<String, Object>();
+			keyMap1.put("value", demandSignUpNum+1);
+			// 报名人数
+			data.put("number4", keyMap1);
+			
+			Map<String, Object> keyMap2 = new HashMap<String, Object>();
+			keyMap2.put("value", new Date());
+			// 截止时间
+			data.put("date5", keyMap2);
+			
+			
+			JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(openId, Constant.CHANGE_SIGN_NUM_RESULT_MESSAGE, data);
+			
+			logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") + " "
+					+ sendRedPackRsult.getString("errmsg"));
 			
 			
 			
