@@ -1,14 +1,15 @@
 package com.education.hjj.bz.formBean;
 
-import io.swagger.annotations.ApiModelProperty;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.education.hjj.bz.entity.TeachTimePo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 学员发布需求表Form
@@ -18,7 +19,12 @@ import java.util.List;
  */
 public class StudentDemandConnectForm extends PageForm implements Serializable {
 
-    private Long sid;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5592231160203780697L;
+
+	private Long sid;
 
     @ApiModelProperty(value = "需求ID", required = true)
     private Integer demandId;
@@ -38,6 +44,8 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
 
     @ApiModelProperty(value = "试讲不通过的原因")
     private String appraise;
+    
+    private Date appraiseTime;
 
     @ApiModelProperty(value = "评价等级")
     private Integer appraiseLevel;
@@ -280,6 +288,14 @@ public class StudentDemandConnectForm extends PageForm implements Serializable {
 
 	public void setIsContact(Integer isContact) {
 		this.isContact = isContact;
+	}
+
+	public Date getAppraiseTime() {
+		return appraiseTime;
+	}
+
+	public void setAppraiseTime(Date appraiseTime) {
+		this.appraiseTime = appraiseTime;
 	}
 	
 }

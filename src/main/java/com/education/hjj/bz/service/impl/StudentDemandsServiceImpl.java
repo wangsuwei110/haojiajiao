@@ -3,19 +3,16 @@ package com.education.hjj.bz.service.impl;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.education.hjj.bz.entity.*;
-import com.education.hjj.bz.entity.vo.*;
-import com.education.hjj.bz.enums.MainSubjectEnum;
-import com.education.hjj.bz.enums.SubjectPictureEnum;
-import com.education.hjj.bz.mapper.*;
-import com.education.hjj.bz.service.StudentLogService;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -25,12 +22,45 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.education.hjj.bz.entity.PointsLogPo;
+import com.education.hjj.bz.entity.StudentDemandPo;
+import com.education.hjj.bz.entity.StudentLogPo;
+import com.education.hjj.bz.entity.TeachTimePo;
+import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
+import com.education.hjj.bz.entity.TeacherAccountPo;
+import com.education.hjj.bz.entity.TeacherPo;
+import com.education.hjj.bz.entity.vo.CodeInfoVo;
+import com.education.hjj.bz.entity.vo.DemandCourseInfoVo;
+import com.education.hjj.bz.entity.vo.OrderDemandTimeVo;
+import com.education.hjj.bz.entity.vo.PageVo;
+import com.education.hjj.bz.entity.vo.StudentDemandConnectVo;
+import com.education.hjj.bz.entity.vo.StudentDemandVo;
+import com.education.hjj.bz.entity.vo.StudentVo;
+import com.education.hjj.bz.entity.vo.TeachBranchVo;
+import com.education.hjj.bz.entity.vo.TeacherAccountVo;
+import com.education.hjj.bz.entity.vo.TeacherVo;
+import com.education.hjj.bz.entity.vo.WeekTimeVo;
+import com.education.hjj.bz.enums.MainSubjectEnum;
+import com.education.hjj.bz.enums.SubjectPictureEnum;
 import com.education.hjj.bz.formBean.DemandCourseInfoForm;
-import com.education.hjj.bz.formBean.DemandLogForm;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.StudentDemandForm;
 import com.education.hjj.bz.formBean.StudentForm;
+import com.education.hjj.bz.mapper.DemandCourseInfoMapper;
+import com.education.hjj.bz.mapper.DemandLogMapper;
+import com.education.hjj.bz.mapper.PointsLogMapper;
+import com.education.hjj.bz.mapper.StudentDemandConnectMapper;
+import com.education.hjj.bz.mapper.StudentDemandMapper;
+import com.education.hjj.bz.mapper.StudentMapper;
+import com.education.hjj.bz.mapper.TeachBranchMapper;
+import com.education.hjj.bz.mapper.TeacherMapper;
+import com.education.hjj.bz.mapper.UserAccountLogMapper;
+import com.education.hjj.bz.mapper.UserAccountMapper;
+import com.education.hjj.bz.mapper.UserInfoMapper;
 import com.education.hjj.bz.service.StudentDemandsService;
+import com.education.hjj.bz.service.StudentLogService;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.DateUtil;
 import com.education.hjj.bz.util.RegUtils;
@@ -560,11 +590,45 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			return ApiResponse.success("订单状态不能为空");
 		}
         demandForm.setUpdateTime(new Date());
+        
+        if(demandForm.getAppraise() != null && StringUtils.isNoneBlank(demandForm.getAppraise())) {
+        	logger.info("评价描述：{}" , demandForm.getAppraise());
+        	demandForm.setAppraiseTime(new Date());
+        }
+        
+        logger.info("教员：{} 试讲状态：{}" , demandForm.getTeacherId(), demandForm.getStatus());
 		// 试讲通过
 		Long sid = connectMapper.updateStatus(demandForm);
 		if (sid != null) {
 			// 试讲不通过，返回三个形态信息
 			if (demandForm.getStatus() == 3) {
+				
+				//更新教员的聘用率
+				Integer teacherId = demandForm.getTeacherId();
+				TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
+				
+				TeacherPo teacherPo = new TeacherPo();
+				teacherPo.setTeacherId(teacherId);
+				
+				int chooseCount = teacherVo.getChooseCount();
+				
+				double newRate = 0;
+				if (chooseCount != 0) {
+					newRate = teacherVo.getEmployCount() / chooseCount;
+				}
+
+        		logger.info("employCount={} , chooseCount={} , newRate={}",  teacherVo.getEmployCount(),
+        				chooseCount, newRate);
+
+        		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
+        		logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
+        		
+        		teacherPo.setEmployRate(RegUtils.doubleToPersent().format(bg));
+        		
+        		userInfoMapper.updateUserInfo(teacherPo);
+				
+				
+				
 				// 首先查下订单类型，区分是快速请家教或者单独预约，如果是快速请家教，再区分当前试讲未通过是不是唯一报名的教员
 				List<StudentDemandVo> studentDemandVos = studentDemandMapper.listDemandAndTeacher(demandForm);
 				if (CollectionUtils.isEmpty(studentDemandVos)) {
@@ -1267,6 +1331,33 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		int  j = studentDemandMapper.updateDemandSignNum(studentDemandPo);
 		
 		if(i > 0  && j>0) {
+			
+			String openId = studentDemandVo.getOpenId();
+			
+			int demandSignUpNum = studentDemandVo.getDemandSignUpNum();
+			
+			logger.info("订单号：{}，之前的报名人数：{}，之后的报名人数：{}" ,demandId , demandSignUpNum ,demandSignUpNum+1);
+			
+			JSONObject data = new JSONObject();
+			
+			Map<String, Object> keyMap1 = new HashMap<String, Object>();
+			keyMap1.put("value", demandSignUpNum+1);
+			// 报名人数
+			data.put("number4", keyMap1);
+			
+			Map<String, Object> keyMap2 = new HashMap<String, Object>();
+			keyMap2.put("value", new Date());
+			// 截止时间
+			data.put("date5", keyMap2);
+			
+			
+			JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(openId, Constant.CHANGE_SIGN_NUM_RESULT_MESSAGE, data);
+			
+			logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") + " "
+					+ sendRedPackRsult.getString("errmsg"));
+			
+			
+			
 			return 1;
 		}
 		

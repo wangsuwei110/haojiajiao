@@ -2,9 +2,10 @@ package com.education.hjj.bz.schedule;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,18 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSONObject;
+import com.education.hjj.bz.entity.StudentDemandPo;
 import com.education.hjj.bz.entity.TeacherPo;
+import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
+import com.education.hjj.bz.formBean.StudentDemandConnectForm;
+import com.education.hjj.bz.mapper.StudentDemandConnectMapper;
+import com.education.hjj.bz.mapper.StudentDemandMapper;
 import com.education.hjj.bz.mapper.UserInfoMapper;
+import com.education.hjj.bz.util.DateUtil;
+import com.education.hjj.bz.util.SendWXMessageUtils;
+import com.education.hjj.bz.util.weixinUtil.config.Constant;
 
 @Component
 public class ScheduleToolsUtils {
@@ -23,7 +33,12 @@ public class ScheduleToolsUtils {
 
 	@Autowired
 	private UserInfoMapper userInfoMapper;
+	
+	@Autowired
+	private StudentDemandMapper studentDemandMapper;
 
+	@Autowired
+	private StudentDemandConnectMapper connectMapper;
 
 //    //每天3：05执行，计算续课率
 //    @Scheduled(cron = "0 05 03 ? * *")
@@ -82,6 +97,136 @@ public class ScheduleToolsUtils {
 		int i = userInfoMapper.updateTeachers(teacherList);
 		if(i > 0) {
 			logger.info("教员等级，收费标准更新成功！");
+		}
+	}
+	
+	
+	/**
+	 * 查询所有的第二天待试讲订单(快速请家教和指定教员的)，发出上课提醒
+	 */
+	@Scheduled(cron = "0 00 18 ? * *")
+	@Transactional
+	public void sendTrailStudentDemandMessageToTeacher() {
+		
+		StudentDemandPo sdcf = new StudentDemandPo();
+		
+		String orderTeachTime = DateUtil.getStandardDay(DateUtil.addDay(new Date() , 1));
+		
+		sdcf.setOrderStartDate(orderTeachTime+ " 00:00:00");
+		sdcf.setOrderEndDate(orderTeachTime+" 23:59:59");
+		sdcf.setStatus(2);
+		
+		List<StudentDemandVo> list = connectMapper.queryAllTrailDemandOrderListNotBegin(sdcf);
+		
+		if(list != null && list.size() > 0) {
+			
+			for(StudentDemandVo sdv:list) {
+				
+				String teachBranchName = sdv.getTeachBranchName();
+				Date TeachTime = sdv.getOrderTeachTime();
+				String classAddress = sdv.getDemandAddress();
+				String teacherName = sdv.getTeachName();
+				String studentName = sdv.getStudentName();
+				String openId = sdv.getOpenId();
+				
+				
+				JSONObject data = new JSONObject();
+				
+				Map<String, Object> keyMap1 = new HashMap<String, Object>();
+				keyMap1.put("value", teachBranchName);
+				// 课程名称
+				data.put("thing1", keyMap1);
+				
+				Map<String, Object> keyMap2 = new HashMap<String, Object>();
+				keyMap2.put("value", TeachTime);
+				// 上课时间
+				data.put("time5", keyMap2);
+				
+				Map<String, Object> keyMap3 = new HashMap<String, Object>();
+				keyMap3.put("value", classAddress);
+				// 上课地点
+				data.put("thing6", keyMap3);
+				
+				Map<String, Object> keyMap4 = new HashMap<String, Object>();
+				keyMap4.put("value", teacherName);
+				// 上课教员
+				data.put("name12", keyMap4);
+				
+				Map<String, Object> keyMap5 = new HashMap<String, Object>();
+				keyMap5.put("value", studentName);
+				// 上课学生
+				data.put("name10", keyMap5);
+				
+				JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(openId, Constant.CLASS_BEGIN_MESSAGE, data);
+				
+				logger.info("发出试讲上课提醒的结果： " + sendRedPackRsult.getString("errcode") + " "
+						+ sendRedPackRsult.getString("errmsg"));
+			}
+		}
+		
+	}
+	
+	/**
+	 * 查询所有的正式订单，发出上课提醒
+	 */
+	@Scheduled(cron = "0 05 18 ? * *")
+	@Transactional
+	public void sendCommonStudentDemandMessageToTeacher() {
+		
+		StudentDemandPo sdcf = new StudentDemandPo();
+		
+		String orderTeachTime = DateUtil.getStandardDay(DateUtil.addDay(new Date() , 1));
+		
+		sdcf.setOrderStartDate(orderTeachTime+ " 00:00:00");
+		sdcf.setOrderEndDate(orderTeachTime+" 23:59:59");
+		sdcf.setStatus(4);
+		
+		List<StudentDemandVo> list = connectMapper.queryAllDemandOrderListNotBegin(sdcf);
+		
+		if(list != null && list.size() > 0) {
+		
+			for(StudentDemandVo sdv:list) {
+				
+				String teachBranchName = sdv.getTeachBranchName();
+				Date TeachTime = sdv.getOrderTeachTime();
+				String classAddress = sdv.getDemandAddress();
+				String teacherName = sdv.getTeachName();
+				String studentName = sdv.getStudentName();
+				String openId = sdv.getOpenId();
+				
+				
+				JSONObject data = new JSONObject();
+				
+				Map<String, Object> keyMap1 = new HashMap<String, Object>();
+				keyMap1.put("value", teachBranchName);
+				// 课程名称
+				data.put("thing1", keyMap1);
+				
+				Map<String, Object> keyMap2 = new HashMap<String, Object>();
+				keyMap2.put("value", TeachTime);
+				// 上课时间
+				data.put("time5", keyMap2);
+				
+				Map<String, Object> keyMap3 = new HashMap<String, Object>();
+				keyMap3.put("value", classAddress);
+				// 上课地点
+				data.put("thing6", keyMap3);
+				
+				Map<String, Object> keyMap4 = new HashMap<String, Object>();
+				keyMap4.put("value", teacherName);
+				// 上课教员
+				data.put("name12", keyMap4);
+				
+				Map<String, Object> keyMap5 = new HashMap<String, Object>();
+				keyMap5.put("value", studentName);
+				// 上课学生
+				data.put("name10", keyMap5);
+				
+				JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(openId, Constant.CLASS_BEGIN_MESSAGE, data);
+				
+				logger.info("发出正式上课提醒的结果： " + sendRedPackRsult.getString("errcode") + " "
+						+ sendRedPackRsult.getString("errmsg"));
+			}
 		}
 	}
 

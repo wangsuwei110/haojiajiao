@@ -48,7 +48,14 @@
             SELECT @@IDENTITY AS sid
         </selectKey>
         UPDATE student_demand_connect
-        SET status = #{status},
+        SET 
+        	status = #{status},
+        	 <if test="appraise != null">
+               appraise =  #{appraise},
+      		 </if>
+	     	 <if test="appraiseTime != null">
+               appraise_time =  #{appraiseTime},
+      		 </if>
         	update_time  = #{updateTime}
         Where demand_id = #{demandId}
         AND delete_status = 0
@@ -332,7 +339,7 @@
 		<!-- column代表数据库列名，property代表实体类属性名 -->
 		<result column="sid" property="sid"/>
 		<result column="demand_id" property="demandId"/>
-		<result column="teacherName" property="teacherName"/>
+		<result column="teachName" property="teachName"/>
 		<result column="telephone" property="telephone"/>
 		<result column="student_name" property="studentName"/>
 		<result column="parent_phone_num" property="parentPhoneNum"/>
@@ -340,6 +347,8 @@
 		<result column="teach_grade_name" property="teachGradeName"/>
 		<result column="teach_branch_name" property="teachBranchName"/>
 		<result column="time_range" property="timeRange"/>
+		<result column="order_teach_time" property="orderTeachTime"/>
+		<result column="openId" property="openId"/>
 	</resultMap>
     
     <!-- 教务段查询超过一小时未确认试讲时间的订单 -->
@@ -347,15 +356,16 @@
     
     	SELECT
 			sd.sid,
-			sdc.demand_id,
-			t.`name` as teacherName,
+			t.`name` as teachName,
 			t.telephone,
 			s.student_name,
 			s.parent_phone_num,
+			s.openId,
 			sd.create_time,
 			tg.teach_grade_name,
 			tb.teach_branch_name,
-			sd.time_range
+			sd.time_range,
+			sdc.order_teach_time
 	
 		FROM
 			student_demand_connect sdc
@@ -395,6 +405,104 @@
             limit #{pageSize} offset #{offset}
             ]]>
         </if>
+    </select>
+    
+    <!-- 查询所有已确认试讲时间但未开始试讲的订单 -->
+    <select id="queryAllTrailDemandOrderListNotBegin" parameterType="com.education.hjj.bz.entity.StudentDemandPo" resultMap="waitForTrailTimeDemandOrdersResultMap">
+    
+    	SELECT
+			sd.sid,
+			t.`name` as teachName,
+			s.openId,
+			s.student_name,
+			s.parent_phone_num,
+			sd.create_time,
+			tb.teach_branch_name,
+			sd.time_range,
+			sdc.order_teach_time
+	
+		FROM
+			student_demand_connect sdc
+		LEFT JOIN
+			student_demand sd
+		ON
+			sdc.demand_id = sd.sid
+		LEFT JOIN
+			teach_branch tb
+		ON
+			sd.subject_id = tb.teach_branch_id
+		LEFT JOIN
+			student s
+		ON
+			sd.student_id = s.sid
+		LEFT JOIN
+			teacher t
+		ON
+			sdc.teacher_id = t.teacher_id
+		WHERE
+			sdc.status in (1,2)
+			
+		<if test="orderStartDate != null and orderStartDate != ''">
+	     AND
+			sdc.order_teach_time <![CDATA[>=]]> #{orderStartDate}
+	    </if>
+	    <if test="orderEndDate != null and orderEndDate != ''">
+	     AND
+			sdc.order_teach_time <![CDATA[<=]]> #{orderEndDate}
+	    </if>
+			
+    </select>
+    
+    <!-- 查询所有已下单支付但未开始讲课的订单 -->
+    <select id="queryAllDemandOrderListNotBegin" parameterType="com.education.hjj.bz.entity.StudentDemandPo" resultMap="waitForTrailTimeDemandOrdersResultMap">
+    
+    	SELECT
+			sd.sid,
+			t.`name` as teachName,
+			s.openId,
+			s.student_name,
+			s.parent_phone_num,
+			sd.create_time,
+			tb.teach_branch_name,
+			sd.time_range,
+			sdc.order_teach_time
+	
+		FROM
+			student_demand_connect sdc
+		LEFT JOIN
+			student_demand sd
+		ON
+			sdc.demand_id = sd.sid
+		LEFT JOIN
+			teach_branch tb
+		ON
+			sd.subject_id = tb.teach_branch_id
+		LEFT JOIN
+			student s
+		ON
+			sd.student_id = s.sid
+		LEFT JOIN
+			teacher t
+		ON
+			sdc.teacher_id = t.teacher_id
+		LEFT JOIN
+			demand_course_info dci
+		ON	
+			sd.sid = dci.demand_id
+		WHERE
+			sdc.status = #{status}
+		and
+			dci.status = 0
+			
+		<if test="orderStartDate != null and orderStartDate != ''">
+	     AND
+			dci.order_teach_time <![CDATA[>=]]> #{orderStartDate}
+	    </if>
+	    <if test="orderEndDate != null and orderEndDate != ''">
+	     AND
+			dci.order_teach_time <![CDATA[<=]]> #{orderEndDate}
+	    </if>
+			
     </select>
     
     <!-- 教务端确定待试讲的订单是否联系 -->
