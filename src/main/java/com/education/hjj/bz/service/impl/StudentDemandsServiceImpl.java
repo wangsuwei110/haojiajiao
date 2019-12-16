@@ -331,9 +331,15 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			}
 			orderDemandTimeVos.add(timeVo);
 		});
-		orderDemandTimeVos.sort((a, b) -> a.getTime().compareTo(b.getTime()));
-		orderDemandTimeVos.sort((a, b) -> a.getDate().compareTo(b.getDate()));
-		map.put("orderTime", orderDemandTimeVos);
+
+		// 确定试讲试讲不能小于今天或以前的时间
+        List<OrderDemandTimeVo> orderDemandTimeVoList = orderDemandTimeVos.stream().filter(f ->
+                DateUtil.getDayStart(f.getDate()).compareTo(DateUtil.getDayStart(new Date())) > 0)
+                .collect(Collectors.toList());
+
+        orderDemandTimeVoList.sort((a, b) -> a.getTime().compareTo(b.getTime()));
+        orderDemandTimeVoList.sort((a, b) -> a.getDate().compareTo(b.getDate()));
+		map.put("orderTime", orderDemandTimeVoList);
 
 		return ApiResponse.success(map);
 	}
