@@ -204,7 +204,7 @@
 		ON sd.sid = sdc.demand_id
         WHERE sdc.delete_status = 0
 		AND sdc.teacher_id =  #{teacherId}
-		AND sdc.status in  (3,4)
+		AND sdc.status = 4
 		AND sd.demand_grade = #{demandGrade}
 		AND sd.subject_id   = #{subjectId}
 		AND sd.student_id = #{studentId}

@@ -147,7 +147,6 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			alreadyForm.setStudentId(form.getStudentId());
 			alreadyForm.setTeacherId(form.getTeacherId());
 			alreadyForm.setStudentId(form.getStudentId());
-			alreadyForm.setSubjectId(form.getSubjectId());
 			alreadyForm.setDemandGrade(form.getDemandGrade());
 			Integer count = connectMapper.countAlreadyDemand(alreadyForm);
 
