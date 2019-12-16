@@ -264,14 +264,21 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 				}
 			} else {
 //				// 判断是否已经有了预约(排除已经预约过，但是未通过的)
-//				List<StudentDemandConnectVo> noPass = connectVos.stream()
-//						.filter(s ->  s.getStatus() != null && s.getStatus() == 3).collect(Collectors.toList()).stream()
-//						.sorted((a, b) -> a.getOrderTeachTime().compareTo(b.getOrderTeachTime())).collect(Collectors.toList());
+				Optional<StudentDemandConnectVo> noPassop = connectVos.stream()
+						.filter(s ->  s.getStatus() != null && s.getStatus() != 0 && s.getStatus() == 3).findFirst();
 				// 确认订单只是有教员报名或者没有报名，没有其它状态
 				boolean allStatusIsZero = connectVos.stream()
 						.allMatch(s ->  s.getStatus() == null || s.getStatus() == 0);
 				if (f.getDemandType() == 1 && !allStatusIsZero) {
 					f.setSubscribeStatus(3);
+					f.setTeachName(noPassop.get().getTeacherName());
+					f.setAppraise(noPassop.get().getAppraise());
+					f.setChargesStandard(noPassop.get().getChargesStandard());
+					f.setOrderTeachTime(noPassop.get().getOrderTeachTime());
+					f.setTeacherId(noPassop.get().getTeacherId());
+					f.setAppraiseLevel(noPassop.get().getAppraiseLevel());
+					f.setAppraiseTime(noPassop.get().getAppraiseTime());
+					f.setTeacherPhone(noPassop.get().getTelephone());
 				} else {
 					f.setEndDemandFlag(true);
 					// 没有预约成功的，显示预约教员的数量
