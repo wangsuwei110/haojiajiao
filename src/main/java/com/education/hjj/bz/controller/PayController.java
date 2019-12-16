@@ -309,7 +309,6 @@ public class PayController {
                 demandForm.setPaymentStreamId(randomOrderId);
                 demandForm.setOrderStart(date);
                 demandForm.setUpdateTime(date);
-                demandForm.setCreateTime(date);
                 Long sid = studentDemandMapper.updateOldDemandToNew(demandForm);
 
                 logger.info("caohuan*********修改订单状态至续课状态：状态变成4***********");
