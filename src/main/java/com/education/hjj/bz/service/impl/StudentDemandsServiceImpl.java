@@ -107,7 +107,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 	@Autowired
 	private StudentLogService studentLogService;
-	
+
 	@Autowired
 	private PointsLogMapper pointsLogMapper;
 
@@ -199,7 +199,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			StudentLogPo logPo = new StudentLogPo();
 			logPo.setStudentId(Integer.valueOf(studentVo.getSid().toString()));
 			logPo.setLogType(3); // 登录
-			logPo.setLogContent("最近预约了" +teacherVo.getName() + "教员");
+			logPo.setLogContent("最近预约了" + teacherVo.getName() + "教员");
 			logPo.setStudentName(studentVo.getStudentName());
 			logPo.setStatus(1);
 			logPo.setCreateTime(new Date());
@@ -225,8 +225,8 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		// 检索需求报名的教员信息
 		list.forEach(f -> {
 
-		    // 编辑创建时间的格式
-            f.setCreateTimeString(DateUtil.format(f.getCreateTime(), "yyyy-MM-dd hh:mm:ss"));
+			// 编辑创建时间的格式
+			f.setCreateTimeString(DateUtil.format(f.getCreateTime(), "yyyy-MM-dd hh:mm:ss"));
 
 			// 编辑中文上班时间段
 			f.setTimeRange(CommonUtil.getWeekDesc(f.getTimeRange()));
@@ -240,8 +240,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			List<StudentDemandConnectVo> connectVos = connectMapper.listConnectInfo(f.getSid());
 			// 判断是否已经有了预约(排除已经预约过，但是未通过的)
 			Optional<StudentDemandConnectVo> op = connectVos.stream()
-					.filter(s ->  s.getStatus() != null && s.getStatus() != 0 && s.getStatus() != 3)
-					.findFirst();
+					.filter(s -> s.getStatus() != null && s.getStatus() != 0 && s.getStatus() != 3).findFirst();
 			if (op.isPresent()) {
 				f.setSubscribeStatus(op.get().getStatus());
 				f.setTeachName(op.get().getTeacherName());
@@ -253,22 +252,22 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 				f.setAppraiseTime(op.get().getAppraiseTime());
 				f.setTeacherPhone(op.get().getTelephone());
 
-
 				if (StringUtil.isNotBlank(op.get().getChargesStandard())) {
-                    f.setOrderMoney(new BigDecimal(op.get().getChargesStandard().split("元")[0]));
-                }
+					f.setOrderMoney(new BigDecimal(op.get().getChargesStandard().split("元")[0]));
+				}
 
 				// 大前提条件：试讲订单 如果已经过了试讲的试讲时间，则赋值6，前端判断显示试讲通过和试讲不通过
-				if (f.getOrderType() != null && f.getOrderType() == 1 && op.get().getOrderTeachTime() != null && new Date().after(DateUtil.addMinute(op.get().getOrderTeachTime(), 5))) {
+				if (f.getOrderType() != null && f.getOrderType() == 1 && op.get().getOrderTeachTime() != null
+						&& new Date().after(DateUtil.addMinute(op.get().getOrderTeachTime(), 5))) {
 					f.setSubscribeStatus(6);
 				}
 			} else {
 //				// 判断是否已经有了预约(排除已经预约过，但是未通过的)
 				Optional<StudentDemandConnectVo> noPassop = connectVos.stream()
-						.filter(s ->  s.getStatus() != null && s.getStatus() != 0 && s.getStatus() == 3).findFirst();
+						.filter(s -> s.getStatus() != null && s.getStatus() != 0 && s.getStatus() == 3).findFirst();
 				// 确认订单只是有教员报名或者没有报名，没有其它状态
 				boolean allStatusIsZero = connectVos.stream()
-						.allMatch(s ->  s.getStatus() == null || s.getStatus() == 0);
+						.allMatch(s -> s.getStatus() == null || s.getStatus() == 0);
 				if (f.getDemandType() == 1 && !allStatusIsZero) {
 					f.setSubscribeStatus(3);
 					f.setTeachName(noPassop.get().getTeacherName());
@@ -282,7 +281,8 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 				} else {
 					f.setEndDemandFlag(true);
 					// 没有预约成功的，显示预约教员的数量
-					f.setOrderTeachCount(org.apache.shiro.util.CollectionUtils.isEmpty(connectVos) ? 0 : connectVos.size());
+					f.setOrderTeachCount(
+							org.apache.shiro.util.CollectionUtils.isEmpty(connectVos) ? 0 : connectVos.size());
 				}
 			}
 
@@ -333,12 +333,12 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		});
 
 		// 确定试讲试讲不能小于今天或以前的时间
-        List<OrderDemandTimeVo> orderDemandTimeVoList = orderDemandTimeVos.stream().filter(f ->
-                DateUtil.getDayStart(f.getDate()).compareTo(DateUtil.getDayStart(new Date())) > 0)
-                .collect(Collectors.toList());
+		List<OrderDemandTimeVo> orderDemandTimeVoList = orderDemandTimeVos.stream()
+				.filter(f -> DateUtil.getDayStart(f.getDate()).compareTo(DateUtil.getDayStart(new Date())) > 0)
+				.collect(Collectors.toList());
 
-        orderDemandTimeVoList.sort((a, b) -> a.getTime().compareTo(b.getTime()));
-        orderDemandTimeVoList.sort((a, b) -> a.getDate().compareTo(b.getDate()));
+		orderDemandTimeVoList.sort((a, b) -> a.getTime().compareTo(b.getTime()));
+		orderDemandTimeVoList.sort((a, b) -> a.getDate().compareTo(b.getDate()));
 		map.put("orderTime", orderDemandTimeVoList);
 
 		return ApiResponse.success(map);
@@ -347,43 +347,42 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	@Override
 	@Transactional
 	public ApiResponse confirmTeacher(StudentDemandConnectForm demandForm) {
-		
-		Integer teacherId = demandForm.getTeacherId();
-		
-		TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
-		
-		int i = 0 ;
-		
-		// 更新教员对所有报名订单的数量
- 		TeacherPo teacherPo = new TeacherPo();
 
- 		teacherPo.setChooseCount(teacherVo.getChooseCount() + 1);
- 		teacherPo.setTeacherId(teacherId);
- 		teacherPo.setUpdateTime(new Date());
- 		
- 		logger.info("teacherId = {} , ChooseCountBefore={} , ChooseCountAfter={}", teacherId ,teacherVo.getChooseCount(),
- 				teacherVo.getChooseCount()+1);
+		Integer teacherId = demandForm.getTeacherId();
+
+		TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
+
+		int i = 0;
+
+		// 更新教员对所有报名订单的数量
+		TeacherPo teacherPo = new TeacherPo();
+
+		teacherPo.setChooseCount(teacherVo.getChooseCount() + 1);
+		teacherPo.setTeacherId(teacherId);
+		teacherPo.setUpdateTime(new Date());
+
+		logger.info("teacherId = {} , ChooseCountBefore={} , ChooseCountAfter={}", teacherId,
+				teacherVo.getChooseCount(), teacherVo.getChooseCount() + 1);
 
 		// 单独预约的需求，确定教员时，订单变成试讲中
 		if (demandForm.getDemandType() == null) {
 
 			return ApiResponse.error("必须确定单独试讲或者快速请家教");
-			
+
 		} else if (demandForm.getDemandType() == 1) {
 			// 单独预约
 			demandForm.setStatus(1);
-			
+
 		} else {
 			demandForm.setStatus(2);
-			
-			logger.info("快速请家教的时候： teacherId = {} , ChooseCountBefore={} , ChooseCountAfter={}", teacherId ,teacherVo.getChooseCount(),
-	 				teacherVo.getChooseCount()+1);
+
+			logger.info("快速请家教的时候： teacherId = {} , ChooseCountBefore={} , ChooseCountAfter={}", teacherId,
+					teacherVo.getChooseCount(), teacherVo.getChooseCount() + 1);
 		}
-		
+
 		i = userInfoMapper.updateUserInfo(teacherPo);
- 		
+
 		Long sid = connectMapper.confirmTeacher(demandForm);
-		
 
 		if (sid != null && i > 0) {
 			return ApiResponse.success("预约教员成功");
@@ -400,10 +399,10 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	public ApiResponse listMyCourse(DemandCourseInfoForm demandForm) {
 		demandForm.setRangeForm(DateUtil.getWeekTime(demandForm.getOrderTeachTime()));
 
-        List<DemandCourseInfoVo> list = demandCourseInfoMapper.listMyCourseList(demandForm);
-        list.forEach(f -> {
-            f.setUnitPrice(Double.valueOf(f.getChargesStandard().split("元")[0].toString()));
-        });
+		List<DemandCourseInfoVo> list = demandCourseInfoMapper.listMyCourseList(demandForm);
+		list.forEach(f -> {
+			f.setUnitPrice(Double.valueOf(f.getChargesStandard().split("元")[0].toString()));
+		});
 
 		return ApiResponse.success(list);
 	}
@@ -418,7 +417,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		courseInfoForm.setUpdateTime(date);
 		demandCourseInfoMapper.updateNotNull(courseInfoForm);
 
-		logger.info("检索订单"+ courseInfoForm.getSid());
+		logger.info("检索订单" + courseInfoForm.getSid());
 		// 检索订单
 		StudentDemandVo vo = studentDemandMapper.findDemandByCourseId(courseInfoForm.getSid());
 
@@ -447,8 +446,10 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		} else {
 			po.setUpdateTime(date);
 			po.setUpdateUser(courseInfoForm.getTeacherId().toString());
-			po.setSurplusMoney(teacherAccountVo.getSurplusMoney().add(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString())));
-			po.setAccountMoney(teacherAccountVo.getAccountMoney().add(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString())));
+			po.setSurplusMoney(teacherAccountVo.getSurplusMoney()
+					.add(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString())));
+			po.setAccountMoney(teacherAccountVo.getAccountMoney()
+					.add(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString())));
 			userAccountMapper.updateTeacherAccountMoney(po);
 		}
 
@@ -476,8 +477,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	@Override
 	@Transactional
 	public ApiResponse payDemand(StudentDemandForm demandForm) {
-		
-		
+
 //		Integer isResumption = demandForm.getIsResumption();
 //		logger.info("是否是续课订单：{}" , isResumption == 1?"是":"否");
 //
@@ -589,8 +589,6 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 //		}
 //
 //		demandCourseInfoMapper.insert(courseInfoFormList);
-		
-		
 
 		return ApiResponse.success("支付课时成功");
 	}
@@ -602,46 +600,44 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		if (demandForm.getStatus() == null) {
 			return ApiResponse.success("订单状态不能为空");
 		}
-        demandForm.setUpdateTime(new Date());
-        
-        if(demandForm.getAppraise() != null && StringUtils.isNoneBlank(demandForm.getAppraise())) {
-        	logger.info("评价描述：{}" , demandForm.getAppraise());
-        	demandForm.setAppraiseTime(new Date());
-        }
-        
-        logger.info("教员：{} 试讲状态：{}" , demandForm.getTeacherId(), demandForm.getStatus());
+		demandForm.setUpdateTime(new Date());
+
+		if (demandForm.getAppraise() != null && StringUtils.isNoneBlank(demandForm.getAppraise())) {
+			logger.info("评价描述：{}", demandForm.getAppraise());
+			demandForm.setAppraiseTime(new Date());
+		}
+
+		logger.info("教员：{} 试讲状态：{}", demandForm.getTeacherId(), demandForm.getStatus());
 		// 试讲通过
 		Long sid = connectMapper.updateStatus(demandForm);
 		if (sid != null) {
 			// 试讲不通过，返回三个形态信息
 			if (demandForm.getStatus() == 3) {
-				
-				//更新教员的聘用率
+
+				// 更新教员的聘用率
 				Integer teacherId = demandForm.getTeacherId();
 				TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
-				
+
 				TeacherPo teacherPo = new TeacherPo();
 				teacherPo.setTeacherId(teacherId);
-				
+
 				int chooseCount = teacherVo.getChooseCount();
-				
+
 				double newRate = 0;
 				if (chooseCount != 0) {
 					newRate = teacherVo.getEmployCount() / chooseCount;
 				}
 
-        		logger.info("employCount={} , chooseCount={} , newRate={}",  teacherVo.getEmployCount(),
-        				chooseCount, newRate);
+				logger.info("employCount={} , chooseCount={} , newRate={}", teacherVo.getEmployCount(), chooseCount,
+						newRate);
 
-        		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
-        		logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
-        		
-        		teacherPo.setEmployRate(RegUtils.doubleToPersent().format(bg));
-        		
-        		userInfoMapper.updateUserInfo(teacherPo);
-				
-				
-				
+				BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
+				logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
+
+				teacherPo.setEmployRate(RegUtils.doubleToPersent().format(bg));
+
+				userInfoMapper.updateUserInfo(teacherPo);
+
 				// 首先查下订单类型，区分是快速请家教或者单独预约，如果是快速请家教，再区分当前试讲未通过是不是唯一报名的教员
 				List<StudentDemandVo> studentDemandVos = studentDemandMapper.listDemandAndTeacher(demandForm);
 				if (CollectionUtils.isEmpty(studentDemandVos)) {
@@ -658,7 +654,6 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 					}
 				}
 			}
-
 
 			return ApiResponse.success("状态修改成功");
 		}
@@ -713,24 +708,27 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	public ApiResponse homepageInfo() {
 		// 检索科目信息
 		List<TeachBranchVo> branchVos = teachBranchMapper.queryAllTeachBranchs();
-		List<CodeInfoVo> codeInfoVos = branchVos.stream().map(m ->
-				new CodeInfoVo(m.getTeachBranchId().toString(), m.getTeachBranchName())).collect(Collectors.toList());
+		List<CodeInfoVo> codeInfoVos = branchVos.stream()
+				.map(m -> new CodeInfoVo(m.getTeachBranchId().toString(), m.getTeachBranchName()))
+				.collect(Collectors.toList());
 
-		List<String> mainList = Arrays.stream(MainSubjectEnum.values()).map(mv -> mv.getValue()).collect(Collectors.toList());
+		List<String> mainList = Arrays.stream(MainSubjectEnum.values()).map(mv -> mv.getValue())
+				.collect(Collectors.toList());
 
-		List<CodeInfoVo> collects = codeInfoVos.stream().filter(f ->
-				!mainList.stream().anyMatch(s -> f.getValue().contains(s))).collect(Collectors.toList());
+		List<CodeInfoVo> collects = codeInfoVos.stream()
+				.filter(f -> !mainList.stream().anyMatch(s -> f.getValue().contains(s))).collect(Collectors.toList());
 
 		mainList.forEach(m -> {
 			CodeInfoVo vo = new CodeInfoVo();
-			String code = codeInfoVos.stream().filter(f ->
-					f.getValue().contains(m)).map(p -> p.getKey()).collect(Collectors.joining(","));
+			String code = codeInfoVos.stream().filter(f -> f.getValue().contains(m)).map(p -> p.getKey())
+					.collect(Collectors.joining(","));
 			vo.setKey(code);
 			vo.setValue(m);
-            Optional<SubjectPictureEnum> op = Arrays.stream(SubjectPictureEnum.values()).filter(f -> f.getCode().equalsIgnoreCase(m)).findFirst();
-            if (op.isPresent()) {
-                vo.setPictureName(op.get().getValue());
-            }
+			Optional<SubjectPictureEnum> op = Arrays.stream(SubjectPictureEnum.values())
+					.filter(f -> f.getCode().equalsIgnoreCase(m)).findFirst();
+			if (op.isPresent()) {
+				vo.setPictureName(op.get().getValue());
+			}
 			collects.add(vo);
 		});
 
@@ -746,7 +744,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 		demandForm.setUpdateTime(new Date());
 		// 检索科目信息
-        studentDemandMapper.updateAppraise(demandForm);
+		studentDemandMapper.updateAppraise(demandForm);
 		return ApiResponse.success("评价成功");
 	}
 
@@ -780,11 +778,10 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		StudentDemandVo studentDemandDetail = studentDemandMapper.queryStudentDemandDetailBySid(sid);
 
 		List<TeacherVo> list = userInfoMapper.queryStudentDemandSignUpTeacher(sid);
-		
 
 		boolean flag = false;
 
-		if ( list != null && list.size() > 0 ) {
+		if (list != null && list.size() > 0) {
 
 			for (TeacherVo t : list) {
 				if (t.getTeacherId() == teacherId) {
@@ -796,46 +793,46 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			}
 
 			map.put("signUpTeacherInfo", list);
-			
-		}else {
+
+		} else {
 			map.put("signUpTeacherInfo", "");
 		}
-		
-		if(studentDemandDetail.getDemandType() == 1) {
-			
+
+		if (studentDemandDetail.getDemandType() == 1) {
+
 			flag = true;
 			map.put("studentDemandDetail", studentDemandDetail);
-			map.put("singUpStatus", flag);//singUpStatus为false的可以报名
+			map.put("singUpStatus", flag);// singUpStatus为false的可以报名
 		}
-		
+
 		List<StudentDemandVo> sdcList = studentDemandMapper.queryStudentDemandDetailSignStatusBySid(sid);
-		
-if(sdcList.size() > 0 && list.size() > 0 ) {
-			
-			for(StudentDemandVo sd : sdcList) {
-				
-				if(sd.getTeacherId() == teacherId) {
+
+		if (sdcList.size() > 0 && list.size() > 0) {
+
+			for (StudentDemandVo sd : sdcList) {
+
+				if (sd.getTeacherId() == teacherId) {
 					flag = true;
 
 					break;
 				}
-				
-				if(sd.getStatus() != null && StringUtils.isNoneBlank(sd.getStatus().toString())) {
-					
-					if(sd.getStatus() != 0 && sd.getStatus() != 3) {
+
+				if (sd.getStatus() != null && StringUtils.isNoneBlank(sd.getStatus().toString())) {
+
+					if (sd.getStatus() != 0 && sd.getStatus() != 3) {
 						flag = true;
 
 						break;
 					}
 				}
 			}
-			
-			logger.info("订单id:{} , 教员id:{} , 报名人数：{} ,是否报过名:{}" , sid , teacherId , list.size() ,flag);
-			
+
+			logger.info("订单id:{} , 教员id:{} , 报名人数：{} ,是否报过名:{}", sid, teacherId, list.size(), flag);
+
 		}
 
 		map.put("studentDemandDetail", studentDemandDetail);
-		map.put("singUpStatus", flag);//singUpStatus为false的可以报名
+		map.put("singUpStatus", flag);// singUpStatus为false的可以报名
 
 		return map;
 	}
@@ -910,26 +907,25 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 					String weekDay = DateUtil.dateToWeek(DateUtil.getStandardDay(date));
 
 					Date lastDateTime = new Date();
-					
+
 					// 学员所选的授课时段中,存在比当前日期(四)靠后的时间段(一、三、五)
 					if (Integer.valueOf(weekDay) < Integer.valueOf(tp.getWeek())) {
-						
-						int day = Integer.valueOf(tp.getWeek()) -  Integer.valueOf(weekDay);
-						
-						Date afterDay = DateUtil.addDay(date , day);
-						
+
+						int day = Integer.valueOf(tp.getWeek()) - Integer.valueOf(weekDay);
+
+						Date afterDay = DateUtil.addDay(date, day);
+
 						lastDateTime = afterDay;
 					}
 
 					if (Integer.valueOf(weekDay) >= Integer.valueOf(tp.getWeek())) {
-						
+
 						int day = Integer.valueOf(weekDay) - Integer.valueOf(tp.getWeek());
-						
-						Date beforeDay = DateUtil.subDay(date , -day);
-						
+
+						Date beforeDay = DateUtil.subDay(date, -day);
+
 						lastDateTime = DateUtil.addDay(beforeDay, 7);
 					}
-					
 
 					Map<String, Object> map = new HashMap<>();
 					map.put("week", tp.getWeek());
@@ -980,14 +976,6 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 					String orderEndDate = DateUtil.getAfterDay(
 							DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)), (weekNum - 1) * 7);
 
-//					System.out.println(DateUtil.getMonday(DateUtil.getStandardDay(orderStartTime)));
-//					System.out.println(DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)));
-//					System.out.println("----------");
-//					System.out.println(DateUtil.getAfterDay(DateUtil.getMonday(DateUtil.getStandardDay(orderStartTime)),
-//							(weekNum - 1) * 7));
-//					System.out.println(DateUtil.getAfterDay(DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)),
-//							(weekNum - 1) * 7));
-
 					studentDemandVo.setOrderStartDate(orderStartDate);
 					studentDemandVo.setOrderEndDate(orderEndDate);
 
@@ -1014,8 +1002,8 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 
 		String orderTeachTime = demandForm.getOrderTeachTime();
 		Integer demandId = demandForm.getDemandId();
-		
-		logger.info("教员ID = {} ,订单id = {} , 确定的试讲时间 = {}" , demandForm.getTeacherId() , demandId , orderTeachTime);
+
+		logger.info("教员ID = {} ,订单id = {} , 确定的试讲时间 = {}", demandForm.getTeacherId(), demandId, orderTeachTime);
 
 //		String nowDate = DateUtil.getStandardDay(new Date());
 //
@@ -1038,9 +1026,9 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		studentDemandForm.setDemandId(demandForm.getDemandId());
 
 		int i = studentDemandMapper.updateNewTrialDemandStatus(studentDemandForm);
-		
+
 		Integer teacherId = demandForm.getTeacherId();
-		
+
 		PointsLogPo pointsLogPo = new PointsLogPo();
 		pointsLogPo.setTeacherId(teacherId);
 		pointsLogPo.setGetPointsCounts(10);
@@ -1053,19 +1041,16 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		pointsLogPo.setUpdateUser(String.valueOf(teacherId));
 
 		int k = pointsLogMapper.addTeacherPointsLog(pointsLogPo);
-		
-		
-		
-		
+
 		TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
 		TeacherPo teacher = new TeacherPo();
 		teacher.setTeacherId(teacherId);
 		teacher.setTeacherPoints(teacherVo.getTeacherPoints() + 10);
 		teacher.setUpdateTime(new Date());
 		teacher.setUpdateUser(teacherVo.getName());
-		logger.info("教员ID = {} , beforeTeacherPoints = {} , afterTeacherPoints = {}" , demandForm.getTeacherId() , teacherVo.getTeacherPoints() , teacherVo.getTeacherPoints()+10);
-		
-		
+		logger.info("教员ID = {} , beforeTeacherPoints = {} , afterTeacherPoints = {}", demandForm.getTeacherId(),
+				teacherVo.getTeacherPoints(), teacherVo.getTeacherPoints() + 10);
+
 		// 更新教员对所有报名订单的数量
 		Integer beforeChooseCount = teacherVo.getChooseCount();
 		Integer afterChooseCount = teacherVo.getChooseCount() + 1;
@@ -1075,10 +1060,10 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		teacher.setChooseCount(afterChooseCount);
 		teacher.setTeacherId(teacherId);
 		teacher.setUpdateTime(new Date());
- 		
- 		logger.info("teacherId = {} , ChooseCountBefore={} , ChooseCountAfter={}", teacherId , beforeChooseCount,
- 				afterChooseCount);
- 		
+
+		logger.info("teacherId = {} , ChooseCountBefore={} , ChooseCountAfter={}", teacherId, beforeChooseCount,
+				afterChooseCount);
+
 // 		teacher.setEmployCount(afterEmployCount);
 
 //		double newRate = 0;
@@ -1094,38 +1079,39 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 //		logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
 //		// 更新该教员的聘用率
 //		teacher.setEmployRate(RegUtils.doubleToPersent().format(bg));
-		
+
 		int m = userInfoMapper.updateUserInfo(teacher);
-		
-		if (i >= 0 && j >= 0 && k>0 && m> 0) {
-			
+
+		if (i >= 0 && j >= 0 && k > 0 && m > 0) {
+
 			StudentDemandVo sdv = studentDemandMapper.queryStudentDemandDetailBySid(demandId);
 			String studentOpenId = sdv.getOpenId();
-			
+
 			JSONObject data = new JSONObject();
-			
+
 			Map<String, Object> keyMap1 = new HashMap<String, Object>();
 			keyMap1.put("value", teacherVo.getName());
 			// 授课老师
 			data.put("name1", keyMap1);
-			
+
 			Map<String, Object> keyMap2 = new HashMap<String, Object>();
 			keyMap2.put("value", orderTeachTime);
 			// 授课时间
 			data.put("date3", keyMap2);
-			
+
 			Map<String, Object> keyMap3 = new HashMap<String, Object>();
 			keyMap3.put("value", sdv.getTeachBranchName());
 			// 课程内容
 			data.put("thing4", keyMap3);
-			
-			logger.info("教员ID = {} , 订单id = {} , 学员id = {} , 试讲时间  =  {}  , 课程内容 = {}" , demandForm.getTeacherId() , demandId , sdv.getStudentId() , orderTeachTime , sdv.getTeachBranchName());
-			
-			JSONObject sendRsult = SendWXMessageUtils.sendSubscribeMessage(studentOpenId, Constant.CLASS_SUBSCRIBE_MESSAGE, data);
-			
-			logger.info("预约成功消息发送的结果： " + sendRsult.getString("errcode") + " "
-					+ sendRsult.getString("errmsg"));
-			
+
+			logger.info("教员ID = {} , 订单id = {} , 学员id = {} , 试讲时间  =  {}  , 课程内容 = {}", demandForm.getTeacherId(),
+					demandId, sdv.getStudentId(), orderTeachTime, sdv.getTeachBranchName());
+
+			JSONObject sendRsult = SendWXMessageUtils.sendSubscribeMessage(studentOpenId,
+					Constant.CLASS_SUBSCRIBE_MESSAGE, data);
+
+			logger.info("预约成功消息发送的结果： " + sendRsult.getString("errcode") + " " + sendRsult.getString("errmsg"));
+
 			return 1;
 		}
 
@@ -1144,7 +1130,7 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 		String orderTeachTime = demandForm.getOrderTeachTime();
 
 		logger.info("查询给定日期课程表的时间：{}", orderTeachTime);
-		
+
 		List<StudentDemandVo> studentDemandlist = new ArrayList<>();
 		try {
 			// 订单开始时所在的周的周一的日期
@@ -1153,11 +1139,10 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 			// 订单结束时所在的周的周日的日期
 			String orderEndDate = DateUtil.getSunday(orderTeachTime);
 
-
 			StudentDemandPo studentDemandPo = new StudentDemandPo();
 			studentDemandPo.setTeacherId(demandForm.getTeacherId());
-			studentDemandPo.setOrderStartDate(orderStartDate+ " 00:00:00");
-			studentDemandPo.setOrderEndDate(orderEndDate+" 23:59:59");
+			studentDemandPo.setOrderStartDate(orderStartDate + " 00:00:00");
+			studentDemandPo.setOrderEndDate(orderEndDate + " 23:59:59");
 
 			studentDemandlist = studentDemandMapper.queryTimeTableByTeacherId(studentDemandPo);
 
@@ -1238,18 +1223,18 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 
 		Integer studentId = studentDemandPo.getStudentId();
 
-		//结课
-		if(teacherId == null && studentId!= null) {
+		// 结课
+		if (teacherId == null && studentId != null) {
 			studentDemandPo.setStatus(2);
 		}
 
 		int k = 0;
-		int l = 0; 
-		
-		//打卡
-		if(teacherId != null && studentId == null) {
+		int l = 0;
+
+		// 打卡
+		if (teacherId != null && studentId == null) {
 			studentDemandPo.setStatus(1);
-			
+
 			PointsLogPo pointsLogPo = new PointsLogPo();
 			pointsLogPo.setTeacherId(teacherId);
 			pointsLogPo.setGetPointsCounts(5);
@@ -1262,24 +1247,22 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 			pointsLogPo.setUpdateUser(String.valueOf(teacherId));
 
 			k = pointsLogMapper.addTeacherPointsLog(pointsLogPo);
-			
+
 			TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
-			
-			//增加教员积分
+
+			// 增加教员积分
 			TeacherPo teacher = new TeacherPo();
 			teacher.setTeacherId(teacherId);
 			teacher.setTeacherPoints(teacherVo.getTeacherPoints() + 5);
 			teacher.setUpdateTime(new Date());
 			teacher.setUpdateUser(teacherVo.getName());
-			
+
 			userInfoMapper.updateUserInfo(teacher);
 		}
 
-		 
-		
 		int i = studentDemandMapper.updateTimeTableByTeacherId(studentDemandPo);
-		
-		if (i >= 0 && k>0 && l > 0) {
+
+		if (i >= 0 && k > 0 && l > 0) {
 			return 1;
 		}
 
@@ -1289,203 +1272,197 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 	@Override
 	@Transactional
 	public int insert(StudentDemandConnectForm studentDemandConnect) {
-		
+
 		Integer teacherId = studentDemandConnect.getTeacherId();
-		
+
 		TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
-		
+
 		int auditStatus = teacherVo.getAuditStatus();
-		
-		logger.info("教员id:{},教员的简历审核状态:{}" , teacherId , auditStatus);
-		
-		if(auditStatus == 0 || auditStatus == 2) {
+
+		logger.info("教员id:{},教员的简历审核状态:{}", teacherId, auditStatus);
+
+		if (auditStatus == 0 || auditStatus == 2) {
 			logger.info("您的身份信息还未审核通过，请至“我的”-“简历信息”中完善信息");
 			return -5;
 		}
-		
+
 		int count = connectMapper.getCount(studentDemandConnect);
-		
-		if(count > 0) {
+
+		if (count > 0) {
 			logger.info("已报名该订单，请不要重复报名该订单！");
 			return -3;
 		}
-		
+
 		int num = connectMapper.querySignUpPersonByDemandId(studentDemandConnect);
-		
-		if(num > 0) {
+
+		if (num > 0) {
 			logger.info("该订单已经被锁定，请稍后尝试报名该订单！");
 			return -4;
 		}
-		
+
 		studentDemandConnect.setStatus(0);
 		studentDemandConnect.setDeleteStatus(0);
 		studentDemandConnect.setCreateTime(new Date());
 		studentDemandConnect.setCreateUser(studentDemandConnect.getTeacherId());
-		
+
 		int i = connectMapper.insert(studentDemandConnect);
-		
+
 		Integer demandId = studentDemandConnect.getDemandId();
-		
+
 		StudentDemandConnectForm sdc = new StudentDemandConnectForm();
 		sdc.setDemandId(demandId);
-		
-		StudentDemandVo studentDemandVo= studentDemandMapper.queryStudentDemandDetailBySid(demandId);
-		
+
+		StudentDemandVo studentDemandVo = studentDemandMapper.queryStudentDemandDetailBySid(demandId);
+
 		int demandPersonCount = studentDemandVo.getDemandSignUpNum();
-		
-		
+
 		StudentDemandPo studentDemandPo = new StudentDemandPo();
 		studentDemandPo.setDemandId(demandId);
-		studentDemandPo.setDemandSignUpNum(demandPersonCount+1);
+		studentDemandPo.setDemandSignUpNum(demandPersonCount + 1);
 		studentDemandPo.setUpdateTime(new Date());
-		
-		
-		
-		int  j = studentDemandMapper.updateDemandSignNum(studentDemandPo);
-		
-		if(i > 0  && j>0) {
-			
+
+		int j = studentDemandMapper.updateDemandSignNum(studentDemandPo);
+
+		if (i > 0 && j > 0) {
+
 			String openId = studentDemandVo.getOpenId();
-			
+
 			int demandSignUpNum = studentDemandVo.getDemandSignUpNum();
-			
-			logger.info("订单号：{}，之前的报名人数：{}，之后的报名人数：{}" ,demandId , demandSignUpNum ,demandSignUpNum+1);
-			
+
+			logger.info("订单号：{}，之前的报名人数：{}，之后的报名人数：{}", demandId, demandSignUpNum, demandSignUpNum + 1);
+
 			JSONObject data = new JSONObject();
-			
+
 			Map<String, Object> keyMap1 = new HashMap<String, Object>();
-			keyMap1.put("value", demandSignUpNum+1);
+			keyMap1.put("value", demandSignUpNum + 1);
 			// 报名人数
 			data.put("number4", keyMap1);
-			
+
 			Map<String, Object> keyMap2 = new HashMap<String, Object>();
 			keyMap2.put("value", new Date());
 			// 截止时间
 			data.put("date5", keyMap2);
-			
-			
-			JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(openId, Constant.CHANGE_SIGN_NUM_RESULT_MESSAGE, data);
-			
-			logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") + " "
-					+ sendRedPackRsult.getString("errmsg"));
-			
-			
-			
+
+			JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(openId,
+					Constant.CHANGE_SIGN_NUM_RESULT_MESSAGE, data);
+
+			logger.info(
+					"提现消息发送的结果： " + sendRedPackRsult.getString("errcode") + " " + sendRedPackRsult.getString("errmsg"));
+
 			return 1;
 		}
-		
+
 		return -1;
 	}
-	
+
 	@Override
-	public Map<String , Object> validateSignParameters(StudentDemandConnectForm demandForm) {
-		
-		logger.info("报名的教员id:{},订单id:{},前端传值--授课科目id:{} , 授课年级id: {} , 授课区域id{} , 授课时间{}" ,
-				demandForm.getTeacherId() , demandForm.getDemandId() , demandForm.getTeachBranchId() , demandForm.getTeachGradeId()
-				,demandForm.getParameterId() , JSON.toJSONString(demandForm.getTimeList()));
-		
+	public Map<String, Object> validateSignParameters(StudentDemandConnectForm demandForm) {
+
+		logger.info("报名的教员id:{},订单id:{},前端传值--授课科目id:{} , 授课年级id: {} , 授课区域id{} , 授课时间{}", demandForm.getTeacherId(),
+				demandForm.getDemandId(), demandForm.getTeachBranchId(), demandForm.getTeachGradeId(),
+				demandForm.getParameterId(), JSON.toJSONString(demandForm.getTimeList()));
+
 		boolean flag = true;
-		
+
 		boolean timeFlag = false;
-		
-		Map<String , Object> map = new HashMap<String , Object>();
-		
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
 		int teacherId = demandForm.getTeacherId();
 
 		TeacherVo t = userInfoMapper.queryTeacherHomeInfos(teacherId);
-		
-		String teachBranchIdDB = t.getTeachBrance()+","+t.getTeachBranchSlave();
-		
-		int teachBranchId =demandForm.getTeachBranchId();
-		
-		logger.info("订单需求授课科目id:{} , 报名教员的授课科目id: {}" , teachBranchId , teachBranchIdDB);
-		
-			
-		if(teachBranchIdDB.contains(String.valueOf(teachBranchId)) == false) {
+
+		String teachBranchIdDB = t.getTeachBrance() + "," + t.getTeachBranchSlave();
+
+		int teachBranchId = demandForm.getTeachBranchId();
+
+		logger.info("订单需求授课科目id:{} , 报名教员的授课科目id: {}", teachBranchId, teachBranchIdDB);
+
+		if (teachBranchIdDB.contains(String.valueOf(teachBranchId)) == false) {
 			flag = false;
-			
+
 			map.put("validateCode", flag);
 			map.put("validateResult", "该需求的科目不在您的授课范围内，请谨慎报名。");
-			
+
 			return map;
 		}
-		
+
 		int teachGradeId = demandForm.getTeachGradeId();
 		String teachGradeIdDB = t.getTeachGrade();
-		
-		logger.info("订单需求授课年级id:{} , 报名教员的授课年级id: {}" , teachGradeId , teachGradeIdDB);
-		
-		if(teachGradeIdDB.contains(String.valueOf(teachGradeId)) == false) {
+
+		logger.info("订单需求授课年级id:{} , 报名教员的授课年级id: {}", teachGradeId, teachGradeIdDB);
+
+		if (teachGradeIdDB.contains(String.valueOf(teachGradeId)) == false) {
 			flag = false;
-			
+
 			map.put("validateCode", flag);
 			map.put("validateResult", "该需求的年级不在您的授课范围内，请谨慎报名。");
-			
+
 			return map;
 		}
-		
+
 		int areaId = demandForm.getParameterId();
-		
+
 		String teachAddressDB = t.getTeachAddress();
-		
-		logger.info("订单需求授课区域id:{} , 报名教员的授课区域id: {}" , areaId , teachAddressDB);
-		
-		if(teachAddressDB.contains(String.valueOf(areaId)) == false) {
-			
+
+		logger.info("订单需求授课区域id:{} , 报名教员的授课区域id: {}", areaId, teachAddressDB);
+
+		if (teachAddressDB.contains(String.valueOf(areaId)) == false) {
+
 			flag = false;
-			
+
 			map.put("validateCode", flag);
 			map.put("validateResult", "该需求的上课区域不在您的授课区域内，请谨慎报名。");
-			
+
 			return map;
 		}
-		
+
 		String teachTimeDB = t.getTeachTime();
-		
+
 		List<TeachTimePo> teachTimePoa = demandForm.getTimeList();
-		
+
 		List<TeachTimePo> teachTimePob = JSON.parseArray(teachTimeDB, TeachTimePo.class);
-		
-		logger.info("订单需求授课时间:{} , 报名教员的授课时间: {}" , JSON.toJSONString(demandForm.getTimeList()) , teachTimeDB);
-		
-		for(TeachTimePo ttpa:teachTimePoa) {
-			
-			for(TeachTimePo ttpb:teachTimePob) {
-				
-				if(ttpa.getTime().equalsIgnoreCase(ttpb.getTime()) && ttpa.getWeek().equalsIgnoreCase(ttpb.getWeek())) {
+
+		logger.info("订单需求授课时间:{} , 报名教员的授课时间: {}", JSON.toJSONString(demandForm.getTimeList()), teachTimeDB);
+
+		for (TeachTimePo ttpa : teachTimePoa) {
+
+			for (TeachTimePo ttpb : teachTimePob) {
+
+				if (ttpa.getTime().equalsIgnoreCase(ttpb.getTime())
+						&& ttpa.getWeek().equalsIgnoreCase(ttpb.getWeek())) {
 					timeFlag = true;
 				}
 			}
-			
+
 		}
-		
-		if(timeFlag == false) {
-			
+
+		if (timeFlag == false) {
+
 			flag = false;
-			
+
 			map.put("validateCode", flag);
 			map.put("validateResult", "该需求的预计上课时段不在您的授课时间内，请谨慎报名。");
-			
+
 			return map;
 		}
-		
-		
+
 		map.put("validateCode", true);
 		map.put("validateResult", "可以报名。");
-		
+
 		return map;
-		
+
 	}
 
 	@Override
 	public List<StudentDemandVo> queryAllWaitForTrailTimeDemandOrderList(
 			StudentDemandConnectForm studentDemandConnectForm) {
-		
+
 		Date createTime = DateUtil.addHour(new Date(), -1);
 		studentDemandConnectForm.setCreateTime(createTime);
-		
+
 		List<StudentDemandVo> list = connectMapper.queryAllWaitForTrailTimeDemandOrderList(studentDemandConnectForm);
-		
+
 		return list;
 	}
 
