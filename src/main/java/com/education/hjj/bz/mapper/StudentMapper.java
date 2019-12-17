@@ -32,5 +32,5 @@ public interface StudentMapper {
 
     List<StudentVo> loadAll(Long id);
 
-    int findByOpenId(@Param("openId") String openId);
+	StudentVo findByOpenId(@Param("openId") String openId);
 }

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.education.hjj.bz.entity.StudentLogPo;
+import com.education.hjj.bz.entity.vo.UserIndentityVo;
 import com.education.hjj.bz.formBean.StudentDemandForm;
 import com.education.hjj.bz.mapper.StudentMapper;
 import com.education.hjj.bz.mapper.TeacherMapper;
@@ -25,17 +26,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.alibaba.fastjson.JSONObject;
-import com.education.hjj.bz.entity.PointsLogPo;
 import com.education.hjj.bz.entity.vo.StudentVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.enums.ErrorEnum;
-import com.education.hjj.bz.enums.PonitsLog;
 import com.education.hjj.bz.formBean.LoginForm;
 import com.education.hjj.bz.formBean.LogoutForm;
-import com.education.hjj.bz.formBean.PointsLogForm;
 import com.education.hjj.bz.model.UserDto;
 import com.education.hjj.bz.model.common.ResponseBean;
-//import com.education.hjj.bz.redis.RedisService;
 import com.education.hjj.bz.util.AesCipherUtil;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.Constant;
@@ -122,18 +119,35 @@ public class LoginController {
 	 **/
 	@ApiOperation("获取用户信息")
 	@PostMapping("/getUserIdentity")
-	public ApiResponse getUserInfo(@RequestBody StudentDemandForm demandForm) {
+	public ApiResponse getUserInfo(@RequestBody StudentDemandForm demandForm, HttpServletResponse httpServletResponse) {
 		String code = demandForm.getCode();//获取微信服务器授权返回的code值
 		String openId = getOpenId(code);
 
-		Integer studentCount = studentMapper.findByOpenId(openId);
-		if (studentCount != null && studentCount > 0) {
-			return ApiResponse.success(1);
+		UserIndentityVo vo = new UserIndentityVo();
+		StudentVo studentVo = studentMapper.findByOpenId(openId);
+		if (studentVo != null) {
+			vo.setType(1);
+			vo.setUserId(studentVo.getSid());
+			vo.setPhone(studentVo.getParentPhoneNum());
+			vo.setUserName(studentVo.getStudentName());
+
+			String token = JwtUtil.sign(studentVo.getParentPhoneNum(), String.valueOf(System.currentTimeMillis()));
+			httpServletResponse.setHeader(Constant.TOKEN, token);
+			httpServletResponse.setHeader("Access-Control-Expose-Headers", Constant.TOKEN);
+			return ApiResponse.success(vo);
 		}
 
-		Integer teacherCount = teacherMapper.findByOpenId(openId);
-		if (teacherCount != null && teacherCount > 0) {
-			return ApiResponse.success(2);
+		TeacherVo teacherVo = teacherMapper.findByOpenId(openId);
+		if (teacherVo != null) {
+			vo.setType(2);
+			vo.setUserId(Long.valueOf(teacherVo.getTeacherId()));
+			vo.setPhone(teacherVo.getTelephone());
+			vo.setUserName(teacherVo.getName());
+
+			String token = JwtUtil.sign(studentVo.getParentPhoneNum(), String.valueOf(System.currentTimeMillis()));
+			httpServletResponse.setHeader(Constant.TOKEN, token);
+			httpServletResponse.setHeader("Access-Control-Expose-Headers", Constant.TOKEN);
+			return ApiResponse.success(vo);
 		}
 		return ApiResponse.error("当前用户为注册");
 	}
