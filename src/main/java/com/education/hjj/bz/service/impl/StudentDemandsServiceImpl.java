@@ -468,6 +468,20 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		paymentLog.setPaymentAccount(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString()));
 		userAccountLogMapper.insertUserAccountLog(paymentLog);
 
+		// 结课，教员+5分
+		PointsLogPo pointsLogPo = new PointsLogPo();
+		pointsLogPo.setTeacherId(courseInfoForm.getTeacherId());
+		pointsLogPo.setGetPointsCounts(5);
+		pointsLogPo.setGetPointsType(3);
+		pointsLogPo.setGetPointsDesc("结课");
+		pointsLogPo.setStatus(1);
+		pointsLogPo.setCreateTime(new Date());
+		pointsLogPo.setCreateUser(String.valueOf(courseInfoForm.getTeacherId()));
+		pointsLogPo.setUpdateTime(new Date());
+		pointsLogPo.setUpdateUser(String.valueOf(courseInfoForm.getTeacherId()));
+
+		pointsLogMapper.addTeacherPointsLog(pointsLogPo);
+
 		return ApiResponse.success("结课成功");
 	}
 
@@ -745,6 +759,38 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		demandForm.setUpdateTime(new Date());
 		// 检索科目信息
 		studentDemandMapper.updateAppraise(demandForm);
+
+		// 涉及到减分，需要先检索教员的总分数
+		long point = pointsLogMapper.selectSumPointByTeacherId(demandForm.getTeacherId());
+
+		// 结课，教员+5分
+		PointsLogPo pointsLogPo = new PointsLogPo();
+		pointsLogPo.setTeacherId(demandForm.getTeacherId());
+		// 中评，减20分
+		if (demandForm.getAppraiseLevel() == 2) {
+			if (point >= 20) {
+				pointsLogPo.setGetPointsCounts(-20);
+			} else {
+				pointsLogPo.setGetPointsCounts((int) -point);
+			}
+			pointsLogPo.setGetPointsType(6);
+			pointsLogPo.setGetPointsDesc("中评");
+		} else {
+			if (point >= 30) {
+				pointsLogPo.setGetPointsCounts(-30);
+			} else {
+				pointsLogPo.setGetPointsCounts((int) -point);
+			}
+			pointsLogPo.setGetPointsType(5);
+			pointsLogPo.setGetPointsDesc("差评");
+		}
+		pointsLogPo.setStatus(1);
+		pointsLogPo.setCreateTime(new Date());
+		pointsLogPo.setCreateUser(String.valueOf(demandForm.getTeacherId()));
+		pointsLogPo.setUpdateTime(new Date());
+		pointsLogPo.setUpdateUser(String.valueOf(demandForm.getTeacherId()));
+
+		pointsLogMapper.addTeacherPointsLog(pointsLogPo);
 		return ApiResponse.success("评价成功");
 	}
 

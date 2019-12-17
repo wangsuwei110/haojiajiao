@@ -15,4 +15,6 @@ public interface PointsLogMapper {
 	List<PointsLogVo> queryAllPointsLogByTeacherId(PointsLogForm pointsLogForm);
 	
 	int addTeacherPointsLog(PointsLogPo pointsLogPo);
+
+	long selectSumPointByTeacherId(@Param("teacherId") Integer teacherId);
 }

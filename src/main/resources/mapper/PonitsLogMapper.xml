@@ -69,5 +69,11 @@
 			#{updateUser}
     	)	
     </insert>
+
+	<select id="selectSumPointByTeacherId" parameterType="integer" resultType="java.lang.Long">
+		select sum(get_points_counts)
+		from teacher_points_log
+		where teacher_id = #{teacherId}
+	</select>
     
 </mapper>
