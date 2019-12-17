@@ -980,14 +980,6 @@ if(sdcList.size() > 0 && list.size() > 0 ) {
 					String orderEndDate = DateUtil.getAfterDay(
 							DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)), (weekNum - 1) * 7);
 
-//					System.out.println(DateUtil.getMonday(DateUtil.getStandardDay(orderStartTime)));
-//					System.out.println(DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)));
-//					System.out.println("----------");
-//					System.out.println(DateUtil.getAfterDay(DateUtil.getMonday(DateUtil.getStandardDay(orderStartTime)),
-//							(weekNum - 1) * 7));
-//					System.out.println(DateUtil.getAfterDay(DateUtil.getSunday(DateUtil.getStandardDay(orderStartTime)),
-//							(weekNum - 1) * 7));
-
 					studentDemandVo.setOrderStartDate(orderStartDate);
 					studentDemandVo.setOrderEndDate(orderEndDate);
 

@@ -606,7 +606,8 @@
 			sdc.status as demandSignStatus,
 			appraise,
 			sd.parameter_id,
-			p.name as parameterName
+			p.name as parameterName,
+			sd.status
 			
 		FROM
 			student_demand_connect sdc
