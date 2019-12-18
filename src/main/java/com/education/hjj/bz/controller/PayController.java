@@ -459,7 +459,13 @@ public class PayController {
                 paymentLog.setPaymentStreamId(randomNonceStr);
                 paymentLog.setPaymentPersonId(demandVo.getStudentId());
                 paymentLog.setPaymentPersonName(demandVo.getStudentName());
-                paymentLog.setPaymentType(3);
+                // 续课
+                if (isResumption != null && isResumption == 1) {
+					paymentLog.setPaymentType(4);
+				} else {
+					paymentLog.setPaymentType(2);
+				}
+
                 // 统计了课时
 				List<WeekTimeVo> list = JSON.parseArray(demandForm.getTimeRange(), WeekTimeVo.class);
                 paymentLog.setPaymentDesc("购买"+ demandForm.getWeekNum() + "周" + demandForm.getWeekNum() * list.size() + "课时");
