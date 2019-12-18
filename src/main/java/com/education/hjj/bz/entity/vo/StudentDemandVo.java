@@ -158,6 +158,8 @@ public class StudentDemandVo {
 	private Integer isResumption;
 
 	private String openId;
+	
+	private String orderMoneyList;
 
 	public String getTeacherPhone() {
 		return teacherPhone;
@@ -565,6 +567,14 @@ public class StudentDemandVo {
 
 	public void setOpenId(String openId) {
 		this.openId = openId;
+	}
+
+	public String getOrderMoneyList() {
+		return orderMoneyList;
+	}
+
+	public void setOrderMoneyList(String orderMoneyList) {
+		this.orderMoneyList = orderMoneyList;
 	}
 
 }

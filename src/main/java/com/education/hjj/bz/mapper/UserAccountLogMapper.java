@@ -23,4 +23,6 @@ public interface UserAccountLogMapper {
 	TeacherAccountOperateLogVo queryUserAccountLogDetail(Integer paymentId);
 	
 	List<TeacherAccountOperateLogVo> queryUserAccountLogListByEducational(TeacherAccountLogForm teacherAccountLogForm);
+	
+	List<TeacherAccountOperateLogVo> queryStudentDemandAccountLogList(TeacherAccountOperateLogPo teacherAccountOperateLogPo);
 }

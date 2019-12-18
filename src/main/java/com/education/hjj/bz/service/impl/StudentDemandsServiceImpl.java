@@ -39,6 +39,7 @@ import com.education.hjj.bz.entity.vo.StudentDemandConnectVo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.entity.vo.StudentVo;
 import com.education.hjj.bz.entity.vo.TeachBranchVo;
+import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
 import com.education.hjj.bz.entity.vo.TeacherAccountVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
 import com.education.hjj.bz.entity.vo.WeekTimeVo;
@@ -1032,6 +1033,14 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			}
 
 		}
+		
+		int demandId = studentDemandVo.getSid();
+		
+		TeacherAccountOperateLogPo teacherAccountOperateLogPo = new TeacherAccountOperateLogPo();
+		teacherAccountOperateLogPo.setDemandId(demandId);
+		
+		List<TeacherAccountOperateLogVo> list = userAccountLogMapper.queryStudentDemandAccountLogList(teacherAccountOperateLogPo);
+		studentDemandVo.setOrderMoneyList(JSON.toJSONString(list));
 
 		return studentDemandVo;
 	}
