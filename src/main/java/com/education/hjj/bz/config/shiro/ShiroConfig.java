@@ -213,6 +213,9 @@ public class ShiroConfig {
         
         // 学员端查询所有的教员信息
         put("/userInfo/queryAllTeacherInfosByStudents", "anon");
+        
+        // 学员端查询所有的评价信息
+        put("/StudentDemand/queryGoodApprise", "anon");
 
     }};
 }
