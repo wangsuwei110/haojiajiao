@@ -21,6 +21,12 @@ import org.hyperic.sigar.Who;
 
 public class TestServerInfo {
 
+	
+	/*
+	 * Sigar有C，C#，Java和Perl API，java版的API为sigar.jar sigar.jar的底层是用C语言编写的，它通过本地方法来调用操作系统API来获取系统相关数据。
+	 * Windows操作系统下Sigar.jar 依赖sigar-amd64-winnt.dll或sigar-x86-winnt.dll，
+	 * linux 操作系统下则依赖libsigar-amd64-linux.so或libsigar-x86-linux.so
+	 */
 	public static void main(String[] args) {
         try {
             // System信息，从jvm获取
