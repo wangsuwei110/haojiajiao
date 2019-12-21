@@ -121,8 +121,8 @@ public class HomeController {
 				Integer demandGrade = fsdv.getDemandGrade();
 				Integer addressId = fsdv.getParameterId();
 				
-				logger.info("教员id：{}，教员教学区域：{}，教学科目：{}，教学年级{}，需求单的教学区域：{}，需求单的教学科目：{}，需求单的教学年级：{}" ,teacherVo.getTeacherId(), teachAddress , teachBranch , teachGrade
-						, addressId , subject , demandGrade);
+				logger.info("教员id：{}，教员教学区域：{}，教学科目：{}，教学年级{}，需求订单id:{} , 需求单的教学区域：{}，需求单的教学科目：{}，需求单的教学年级：{}" ,
+						teacherVo.getTeacherId(), teachAddress , teachBranch , teachGrade,fsdv.getSid(), addressId , subject , demandGrade);
 				
 				if(teachAddress.contains(String.valueOf(addressId)) && teachBranch.contains(String.valueOf(subject)) 
 						&& teachGrade.contains(String.valueOf(demandGrade))) {
