@@ -670,6 +670,12 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
 
 	@Override
+	public Integer queryAllTeacherCount(StudentTeacherInfoForm studentTeacherInfoForm) {
+
+		return userInfoMapper.queryAllTeacherCount(studentTeacherInfoForm);
+	}
+
+	@Override
 	public List<Map<String , Object>> queryAllTeacherInfosByEducational(StudentTeacherInfoForm studentTeacherInfoForm) {
 		
 		List<TeacherVo> teacherList = userInfoMapper.queryAllTeacherInfosByEducational(studentTeacherInfoForm);

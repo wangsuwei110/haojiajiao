@@ -468,6 +468,7 @@ public class UserInfoController {
 	@ResponseBody
 	public ApiResponse queryAllTeacherInfosByStudents(@RequestBody StudentTeacherInfoForm studentTeacherInfoForm) {
 		Map<String, Object> map = new HashMap<>();
+		Integer teacherCount = 0;
 		// 判断是否有学员id，如果有，则修改branchs的内容
 		if (studentTeacherInfoForm.getStudentId() != null
                 && StringUtils.isNotEmpty(studentTeacherInfoForm.getBranchs())) {
@@ -490,12 +491,21 @@ public class UserInfoController {
 				studentTeacherInfoForm.setBranchs(StringUtils.join(list, ","));
 			}
             studentTeacherInfoForm.setBranchList(Arrays.asList(studentTeacherInfoForm.getBranchs().split(",")));
+
+			teacherCount = userInfoService.queryAllTeacherCount(studentTeacherInfoForm);
+		} else {
+
+			// 游客则显示20条教员信息
+			if (studentTeacherInfoForm.getPageIndex() > 1) {
+				return ApiResponse.error("游客不能查看更能多教员");
+			}
+
+			teacherCount = userInfoService.queryAllTeacherCount(studentTeacherInfoForm);
 		}
 
-		List<TeacherVo> list = userInfoService.queryAllTeacherInfosByStudent(studentTeacherInfoForm);
-		
-		if(list.size() > 0) {
-		
+		if(teacherCount != null && teacherCount > 0) {
+			List<TeacherVo> list = userInfoService.queryAllTeacherInfosByStudent(studentTeacherInfoForm);
+
 			for(TeacherVo t:list) {
 				
 				String tags = t.getTeacherTag();
@@ -540,7 +550,7 @@ public class UserInfoController {
 			PageVo pageVo = new PageVo();
 		
 			pageVo.setDataList(list);
-			pageVo.setTotal(list.size());
+			pageVo.setTotal(teacherCount);
 
             map.put("pageVo", pageVo);
 			

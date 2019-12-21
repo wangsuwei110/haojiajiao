@@ -397,6 +397,24 @@
         </if>
         
     </select>
+
+	<select id="queryAllTeacherCount" resultType="java.lang.Integer" parameterType="com.education.hjj.bz.formBean.StudentTeacherInfoForm">
+		SELECT count(*)
+		FROM (
+			SELECT t.teacher_id
+			from
+				teacher t
+			where
+				t.status = 1
+			and
+				t.logon_status = 1
+			and
+				t.audit_status = 1
+			<if test="studentId == null">
+				limit 20
+			</if>
+		)t
+	</select>
     
     <!-- 学员端查询所有的教员信息列表 -->
     <select id="queryAllTeacherInfosByStudent" resultMap="userInfoResultMap" parameterType="com.education.hjj.bz.formBean.StudentTeacherInfoForm">
@@ -470,8 +488,11 @@
         <if test="createTime != null">
               ,t.create_time desc
         </if>
+		<if test="studentId = null">
+			limit 20
+		</if>
 
-        <if test="offset != null">
+        <if test="studentId != null and offset != null">
             <![CDATA[
             limit #{pageSize} offset #{offset}
             ]]>
