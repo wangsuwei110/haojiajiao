@@ -739,13 +739,20 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 					.collect(Collectors.joining(","));
 			vo.setKey(code);
 			vo.setValue(m);
-			Optional<SubjectPictureEnum> op = Arrays.stream(SubjectPictureEnum.values())
-					.filter(f -> f.getCode().equalsIgnoreCase(m)).findFirst();
-			if (op.isPresent()) {
-				vo.setPictureName(op.get().getValue());
-			}
 			collects.add(vo);
 		});
+
+		// 科目赋值图标
+		Supplier<Stream<SubjectPictureEnum>> supplier =  () -> Arrays.stream(SubjectPictureEnum.values());
+		collects.forEach(f -> {
+			Optional<SubjectPictureEnum> op
+					= supplier.get().filter(s -> s.getCode().equalsIgnoreCase(f.getValue())).findFirst();
+
+			if (op.isPresent()) {
+				f.setPictureName(op.get().getValue());
+			}
+		});
+
 
 		return ApiResponse.success(collects);
 	}
