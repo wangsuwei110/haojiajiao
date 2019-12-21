@@ -18,7 +18,6 @@ import com.education.hjj.bz.entity.StudentDemandPo;
 import com.education.hjj.bz.entity.TeacherPo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
-import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.mapper.StudentDemandConnectMapper;
 import com.education.hjj.bz.mapper.StudentDemandMapper;
 import com.education.hjj.bz.mapper.UserInfoMapper;
@@ -129,6 +128,8 @@ public class ScheduleToolsUtils {
 				String studentName = sdv.getStudentName();
 				String openId = sdv.getOpenId();
 				
+				String teacherOpenId = sdv.getTeacherOpenId();
+				
 				
 				JSONObject data = new JSONObject();
 				
@@ -138,7 +139,7 @@ public class ScheduleToolsUtils {
 				data.put("thing1", keyMap1);
 				
 				Map<String, Object> keyMap2 = new HashMap<String, Object>();
-				keyMap2.put("value", TeachTime);
+				keyMap2.put("value", DateUtil.covertFromDateToShortString(TeachTime));
 				// 上课时间
 				data.put("time5", keyMap2);
 				
@@ -161,6 +162,11 @@ public class ScheduleToolsUtils {
 				
 				logger.info("发出试讲上课提醒的结果： " + sendRedPackRsult.getString("errcode") + " "
 						+ sendRedPackRsult.getString("errmsg"));
+				
+				JSONObject sendRedPackRsult1 = SendWXMessageUtils.sendSubscribeMessage(teacherOpenId, Constant.CLASS_BEGIN_MESSAGE, data);
+				
+				logger.info("发出试讲上课提醒的结果： " + sendRedPackRsult1.getString("errcode") + " "
+						+ sendRedPackRsult1.getString("errmsg"));
 			}
 		}
 		
@@ -194,6 +200,7 @@ public class ScheduleToolsUtils {
 				String studentName = sdv.getStudentName();
 				String openId = sdv.getOpenId();
 				
+				String teacherOpenId = sdv.getTeacherOpenId();
 				
 				JSONObject data = new JSONObject();
 				
@@ -226,6 +233,11 @@ public class ScheduleToolsUtils {
 				
 				logger.info("发出正式上课提醒的结果： " + sendRedPackRsult.getString("errcode") + " "
 						+ sendRedPackRsult.getString("errmsg"));
+				
+				JSONObject sendRedPackRsult1 = SendWXMessageUtils.sendSubscribeMessage(teacherOpenId, Constant.CLASS_BEGIN_MESSAGE, data);
+				
+				logger.info("发出试讲上课提醒的结果： " + sendRedPackRsult1.getString("errcode") + " "
+						+ sendRedPackRsult1.getString("errmsg"));
 			}
 		}
 	}
