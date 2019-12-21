@@ -175,7 +175,5 @@ public class StudentDemandsController {
 	public ApiResponse queryGoodApprise() {
 
 		return ApiResponse.success(studentDemandsService.queryGoodApprise());
-
-
 	}
 }

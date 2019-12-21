@@ -19,6 +19,7 @@
 	     	<result property="chargesStandard" column="charges_standard"/>
 	     	<result property="appraiseLevel" column="appraise_level"/>
 	     	<result property="telephone" column="telephone"/>
+	     	<result property="studentName" column="student_name"/>
     </resultMap>
 
 	<select id="load" resultMap="studentDemandConnectResultMap" parameterType="long">
@@ -302,10 +303,20 @@
     </select>
 
 	<select id="listGoodApprise" resultMap="studentDemandConnectResultMap">
-		SELECT *
+		SELECT st.student_name, sdc.appraise
 		FROM student_demand_connect sdc
+		INNER JOIN student_demand sd
+		ON sd.sid = sdc.demand_id
+		INNER JOIN student st
+		ON st.sid = sd. student_id
 		WHERE sdc.appraise_level = 1
-		order by sdc.appraise_time desc
+		ORDER BY sdc.appraise_time desc
+	</select>
+
+	<select id="findAllApprise" resultType="java.lang.Integer">
+		SELECT appraise_level
+		FROM student_demand_connect
+		WHERE delete_status = 0;
 	</select>
     
     <!-- 查询最近前5条学员对教员的评价记录 -->

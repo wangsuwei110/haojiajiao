@@ -801,7 +801,24 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	 **/
 	@Override
 	public ApiResponse queryGoodApprise() {
-		return ApiResponse.success(connectMapper.listGoodApprise());
+
+		Map<String, Object> result = new HashMap<>();
+		List<StudentDemandConnectVo> connectVos = connectMapper.listGoodApprise();
+		result.put("goodApprise", connectVos);
+
+		// 好评率= 好评数/总数
+		List<Integer> list = connectMapper.findAllApprise();
+		Long count = list.stream().filter(f -> f != null && f == 1).count();
+
+		if (!CollectionUtils.isEmpty(list) &&
+				new BigDecimal(count).divide(new BigDecimal(list.size()), 2, BigDecimal.ROUND_HALF_UP).compareTo(new BigDecimal("0.9")) > 0) {
+			result.put("rate", new BigDecimal(count).multiply(new BigDecimal(100)).divide(new BigDecimal(list.size()),
+					1, BigDecimal.ROUND_HALF_UP) + "%");
+		} else {
+			result.put("rate", "90.0%");
+		}
+
+		return ApiResponse.success(result);
 	}
 
 	@Override

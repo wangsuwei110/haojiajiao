@@ -53,6 +53,8 @@ public interface StudentDemandConnectMapper {
 
     List<StudentDemandConnectVo> listGoodApprise();
 
+    List<Integer> findAllApprise();
+
     List<StudentDemandVo> queryServiceForStudentByTeacherId(Integer teacherId);
     
     //教务端确定待试讲的订单未确定试讲时间超过一小时的订单
