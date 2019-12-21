@@ -1418,7 +1418,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			data.put("number4", keyMap1);
 
 			Map<String, Object> keyMap2 = new HashMap<String, Object>();
-			keyMap2.put("value", new Date());
+			keyMap2.put("value", DateUtil.covertFromDateToShortString(new Date()));
 			// 截止时间
 			data.put("date5", keyMap2);
 
