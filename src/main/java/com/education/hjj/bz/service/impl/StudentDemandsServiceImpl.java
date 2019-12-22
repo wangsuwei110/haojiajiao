@@ -175,7 +175,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		if (form.getTeacherId() != null) {
 			// 判断改教员是否曾经试讲过同等年级同等科目的订单
 			StudentDemandConnectForm alreadyForm = new StudentDemandConnectForm();
-			alreadyForm.setStudentId(form.getStudentId());
+			alreadyForm.setSubjectId(form.getSubjectId());
 			alreadyForm.setTeacherId(form.getTeacherId());
 			alreadyForm.setStudentId(form.getStudentId());
 			alreadyForm.setDemandGrade(form.getDemandGrade());
