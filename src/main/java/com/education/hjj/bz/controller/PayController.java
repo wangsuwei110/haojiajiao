@@ -305,6 +305,7 @@ public class PayController {
                 logger.info("caohuan*********修改上个订单***********");
                 // 修改当前订单成新订单
                 demandForm.setOrderType(2);
+                demandForm.setStatus(2); // 支付时变成已接单
                 demandForm.setOrderMoney(demandForm.getOrderMoney());
                 demandForm.setPaymentStreamId(randomOrderId);
                 demandForm.setOrderStart(date);
