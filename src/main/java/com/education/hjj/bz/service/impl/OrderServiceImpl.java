@@ -353,7 +353,7 @@ public class OrderServiceImpl implements OrderService {
 		logger.info("employCount={} , chooseCount={} , newRate={}",  employCount,
 				chooseCount, newRate);
 
-		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
+		BigDecimal bg = new BigDecimal(newRate).setScale(4, RoundingMode.UP);
 		logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
 		// 更新该教员的聘用率
 		teacherPo.setEmployRate(RegUtils.doubleToPersent().format(bg));
@@ -441,7 +441,7 @@ public class OrderServiceImpl implements OrderService {
 		logger.info(" employCount={} , resumptionCount={} , newRate={}", employCount,
 				resumptionCount, newRate);
 
-		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
+		BigDecimal bg = new BigDecimal(newRate).setScale(4, RoundingMode.UP);
 		logger.info("employRate = {}", bg);
 		
 		teacher.setResumptionRate(RegUtils.doubleToPersent().format(bg));
