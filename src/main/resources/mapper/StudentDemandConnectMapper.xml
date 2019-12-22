@@ -360,6 +360,8 @@
 		<result column="time_range" property="timeRange"/>
 		<result column="order_teach_time" property="orderTeachTime"/>
 		<result column="openId" property="openId"/>
+		<result column="teacher_id" property="teacherId"/>
+		<result column="teacherOpenId" property="teacherOpenId"/>
 	</resultMap>
     
     <!-- 教务段查询超过一小时未确认试讲时间的订单 -->
@@ -376,7 +378,9 @@
 			tg.teach_grade_name,
 			tb.teach_branch_name,
 			sd.time_range,
-			sdc.order_teach_time
+			sdc.order_teach_time,
+			sdc.teacher_id,
+			t.openId as teacherOpenId
 	
 		FROM
 			student_demand_connect sdc
@@ -430,7 +434,9 @@
 			sd.create_time,
 			tb.teach_branch_name,
 			sd.time_range,
-			sdc.order_teach_time
+			sdc.order_teach_time,
+			sdc.teacher_id,
+			t.openId as teacherOpenId
 	
 		FROM
 			student_demand_connect sdc
