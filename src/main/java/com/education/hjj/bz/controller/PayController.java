@@ -491,7 +491,7 @@ public class PayController {
                 teacherPaymentLog.setStatus(1);
                 teacherPaymentLog.setCreateTime(new Date());
                 teacherPaymentLog.setCreateUser(demandVo.getStudentName());
-                userAccountLogMapper.insertUserAccountLog(paymentLog);
+                userAccountLogMapper.insertUserAccountLog(teacherPaymentLog);
 
 				/** 此处添加自己的业务逻辑代码end **/
 
