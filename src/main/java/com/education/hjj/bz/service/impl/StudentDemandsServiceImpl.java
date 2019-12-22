@@ -239,9 +239,23 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 			// 判断需求订单的详情，是否有教员报名，是否已经预约，是否已经过了试讲时间
 			List<StudentDemandConnectVo> connectVos = connectMapper.listConnectInfo(f.getSid());
-			// 判断是否已经有了预约(排除已经预约过，但是未通过的)
-			Optional<StudentDemandConnectVo> op = connectVos.stream()
-					.filter(s -> s.getStatus() != null && s.getStatus() != 0 && s.getStatus() != 3).findFirst();
+            Optional<StudentDemandConnectVo> op = null;
+
+			// 每个订单关联的教员的状态优先级：已支付 > 待支付 >
+            op = connectVos.stream()
+                    .filter(s -> s.getStatus() != null &&  s.getStatus() == 4).findFirst();
+            if (!op.isPresent()) {
+                // 待支付
+                op = connectVos.stream()
+                        .filter(s -> s.getStatus() != null &&  s.getStatus() == 7).findFirst();
+
+                if (!op.isPresent()) {
+                    // 判断是否已经有了预约(排除已经预约过，但是未通过的)
+                    op = connectVos.stream()
+                            .filter(s -> s.getStatus() != null && s.getStatus() != 0 && s.getStatus() != 3).findFirst();
+                }
+            }
+
 			if (op.isPresent()) {
 				f.setSubscribeStatus(op.get().getStatus());
 				f.setTeachName(op.get().getTeacherName());
