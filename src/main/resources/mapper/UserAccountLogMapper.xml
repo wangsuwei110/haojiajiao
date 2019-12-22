@@ -70,7 +70,7 @@
 		SELECT *
 		FROM teacher_payments_log
 		WHERE demand_id = #{demandId}
-		AND payment_type = #{paymentType}
+		AND payment_type in (2, 4)
 	</select>
     
     <!-- 查询用户账户变化日志列表 -->  
