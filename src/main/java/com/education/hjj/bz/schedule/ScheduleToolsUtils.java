@@ -18,7 +18,6 @@ import com.education.hjj.bz.entity.StudentDemandPo;
 import com.education.hjj.bz.entity.TeacherPo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
-import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.mapper.StudentDemandConnectMapper;
 import com.education.hjj.bz.mapper.StudentDemandMapper;
 import com.education.hjj.bz.mapper.UserInfoMapper;
@@ -104,7 +103,7 @@ public class ScheduleToolsUtils {
 	/**
 	 * 查询所有的第二天待试讲订单(快速请家教和指定教员的)，发出上课提醒
 	 */
-	@Scheduled(cron = "0 00 18 ? * *")
+	@Scheduled(cron = "0 10 19 ? * *")
 	@Transactional
 	public void sendTrailStudentDemandMessageToTeacher() {
 		
@@ -129,6 +128,8 @@ public class ScheduleToolsUtils {
 				String studentName = sdv.getStudentName();
 				String openId = sdv.getOpenId();
 				
+				String teacherOpenId = sdv.getTeacherOpenId();
+				logger.info("studentOpenId= {} , teacherOpenId = {}" , openId , teacherOpenId);
 				
 				JSONObject data = new JSONObject();
 				
@@ -138,7 +139,7 @@ public class ScheduleToolsUtils {
 				data.put("thing1", keyMap1);
 				
 				Map<String, Object> keyMap2 = new HashMap<String, Object>();
-				keyMap2.put("value", TeachTime);
+				keyMap2.put("value", DateUtil.covertFromDateToShortString(TeachTime));
 				// 上课时间
 				data.put("time5", keyMap2);
 				
@@ -159,8 +160,13 @@ public class ScheduleToolsUtils {
 				
 				JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(openId, Constant.CLASS_BEGIN_MESSAGE, data);
 				
-				logger.info("发出试讲上课提醒的结果： " + sendRedPackRsult.getString("errcode") + " "
+				logger.info("发出试讲上课提醒给学员的结果： " + sendRedPackRsult.getString("errcode") + " "
 						+ sendRedPackRsult.getString("errmsg"));
+				
+				JSONObject sendRedPackRsult1 = SendWXMessageUtils.sendSubscribeMessage(teacherOpenId, Constant.CLASS_BEGIN_MESSAGE, data);
+				
+				logger.info("发出试讲上课提醒给教员的结果： " + sendRedPackRsult1.getString("errcode") + " "
+						+ sendRedPackRsult1.getString("errmsg"));
 			}
 		}
 		
@@ -169,7 +175,7 @@ public class ScheduleToolsUtils {
 	/**
 	 * 查询所有的正式订单，发出上课提醒
 	 */
-	@Scheduled(cron = "0 05 18 ? * *")
+	@Scheduled(cron = "0 15 19 ? * *")
 	@Transactional
 	public void sendCommonStudentDemandMessageToTeacher() {
 		
@@ -194,6 +200,8 @@ public class ScheduleToolsUtils {
 				String studentName = sdv.getStudentName();
 				String openId = sdv.getOpenId();
 				
+				String teacherOpenId = sdv.getTeacherOpenId();
+				logger.info("studentOpenId= {} , teacherOpenId = {}" , openId , teacherOpenId);
 				
 				JSONObject data = new JSONObject();
 				
@@ -224,8 +232,13 @@ public class ScheduleToolsUtils {
 				
 				JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(openId, Constant.CLASS_BEGIN_MESSAGE, data);
 				
-				logger.info("发出正式上课提醒的结果： " + sendRedPackRsult.getString("errcode") + " "
+				logger.info("发出正式上课提醒给学生的结果： " + sendRedPackRsult.getString("errcode") + " "
 						+ sendRedPackRsult.getString("errmsg"));
+				
+				JSONObject sendRedPackRsult1 = SendWXMessageUtils.sendSubscribeMessage(teacherOpenId, Constant.CLASS_BEGIN_MESSAGE, data);
+				
+				logger.info("发出试讲上课提醒给教员的结果： " + sendRedPackRsult1.getString("errcode") + " "
+						+ sendRedPackRsult1.getString("errmsg"));
 			}
 		}
 	}

@@ -498,7 +498,7 @@
 		WHERE
 			sd.demand_type = 2
 		AND
-			sd.status in(1,2) 
+			sd.status != 3
 		ORDER BY
 			sd.create_time desc
     </select>

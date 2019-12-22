@@ -121,12 +121,35 @@ public class HomeController {
 				Integer demandGrade = fsdv.getDemandGrade();
 				Integer addressId = fsdv.getParameterId();
 				
-				logger.info("教员教学区域：{}，教学科目：{}，教学年级{}，需求单的教学区域：{}，需求单的教学科目：{}，需求单的教学年级：{}" , teachAddress , teachBranch , teachGrade
-						, addressId , subject , demandGrade);
+				logger.info("教员id：{}，教员教学区域：{}，教学科目：{}，教学年级{}，需求订单id:{} , 需求单的教学区域：{}，需求单的教学科目：{}，需求单的教学年级：{}" ,
+						teacherVo.getTeacherId(), teachAddress , teachBranch , teachGrade,fsdv.getSid(), addressId , subject , demandGrade);
 				
-				if(teachAddress.contains(String.valueOf(addressId)) && teachBranch.contains(String.valueOf(subject)) 
-						&& teachGrade.contains(String.valueOf(demandGrade))) {
-					
+				boolean teachAddressFlag = false;
+				boolean teachBranchFlag = false;
+				boolean teachGradeFlag = false;
+				
+				String[] teachAddresss = teachAddress.split(",");
+				for(String s:teachAddresss) {
+					if(String.valueOf(addressId).equalsIgnoreCase(s)) {
+						teachAddressFlag = true;
+					}
+				}
+				
+				String[] teachBranchs = teachBranch.split(",");
+				for(String s:teachBranchs) {
+					if(String.valueOf(subject).equalsIgnoreCase(s)) {
+						teachBranchFlag = true;
+					}
+				}
+				
+				String[] teachGrades = teachGrade.split(",");
+				for(String s:teachGrades) {
+					if(String.valueOf(demandGrade).equalsIgnoreCase(s)) {
+						teachGradeFlag = true;
+					}
+				}
+				
+				if(teachAddressFlag == true && teachBranchFlag == true && teachGradeFlag == true) {
 					fitTeacherOrderTargetList.add(fsdv);
 				}
 				

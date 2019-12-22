@@ -345,15 +345,15 @@ public class OrderServiceImpl implements OrderService {
 		teacherPo.setTelephone(teacherVo.getTelephone());
 		teacherPo.setEmployCount(teacherVo.getEmployCount() + 1);
 
-		int employCount = teacherVo.getEmployCount();
+		double employCount = teacherVo.getEmployCount();
 
-		int chooseCount = teacherVo.getChooseCount();
+		double chooseCount = teacherVo.getChooseCount();
 
 		double newRate = employCount / chooseCount;
 		logger.info("employCount={} , chooseCount={} , newRate={}",  employCount,
 				chooseCount, newRate);
 
-		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
+		BigDecimal bg = new BigDecimal(newRate).setScale(4, RoundingMode.UP);
 		logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
 		// 更新该教员的聘用率
 		teacherPo.setEmployRate(RegUtils.doubleToPersent().format(bg));
@@ -432,16 +432,16 @@ public class OrderServiceImpl implements OrderService {
 			teacher.setResumptionCount(teacherVo.getResumptionCount()+1);
 		}
 		
-		int employCount = teacherVo.getEmployCount();
+		double employCount = teacherVo.getEmployCount();
 		
-		int resumptionCount = teacherVo.getResumptionCount();
+		double resumptionCount = teacherVo.getResumptionCount();
 		
 		double newRate = resumptionCount / employCount;
 		
 		logger.info(" employCount={} , resumptionCount={} , newRate={}", employCount,
 				resumptionCount, newRate);
 
-		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
+		BigDecimal bg = new BigDecimal(newRate).setScale(4, RoundingMode.UP);
 		logger.info("employRate = {}", bg);
 		
 		teacher.setResumptionRate(RegUtils.doubleToPersent().format(bg));

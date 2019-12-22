@@ -157,9 +157,13 @@ public class StudentDemandVo {
 	// 是否续课0未续课1已续课
 	private Integer isResumption;
 
+	//学员openId
 	private String openId;
 	
 	private String orderMoneyList;
+	
+	//教员OpenId
+	private String teacherOpenId;
 
 	public String getTeacherPhone() {
 		return teacherPhone;
@@ -575,6 +579,14 @@ public class StudentDemandVo {
 
 	public void setOrderMoneyList(String orderMoneyList) {
 		this.orderMoneyList = orderMoneyList;
+	}
+
+	public String getTeacherOpenId() {
+		return teacherOpenId;
+	}
+
+	public void setTeacherOpenId(String teacherOpenId) {
+		this.teacherOpenId = teacherOpenId;
 	}
 
 }

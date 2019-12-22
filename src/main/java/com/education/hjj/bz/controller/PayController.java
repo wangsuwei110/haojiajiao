@@ -368,7 +368,7 @@ public class PayController {
 						logger.info(" employCount={} , resumptionCount={} , newRate={}", employCount,
 								resumptionCount, newRate);
 			
-						BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
+						BigDecimal bg = new BigDecimal(newRate).setScale(4, RoundingMode.UP);
 						logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
 			
 						teacherPo.setResumptionRate(RegUtils.doubleToPersent().format(bg));
@@ -385,7 +385,7 @@ public class PayController {
 	        		
 	        		teacherPo.setEmployCount(teacherVo.getEmployCount() + 1);
 
-	        		int chooseCount = teacherVo.getChooseCount();
+	        		double chooseCount = teacherVo.getChooseCount();
 
 					double newRate = 0;
 					if (chooseCount != 0) {
@@ -395,7 +395,7 @@ public class PayController {
 	        		logger.info("employCount={} , chooseCount={} , newRate={}",  teacherVo.getEmployCount() + 1,
 	        				chooseCount, newRate);
 
-	        		BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
+	        		BigDecimal bg = new BigDecimal(newRate).setScale(4, RoundingMode.UP);
 	        		logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
 	        		// 更新该教员的聘用率
 	        		teacherPo.setEmployRate(RegUtils.doubleToPersent().format(bg));
@@ -409,7 +409,7 @@ public class PayController {
 					logger.info(" employCount={} , resumptionCount={} , newRate={}", teacherVo.getEmployCount(),
 							resumptionCount, newRate);
 		
-					BigDecimal bgr = new BigDecimal(resumptionRate).setScale(2, RoundingMode.DOWN);
+					BigDecimal bgr = new BigDecimal(resumptionRate).setScale(4, RoundingMode.UP);
 					logger.info("employRate = {}", RegUtils.doubleToPersent().format(bgr));
 		
 					teacherPo.setResumptionRate(RegUtils.doubleToPersent().format(bgr));

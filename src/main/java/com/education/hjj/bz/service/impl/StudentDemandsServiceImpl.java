@@ -636,7 +636,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 				TeacherPo teacherPo = new TeacherPo();
 				teacherPo.setTeacherId(teacherId);
 
-				int chooseCount = teacherVo.getChooseCount();
+				double chooseCount = teacherVo.getChooseCount();
 
 				double newRate = 0;
 				if (chooseCount != 0) {
@@ -646,7 +646,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 				logger.info("employCount={} , chooseCount={} , newRate={}", teacherVo.getEmployCount(), chooseCount,
 						newRate);
 
-				BigDecimal bg = new BigDecimal(newRate).setScale(2, RoundingMode.DOWN);
+				BigDecimal bg = new BigDecimal(newRate).setScale(4, RoundingMode.UP);
 				logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
 
 				teacherPo.setEmployRate(RegUtils.doubleToPersent().format(bg));
@@ -1318,7 +1318,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			pointsLogPo.setTeacherId(teacherId);
 			pointsLogPo.setGetPointsCounts(5);
 			pointsLogPo.setGetPointsType(2);
-			pointsLogPo.setGetPointsDesc("确定试讲时间");
+			pointsLogPo.setGetPointsDesc("打卡");
 			pointsLogPo.setStatus(1);
 			pointsLogPo.setCreateTime(new Date());
 			pointsLogPo.setCreateUser(String.valueOf(teacherId));
@@ -1418,7 +1418,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			data.put("number4", keyMap1);
 
 			Map<String, Object> keyMap2 = new HashMap<String, Object>();
-			keyMap2.put("value", new Date());
+			keyMap2.put("value", DateUtil.covertFromDateToShortString(new Date()));
 			// 截止时间
 			data.put("date5", keyMap2);
 
