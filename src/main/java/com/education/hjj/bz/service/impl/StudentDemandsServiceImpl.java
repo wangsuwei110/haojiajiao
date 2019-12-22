@@ -179,6 +179,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			alreadyForm.setTeacherId(form.getTeacherId());
 			alreadyForm.setStudentId(form.getStudentId());
 			alreadyForm.setDemandGrade(form.getDemandGrade());
+			logger.info("caohuan*************" + JSON.toJSONString(alreadyForm));
 			Integer count = connectMapper.countAlreadyDemand(alreadyForm);
 
 			Long newOrderId = form.getSid();
