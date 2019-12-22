@@ -1318,7 +1318,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			pointsLogPo.setTeacherId(teacherId);
 			pointsLogPo.setGetPointsCounts(5);
 			pointsLogPo.setGetPointsType(2);
-			pointsLogPo.setGetPointsDesc("确定试讲时间");
+			pointsLogPo.setGetPointsDesc("打卡");
 			pointsLogPo.setStatus(1);
 			pointsLogPo.setCreateTime(new Date());
 			pointsLogPo.setCreateUser(String.valueOf(teacherId));
