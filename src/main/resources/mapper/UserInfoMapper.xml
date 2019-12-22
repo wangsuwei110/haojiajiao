@@ -488,7 +488,7 @@
         <if test="createTime != null">
               ,t.create_time desc
         </if>
-		<if test="studentId = null">
+		<if test="studentId == null">
 			limit 20
 		</if>
 
