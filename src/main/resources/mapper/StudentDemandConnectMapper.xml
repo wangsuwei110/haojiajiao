@@ -482,7 +482,8 @@
 			sd.create_time,
 			tb.teach_branch_name,
 			sd.time_range,
-			sdc.order_teach_time
+			sdc.order_teach_time,
+			t.openId as teacherOpenId
 	
 		FROM
 			student_demand_connect sdc

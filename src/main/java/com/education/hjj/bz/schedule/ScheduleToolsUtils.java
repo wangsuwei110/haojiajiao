@@ -129,7 +129,7 @@ public class ScheduleToolsUtils {
 				String openId = sdv.getOpenId();
 				
 				String teacherOpenId = sdv.getTeacherOpenId();
-				
+				logger.info("studentOpenId= {} , teacherOpenId = {}" , openId , teacherOpenId);
 				
 				JSONObject data = new JSONObject();
 				
@@ -160,12 +160,12 @@ public class ScheduleToolsUtils {
 				
 				JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(openId, Constant.CLASS_BEGIN_MESSAGE, data);
 				
-				logger.info("发出试讲上课提醒的结果： " + sendRedPackRsult.getString("errcode") + " "
+				logger.info("发出试讲上课提醒给学员的结果： " + sendRedPackRsult.getString("errcode") + " "
 						+ sendRedPackRsult.getString("errmsg"));
 				
 				JSONObject sendRedPackRsult1 = SendWXMessageUtils.sendSubscribeMessage(teacherOpenId, Constant.CLASS_BEGIN_MESSAGE, data);
 				
-				logger.info("发出试讲上课提醒的结果： " + sendRedPackRsult1.getString("errcode") + " "
+				logger.info("发出试讲上课提醒给教员的结果： " + sendRedPackRsult1.getString("errcode") + " "
 						+ sendRedPackRsult1.getString("errmsg"));
 			}
 		}
@@ -201,6 +201,7 @@ public class ScheduleToolsUtils {
 				String openId = sdv.getOpenId();
 				
 				String teacherOpenId = sdv.getTeacherOpenId();
+				logger.info("studentOpenId= {} , teacherOpenId = {}" , openId , teacherOpenId);
 				
 				JSONObject data = new JSONObject();
 				
@@ -231,12 +232,12 @@ public class ScheduleToolsUtils {
 				
 				JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(openId, Constant.CLASS_BEGIN_MESSAGE, data);
 				
-				logger.info("发出正式上课提醒的结果： " + sendRedPackRsult.getString("errcode") + " "
+				logger.info("发出正式上课提醒给学生的结果： " + sendRedPackRsult.getString("errcode") + " "
 						+ sendRedPackRsult.getString("errmsg"));
 				
 				JSONObject sendRedPackRsult1 = SendWXMessageUtils.sendSubscribeMessage(teacherOpenId, Constant.CLASS_BEGIN_MESSAGE, data);
 				
-				logger.info("发出试讲上课提醒的结果： " + sendRedPackRsult1.getString("errcode") + " "
+				logger.info("发出试讲上课提醒给教员的结果： " + sendRedPackRsult1.getString("errcode") + " "
 						+ sendRedPackRsult1.getString("errmsg"));
 			}
 		}
