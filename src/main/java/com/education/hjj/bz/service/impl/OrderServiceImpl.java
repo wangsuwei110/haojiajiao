@@ -345,9 +345,9 @@ public class OrderServiceImpl implements OrderService {
 		teacherPo.setTelephone(teacherVo.getTelephone());
 		teacherPo.setEmployCount(teacherVo.getEmployCount() + 1);
 
-		int employCount = teacherVo.getEmployCount();
+		double employCount = teacherVo.getEmployCount();
 
-		int chooseCount = teacherVo.getChooseCount();
+		double chooseCount = teacherVo.getChooseCount();
 
 		double newRate = employCount / chooseCount;
 		logger.info("employCount={} , chooseCount={} , newRate={}",  employCount,
@@ -432,9 +432,9 @@ public class OrderServiceImpl implements OrderService {
 			teacher.setResumptionCount(teacherVo.getResumptionCount()+1);
 		}
 		
-		int employCount = teacherVo.getEmployCount();
+		double employCount = teacherVo.getEmployCount();
 		
-		int resumptionCount = teacherVo.getResumptionCount();
+		double resumptionCount = teacherVo.getResumptionCount();
 		
 		double newRate = resumptionCount / employCount;
 		

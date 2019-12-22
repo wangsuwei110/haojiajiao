@@ -636,7 +636,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 				TeacherPo teacherPo = new TeacherPo();
 				teacherPo.setTeacherId(teacherId);
 
-				int chooseCount = teacherVo.getChooseCount();
+				double chooseCount = teacherVo.getChooseCount();
 
 				double newRate = 0;
 				if (chooseCount != 0) {
