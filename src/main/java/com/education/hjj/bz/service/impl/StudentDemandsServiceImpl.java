@@ -795,7 +795,8 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			}
 			pointsLogPo.setGetPointsType(6);
 			pointsLogPo.setGetPointsDesc("中评");
-		} else {
+			// 差评
+		} else if (demandForm.getAppraiseLevel() == 3){
 			if (point >= 30) {
 				pointsLogPo.setGetPointsCounts(-30);
 			} else {
