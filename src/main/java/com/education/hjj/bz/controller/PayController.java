@@ -318,6 +318,7 @@ public class PayController {
                 connectForm.setTeacherId(demandVo.getTeacherId());
                 connectForm.setDemandId(demandVo.getSid());
                 connectForm.setStatus(4);
+                connectForm.setUpdateTime(date);
                 connectMapper.updateByDemandId(connectForm);
 
                 logger.info("caohuan*********则将其它报名的订单全部改成5***********");
