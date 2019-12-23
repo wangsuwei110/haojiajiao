@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.education.hjj.bz.entity.StudentLogPo;
 import com.education.hjj.bz.entity.vo.UserIndentityVo;
 import com.education.hjj.bz.formBean.StudentDemandForm;
+import com.education.hjj.bz.formBean.StudentForm;
 import com.education.hjj.bz.mapper.StudentMapper;
 import com.education.hjj.bz.mapper.TeacherMapper;
 import com.education.hjj.bz.service.*;
@@ -47,6 +48,8 @@ import com.education.hjj.bz.util.UtilTools;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import static com.education.hjj.bz.service.WeChatService.getAccessToken;
 
 @Api(tags = { "用户登录" })
 @RestController
@@ -119,9 +122,12 @@ public class LoginController {
 	 **/
 	@ApiOperation("获取用户信息")
 	@PostMapping("/getUserIdentity")
-	public ApiResponse getUserInfo(@RequestBody StudentDemandForm demandForm, HttpServletResponse httpServletResponse) {
+	public ApiResponse getUserInfo(@RequestBody StudentDemandForm demandForm, HttpServletResponse httpServletResponse) throws Exception {
 		String code = demandForm.getCode();//获取微信服务器授权返回的code值
 		String openId = getOpenId(code);
+
+
+
 
 		UserIndentityVo vo = new UserIndentityVo();
 		StudentVo studentVo = studentMapper.findByOpenId(openId);
@@ -134,6 +140,21 @@ public class LoginController {
 			String token = JwtUtil.sign(studentVo.getParentPhoneNum(), String.valueOf(System.currentTimeMillis()));
 			httpServletResponse.setHeader(Constant.TOKEN, token);
 			httpServletResponse.setHeader("Access-Control-Expose-Headers", Constant.TOKEN);
+
+			// 更新学员的用户图像
+			String accessToken = getAccessToken();
+			String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" + accessToken + "&openid=" + openId + "&lang=zh_CN";
+			Map<String, String> urlData= new HashMap<String, String>();
+
+			urlData.put("access_token",accessToken);//调用接口凭证
+			urlData.put("openid",openId);//普通用户的标识，对当前公众号唯一
+			urlData.put("lang","zh_CN");//返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
+			String jsonStr = HttpClientUtils.doGet(url, urlData);
+			String headImgUrl = JSONObject.parseObject(jsonStr).getString("headimgurl");
+			StudentForm student = new StudentForm();
+			student.setSid(studentVo.getSid());
+			student.setPicture(headImgUrl);
+			studentMapper.updateNotNull(student);
 			return ApiResponse.success(vo);
 		}
 
@@ -196,6 +217,8 @@ public class LoginController {
     public ResponseBean info() {
         // 获取当前登录用户
         UserDto userDto = userUtil.getUser();
+
+
         // 获取当前登录用户Id
         Integer id = userUtil.getUserId();
         // 获取当前登录用户Token
@@ -204,7 +227,9 @@ public class LoginController {
         String account = userUtil.getAccount();
         return new ResponseBean(HttpStatus.OK.value(), "您已经登录了(You are already logged in)", userDto);
     }
-    
+
+
+
 
 	@ApiOperation("用户登录/注册")
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
