@@ -469,6 +469,7 @@ public class UserInfoController {
 	public ApiResponse queryAllTeacherInfosByStudents(@RequestBody StudentTeacherInfoForm studentTeacherInfoForm) {
 		Map<String, Object> map = new HashMap<>();
 		Integer teacherCount = 0;
+		logger.info("caohuan*********" + JSON.toJSONString(studentTeacherInfoForm));
 		// 判断是否有学员id，如果有，则修改branchs的内容
 		if (studentTeacherInfoForm.getStudentId() != null
                 && StringUtils.isNotEmpty(studentTeacherInfoForm.getBranchs())) {
