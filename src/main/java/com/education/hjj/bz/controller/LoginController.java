@@ -126,9 +126,6 @@ public class LoginController {
 		String code = demandForm.getCode();//获取微信服务器授权返回的code值
 		String openId = getOpenId(code);
 
-
-
-
 		UserIndentityVo vo = new UserIndentityVo();
 		StudentVo studentVo = studentMapper.findByOpenId(openId);
 		if (studentVo != null) {
@@ -154,6 +151,7 @@ public class LoginController {
 			StudentForm student = new StudentForm();
 			student.setSid(studentVo.getSid());
 			student.setPicture(headImgUrl);
+			logger.info("caohuan*************" + headImgUrl);
 			studentMapper.updateNotNull(student);
 			return ApiResponse.success(vo);
 		}
