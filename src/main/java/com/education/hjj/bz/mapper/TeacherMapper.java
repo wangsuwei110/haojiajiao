@@ -30,4 +30,6 @@ public interface TeacherMapper {
 
     List<TeacherVo> listTeacherByStudentId(@Param("demandId") Integer demandId);
 
+    void updateInfoByTeacherId(TeacherVo vo);
+
 }

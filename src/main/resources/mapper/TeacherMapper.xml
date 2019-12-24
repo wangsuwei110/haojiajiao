@@ -69,6 +69,13 @@
         <include refid="listRef"/>
     </select>
 
+    <update id="updateInfoByTeacherId" parameterType="com.education.hjj.bz.entity.vo.TeacherVo">
+        UPDATE teacher
+        set teacher_points = #{teacherPoints}
+        where teacher_id  = #{teacherId}
+        and status = 1
+    </update>
+
     <select id="listTeacherByStudentId" parameterType="java.lang.Integer" resultMap="teacherResultMap">
         SELECT
           tc.teacher_id

@@ -781,26 +781,32 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		studentDemandMapper.updateAppraise(demandForm);
 
 		// 涉及到减分，需要先检索教员的总分数
-		long point = pointsLogMapper.selectSumPointByTeacherId(demandForm.getTeacherId());
+//		long point = pointsLogMapper.selectSumPointByTeacherId(demandForm.getTeacherId());
+		TeacherVo vo = teacherMapper.load(demandForm.getTeacherId());
 
+		Integer points = vo.getTeacherPoints();
 		// 结课，教员+5分
 		PointsLogPo pointsLogPo = new PointsLogPo();
 		pointsLogPo.setTeacherId(demandForm.getTeacherId());
 		// 中评，减20分
 		if (demandForm.getAppraiseLevel() == 2) {
-			if (point >= 20) {
+			if (vo.getTeacherPoints() >= 20) {
 				pointsLogPo.setGetPointsCounts(-20);
+				points = points -20;
 			} else {
-				pointsLogPo.setGetPointsCounts((int) -point);
+				pointsLogPo.setGetPointsCounts((int) - vo.getTeacherPoints());
+				points = 0;
 			}
 			pointsLogPo.setGetPointsType(6);
 			pointsLogPo.setGetPointsDesc("中评");
 			// 差评
 		} else if (demandForm.getAppraiseLevel() == 3){
-			if (point >= 30) {
+			if (vo.getTeacherPoints() >= 30) {
 				pointsLogPo.setGetPointsCounts(-30);
+				points = points -30;
 			} else {
-				pointsLogPo.setGetPointsCounts((int) -point);
+				pointsLogPo.setGetPointsCounts((int) - vo.getTeacherPoints());
+				points = 0;
 			}
 			pointsLogPo.setGetPointsType(5);
 			pointsLogPo.setGetPointsDesc("差评");
@@ -814,6 +820,12 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			pointsLogPo.setUpdateUser(String.valueOf(demandForm.getTeacherId()));
 
 			pointsLogMapper.addTeacherPointsLog(pointsLogPo);
+
+			// 更新用户分数
+			TeacherVo updateVo = new TeacherVo();
+			updateVo.setTeacherId(demandForm.getTeacherId());
+			updateVo.setTeacherPoints(points);
+			teacherMapper.updateInfoByTeacherId(updateVo);
 		}
 		return ApiResponse.success("评价成功");
 	}
