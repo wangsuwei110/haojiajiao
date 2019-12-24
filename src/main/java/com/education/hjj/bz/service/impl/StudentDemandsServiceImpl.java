@@ -181,7 +181,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			alreadyForm.setDemandGrade(form.getDemandGrade());
 			Integer count = connectMapper.countAlreadyDemand(alreadyForm);
 
-			Long newOrderId = form.getSid();
+			Integer newOrderId = form.getSid();
 			StudentDemandConnectForm connectForm = new StudentDemandConnectForm();
 			connectForm.setCreateTime(date);
 			if (count != null && count > 0) {
@@ -1394,6 +1394,19 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			logger.info("该订单已经被锁定，请稍后尝试报名该订单！");
 			return -4;
 		}
+		
+		int demandId = studentDemandConnect.getDemandId();
+		
+		StudentDemandForm sd = new StudentDemandForm();
+		sd.setSid(demandId);
+		sd.setStatus(2);
+		
+		int demandSignCount = studentDemandMapper.querySignUpPersonBystatus(sd);
+		
+		if(demandSignCount > 0 ) {
+			logger.info("该订单已接单，请报名其他订单！");
+			return -2;
+		}
 
 		studentDemandConnect.setStatus(0);
 		studentDemandConnect.setDeleteStatus(0);
@@ -1402,7 +1415,6 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 		int i = connectMapper.insert(studentDemandConnect);
 
-		Integer demandId = studentDemandConnect.getDemandId();
 
 		StudentDemandConnectForm sdc = new StudentDemandConnectForm();
 		sdc.setDemandId(demandId);
