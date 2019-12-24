@@ -324,7 +324,7 @@
     	select
 			sdc.appraise,
 			sdc.appraise_time,
-			s.student_name as studentName
+			s.student_name
 		from 
 			student_demand_connect sdc
 		LEFT JOIN
