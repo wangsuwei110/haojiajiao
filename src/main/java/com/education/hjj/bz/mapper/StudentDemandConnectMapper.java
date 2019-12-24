@@ -68,4 +68,6 @@ public interface StudentDemandConnectMapper {
     
     //查询所有已下单支付但未开始讲课的订单
     List<StudentDemandVo> queryAllDemandOrderListNotBegin(StudentDemandPo studentDemandPo);
+    
+    int queryAppraiseCountByTeacherId(StudentDemandConnectForm form);
 }
