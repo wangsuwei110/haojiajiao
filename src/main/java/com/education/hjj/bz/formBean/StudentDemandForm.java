@@ -19,7 +19,7 @@ public class StudentDemandForm extends PageForm implements Serializable {
 	 */
 	private static final long serialVersionUID = 3965235681881401644L;
 
-    private Long sid;
+    private Integer sid;
 
 	private Integer demandId;
 
@@ -120,11 +120,11 @@ public class StudentDemandForm extends PageForm implements Serializable {
 	}
 
 
-    public Long getSid() {
+    public Integer getSid() {
         return sid;
     }
 
-    public void setSid(Long sid) {
+    public void setSid(Integer sid) {
         this.sid = sid;
     }
 

@@ -176,6 +176,10 @@ public class TeacherController {
 			return ApiResponse.success("订单报名成功！");
 		}
 		
+		if(i == -2) {
+			return ApiResponse.error("该订单已接单，请报名其他订单！");
+		}
+		
 		if(i == -3) {
 			return ApiResponse.error("已报名该订单，请不要重复报名该订单！");
 		}

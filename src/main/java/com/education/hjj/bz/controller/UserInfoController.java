@@ -1,10 +1,14 @@
 package com.education.hjj.bz.controller;
 
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.education.hjj.bz.mapper.TeachBranchMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -42,6 +46,7 @@ import com.education.hjj.bz.formBean.TeacherInfoReplenishForm;
 import com.education.hjj.bz.formBean.UserInfoForm;
 import com.education.hjj.bz.mapper.StudentConnectTeacherMapper;
 import com.education.hjj.bz.mapper.StudentMapper;
+import com.education.hjj.bz.mapper.TeachBranchMapper;
 import com.education.hjj.bz.service.DemandCourseInfoService;
 import com.education.hjj.bz.service.ParameterService;
 import com.education.hjj.bz.service.StudentDemandConnectService;
@@ -452,6 +457,11 @@ public class UserInfoController {
 				int serviceHours = demandCourseInfoService.queryServiceForHours(Integer.valueOf(teacherId));
 				
 				map.put("serviceHours", serviceHours);
+				
+				//好评率
+				String appraiseRate = studentDemandConnectService.queryAppraiseCountByTeacherId(teacherId);
+				
+				map.put("appraiseRate", appraiseRate);
 				
 				return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
 			} 
