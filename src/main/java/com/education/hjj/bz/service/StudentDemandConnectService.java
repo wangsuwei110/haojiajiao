@@ -12,4 +12,6 @@ public interface StudentDemandConnectService {
     List<StudentDemandConnectVo> queryStudentAppraiseForTeacher(Integer teacherId);
     
     List<StudentDemandVo> queryServiceForStudentByTeacherId(Integer teacherId);
+    
+    String queryAppraiseCountByTeacherId(String teacherId);
 }

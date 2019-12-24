@@ -438,6 +438,20 @@
 			
     </select>
     
+    <select id="querySignUpPersonBystatus" parameterType="com.education.hjj.bz.formBean.StudentDemandForm"  resultType="int">
+    	SELECT
+			count(sid)
+		FROM
+			student_demand sd
+		where
+			
+			sd.sid = #{sid}
+			
+		<if test="status != null">
+			AND sd.status= #{status}
+     	</if>
+    </select>
+    
     <!-- 新的试讲订单,还没确定试讲时间 -->
     <select id="queryNewTrialOrderList" parameterType="java.lang.Integer" resultMap="studentDemandsResultMap">
     	SELECT

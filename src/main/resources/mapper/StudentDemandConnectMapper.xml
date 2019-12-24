@@ -178,6 +178,24 @@
         and
         	delete_status = 0
     </select>
+    
+    <select id="queryAppraiseCountByTeacherId" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm"  resultType="int">
+    	select
+			count(sid)
+		from 
+			student_demand_connect sdc
+		where
+			sdc.status =4
+		and
+			sdc.teacher_id =  #{teacherId}
+		and
+			sdc.appraise is not null
+			
+		<if test="appraiseLevel != null">
+			and appraise_level =  #{appraiseLevel}
+		</if>
+		
+    </select>
 
     <select id="listConnectInfo" parameterType="java.lang.Integer" resultMap="studentDemandConnectResultMap">
         SELECT
