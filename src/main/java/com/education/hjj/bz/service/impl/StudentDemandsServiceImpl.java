@@ -805,13 +805,16 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			pointsLogPo.setGetPointsType(5);
 			pointsLogPo.setGetPointsDesc("差评");
 		}
-		pointsLogPo.setStatus(1);
-		pointsLogPo.setCreateTime(new Date());
-		pointsLogPo.setCreateUser(String.valueOf(demandForm.getTeacherId()));
-		pointsLogPo.setUpdateTime(new Date());
-		pointsLogPo.setUpdateUser(String.valueOf(demandForm.getTeacherId()));
+		// 不是好评才插入日志
+		if (demandForm.getAppraiseLevel() > 1) {
+			pointsLogPo.setStatus(1);
+			pointsLogPo.setCreateTime(new Date());
+			pointsLogPo.setCreateUser(String.valueOf(demandForm.getTeacherId()));
+			pointsLogPo.setUpdateTime(new Date());
+			pointsLogPo.setUpdateUser(String.valueOf(demandForm.getTeacherId()));
 
-		pointsLogMapper.addTeacherPointsLog(pointsLogPo);
+			pointsLogMapper.addTeacherPointsLog(pointsLogPo);
+		}
 		return ApiResponse.success("评价成功");
 	}
 
