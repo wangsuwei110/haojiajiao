@@ -324,17 +324,21 @@
     	select
 			sdc.appraise,
 			sdc.appraise_time,
-			t.name as teacherName
+			s.student_name as studentName
 		from 
 			student_demand_connect sdc
 		LEFT JOIN
-			teacher t
+			student_demand sd
 		ON
-			sdc.teacher_id = t.teacher_id
+			sdc.demand_id = sd.sid
+		LEFT JOIN
+			student s
+		ON	
+		  sd.student_id = s.sid
 		where
 			sdc.status =4
 		AND	
-			t.status =1
+			s.delete_status =0
 		and
 			sdc.appraise is not null
 		and
