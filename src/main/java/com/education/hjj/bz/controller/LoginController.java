@@ -151,8 +151,13 @@ public class LoginController {
 			StudentForm student = new StudentForm();
 			student.setSid(studentVo.getSid());
 			student.setPicture(headImgUrl);
-			logger.info("caohuan*************" + headImgUrl);
-			studentMapper.updateNotNull(student);
+			logger.info("caohuan******headImgUrl*******" + headImgUrl);
+			if (StringUtils.isEmpty(headImgUrl)) {
+			    logger.info("huanhuan****获取用户图像失败");
+            } else {
+                studentMapper.updateNotNull(student);
+            }
+
 			return ApiResponse.success(vo);
 		}
 
@@ -232,7 +237,7 @@ public class LoginController {
 	@ApiOperation("用户登录/注册")
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@Transactional
-	public ApiResponse login(@RequestBody LoginForm LoginForm ,  HttpServletResponse httpServletResponse) {
+	public ApiResponse login(@RequestBody LoginForm LoginForm ,  HttpServletResponse httpServletResponse) throws Exception {
 
 		String phoneNum = LoginForm.getLoginPhone();
 		
@@ -416,6 +421,37 @@ public class LoginController {
 			logPo.setUpdateTime(new Date());
 			logPo.setUpdateUser(studentVo.getSid().toString());
 			studentLogService.addStudentLog(logPo);
+
+
+			if (StringUtils.isNotEmpty(LoginForm.getCode())) {
+				try{
+					// 更新用户图像
+					String openId = getOpenId(LoginForm.getCode());
+					logger.info("huanhuan********openId***:"+ openId);
+
+					// 更新学员的用户图像
+					String accessToken = getAccessToken();
+					String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" + accessToken + "&openid=" + openId + "&lang=zh_CN";
+					Map<String, String> urlData= new HashMap<String, String>();
+
+					urlData.put("access_token",accessToken);//调用接口凭证
+					urlData.put("openid",openId);//普通用户的标识，对当前公众号唯一
+					urlData.put("lang","zh_CN");//返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
+					String jsonStr = HttpClientUtils.doGet(url, urlData);
+					logger.info("huanhuan****用户信息****" + jsonStr);
+					String headImgUrl = JSONObject.parseObject(jsonStr).getString("headimgurl");
+					if (StringUtils.isNotEmpty(headImgUrl)) {
+						logger.info("huanhuan*****headImgUrl******,调用微信接口获取用户图像失败");
+					}
+					StudentForm student = new StudentForm();
+					student.setSid(studentVo.getSid());
+					student.setPicture(headImgUrl);
+					studentMapper.updateNotNull(student);
+				} catch (Exception e) {
+					logger.info("huanhuan***********,更新用户图像出错");
+				}
+
+			}
 
 			map.put("studentName", studentVo.getStudentName());
 			map.put("studentId", studentVo.getSid());
