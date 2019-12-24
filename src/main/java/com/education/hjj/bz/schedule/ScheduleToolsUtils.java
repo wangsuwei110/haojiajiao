@@ -109,7 +109,7 @@ public class ScheduleToolsUtils {
 	/**
 	 * 查询所有的第二天待试讲订单(快速请家教和指定教员的)，发出上课提醒
 	 */
-	@Scheduled(cron = "0 10 19 ? * *")
+	@Scheduled(cron = "0 0 18 ? * *")
 	@Transactional
 	public void sendTrailStudentDemandMessageToTeacher() {
 		
@@ -181,7 +181,7 @@ public class ScheduleToolsUtils {
 	/**
 	 * 查询所有的正式订单，发出上课提醒
 	 */
-	@Scheduled(cron = "0 15 19 ? * *")
+	@Scheduled(cron = "0 05 18 ? * *")
 	@Transactional
 	public void sendCommonStudentDemandMessageToTeacher() {
 		
