@@ -497,7 +497,7 @@ public class UserInfoController {
 		} else {
 
 			// 游客则显示20条教员信息
-			if (studentTeacherInfoForm.getPageIndex() > 1) {
+			if (studentTeacherInfoForm.getStudentId() == null && studentTeacherInfoForm.getPageIndex() > 1) {
 				return ApiResponse.error("游客不能查看更能多教员");
 			}
 
