@@ -423,10 +423,10 @@ public class LoginController {
 			studentLogService.addStudentLog(logPo);
 
 
-			if (StringUtils.isNotEmpty(LoginForm.getCode())) {
+			if (StringUtils.isNotEmpty(LoginForm.getOpenId())) {
 				try{
 					// 更新用户图像
-					String openId = getOpenId(LoginForm.getCode());
+					String openId = LoginForm.getOpenId();
 					logger.info("huanhuan********openId***:"+ openId);
 
 					// 更新学员的用户图像
