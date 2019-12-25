@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.system.mapper.SysRoleDeptMapper">
+<mapper namespace="com.education.hjj.bz.mapper.systemMapper.SysRoleDeptMapper">
 
-	<resultMap type="SysRoleDept" id="SysRoleDeptResult">
+	<resultMap type="com.education.hjj.bz.domain.SysRoleDept" id="SysRoleDeptResult">
 		<result property="roleId"     column="role_id"      />
 		<result property="deptId"     column="dept_id"      />
 	</resultMap>

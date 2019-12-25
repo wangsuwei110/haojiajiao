@@ -3,12 +3,14 @@ package com.education.hjj.bz.mapper.systemMapper;
 import java.util.List;
 
 import com.education.hjj.bz.domain.SysLogininfor;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 系统访问日志情况信息 数据层
  * 
  * @author ruoyi
  */
+@Mapper
 public interface SysLogininforMapper
 {
     /**

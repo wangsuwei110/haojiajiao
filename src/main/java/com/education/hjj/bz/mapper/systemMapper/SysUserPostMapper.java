@@ -3,12 +3,14 @@ package com.education.hjj.bz.mapper.systemMapper;
 import java.util.List;
 
 import com.education.hjj.bz.domain.SysUserPost;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 用户与岗位 表 数据层
  * 
  * @author ruoyi
  */
+@Mapper
 public interface SysUserPostMapper
 {
     /**

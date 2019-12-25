@@ -3,12 +3,14 @@ package com.education.hjj.bz.mapper.systemMapper;
 import java.util.List;
 
 import com.education.hjj.bz.domain.SysUserOnline;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 在线用户 数据层
  * 
  * @author ruoyi
  */
+@Mapper
 public interface SysUserOnlineMapper
 {
     /**

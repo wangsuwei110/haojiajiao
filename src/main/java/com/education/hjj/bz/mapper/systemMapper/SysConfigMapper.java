@@ -3,6 +3,7 @@ package com.education.hjj.bz.mapper.systemMapper;
 import java.util.List;
 
 import com.education.hjj.bz.domain.SysConfig;
+import org.apache.ibatis.annotations.Mapper;
 
 
 /**
@@ -10,6 +11,7 @@ import com.education.hjj.bz.domain.SysConfig;
  * 
  * @author ruoyi
  */
+@Mapper
 public interface SysConfigMapper
 {
     /**

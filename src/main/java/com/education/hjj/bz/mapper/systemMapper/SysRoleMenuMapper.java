@@ -3,12 +3,14 @@ package com.education.hjj.bz.mapper.systemMapper;
 import java.util.List;
 
 import com.education.hjj.bz.domain.SysRoleMenu;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 角色与菜单关联表 数据层
  * 
  * @author ruoyi
  */
+@Mapper
 public interface SysRoleMenuMapper
 {
     /**

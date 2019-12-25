@@ -2,6 +2,7 @@ package com.education.hjj.bz.mapper.systemMapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.education.hjj.bz.domain.SysMenu;
@@ -11,6 +12,7 @@ import com.education.hjj.bz.domain.SysMenu;
  * 
  * @author ruoyi
  */
+@Mapper
 public interface SysMenuMapper
 {
     /**

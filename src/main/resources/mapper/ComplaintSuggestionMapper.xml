@@ -8,10 +8,8 @@
 		<!-- column代表数据库列名，property代表实体类属性名 -->
 		<result column="complaint_suggestion_id" property="complaintSuggestionId"/>
 		<result column="person_id" property="personId"/>
-		<result column="name" property="name"/>
 		<result column="type" property="type"/>
 		<result column="content" property="content"/>
-		<result column="pictures" property="pictures"/>
 		<result column="telephone" property="telephone"/>
 		<result column="create_time" property="createTime"/>
 	</resultMap>

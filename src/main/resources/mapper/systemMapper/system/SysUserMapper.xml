@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.system.mapper.SysUserMapper">
+<mapper namespace="com.education.hjj.bz.mapper.systemMapper.SysUserMapper">
 
-	<resultMap type="SysUser" id="SysUserResult">
+	<resultMap type="com.education.hjj.bz.domain.SysUser" id="SysUserResult">
 		<id     property="userId"       column="user_id"      />
 		<result property="deptId"       column="dept_id"      />
 		<result property="loginName"    column="login_name"   />
@@ -28,7 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<collection  property="roles"   javaType="java.util.List"        resultMap="RoleResult" />
 	</resultMap>
 	
-	<resultMap id="deptResult" type="SysDept">
+	<resultMap id="deptResult" type="com.education.hjj.bz.domain.SysDept">
 		<id     property="deptId"   column="dept_id"     />
 		<result property="parentId" column="parent_id"   />
 		<result property="deptName" column="dept_name"   />
@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="status"   column="dept_status" />
 	</resultMap>
 	
-	<resultMap id="RoleResult" type="SysRole">
+	<resultMap id="RoleResult" type="com.education.hjj.bz.domain.SysRole">
 		<id     property="roleId"       column="role_id"        />
 		<result property="roleName"     column="role_name"      />
 		<result property="roleKey"      column="role_key"       />

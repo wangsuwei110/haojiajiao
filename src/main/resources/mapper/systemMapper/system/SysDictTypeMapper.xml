@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.system.mapper.SysDictTypeMapper">
+<mapper namespace="com.education.hjj.bz.mapper.systemMapper.SysDictTypeMapper">
 
-	<resultMap type="SysDictType" id="SysDictTypeResult">
+	<resultMap type="com.education.hjj.bz.domain.SysDictType" id="SysDictTypeResult">
 		<id     property="dictId"     column="dict_id"     />
 		<result property="dictName"   column="dict_name"   />
 		<result property="dictType"   column="dict_type"   />

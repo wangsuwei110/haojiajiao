@@ -3,12 +3,14 @@ package com.education.hjj.bz.mapper.systemMapper;
 import java.util.List;
 
 import com.education.hjj.bz.domain.SysOperLog;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 操作日志 数据层
  * 
  * @author ruoyi
  */
+@Mapper
 public interface SysOperLogMapper
 {
     /**
