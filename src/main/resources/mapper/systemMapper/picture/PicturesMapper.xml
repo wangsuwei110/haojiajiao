@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用于绑定Dao接口 -->
+<mapper namespace="com.ruoyi.system.mapper.picture.PicturesMapper">
+
+	<!-- 用用查询映射结果 -->
+	<resultMap id="userPicturesResultMap" type="com.ruoyi.system.domain.picture.PictureVo" >
+		<!-- column代表数据库列名，property代表实体类属性名 -->
+		<result column="teacher_id" property="teacherId"/>
+		<result column="picture_type" property="pictureType"/>
+		<result column="picture_url" property="pictureUrl"/>
+		<result column="picture_title" property="pictureTitle"/>
+		<result column="picture_desc" property="pictureDesc"/>
+	</resultMap>
+	
+    
+    <select id="queryPicturesByTeacherId"  parameterType="java.lang.Integer" resultMap="userPicturesResultMap">    
+        select 
+        	teacher_id,
+        	picture_type,
+        	picture_url,
+        	picture_title,
+        	picture_desc 
+        from 
+        	teacher_picture
+        where 
+        	status=1
+        and
+        	teacher_id = #{teacherId} 
+    </select>  
+</mapper>
