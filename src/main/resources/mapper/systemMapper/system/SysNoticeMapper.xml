@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where notice_id = #{noticeId}
     </select>
     
-    <select id="selectNoticeList" parameterType="SysNotice" resultMap="SysNoticeResult">
+    <select id="selectNoticeList" parameterType="com.education.hjj.bz.domain.SysNotice" resultMap="SysNoticeResult">
         <include refid="selectNoticeVo"/>
         <where>
 			<if test="noticeTitle != null and noticeTitle != ''">
@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</where>
     </select>
     
-    <insert id="insertNotice" parameterType="SysNotice">
+    <insert id="insertNotice" parameterType="com.education.hjj.bz.domain.SysNotice">
         insert into sys_notice (
 			<if test="noticeTitle != null and noticeTitle != '' ">notice_title, </if>
 			<if test="noticeType != null and noticeType != '' ">notice_type, </if>
@@ -62,7 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		)
     </insert>
 	 
-    <update id="updateNotice" parameterType="SysNotice">
+    <update id="updateNotice" parameterType="com.education.hjj.bz.domain.SysNotice">
         update sys_notice 
         <set>
             <if test="noticeTitle != null and noticeTitle != ''">notice_title = #{noticeTitle}, </if>

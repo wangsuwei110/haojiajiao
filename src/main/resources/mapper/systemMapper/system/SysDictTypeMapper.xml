@@ -20,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from sys_dict_type
     </sql>
 
-	<select id="selectDictTypeList" parameterType="SysDictType" resultMap="SysDictTypeResult">
+	<select id="selectDictTypeList" parameterType="com.education.hjj.bz.domain.SysDictType" resultMap="SysDictTypeResult">
 	    <include refid="selectDictTypeVo"/>
 		<where>
 		    <if test="dictName != null and dictName != ''">
@@ -71,7 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach> 
  	</delete>
 
- 	<update id="updateDictType" parameterType="SysDictType">
+ 	<update id="updateDictType" parameterType="com.education.hjj.bz.domain.SysDictType">
  		update sys_dict_type
  		<set>
  			<if test="dictName != null and dictName != ''">dict_name = #{dictName},</if>
@@ -84,7 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		where dict_id = #{dictId}
 	</update>
  	
- 	<insert id="insertDictType" parameterType="SysDictType">
+ 	<insert id="insertDictType" parameterType="com.education.hjj.bz.domain.SysDictType">
  		insert into sys_dict_type(
  			<if test="dictName != null and dictName != ''">dict_name,</if>
  			<if test="dictType != null and dictType != ''">dict_type,</if>

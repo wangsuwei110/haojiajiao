@@ -76,7 +76,7 @@
 		order by m.parent_id, m.order_num
 	</select>
 
-	<select id="selectMenuList" parameterType="SysMenu" resultMap="SysMenuResult">
+	<select id="selectMenuList" parameterType="com.education.hjj.bz.domain.SysMenu" resultMap="SysMenuResult">
 		<include refid="selectMenuVo"/>
 		<where>
 			<if test="menuName != null and menuName != ''">
@@ -89,7 +89,7 @@
 		order by parent_id, order_num
 	</select>
 
-	<select id="selectMenuListByUserId" parameterType="SysMenu" resultMap="SysMenuResult">
+	<select id="selectMenuListByUserId" parameterType="com.education.hjj.bz.domain.SysMenu" resultMap="SysMenuResult">
 		select distinct m.menu_id, m.parent_id, m.menu_name, m.url, m.visible, ifnull(m.perms,'') as perms, m.target, m.menu_type, m.icon, m.order_num, m.create_time
 		from sys_menu m
 		left join sys_role_menu rm on m.menu_id = rm.menu_id
@@ -120,12 +120,12 @@
 	    select count(1) from sys_menu where parent_id=#{menuId}  
 	</select>
 
-	<select id="checkMenuNameUnique" parameterType="SysMenu" resultMap="SysMenuResult">
+	<select id="checkMenuNameUnique" parameterType="com.education.hjj.bz.domain.SysMenu" resultMap="SysMenuResult">
 		<include refid="selectMenuVo"/>
 		where menu_name=#{menuName} and parent_id = #{parentId}
 	</select>
 
-	<update id="updateMenu" parameterType="SysMenu">
+	<update id="updateMenu" parameterType="com.education.hjj.bz.domain.SysMenu">
 		update sys_menu
 		<set>
 			<if test="menuName != null and menuName != ''">menu_name = #{menuName},</if>
@@ -144,7 +144,7 @@
 		where menu_id = #{menuId}
 	</update>
 
-	<insert id="insertMenu" parameterType="SysMenu">
+	<insert id="insertMenu" parameterType="com.education.hjj.bz.domain.SysMenu">
 		insert into sys_menu(
 		<if test="menuId != null and menuId != 0">menu_id,</if>
 		<if test="parentId != null and parentId != 0">parent_id,</if>

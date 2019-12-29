@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from sys_post
     </sql>
 	
-	<select id="selectPostList" parameterType="SysPost" resultMap="SysPostResult">
+	<select id="selectPostList" parameterType="com.education.hjj.bz.domain.SysPost" resultMap="SysPostResult">
 	    <include refid="selectPostVo"/>
 		<where>
 			<if test="postCode != null and postCode != ''">
@@ -71,7 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach> 
  	</delete>
  	
- 	<update id="updatePost" parameterType="SysPost">
+ 	<update id="updatePost" parameterType="com.education.hjj.bz.domain.SysPost">
  		update sys_post
  		<set>
  			<if test="postCode != null and postCode != ''">post_code = #{postCode},</if>
@@ -85,7 +85,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		where post_id = #{postId}
 	</update>
  	
- 	<insert id="insertPost" parameterType="SysPost" useGeneratedKeys="true" keyProperty="postId">
+ 	<insert id="insertPost" parameterType="com.education.hjj.bz.domain.SysPost" useGeneratedKeys="true" keyProperty="postId">
  		insert into sys_post(
  			<if test="postId != null and postId != 0">post_id,</if>
  			<if test="postCode != null and postCode != ''">post_code,</if>
