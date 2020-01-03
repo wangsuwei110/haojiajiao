@@ -72,7 +72,7 @@ public class UserAccountLogController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/queryUserAccountLogListByEducational", method = RequestMethod.POST)
-	@ApiOperation("教员收支明细查询")
+	@ApiOperation("教务端教员收支明细查询")
 	public ApiResponse queryUserAccountLogListByEducational(@RequestBody TeacherAccountLogForm teacherAccountLogForm) {
 		
 		
