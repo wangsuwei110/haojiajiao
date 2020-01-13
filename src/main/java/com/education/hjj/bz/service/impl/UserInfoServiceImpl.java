@@ -139,7 +139,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 			TeacherPo teacher = new TeacherPo();
 			teacher.setTeacherId(Integer.valueOf(teacherId));
-			teacher.setAuditStatus(1);// 只要信息更新就会简历变为审核中
+			teacher.setAuditStatus(0);// 只要信息更新就会简历变为待审核
 
 			if (type != null && StringUtils.isNoneBlank(type)) {
 				// 更新获奖证书
@@ -218,6 +218,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 					}
 
 					teacher.setResumeComplete(resumeComplete);
+				}
+				
+				if(name != null && StringUtils.isNoneBlank(name) && idCard != null && StringUtils.isNoneBlank(idCard)
+						&& major != null && StringUtils.isNoneBlank(major) && tag != null && StringUtils.isNoneBlank(tag)) {
+					
+					teacher.setAuditStatus(3);// 只有当用户基本信息、身份信息、学历信息、个人标签全部填写时，用户审核信息变为审核中
+					
 				}
 			}
 
