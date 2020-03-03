@@ -410,9 +410,9 @@
 				t.logon_status = 1
 			and
 				t.audit_status = 1
-			<if test="studentId == null">
+			<!--<if test="studentId == null">
 				limit 20
-			</if>
+			</if>-->
 		)t
 	</select>
     
