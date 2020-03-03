@@ -62,7 +62,7 @@
 		WHERE
 			demand_id=#{demandId}
 		AND
-			payment_type in (2,4)
+			payment_type in (2,3,4)
 		
 		order by
 			create_time
