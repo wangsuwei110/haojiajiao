@@ -109,7 +109,7 @@ public class ScheduleToolsUtils {
 	/**
 	 * 查询所有的第二天待试讲订单(快速请家教和指定教员的)，发出上课提醒
 	 */
-	@Scheduled(cron = "0 0 18 ? * *")
+	@Scheduled(cron = "0 00 18 ? * *")
 	@Transactional
 	public void sendTrailStudentDemandMessageToTeacher() {
 		
@@ -217,7 +217,7 @@ public class ScheduleToolsUtils {
 				data.put("thing1", keyMap1);
 				
 				Map<String, Object> keyMap2 = new HashMap<String, Object>();
-				keyMap2.put("value", TeachTime);
+				keyMap2.put("value", DateUtil.covertFromDateToShortString(TeachTime));
 				// 上课时间
 				data.put("time5", keyMap2);
 				
