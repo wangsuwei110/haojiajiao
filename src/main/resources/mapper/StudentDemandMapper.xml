@@ -146,11 +146,13 @@
 	</update>
 
 
-    <insert id="addStudentDemandByTeacher" parameterType="com.education.hjj.bz.formBean.StudentDemandForm"
-			>
-		<selectKey keyProperty="sid" resultType="java.lang.Long" order="AFTER">
-			SELECT LAST_INSERT_ID()
+    <insert id="addStudentDemandByTeacher" parameterType="com.education.hjj.bz.formBean.StudentDemandForm">
+		<selectKey resultType="Integer" keyProperty="sid">
+			SELECT @@IDENTITY AS sid
 		</selectKey>
+		<!--<selectKey keyProperty="sid" resultType="java.lang.Long" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>-->
         INSERT INTO student_demand(
 			student_id,
 			demand_address,
