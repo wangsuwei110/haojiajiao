@@ -136,7 +136,7 @@
 	</select>
 
 	<update id="openDemand" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm">
-	<selectKey resultType="java.lang.Long" keyProperty="sid" >
+	<selectKey resultType="Integer" keyProperty="sid" >
 		SELECT @@IDENTITY AS sid
 	</selectKey>
 		UPDATE student_demand

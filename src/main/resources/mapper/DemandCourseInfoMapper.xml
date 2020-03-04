@@ -90,7 +90,7 @@
     </update>
 
     <insert id="insert" parameterType="com.education.hjj.bz.formBean.DemandCourseInfoForm">
-        <selectKey resultType="long" keyProperty="sid" >
+        <selectKey resultType="Integer" keyProperty="sid" >
 		SELECT @@IDENTITY AS sid
 		</selectKey>
         INSERT INTO demand_course_info(

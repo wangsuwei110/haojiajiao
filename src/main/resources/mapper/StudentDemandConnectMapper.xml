@@ -34,7 +34,7 @@
     </update>
 
     <update id="confirmTeacher" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm">
-        <selectKey resultType="long" keyProperty="sid" >
+        <selectKey resultType="Integer" keyProperty="sid" >
             SELECT @@IDENTITY AS sid
         </selectKey>
         UPDATE student_demand_connect
@@ -45,7 +45,7 @@
     </update>
 
     <update id="updateStatus" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm">
-        <selectKey resultType="long" keyProperty="sid" >
+        <selectKey resultType="Integer" keyProperty="sid" >
             SELECT @@IDENTITY AS sid
         </selectKey>
         UPDATE student_demand_connect
