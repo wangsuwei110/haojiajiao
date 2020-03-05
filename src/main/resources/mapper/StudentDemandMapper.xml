@@ -95,6 +95,7 @@
 		SELECT sd.payment_stream_id
 		    , sd.student_id
 			, st.student_name
+			, sd.charges_standard
 		FROM student_demand sd
 		INNER JOIN
 			demand_course_info dci
