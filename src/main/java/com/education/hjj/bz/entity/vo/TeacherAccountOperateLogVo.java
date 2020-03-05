@@ -23,6 +23,10 @@ public class TeacherAccountOperateLogVo extends BaseVo implements Serializable{
 	private BigDecimal paymentAccount;
 	
 	private String paymentDesc;
+	
+	private String teachBranchName;
+	
+	private String studentName;
 
 	public Integer getPaymentId() {
 		return paymentId;
@@ -78,6 +82,22 @@ public class TeacherAccountOperateLogVo extends BaseVo implements Serializable{
 
 	public void setPaymentDesc(String paymentDesc) {
 		this.paymentDesc = paymentDesc;
+	}
+
+	public String getTeachBranchName() {
+		return teachBranchName;
+	}
+
+	public void setTeachBranchName(String teachBranchName) {
+		this.teachBranchName = teachBranchName;
+	}
+
+	public String getStudentName() {
+		return studentName;
+	}
+
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
 	}
 	
 }

@@ -5,6 +5,7 @@
     <resultMap id="studentDemandConnectResultMap" type="com.education.hjj.bz.entity.vo.StudentDemandConnectVo">
 	     	<result property="sid" column="sid"/>
 	     	<result property="demandId" column="demand_id"/>
+	     	<result column="demand_address" property="demandAddress"/>
 	     	<result property="teacherId" column="teacher_id"/>
 	     	<result property="status" column="status"/>
 	     	<result property="deleteStatus" column="delete_status"/>
@@ -458,6 +459,7 @@
 			sd.time_range,
 			sdc.order_teach_time,
 			sdc.teacher_id,
+			sd.demand_address,
 			t.openId as teacherOpenId
 	
 		FROM
@@ -505,6 +507,7 @@
 			tb.teach_branch_name,
 			sd.time_range,
 			sdc.order_teach_time,
+			sd.demand_address,
 			t.openId as teacherOpenId
 	
 		FROM

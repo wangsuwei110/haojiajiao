@@ -16,6 +16,8 @@
 		<result column="payment_desc" property="paymentDesc"/>
 		<result column="create_time" property="createTime"/>
 		<result column="telephone" property="telephone"/>
+		<result column="teach_branch_name" property="teachBranchName"/>
+		<result column="student_name" property="studentName"/>
 	</resultMap>
 	
     
@@ -60,7 +62,7 @@
 		WHERE
 			demand_id=#{demandId}
 		AND
-			payment_type in (2,4)
+			payment_type in (2,3,4)
 		
 		order by
 			create_time
@@ -77,21 +79,34 @@
     <select id="queryUserAccountLogDetail"  resultMap="teacherAccountLogResultMap" parameterType="java.lang.Integer">    
         	
        	select 
-       		payment_id,
-			payment_stream_id,
-			payment_person_id,
-			payment_person_name,
-			payment_type,
-			payment_account,
-			payment_desc,
-			create_time
+			tpl.payment_id,
+			tpl.payment_stream_id,
+			tpl.payment_person_id,
+			tpl.payment_person_name,
+			tpl.payment_type,
+			tpl.payment_account,
+			tpl.payment_desc,
+			tpl.create_time,
+			tb.teach_branch_name,
+			s.student_name
 		FROM
-			teacher_payments_log
-		WHERE
-			
-			status =1
+			teacher_payments_log tpl
+		LEFT JOIN
+			student_demand sd
+		ON
+			tpl.demand_id = sd.sid
+		LEFT JOIN
+			student s
+		ON
+			sd.student_id = s.sid
+		LEFT JOIN
+			teach_branch tb
+		ON
+			sd.subject_id = tb.teach_branch_id
+		WHERE			
+			tpl.status =1
 		and
-			payment_id = #{paymentId}
+			tpl.payment_id  #{paymentId}
        		
     </select> 
     
