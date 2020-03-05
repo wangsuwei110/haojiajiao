@@ -471,7 +471,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		// 插入一条日志信息，记录结课/支付记录
 		TeacherAccountOperateLogPo paymentLog = new TeacherAccountOperateLogPo();
 		paymentLog.setPaymentStreamId(vo.getPaymentStreamId());
-		paymentLog.setPaymentPersonId(vo.getStudentId());
+		paymentLog.setPaymentPersonId(vo.getTeacherId());
 		paymentLog.setPaymentPersonName(vo.getStudentName());
 		paymentLog.setPaymentType(3);
 		paymentLog.setPaymentDesc("结课时支付");
