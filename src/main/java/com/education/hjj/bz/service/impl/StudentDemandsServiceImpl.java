@@ -473,6 +473,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		paymentLog.setPaymentStreamId(vo.getPaymentStreamId());
 		paymentLog.setPaymentPersonId(courseInfoForm.getTeacherId());
 		paymentLog.setPaymentPersonName(vo.getStudentName());
+		paymentLog.setOrderId(courseInfoForm.getSid().toString());
 		paymentLog.setPaymentType(3);
 		paymentLog.setPaymentDesc("结课时支付");
 		paymentLog.setStatus(0);
