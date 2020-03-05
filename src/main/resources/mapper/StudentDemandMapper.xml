@@ -26,6 +26,7 @@
 		<result column="update_user" property="updateUser"/>
 		<result column="current_week_day" property="currentWeekDay"/>
 		<result property="paymentStreamId" column="payment_stream_id"/>
+		<result property="chargesStandard" column="charges_standard"/>
 
 		<result column="teacher_id" property="teacherId"/>
 
