@@ -443,7 +443,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		TeacherAccountPo po = new TeacherAccountPo();
 		po.setTeacherId(courseInfoForm.getTeacherId());
 		if (teacherAccountVo == null) {
-
+			logger.info("订单初始的价格：" + JSON.toJSONString(vo));
 			po.setStatus(1);
 			po.setCreateTime(date);
 			po.setTeacherName(teacherVo.getName());
@@ -462,16 +462,16 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			po.setUpdateTime(date);
 			po.setUpdateUser(courseInfoForm.getTeacherId().toString());
 			po.setSurplusMoney(teacherAccountVo.getSurplusMoney()
-					.add(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString())));
+					.add(new BigDecimal(vo.getChargesStandard().split("元")[0].toString())));
 			po.setAccountMoney(teacherAccountVo.getAccountMoney()
-					.add(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString())));
+					.add(new BigDecimal(vo.getChargesStandard().split("元")[0].toString())));
 			userAccountMapper.updateTeacherAccountMoney(po);
 		}
 
 		// 插入一条日志信息，记录结课/支付记录
 		TeacherAccountOperateLogPo paymentLog = new TeacherAccountOperateLogPo();
 		paymentLog.setPaymentStreamId(vo.getPaymentStreamId());
-		paymentLog.setPaymentPersonId(vo.getTeacherId());
+		paymentLog.setPaymentPersonId(courseInfoForm.getTeacherId());
 		paymentLog.setPaymentPersonName(vo.getStudentName());
 		paymentLog.setPaymentType(3);
 		paymentLog.setPaymentDesc("结课时支付");
@@ -480,7 +480,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		paymentLog.setCreateUser(vo.getStudentName());
 		paymentLog.setUpdateTime(date);
 		paymentLog.setUpdateUser(vo.getStudentName());
-		paymentLog.setPaymentAccount(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString()));
+		paymentLog.setPaymentAccount(new BigDecimal(vo.getChargesStandard().split("元")[0].toString()));
 		userAccountLogMapper.insertUserAccountLog(paymentLog);
 
 		// 结课，教员+5分
