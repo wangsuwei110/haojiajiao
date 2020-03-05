@@ -302,6 +302,7 @@
               ,current_week_day = #{currentWeekDay}
               ,payment_stream_id = #{paymentStreamId}
               ,status = #{status}
+              ,charges_standard = #{chargesStandard}
         where sid = #{demandId}
 
     </update>

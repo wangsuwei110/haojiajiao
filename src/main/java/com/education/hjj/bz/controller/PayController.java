@@ -302,6 +302,14 @@ public class PayController {
                 Integer weekDay = DateUtil.getWeekOfDate(date);
                 demandForm.setCurrentWeekDay(weekDay);
 
+				Integer teacherId = demandVo.getTeacherId();
+				TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
+
+				TeacherPo teacherPo = new TeacherPo();
+				teacherPo.setTeacherId(teacherId);
+				// 记录当前支付时教员的费用
+				demandForm.setChargesStandard(teacherVo.getChargesStandard());
+
                 logger.info("caohuan*********修改上个订单***********");
                 // 修改当前订单成新订单
                 demandForm.setOrderType(2);
@@ -327,11 +335,8 @@ public class PayController {
 				connectForm.setStatus(5);
 				connectMapper.updateStatusAndPass(connectForm);
 				
-				Integer teacherId = demandVo.getTeacherId();
-				TeacherVo teacherVo = userInfoMapper.queryTeacherHomeInfos(teacherId);
-				
-				TeacherPo teacherPo = new TeacherPo();
-				teacherPo.setTeacherId(teacherId);
+
+
 				
 				
 				Integer isResumption = demandForm.getIsResumption();

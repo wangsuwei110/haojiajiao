@@ -141,6 +141,17 @@ public class StudentDemandForm extends PageForm implements Serializable {
     //试讲时间
     private String orderTeachTime;
 
+    // 当前教员的费用
+    private String chargesStandard;
+
+    public String getChargesStandard() {
+        return chargesStandard;
+    }
+
+    public void setChargesStandard(String chargesStandard) {
+        this.chargesStandard = chargesStandard;
+    }
+
     public Integer getCurrentWeekDay() {
         return currentWeekDay;
     }

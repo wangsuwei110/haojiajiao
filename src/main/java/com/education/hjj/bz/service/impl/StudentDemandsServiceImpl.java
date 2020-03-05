@@ -447,8 +447,8 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			po.setStatus(1);
 			po.setCreateTime(date);
 			po.setTeacherName(teacherVo.getName());
-			po.setAccountMoney(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString()));
-			po.setSurplusMoney(new BigDecimal(teacherVo.getChargesStandard().split("元")[0].toString()));
+			po.setAccountMoney(new BigDecimal(vo.getChargesStandard().split("元")[0].toString()));
+			po.setSurplusMoney(new BigDecimal(vo.getChargesStandard().split("元")[0].toString()));
 			po.setTeacherPhone(teacherVo.getTelephone());
 			po.setCreateUser(teacherVo.getTeacherId().toString());
 			po.setUpdateUser(teacherVo.getTeacherId().toString());
