@@ -113,25 +113,9 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	private PointsLogMapper pointsLogMapper;
 
 	@Override
-	public Map<String, Object> queryStudentDemandDetail(String demandId) {
-		Map<String, Object> map = new HashMap<String, Object>();
-//		StudentDemandVo studentDemand = studentDemandMapper.queryStudentDemandDetail(Integer.valueOf(demandId));
-//		map.put("createTime", DateUtil.covertFromDateToString(studentDemand.getCreateTime()));
-//		map.put("demandAddress", studentDemand.getDemandAddress());
-//		map.put("demandBranch", studentDemand.getDemandBranch());
-//		//上课时段以日期|时间段,日期|时间段拼接
-//		String demandTeachTimes = studentDemand.getTeachTime();
-//		List<String> list = Arrays.asList(demandTeachTimes.split(","));
-//		map.put("demandTeachTime", list);
-//
-//
-//		//根据需求ID查询选定教员的信息
-//		TeacherVo teacher = studentDemandMapper.queryTeacherStudentDemands(Integer.valueOf(demandId));
-//		map.put("teacherName", teacher.getName());
-//		map.put("teacherLevel", teacher.getTeacherLevel());
-//		map.put("teacherPicture", teacher.getPicture());
+	public StudentDemandVo queryStudentDemandDetail(Integer demandId) {
 
-		return map;
+		return studentDemandMapper.queryStudentDemands(demandId);
 	}
 
 	@Override

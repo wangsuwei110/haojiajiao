@@ -16,8 +16,8 @@ public interface StudentDemandsService {
 	PageVo<List<StudentDemandVo>> queryAllStudentDemandList(StudentDemandForm studentDemandForm);
 	
 	List<StudentDemandVo> queryAllStudentDemandListBy10(StudentDemandForm form);
-	
-	Map<String,Object> queryStudentDemandDetail(String demandId);
+
+	StudentDemandVo queryStudentDemandDetail(Integer demandId);
 
 	ApiResponse addStudentDemandByTeacher(StudentDemandForm form);
 

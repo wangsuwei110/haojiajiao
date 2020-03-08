@@ -47,33 +47,14 @@
 	</resultMap>
 	
 	
-    <select id="querystudentDemands"  resultMap="studentDemandsResultMap" parameterType="com.education.hjj.bz.entity.StudentDemandPo">    
+    <select id="queryStudentDemands"  resultMap="studentDemandsResultMap" parameterType="java.lang.Integer">
         select
         	sd.*
 		from
 			student_demand sd
 		where
 			1=1
-		<if test='sid != null and sid != ""'>
-            AND sd.sid = #{sid}
-        </if>
-        <if test='demandGrade != null and demandGrade != ""'>
-            AND sd.demand_grade = #{demandGrade}
-        </if> 
-        <if test='demandBranch != null and demandBranch != ""'>
-            AND sd.demand_branch = #{demandBranch}
-        </if> 
-        <if test='studentArea != null and studentArea != ""'>
-            AND sd.student_area = #{studentArea}
-        </if> 
-
-        order by 
-        	sd.create_time desc
-        <if test="offset != null">
-            <![CDATA[
-                limit #{pageSize} offset #{offset}
-            ]]>
-        </if>
+		AND sd.sid = #{sid}
     </select>
 
 	<select id="findMaxSid" resultType="java.lang.Long">

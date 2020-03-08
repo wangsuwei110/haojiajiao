@@ -34,12 +34,9 @@ public class StudentDemandsController {
 	
 	@ApiOperation("学生需求信息详情")
 	@RequestMapping(value = "/queryStudentDemandDetail", method = RequestMethod.GET)
-	@RequiresPermissions(logical = Logical.AND, value = {"teacher:view" , "student:view"})
-	public ApiResponse queryStudentDemandDetail(@RequestParam("demandId") String demandId) {
+	public ApiResponse queryStudentDemandDetail(@RequestParam("demandId") Integer demandId) {
 
-		Map<String, Object> map = studentDemandsService.queryStudentDemandDetail(demandId);
-
-		return ApiResponse.success(map);
+		return ApiResponse.success(studentDemandsService.queryStudentDemandDetail(demandId));
 	}
 	
 	@ApiOperation("学员发布需求信息")

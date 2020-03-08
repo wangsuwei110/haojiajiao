@@ -17,7 +17,7 @@ import java.util.Map;
 @Transactional
 public interface StudentDemandMapper {
 
-//	List<StudentDemandVo> queryStudentDemands(StudentDemandPo studentDemandPo);
+	StudentDemandVo queryStudentDemands(Integer demandId);
 //
 //	StudentDemandVo queryStudentDemandDetail(Integer demandId);
 	
