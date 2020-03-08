@@ -225,6 +225,12 @@ public class TeacherServiceImpl implements TeacherService {
             displayVo.setSchoolName(f.getSchool());
             displayVo.setTeacherLevel(f.getTeacherLevel());
             displayVo.setSex(f.getSex());
+            try {
+                displayVo.setCurrentStatus(DateUtil.caculDegree(f.getBeginSchoolTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+                displayVo.setCurrentStatus("暂无");
+            }
 
             displayVo.setPicture(f.getPicture());
             resultList.add(displayVo);
