@@ -384,6 +384,36 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		Long sid = connectMapper.confirmTeacher(demandForm);
 
 		if (sid != null && i > 0) {
+			
+int demandId = demandForm.getDemandId();
+			
+			logger.info("需求ID：  " + demandId + " 教员ID： "+ teacherId);
+			
+			StudentDemandPo studentDemandPo = new StudentDemandPo();
+			studentDemandPo.setTeacherId(teacherId);
+			studentDemandPo.setDemandId(demandId);
+			
+			StudentDemandVo studentDemandVo = studentDemandMapper.findStudentDemandDetail(studentDemandPo);
+			
+			JSONObject data = new JSONObject();
+			
+			Map<String, Object> keyMap1 = new HashMap<String, Object>();
+			keyMap1.put("value", "学员 ：" +studentDemandVo.getStudentName()+" 科目： "+studentDemandVo.getTeachBranchName());
+			// 课程名称
+			data.put("thing1", keyMap1);
+			
+			Map<String, Object> keyMap2 = new HashMap<String, Object>();
+			keyMap2.put("value", "尽快前往小程序确定试讲时间，并按照试讲时间提前备课后准时上门试讲。");
+			// 上课时间
+			data.put("thing2", keyMap2);
+			
+			logger.info("学生姓名：  " + studentDemandVo.getStudentName() + " 教授科目： "+ studentDemandVo.getTeachBranchName());
+			
+			JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(teacherPo.getOpenId(), Constant.CLASS_BEGIN_MESSAGE, data);
+			
+			logger.info("发出正式上课提醒给学生的结果： " + sendRedPackRsult.getString("errcode") + " "
+					+ sendRedPackRsult.getString("errmsg"));
+			
 			return ApiResponse.success("预约教员成功");
 		}
 

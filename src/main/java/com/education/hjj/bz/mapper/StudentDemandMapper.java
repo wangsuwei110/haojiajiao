@@ -76,4 +76,6 @@ public interface StudentDemandMapper {
 	int updateDemandIsResumption(StudentDemandPo studentDemandPo);
 	
 	int querySignUpPersonBystatus(StudentDemandForm demandForm);
+	
+	StudentDemandVo findStudentDemandDetail(StudentDemandPo studentDemandPo);	
 }

@@ -318,6 +318,34 @@
         	sd.sid = #{demandId}
         AND tea.teacher_id = #{teacherId}
     </select>
+    
+    <!-- 预约教员时查询需要发送的教员的订阅消息 -->
+    <select id="findStudentDemandDetail" parameterType="com.education.hjj.bz.entity.StudentDemandPo" resultMap="studentDemandsResultMap">
+        SELECT
+        	sd.*,
+        	tea.teacher_id,
+        	s.student_name,
+        	tb.teach_branch_name
+        FROM
+        	student_demand sd
+		INNER JOIN 
+			teach_branch tb
+		ON
+			sd.subject_id = tb.teach_branch_id
+        
+        INNER JOIN
+        	teacher tea
+        ON
+        	sdc.teacher_id = tea.teacher_id
+        left join
+        	student s
+        on
+        	sd.student_id = s.sid
+
+        WHERE
+        	sd.sid = #{demandId}
+        AND tea.teacher_id = #{teacherId}
+    </select>	
 
 	<!--查询该订单同年级同科目的曾经试讲通过的教员id-->
 	<select id="listTeacherByOldInfo" parameterType="integer" resultType="java.lang.Integer">
