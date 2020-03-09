@@ -6,12 +6,7 @@ import java.util.Map;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.education.hjj.bz.entity.vo.PageVo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
@@ -45,6 +40,16 @@ public class TeacherController {
     
     @Autowired
     private StudentDemandsService studentDemandsService;
+
+    /**
+     * 检索教员的信息
+     * */
+    @ApiOperation("检索教员的信息")
+    @RequestMapping(value = "/queryTeacherInfo", method = RequestMethod.GET)
+    public ApiResponse queryStudentDemandDetail(@RequestParam("teacherId") Integer teacherId) {
+
+        return ApiResponse.success(teacherService.findById(teacherId));
+    }
 
     // 详情页
 	@PostMapping("/list")
