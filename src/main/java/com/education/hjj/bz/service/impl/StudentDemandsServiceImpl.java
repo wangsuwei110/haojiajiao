@@ -385,7 +385,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 		if (sid != null && i > 0) {
 			
-int demandId = demandForm.getDemandId();
+			int demandId = demandForm.getDemandId();
 			
 			logger.info("需求ID：  " + demandId + " 教员ID： "+ teacherId);
 			
@@ -409,7 +409,7 @@ int demandId = demandForm.getDemandId();
 			
 			logger.info("学生姓名：  " + studentDemandVo.getStudentName() + " 教授科目： "+ studentDemandVo.getTeachBranchName());
 			
-			JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(teacherPo.getOpenId(), Constant.CLASS_BEGIN_MESSAGE, data);
+			JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(teacherPo.getOpenId(), Constant.CLASS_CONTENT_MESSAGE, data);
 			
 			logger.info("发出正式上课提醒给学生的结果： " + sendRedPackRsult.getString("errcode") + " "
 					+ sendRedPackRsult.getString("errmsg"));
