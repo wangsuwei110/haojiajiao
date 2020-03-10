@@ -74,10 +74,12 @@
 	</select>
 
 	<select id="findDemandByCourseId" parameterType="java.lang.Integer" resultMap="studentDemandsResultMap">
-		SELECT sd.payment_stream_id
+		SELECT 
+			sd.payment_stream_id
 		    , sd.student_id
 			, st.student_name
 			, sd.charges_standard
+			,sd.sid
 		FROM student_demand sd
 		INNER JOIN
 			demand_course_info dci
@@ -796,5 +798,31 @@
     		sid= #{classId}	
     		
     </update>
+    
+    <!-- 购买成功通知1（首次支付），发送给教员 -->
+    <select id="queryFirstPayInfos" parameterType="java.lang.Integer" resultMap="studentDemandsResultMap">
+    
+    	SELECT
+
+			tb.teach_branch_name,
+			s.student_name,
+			sd.class_num,
+			sd.week_num,
+			sd.order_money,
+			sd.order_start
+			
+		FROM
+			student_demand sd
+		LEFT JOIN
+			teach_branch tb
+		ON
+			sd.subject_id = tb.teach_branch_id
+		LEFT JOIN
+			student s
+		ON
+			sd.student_id = s.sid
+		WHERE 
+			sd.sid =  #{sid}
+    </select>
     
 </mapper>

@@ -18,6 +18,8 @@ import java.util.Map;
 public interface StudentDemandMapper {
 
 	StudentDemandVo queryStudentDemands(Integer demandId);
+	
+	StudentDemandVo queryFirstPayInfos(Integer demandId);
 //
 //	StudentDemandVo queryStudentDemandDetail(Integer demandId);
 	

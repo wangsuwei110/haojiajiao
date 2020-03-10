@@ -500,6 +500,50 @@ public class PayController {
 				teacherPaymentLog.setUpdateTime(date);
 				teacherPaymentLog.setUpdateUser(demandVo.getStudentName());
                 userAccountLogMapper.insertUserAccountLog(teacherPaymentLog);
+                
+                //开始发送支付订阅消息
+                int demandId = demandForm.getDemandId();
+                
+                StudentDemandVo studentDemandVo  = studentDemandMapper.queryFirstPayInfos(demandId);
+        		
+        		JSONObject data = new JSONObject();
+        		
+        		Map<String, Object> keyMap1 = new HashMap<String, Object>();
+        		keyMap1.put("value", studentDemandVo.getTeachBranchName()+" （学员："+studentDemandVo.getStudentName()+"，总课时："+studentDemandVo.getWeekNum() * studentDemandVo.getClassNum()+"）");
+        		// 课程名称
+        		data.put("thing2", keyMap1);
+        		
+        		if(isResumption != null && isResumption == 0) {
+                	
+        			Map<String, Object> keyMap2 = new HashMap<String, Object>();
+            		keyMap2.put("value", studentDemandVo.getOrderMoney()+" 元");
+            		// 上课时间
+            		data.put("amount3", keyMap2);
+                }
+        		
+        		if(isResumption != null && isResumption == 1) {
+                	
+        			Map<String, Object> keyMap2 = new HashMap<String, Object>();
+            		keyMap2.put("value", studentDemandVo.getOrderMoney()+" 元(续课)");
+            		// 上课时间
+            		data.put("amount3", keyMap2);
+                }
+        		
+        		Map<String, Object> keyMap3 = new HashMap<String, Object>();
+        		keyMap3.put("value", DateUtil.covertFromDateToShortString(date));
+        		// 上课地点
+        		data.put("date4", keyMap3);
+        		
+        		logger.info("课程名称：  " + studentDemandVo.getTeachBranchName() + " 学生姓名： "
+        				+ studentDemandVo.getStudentName() +" 购买周数： "+studentDemandVo.getWeekNum() 
+        				+" 每周上课次数： "+studentDemandVo.getClassNum()+" 支付金额： "+studentDemandVo.getOrderMoney()+" 元 "
+        				+" 订单购买时间： "+DateUtil.covertFromDateToShortString(date));
+        		
+        		JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(teacherVo.getOpenId(), Constant.BUY_CLASS_SUCCESS_MESSAGE, data);
+        		
+        		logger.info("发出正式上课提醒给学生的结果： " + sendRedPackRsult.getString("errcode") + " "
+        				+ sendRedPackRsult.getString("errmsg"));
+                
 
 				/** 此处添加自己的业务逻辑代码end **/
 
