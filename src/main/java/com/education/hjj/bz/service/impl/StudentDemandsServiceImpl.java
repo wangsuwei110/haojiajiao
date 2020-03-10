@@ -1233,7 +1233,29 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 					Constant.CLASS_SUBSCRIBE_MESSAGE, data);
 
 			logger.info("预约成功消息发送的结果： " + sendRsult.getString("errcode") + " " + sendRsult.getString("errmsg"));
+			
+			
+			//教员的报名被学员选中并确定试讲时间后发送订阅消息
+			JSONObject data2 = new JSONObject();
 
+			Map<String, Object> keyMap4 = new HashMap<String, Object>();
+			keyMap4.put("value", "学员： "+sdv.getStudentName()+" 科目： "+sdv.getTeachBranchName());
+			// 授课老师
+			data2.put("thing1", keyMap4);
+
+			Map<String, Object> keyMap5 = new HashMap<String, Object>();
+			keyMap5.put("value", "请于"+orderTeachTime+"准时上门试讲，别忘记提前备课哦~");
+			// 授课时间
+			data2.put("thing5", keyMap5);
+
+			logger.info("教员ID = {} , 订单id = {} , 学员id = {} , 试讲时间  =  {}  , 课程内容 = {}", demandForm.getTeacherId(),
+					demandId, sdv.getStudentId(), orderTeachTime, sdv.getTeachBranchName());
+
+			JSONObject sendRsult2 = SendWXMessageUtils.sendSubscribeMessage(teacherVo.getOpenId(),
+					Constant.CLASS_SUBSCRIBE_MESSAGE, data2);
+
+			logger.info("教员的报名被学员选中并确定试讲时间后发送订阅消息发送的结果： " + sendRsult2.getString("errcode") + " " + sendRsult2.getString("errmsg"));
+			
 			return 1;
 		}
 

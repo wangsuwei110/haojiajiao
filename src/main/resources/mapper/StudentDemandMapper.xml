@@ -385,7 +385,8 @@
 			sd.demand_type,
 			sd.is_resumption,
 			s.openId,
-			sd.student_id
+			sd.student_id,
+			s.student_name
 		FROM
 			student_demand sd
 		LEFT JOIN
