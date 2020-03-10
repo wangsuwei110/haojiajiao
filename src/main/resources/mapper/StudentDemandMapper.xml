@@ -74,10 +74,12 @@
 	</select>
 
 	<select id="findDemandByCourseId" parameterType="java.lang.Integer" resultMap="studentDemandsResultMap">
-		SELECT sd.payment_stream_id
+		SELECT 
+			sd.payment_stream_id
 		    , sd.student_id
 			, st.student_name
 			, sd.charges_standard
+			,sd.sid
 		FROM student_demand sd
 		INNER JOIN
 			demand_course_info dci
@@ -318,6 +320,34 @@
         	sd.sid = #{demandId}
         AND tea.teacher_id = #{teacherId}
     </select>
+    
+    <!-- 预约教员时查询需要发送的教员的订阅消息 -->
+    <select id="findStudentDemandDetail" parameterType="com.education.hjj.bz.entity.StudentDemandPo" resultMap="studentDemandsResultMap">
+        SELECT
+        	sd.*,
+        	tea.teacher_id,
+        	s.student_name,
+        	tb.teach_branch_name
+        FROM
+        	student_demand sd
+		INNER JOIN 
+			teach_branch tb
+		ON
+			sd.subject_id = tb.teach_branch_id
+        
+        INNER JOIN
+        	teacher tea
+        ON
+        	sdc.teacher_id = tea.teacher_id
+        left join
+        	student s
+        on
+        	sd.student_id = s.sid
+
+        WHERE
+        	sd.sid = #{demandId}
+        AND tea.teacher_id = #{teacherId}
+    </select>	
 
 	<!--查询该订单同年级同科目的曾经试讲通过的教员id-->
 	<select id="listTeacherByOldInfo" parameterType="integer" resultType="java.lang.Integer">
@@ -768,5 +798,31 @@
     		sid= #{classId}	
     		
     </update>
+    
+    <!-- 购买成功通知1（首次支付），发送给教员 -->
+    <select id="queryFirstPayInfos" parameterType="java.lang.Integer" resultMap="studentDemandsResultMap">
+    
+    	SELECT
+
+			tb.teach_branch_name,
+			s.student_name,
+			sd.class_num,
+			sd.week_num,
+			sd.order_money,
+			sd.order_start
+			
+		FROM
+			student_demand sd
+		LEFT JOIN
+			teach_branch tb
+		ON
+			sd.subject_id = tb.teach_branch_id
+		LEFT JOIN
+			student s
+		ON
+			sd.student_id = s.sid
+		WHERE 
+			sd.sid =  #{sid}
+    </select>
     
 </mapper>

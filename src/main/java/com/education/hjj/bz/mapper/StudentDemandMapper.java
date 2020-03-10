@@ -18,6 +18,8 @@ import java.util.Map;
 public interface StudentDemandMapper {
 
 	StudentDemandVo queryStudentDemands(Integer demandId);
+	
+	StudentDemandVo queryFirstPayInfos(Integer demandId);
 //
 //	StudentDemandVo queryStudentDemandDetail(Integer demandId);
 	
@@ -76,4 +78,6 @@ public interface StudentDemandMapper {
 	int updateDemandIsResumption(StudentDemandPo studentDemandPo);
 	
 	int querySignUpPersonBystatus(StudentDemandForm demandForm);
+	
+	StudentDemandVo findStudentDemandDetail(StudentDemandPo studentDemandPo);	
 }
