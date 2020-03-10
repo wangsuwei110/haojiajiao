@@ -1252,7 +1252,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 					demandId, sdv.getStudentId(), orderTeachTime, sdv.getTeachBranchName());
 
 			JSONObject sendRsult2 = SendWXMessageUtils.sendSubscribeMessage(teacherVo.getOpenId(),
-					Constant.CLASS_SUBSCRIBE_MESSAGE, data2);
+					Constant.CHANGE_SIGN_STATUS_RESULT_MESSAGE, data2);
 
 			logger.info("教员的报名被学员选中并确定试讲时间后发送订阅消息发送的结果： " + sendRsult2.getString("errcode") + " " + sendRsult2.getString("errmsg"));
 			
