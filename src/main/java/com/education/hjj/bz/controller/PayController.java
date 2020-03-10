@@ -335,10 +335,6 @@ public class PayController {
 				connectForm.setStatus(5);
 				connectMapper.updateStatusAndPass(connectForm);
 				
-
-
-				
-				
 				Integer isResumption = demandForm.getIsResumption();
 				
 				if(isResumption != null && isResumption == 1) {
