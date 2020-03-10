@@ -48,7 +48,10 @@ public class TeacherServiceImpl implements TeacherService {
 
  	@Override
     public TeacherVo findById(Integer id) {
-        return teacherMapper.load(id);
+        TeacherVo teacherVo = teacherMapper.load(id);
+        teacherVo.setUnitPrice(Double.valueOf(teacherVo.getChargesStandard().split("元")[0]));
+
+        return teacherVo;
     }
 
 
