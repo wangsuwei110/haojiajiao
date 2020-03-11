@@ -403,15 +403,18 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			data.put("thing1", keyMap1);
 			
 			Map<String, Object> keyMap2 = new HashMap<String, Object>();
-			keyMap2.put("value", "尽快前往小程序确定试讲时间，并按照试讲时间提前备课后准时上门试讲。");
+			keyMap2.put("value", "请于"+studentDemandVo.getOrderTeachTime()+"准时上门试讲，别忘记提前备课哦~");
 			// 上课时间
 			data.put("thing2", keyMap2);
 			
-			logger.info("学生姓名：  " + studentDemandVo.getStudentName() + " 教授科目： "+ studentDemandVo.getTeachBranchName());
+			logger.info("教员ID = {} , 订单id = {} , 学员id = {} , 试讲时间  =  {}  , 课程内容 = {}", teacherId,
+					demandId, studentDemandVo.getStudentId(), studentDemandVo.getOrderTeachTime(), 
+					studentDemandVo.getTeachBranchName());
 			
-			JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(teacherPo.getOpenId(), Constant.CLASS_CONTENT_MESSAGE, data);
+			JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(
+					teacherPo.getOpenId(), Constant.CHANGE_SIGN_STATUS_RESULT_MESSAGE, data);
 			
-			logger.info("发出正式上课提醒给学生的结果： " + sendRedPackRsult.getString("errcode") + " "
+			logger.info("教员的报名被学员选中并确定试讲时间后发送订阅消息发送的结果： " + sendRedPackRsult.getString("errcode") + " "
 					+ sendRedPackRsult.getString("errmsg"));
 			
 			return ApiResponse.success("预约教员成功");
@@ -1244,7 +1247,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			data2.put("thing1", keyMap4);
 
 			Map<String, Object> keyMap5 = new HashMap<String, Object>();
-			keyMap5.put("value", "请于"+orderTeachTime+"准时上门试讲，别忘记提前备课哦~");
+			keyMap5.put("value", "尽快前往小程序确定试讲时间，并按照试讲时间提前备课后准时上门试讲。");
 			// 授课时间
 			data2.put("thing5", keyMap5);
 
@@ -1252,9 +1255,10 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 					demandId, sdv.getStudentId(), orderTeachTime, sdv.getTeachBranchName());
 
 			JSONObject sendRsult2 = SendWXMessageUtils.sendSubscribeMessage(teacherVo.getOpenId(),
-					Constant.CHANGE_SIGN_STATUS_RESULT_MESSAGE, data2);
+					Constant.CLASS_CONTENT_MESSAGE, data2);
 
-			logger.info("教员的报名被学员选中并确定试讲时间后发送订阅消息发送的结果： " + sendRsult2.getString("errcode") + " " + sendRsult2.getString("errmsg"));
+			logger.info("发出正式上课提醒给学生的结果：  " + sendRsult2.getString("errcode") + " " 
+			+ sendRsult2.getString("errmsg"));
 			
 			return 1;
 		}
