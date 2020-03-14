@@ -124,6 +124,8 @@ public class StudentDemandVo {
 
 	private Integer teacherId;
 
+	private String teacherName;
+
 	// 教学年级名称
 	private String teachGradeName;
 	// 教学科目名称
@@ -164,6 +166,14 @@ public class StudentDemandVo {
 	
 	//教员OpenId
 	private String teacherOpenId;
+
+	public String getTeacherName() {
+		return teacherName;
+	}
+
+	public void setTeacherName(String teacherName) {
+		this.teacherName = teacherName;
+	}
 
 	public String getTeacherPhone() {
 		return teacherPhone;

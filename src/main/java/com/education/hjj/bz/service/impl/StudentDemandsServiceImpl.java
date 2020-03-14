@@ -489,11 +489,11 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		TeacherAccountOperateLogPo paymentLog = new TeacherAccountOperateLogPo();
 		paymentLog.setPaymentStreamId(vo.getPaymentStreamId());
 		paymentLog.setPaymentPersonId(courseInfoForm.getTeacherId());
-		paymentLog.setPaymentPersonName(vo.getStudentName());
+		paymentLog.setPaymentPersonName(vo.getTeachName());
 		paymentLog.setOrderId(courseInfoForm.getSid().toString());
 		paymentLog.setPaymentType(3);
-		paymentLog.setPaymentDesc("结课时支付");
-		paymentLog.setStatus(0);
+		paymentLog.setPaymentDesc("结课时收入");
+		paymentLog.setStatus(1);
 		paymentLog.setCreateTime(date);
 		paymentLog.setCreateUser(vo.getStudentName());
 		paymentLog.setUpdateTime(date);

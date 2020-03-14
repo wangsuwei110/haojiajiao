@@ -29,6 +29,7 @@
 		<result property="chargesStandard" column="charges_standard"/>
 
 		<result column="teacher_id" property="teacherId"/>
+		<result column="teacher_name" property="teacherName"/>
 
 		<result column="demand_type" property="demandType"/>
 		<result column="parameter_id" property="parameterId"/>
@@ -79,12 +80,15 @@
 		    , sd.student_id
 			, st.student_name
 			, sd.charges_standard
-			,sd.sid
+			, sd.sid
+			, te.name AS teacher_name
 		FROM student_demand sd
 		INNER JOIN
 			demand_course_info dci
 		ON sd.sid = dci.demand_id
 		AND dci.delete_status = 0
+		Inner join teacher te
+		on te.teacher_id = dci.teacher_id
 		INNER JOIN
 			student st
 		ON sd.student_id = st.sid
