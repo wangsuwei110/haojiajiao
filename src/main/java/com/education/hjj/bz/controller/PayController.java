@@ -213,8 +213,7 @@ public class PayController {
 		data.put("keyword7",keyMap7);
 
 		JSONObject sendRedPackRsult = SendWXMessageUtils.sendMessage(openId, Constant.PAYMENT_SUCCESS_MESSAGE, Constant.COMMON_PAYMENT_SUCCESS_MESSAGE, prepay_Id, data);
-		logger.info("提现消息发送的结果： " + sendRedPackRsult.getString("errcode") +" " + sendRedPackRsult.getString("errmsg"));
-//
+		logger.info("支付消息发送的结果： " + sendRedPackRsult.getString("errcode") +" " + sendRedPackRsult.getString("errmsg"));
 		
 
 		return ApiResponse.success("支付成功", json);
@@ -505,14 +504,14 @@ public class PayController {
         		JSONObject data = new JSONObject();
         		
         		Map<String, Object> keyMap1 = new HashMap<String, Object>();
-        		keyMap1.put("value", studentDemandVo.getTeachBranchName()+" （学员："+studentDemandVo.getStudentName()+"，总课时："+studentDemandVo.getWeekNum() * studentDemandVo.getClassNum()+"）");
+        		keyMap1.put("value", studentDemandVo.getTeachBranchName()+"("+studentDemandVo.getStudentName()+","+studentDemandVo.getWeekNum() * studentDemandVo.getClassNum()+"节课)");
         		// 课程名称
         		data.put("thing2", keyMap1);
         		
         		if(isResumption != null && isResumption == 0) {
                 	
         			Map<String, Object> keyMap2 = new HashMap<String, Object>();
-            		keyMap2.put("value", studentDemandVo.getOrderMoney()+" 元");
+            		keyMap2.put("value", studentDemandVo.getOrderMoney());
             		// 上课时间
             		data.put("amount3", keyMap2);
                 }
@@ -520,7 +519,7 @@ public class PayController {
         		if(isResumption != null && isResumption == 1) {
                 	
         			Map<String, Object> keyMap2 = new HashMap<String, Object>();
-            		keyMap2.put("value", studentDemandVo.getOrderMoney()+" 元(续课)");
+            		keyMap2.put("value", studentDemandVo.getOrderMoney());
             		// 上课时间
             		data.put("amount3", keyMap2);
                 }
