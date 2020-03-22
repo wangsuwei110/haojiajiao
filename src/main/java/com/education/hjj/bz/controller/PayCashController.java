@@ -330,7 +330,7 @@ public class PayCashController {
 					JSONObject data = new JSONObject();
 					
 					Map<String, Object> keyMap1 = new HashMap<String, Object>();
-					keyMap1.put("value", cashOutData.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					keyMap1.put("value", "¥"+cashOutData.setScale(2, BigDecimal.ROUND_HALF_UP).toString()+"元");
 					// 金额
 					data.put("amount1", keyMap1);
 					

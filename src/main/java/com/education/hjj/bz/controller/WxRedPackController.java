@@ -350,7 +350,7 @@ public class WxRedPackController {
 					data.put("keyword2", keyMap2);
 
 					Map<String,Object> keyMap3 = new HashMap<String,Object>();
-					keyMap3.put("value", cashOutData.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					keyMap3.put("value", "¥"+cashOutData.setScale(2, BigDecimal.ROUND_HALF_UP).toString()+"元");
 					//提现金额
 					data.put("keyword3",keyMap3);
 					

@@ -193,7 +193,7 @@ public class PayController {
 		data.put("keyword3",keyMap3);
 
 		Map<String,Object> keyMap4 = new HashMap<String,Object>();
-		keyMap4.put("value","付款金额：" + demandForm.getOrderMoney() +"元");
+		keyMap4.put("value","¥" + demandForm.getOrderMoney() +"元");
 		//添加对账月份
 		data.put("keyword4",keyMap4);
 
@@ -512,7 +512,7 @@ public class PayController {
         		if(isResumption != null && isResumption == 0) {
                 	
         			Map<String, Object> keyMap2 = new HashMap<String, Object>();
-            		keyMap2.put("value", studentDemandVo.getOrderMoney());
+            		keyMap2.put("value", "¥"+studentDemandVo.getOrderMoney()+"元");
             		// 上课时间
             		data.put("amount3", keyMap2);
                 }
@@ -520,7 +520,7 @@ public class PayController {
         		if(isResumption != null && isResumption == 1) {
                 	
         			Map<String, Object> keyMap2 = new HashMap<String, Object>();
-            		keyMap2.put("value", studentDemandVo.getOrderMoney());
+            		keyMap2.put("value", "¥"+studentDemandVo.getOrderMoney()+"元");
             		// 上课时间
             		data.put("amount3", keyMap2);
                 }
