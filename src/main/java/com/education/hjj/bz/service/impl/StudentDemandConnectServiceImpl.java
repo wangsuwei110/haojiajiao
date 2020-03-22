@@ -63,7 +63,7 @@ public class StudentDemandConnectServiceImpl implements StudentDemandConnectServ
 			logger.info(" allAppraiseCount={} , goodAppraiseCount={} , newRate={}", count,
 					goodCount, newRate);
 			
-			BigDecimal bg = new BigDecimal(newRate).setScale(4, RoundingMode.UP);
+			BigDecimal bg = new BigDecimal(newRate).setScale(5, RoundingMode.UP);
 			
 			logger.info("appraiseRate = {}", RegUtils.doubleToPersent().format(bg));
 			

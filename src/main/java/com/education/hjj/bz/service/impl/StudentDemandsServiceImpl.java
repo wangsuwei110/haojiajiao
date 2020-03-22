@@ -724,7 +724,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 				logger.info("employCount={} , chooseCount={} , newRate={}", teacherVo.getEmployCount(), chooseCount,
 						newRate);
 
-				BigDecimal bg = new BigDecimal(newRate).setScale(4, RoundingMode.UP);
+				BigDecimal bg = new BigDecimal(newRate).setScale(5, RoundingMode.UP);
 				logger.info("employRate = {}", RegUtils.doubleToPersent().format(bg));
 
 				teacherPo.setEmployRate(RegUtils.doubleToPersent().format(bg));
