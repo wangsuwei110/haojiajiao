@@ -484,6 +484,7 @@ public class PayController {
                 TeacherAccountOperateLogPo teacherPaymentLog = new TeacherAccountOperateLogPo();
                 teacherPaymentLog.setOrderId(randomOrderId);
                 teacherPaymentLog.setPaymentStreamId(randomNonceStr);
+                teacherPaymentLog.setDemandId(demandForm.getDemandId());
                 teacherPaymentLog.setPaymentPersonId(teacherId);
                 teacherPaymentLog.setPaymentPersonName(teacherVo.getName());
                 teacherPaymentLog.setPaymentType(0);
