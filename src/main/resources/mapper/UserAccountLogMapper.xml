@@ -106,7 +106,7 @@
 		WHERE			
 			tpl.status =1
 		and
-			tpl.payment_id  #{paymentId}
+			tpl.payment_id = #{paymentId}
        		
     </select> 
     
