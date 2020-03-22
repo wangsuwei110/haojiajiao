@@ -154,6 +154,8 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		form.setCurrentWeekDay(DateUtil.getWeekOfDate(date));
 
 		studentDemandMapper.addStudentDemandByTeacher(form);
+		
+		TeacherVo teacherVo = new TeacherVo();
 
 		// 如果有教员ID，则插入一条关联教员的表数据
 		if (form.getTeacherId() != null) {
@@ -179,7 +181,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			connectForm.setTeacherId(form.getTeacherId());
 			connectMapper.insert(connectForm);
 
-			TeacherVo teacherVo = teacherMapper.load(form.getTeacherId());
+			teacherVo = teacherMapper.load(form.getTeacherId());
 			// 插入一条预约教员的日志信息
 			StudentLogPo logPo = new StudentLogPo();
 			logPo.setStudentId(Integer.valueOf(studentVo.getSid().toString()));
@@ -195,6 +197,33 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		}
 
 		if (form.getSid() != null) {
+			
+			Integer  demandId = form.getSid();
+			
+			StudentDemandVo sdv = studentDemandMapper.queryStudentDemandDetailBySid(demandId);
+			
+			//教员的报名被学员选中并确定试讲时间后发送订阅消息
+			JSONObject data2 = new JSONObject();
+
+			Map<String, Object> keyMap4 = new HashMap<String, Object>();
+			keyMap4.put("value", "学员： "+sdv.getStudentName()+" 科目： "+sdv.getTeachBranchName());
+			// 授课老师
+			data2.put("thing1", keyMap4);
+
+			Map<String, Object> keyMap5 = new HashMap<String, Object>();
+			keyMap5.put("value", "尽快前往小程序确定试讲时间，并按照试讲时间提前备课后准时上门试讲。");
+			// 授课时间
+			data2.put("thing5", keyMap5);
+
+			logger.info("教员ID = {} , 订单id = {} , 学员id = {} ,课程内容 = {}", form.getTeacherId(),
+					demandId, sdv.getStudentId(), sdv.getTeachBranchName());
+
+			JSONObject sendRsult2 = SendWXMessageUtils.sendSubscribeMessage(teacherVo.getOpenId(),
+					Constant.CLASS_CONTENT_MESSAGE, data2);
+
+			logger.info("发出正式上课提醒给学生的结果：  " + sendRsult2.getString("errcode") + " " 
+			+ sendRsult2.getString("errmsg"));
+			
 			return ApiResponse.success("订单发布成功，一个工作日内处理");
 		}
 		return ApiResponse.error("订单发布失败，请重新发布");
@@ -1236,29 +1265,6 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 					Constant.CLASS_SUBSCRIBE_MESSAGE, data);
 
 			logger.info("预约成功消息发送的结果： " + sendRsult.getString("errcode") + " " + sendRsult.getString("errmsg"));
-			
-			
-			//教员的报名被学员选中并确定试讲时间后发送订阅消息
-			JSONObject data2 = new JSONObject();
-
-			Map<String, Object> keyMap4 = new HashMap<String, Object>();
-			keyMap4.put("value", "学员： "+sdv.getStudentName()+" 科目： "+sdv.getTeachBranchName());
-			// 授课老师
-			data2.put("thing1", keyMap4);
-
-			Map<String, Object> keyMap5 = new HashMap<String, Object>();
-			keyMap5.put("value", "尽快前往小程序确定试讲时间，并按照试讲时间提前备课后准时上门试讲。");
-			// 授课时间
-			data2.put("thing5", keyMap5);
-
-			logger.info("教员ID = {} , 订单id = {} , 学员id = {} , 试讲时间  =  {}  , 课程内容 = {}", demandForm.getTeacherId(),
-					demandId, sdv.getStudentId(), orderTeachTime, sdv.getTeachBranchName());
-
-			JSONObject sendRsult2 = SendWXMessageUtils.sendSubscribeMessage(teacherVo.getOpenId(),
-					Constant.CLASS_CONTENT_MESSAGE, data2);
-
-			logger.info("发出正式上课提醒给学生的结果：  " + sendRsult2.getString("errcode") + " " 
-			+ sendRsult2.getString("errmsg"));
 			
 			return 1;
 		}
