@@ -385,6 +385,8 @@
 		<result column="openId" property="openId"/>
 		<result column="teacher_id" property="teacherId"/>
 		<result column="teacherOpenId" property="teacherOpenId"/>
+		<result column="demand_address" property="demandAddress"/>
+		
 	</resultMap>
     
     <!-- 教务段查询超过一小时未确认试讲时间的订单 -->

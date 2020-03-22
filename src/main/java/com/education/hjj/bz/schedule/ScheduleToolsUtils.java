@@ -155,7 +155,7 @@ public class ScheduleToolsUtils {
 				data.put("thing6", keyMap3);
 				
 				Map<String, Object> keyMap4 = new HashMap<String, Object>();
-				keyMap4.put("value", teacherName);
+				keyMap4.put("value", teacherName+"(试讲)");
 				// 上课教员
 				data.put("name12", keyMap4);
 				
