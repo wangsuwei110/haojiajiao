@@ -199,7 +199,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		// 直接指定教员的情形下,更新教员的被选中当试讲员数和被聘用数
 		
 
-		double chooseCountBefore = teacherVo.getChooseCount();
+	/*	double chooseCountBefore = teacherVo.getChooseCount();
 		
 		double chooseCountAfter = teacherVo.getChooseCount() + 1;
 		
@@ -210,11 +210,11 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		teacherPo.setTeacherId(form.getTeacherId());
 		teacherPo.setChooseCount(teacherVo.getChooseCount() + 1);
 		
-		int j = userInfoMapper.updateUserInfo(teacherPo);
+		int j = userInfoMapper.updateUserInfo(teacherPo);*/
 
 		if (form.getSid() != null) {
 			
-			Integer  demandId = form.getSid();
+			/*Integer  demandId = form.getSid();
 			
 			StudentDemandVo sdv = studentDemandMapper.queryStudentDemandDetailBySid(demandId);
 			
@@ -238,7 +238,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 					Constant.CLASS_CONTENT_MESSAGE, data2);
 
 			logger.info("发出正式上课提醒给学生的结果：  " + sendRsult2.getString("errcode") + " " 
-			+ sendRsult2.getString("errmsg"));
+			+ sendRsult2.getString("errmsg"));*/
 			
 			return ApiResponse.success("订单发布成功，一个工作日内处理");
 		}
