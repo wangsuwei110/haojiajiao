@@ -168,7 +168,7 @@ public class LoginController {
 			vo.setPhone(teacherVo.getTelephone());
 			vo.setUserName(teacherVo.getName());
 
-			String token = JwtUtil.sign(studentVo.getParentPhoneNum(), String.valueOf(System.currentTimeMillis()));
+			String token = JwtUtil.sign(teacherVo.getTelephone(), String.valueOf(System.currentTimeMillis()));
 			httpServletResponse.setHeader(Constant.TOKEN, token);
 			httpServletResponse.setHeader("Access-Control-Expose-Headers", Constant.TOKEN);
 			return ApiResponse.success(vo);
