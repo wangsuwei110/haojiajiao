@@ -88,6 +88,7 @@ public class ComplaintSuggestionServiceImpl implements ComplaintSuggestionServic
 
 	@Override
 	public int updateComplaintSuggestionByEducational(ComplaintSuggestionForm complaintSuggestionForm) {
+		complaintSuggestionForm.setUpdateTime(new Date());
 		int i = complaintSuggestionMapper.updateComplaintSuggestionByEducational(complaintSuggestionForm);
 		return i;
 	}

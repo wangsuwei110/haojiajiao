@@ -214,7 +214,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 		if (form.getSid() != null) {
 			
-			/*Integer  demandId = form.getSid();
+			Integer  demandId = form.getSid();
 			
 			StudentDemandVo sdv = studentDemandMapper.queryStudentDemandDetailBySid(demandId);
 			
@@ -238,7 +238,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 					Constant.CLASS_CONTENT_MESSAGE, data2);
 
 			logger.info("发出正式上课提醒给学生的结果：  " + sendRsult2.getString("errcode") + " " 
-			+ sendRsult2.getString("errmsg"));*/
+			+ sendRsult2.getString("errmsg"));
 			
 			return ApiResponse.success("订单发布成功，一个工作日内处理");
 		}
