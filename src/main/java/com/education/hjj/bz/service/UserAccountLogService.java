@@ -10,7 +10,7 @@ public interface UserAccountLogService {
 
 	int insertUserAccountLog(TeacherAccountOperateLogPo teacherAccountOperateLogPo);
 	
-	List<TeacherAccountOperateLogVo> queryUserAccountLogList(TeacherAccountOperateLogPo teacherAccountOperateLogPo);
+	List<TeacherAccountOperateLogVo> queryUserAccountLogList(TeacherAccountLogForm teacherAccountLogForm);
 	
 	TeacherAccountOperateLogVo queryUserAccountLogDetail(Integer paymentId);
 	

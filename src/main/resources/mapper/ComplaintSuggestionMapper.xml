@@ -116,8 +116,7 @@
         set
         	
         	is_contact = #{isContact},
-        	update_time = #{updateTime},
-        	update_user = #{updateUser}
+        	update_time = #{updateTime}
         where
         	complaint_suggestion_id = #{complaintSuggestionId}
     </update>

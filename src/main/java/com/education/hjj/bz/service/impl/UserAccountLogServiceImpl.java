@@ -27,8 +27,8 @@ public class UserAccountLogServiceImpl implements UserAccountLogService{
 	}
 
 	@Override
-	public List<TeacherAccountOperateLogVo> queryUserAccountLogList(TeacherAccountOperateLogPo teacherAccountOperateLogPo) {
-		List<TeacherAccountOperateLogVo> teacherAccountOperateLogVo = userAccountLogMapper.queryUserAccountLogList(teacherAccountOperateLogPo);
+	public List<TeacherAccountOperateLogVo> queryUserAccountLogList(TeacherAccountLogForm teacherAccountLogForm) {
+		List<TeacherAccountOperateLogVo> teacherAccountOperateLogVo = userAccountLogMapper.queryUserAccountLogList(teacherAccountLogForm);
 		return teacherAccountOperateLogVo;
 	}
 

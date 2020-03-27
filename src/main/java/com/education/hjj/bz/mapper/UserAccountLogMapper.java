@@ -16,7 +16,7 @@ public interface UserAccountLogMapper {
 	@Transactional
 	int insertUserAccountLog(TeacherAccountOperateLogPo teacherAccountOperateLogPo);
 	
-	List<TeacherAccountOperateLogVo> queryUserAccountLogList(TeacherAccountOperateLogPo teacherAccountOperateLogPo);
+	List<TeacherAccountOperateLogVo> queryUserAccountLogList(TeacherAccountLogForm teacherAccountLogForm);
 
 	List<TeacherAccountOperateLogVo> listPayLog(TeacherAccountOperateLogPo paymentStreamId);
 
