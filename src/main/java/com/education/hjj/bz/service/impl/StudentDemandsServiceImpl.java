@@ -1651,6 +1651,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 	@Override
 	public int updateStudentDemandConnectByStatus(StudentDemandConnectForm studentDemandConnectForm) {
+		studentDemandConnectForm.setUpdateTime(new Date());
 		int i = connectMapper.updateStudentDemandConnectByStatus(studentDemandConnectForm);
 		return i;
 	}

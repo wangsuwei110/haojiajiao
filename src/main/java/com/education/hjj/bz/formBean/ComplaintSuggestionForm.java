@@ -1,6 +1,7 @@
 package com.education.hjj.bz.formBean;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class ComplaintSuggestionForm extends PageForm implements Serializable{
 
@@ -30,6 +31,8 @@ public class ComplaintSuggestionForm extends PageForm implements Serializable{
     private String identity;
     
     private Integer isContact;
+    
+    private Date updateTime;
 
 	public String getPersonId() {
 		return personId;
@@ -93,6 +96,14 @@ public class ComplaintSuggestionForm extends PageForm implements Serializable{
 
 	public void setIsContact(Integer isContact) {
 		this.isContact = isContact;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
 	}
 
 }

@@ -99,7 +99,7 @@ public class ComplaintSuggestionController {
 		return ApiResponse.success("暂无数据！");
 	}
 	
-	@ApiOperation("教务端查找所有的建议与投诉")
+	@ApiOperation("教务端更新建议与投诉")
 	@RequestMapping(value = "/updateComplaintSuggestionByEducational", method = RequestMethod.POST)
 	public ApiResponse updateComplaintSuggestionByEducational(@RequestBody ComplaintSuggestionForm complaintSuggestionForm) {
 		

@@ -40,15 +40,21 @@ public class UserAccountLogController {
 		PageVo p = new PageVo();
 		
 		Integer teacherId = teacherAccountLogForm.getTeacherId();
-		Integer paymentType = teacherAccountLogForm.getPaymentType();
+		String paymentType = teacherAccountLogForm.getPaymentType();
+		
+		teacherAccountLogForm.setPaymentPersonId(teacherId);
+		
+		if(paymentType == null) {
+			teacherAccountLogForm.setPaymentType("0,1,3");
+		}
+		
+		if(paymentType != null && "0".equalsIgnoreCase(paymentType)) {
+			teacherAccountLogForm.setPaymentType("0,3");
+		}
 		
 		logger.info("教员ID： {} , 收支类型：{}" , teacherId , paymentType);
 		
-		TeacherAccountOperateLogPo teacherAccountOperateLogPo = new TeacherAccountOperateLogPo();
-		teacherAccountOperateLogPo.setPaymentPersonId(teacherId);
-		teacherAccountOperateLogPo.setPaymentType(paymentType);
-		
-		List<TeacherAccountOperateLogVo>  teacherAccountOperateLogVo  = userAccountLogService.queryUserAccountLogList(teacherAccountOperateLogPo);
+		List<TeacherAccountOperateLogVo>  teacherAccountOperateLogVo  = userAccountLogService.queryUserAccountLogList(teacherAccountLogForm);
 		
 		p.setDataList(teacherAccountOperateLogVo);
 		p.setTotal(teacherAccountOperateLogVo.size());

@@ -12,9 +12,11 @@ public class TeacherAccountLogForm extends PageForm implements Serializable{
 	//教员id
 	private Integer teacherId;
 		
-	private Integer paymentType;
+	private String paymentType;
 	
 	private Integer paymentId;
+	
+	private Integer paymentPersonId;
 
 	public Integer getTeacherId() {
 		return teacherId;
@@ -24,11 +26,11 @@ public class TeacherAccountLogForm extends PageForm implements Serializable{
 		this.teacherId = teacherId;
 	}
 
-	public Integer getPaymentType() {
+	public String getPaymentType() {
 		return paymentType;
 	}
 
-	public void setPaymentType(Integer paymentType) {
+	public void setPaymentType(String paymentType) {
 		this.paymentType = paymentType;
 	}
 
@@ -38,6 +40,14 @@ public class TeacherAccountLogForm extends PageForm implements Serializable{
 
 	public void setPaymentId(Integer paymentId) {
 		this.paymentId = paymentId;
+	}
+
+	public Integer getPaymentPersonId() {
+		return paymentPersonId;
+	}
+
+	public void setPaymentPersonId(Integer paymentPersonId) {
+		this.paymentPersonId = paymentPersonId;
 	}
 	
 }
