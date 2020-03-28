@@ -306,8 +306,12 @@ public class PayController {
 
 				TeacherPo teacherPo = new TeacherPo();
 				teacherPo.setTeacherId(teacherId);
-				// 记录当前支付时教员的费用
-				demandForm.setChargesStandard(teacherVo.getChargesStandard());
+				// 记录当前支付时教员的费用(支付时的单价)
+				if (StringUtils.isNotEmpty(demandForm.getChargesStandard())) {
+					demandForm.setChargesStandard(demandForm.getChargesStandard());
+				} else {
+					demandForm.setChargesStandard(teacherVo.getChargesStandard());
+				}
 
                 logger.info("caohuan*********修改上个订单***********");
                 // 修改当前订单成新订单
