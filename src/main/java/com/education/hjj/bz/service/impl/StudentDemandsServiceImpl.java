@@ -197,20 +197,6 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		}
 		
 		// 直接指定教员的情形下,更新教员的被选中当试讲员数和被聘用数
-		
-
-	/*	double chooseCountBefore = teacherVo.getChooseCount();
-		
-		double chooseCountAfter = teacherVo.getChooseCount() + 1;
-		
-		logger.info("chooseCountBefore={} , chooseCountAfter={}",  chooseCountBefore,
-				chooseCountAfter);
-		
-		TeacherPo teacherPo = new TeacherPo();
-		teacherPo.setTeacherId(form.getTeacherId());
-		teacherPo.setChooseCount(teacherVo.getChooseCount() + 1);
-		
-		int j = userInfoMapper.updateUserInfo(teacherPo);*/
 
 		if (form.getSid() != null) {
 			

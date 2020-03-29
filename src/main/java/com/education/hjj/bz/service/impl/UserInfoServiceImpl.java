@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.education.hjj.bz.entity.ParameterPo;
 import com.education.hjj.bz.entity.PicturePo;
 import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
@@ -40,8 +41,10 @@ import com.education.hjj.bz.mapper.UserInfoMapper;
 import com.education.hjj.bz.mapper.UserPictureInfoMapper;
 import com.education.hjj.bz.service.UserInfoService;
 import com.education.hjj.bz.util.DateUtil;
+import com.education.hjj.bz.util.SendWXMessageUtils;
 import com.education.hjj.bz.util.StrUtils;
 import com.education.hjj.bz.util.UploadFile;
+import com.education.hjj.bz.util.weixinUtil.config.Constant;
 
 @Service
 @Transactional
@@ -735,7 +738,36 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Override
 	public int updateUserInfo(TeacherPo teacher) {
+		
 		int i = userInfoMapper.updateUserInfo(teacher);
+		
+		Integer teacherId = teacher.getTeacherId();
+		
+		TeacherVo t = userInfoMapper.queryTeacherHomeInfos(teacherId);
+		
+		if(i > 0) {
+			//教员的报名被学员选中并确定试讲时间后发送订阅消息
+			JSONObject data2 = new JSONObject();
+
+			Map<String, Object> keyMap1 = new HashMap<String, Object>();
+			keyMap1.put("value", t.getName());
+			// 授课老师
+			data2.put("name1", keyMap1);
+
+			Map<String, Object> keyMap2 = new HashMap<String, Object>();
+			keyMap2.put("value", DateUtil.covertFromDateToShortString(t.getCreateTime()));
+			// 授课时间
+			data2.put("date2", keyMap2);
+
+			logger.info("教员ID = {} , 审核结果 = {} , 审核结果描述 = {} ", teacherId,
+					teacher.getAuditStatus(), teacher.getAuditDesc());
+
+			JSONObject sendRsult2 = SendWXMessageUtils.sendSubscribeMessage(t.getOpenId(),
+					Constant.AUDIT_REGIST_MESSAGE, data2);
+
+			logger.info("注册教员的信息审核结果：  " + sendRsult2.getString("errcode") + " " 
+			+ sendRsult2.getString("errmsg"));
+		}
 		return i;
 	}
 

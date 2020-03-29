@@ -600,7 +600,7 @@ public class UserInfoController {
 		
 		TeacherPo teacher = new TeacherPo();
 		teacher.setTeacherId(Integer.valueOf(teacherInfoForm.getTeacherId()));
-		teacher.setAuditStatus(1);
+		teacher.setAuditStatus(teacherInfoForm.getAuditStatus());
 		teacher.setAuditDesc(teacherInfoForm.getAuditDesc());
 		teacher.setUpdateTime(new Date());
 		teacher.setUpdateUser(teacherInfoForm.getTeacherId());
