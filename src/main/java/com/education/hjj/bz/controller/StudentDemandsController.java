@@ -146,7 +146,7 @@ public class StudentDemandsController {
 		List<StudentDemandVo> list = studentDemandsService.queryAllWaitForTrailTimeDemandOrderList(studentDemandConnectForm);
 		
 		if(list.size() > 0) {
-			return ApiResponse.success("查询成功!");
+			return ApiResponse.success("查询成功!" , list);
 		}else {
 			return ApiResponse.success("暂无数据！");
 		}

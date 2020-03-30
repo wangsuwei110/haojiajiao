@@ -13,6 +13,9 @@ public class ComplaintSuggestionPo extends BasePo implements Serializable {
 
 	// 投诉或建议人ID
 	private Integer personId;
+	
+	//投诉或建议人员类型（1：教员，2：学员）
+	private Integer personType;
 
 	// 投诉类型(0投诉，1建议)
 	private Integer type;
@@ -27,6 +30,9 @@ public class ComplaintSuggestionPo extends BasePo implements Serializable {
 	private String reply;
 
 	private Integer isContact;
+	
+	//投诉人员姓名
+  	private String name;
 
 	public String getReply() {
 		return reply;
@@ -82,6 +88,22 @@ public class ComplaintSuggestionPo extends BasePo implements Serializable {
 
 	public void setIsContact(Integer isContact) {
 		this.isContact = isContact;
+	}
+
+	public Integer getPersonType() {
+		return personType;
+	}
+
+	public void setPersonType(Integer personType) {
+		this.personType = personType;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

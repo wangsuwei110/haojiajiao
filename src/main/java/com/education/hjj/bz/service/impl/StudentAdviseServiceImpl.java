@@ -26,6 +26,8 @@ public class StudentAdviseServiceImpl implements StudentAdviseService {
     public void add(StudentAdviseForm studentAdvise) {
         studentAdvise.setCreateTime(new Date());
         studentAdvise.setCreateUser(studentAdvise.getStudentId());
+        studentAdvise.setType(1);
+        studentAdvise.setParentPhoneNum("11111111111");
         studentAdviseMapper.insert(studentAdvise);
     }
 

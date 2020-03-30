@@ -35,9 +35,11 @@ public class ComplaintSuggestionServiceImpl implements ComplaintSuggestionServic
 		ComplaintSuggestionPo complaintSuggestionPo = new ComplaintSuggestionPo();
 		
 		complaintSuggestionPo.setPersonId(Integer.valueOf(complaintSuggestionForm.getPersonId()));
+		complaintSuggestionPo.setPersonType(complaintSuggestionForm.getPersonType());
 		complaintSuggestionPo.setType(1);
 		complaintSuggestionPo.setContent(complaintSuggestionForm.getContent());
 		complaintSuggestionPo.setTelephone(complaintSuggestionForm.getTelephone());
+		complaintSuggestionPo.setName(complaintSuggestionForm.getName());
 		complaintSuggestionPo.setStatus(1);
 		complaintSuggestionPo.setCreateTime(new Date());
 		complaintSuggestionPo.setCreateUser(complaintSuggestionForm.getPersonId());

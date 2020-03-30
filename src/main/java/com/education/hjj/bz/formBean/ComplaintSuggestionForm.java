@@ -33,6 +33,12 @@ public class ComplaintSuggestionForm extends PageForm implements Serializable{
     private Integer isContact;
     
     private Date updateTime;
+    
+    //投诉或建议人员类型（1：教员，2：学员）
+  	private Integer personType;
+  	
+  	//投诉人员姓名
+  	private String name;
 
 	public String getPersonId() {
 		return personId;
@@ -104,6 +110,22 @@ public class ComplaintSuggestionForm extends PageForm implements Serializable{
 
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	public Integer getPersonType() {
+		return personType;
+	}
+
+	public void setPersonType(Integer personType) {
+		this.personType = personType;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

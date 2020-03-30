@@ -1,18 +1,19 @@
 package com.education.hjj.bz.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.education.hjj.bz.entity.vo.StudentAdviseVo;
-import com.education.hjj.bz.formBean.StudentAdviseForm;
-import com.education.hjj.bz.service.StudentAdviseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.education.hjj.bz.formBean.ComplaintSuggestionForm;
+import com.education.hjj.bz.service.ComplaintSuggestionService;
 import com.education.hjj.bz.util.ApiResponse;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 
 /**
  * 校长邮箱(家长建议)表控制类
@@ -25,38 +26,23 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("studentAdvise")
 public class StudentAdviseController {
 
-    @Autowired
-    private StudentAdviseService studentAdviseService;
+	@Autowired
+	private ComplaintSuggestionService complaintSuggestionService;
 
     // 详情页（用于添加跳转）
-	@PostMapping("/add")
-	@ResponseBody
-	public ApiResponse add(@RequestBody StudentAdviseForm form) {
-		studentAdviseService.add(form);
-		return ApiResponse.success("提交成功");
-    }
-	
-	@PostMapping("/queryAllStudentAdviseByEducational")
-	@ResponseBody
-	@ApiOperation("教务端查询所有的待处理校长信箱的投诉与建议")
-	public ApiResponse queryAllStudentAdviseByEducational(@RequestBody StudentAdviseForm form) {
-		List<StudentAdviseVo>  list = studentAdviseService.queryAllStudentAdviseByEducational(form);
+	@RequestMapping(value ="/add" , method = RequestMethod.POST)
+	@ApiOperation("新增校长信箱建议与投诉")
+	public ApiResponse add(@RequestBody ComplaintSuggestionForm complaintSuggestionForm) {
 		
-		if(list != null && list.size() > 0) {
-			return ApiResponse.success("查询成功" , JSON.toJSON(list));
-		}
-		return ApiResponse.success("暂无数据！");
-    }
-	
-	@PostMapping("/updateStudentAdviseByEducational")
-	@ResponseBody
-	@ApiOperation("教务端处理所有的校长信箱反馈")
-	public ApiResponse updateStudentAdviseByEducational(@RequestBody StudentAdviseForm form) {
-		int i  = studentAdviseService.updateNotNull(form);
+		complaintSuggestionForm.setPersonType(2);
+		
+		int i = complaintSuggestionService.addComplaintSuggestion(complaintSuggestionForm);
 		
 		if(i > 0) {
-			return ApiResponse.success("操作成功");
+			return ApiResponse.success("操作成功！");
 		}
-		return ApiResponse.error("操作失败！");
+
+		return ApiResponse.success("操作失败！");
     }
+	
 }

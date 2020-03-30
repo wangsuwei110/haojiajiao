@@ -34,6 +34,8 @@ public class ComplaintSuggestionController {
 	@RequestMapping(value = "/addComplaintSuggestion", method = RequestMethod.POST)
 	public ApiResponse addStudentDemandByTeacher(@RequestBody ComplaintSuggestionForm complaintSuggestionForm) {
 		
+		complaintSuggestionForm.setPersonType(1);
+		
 		int i = complaintSuggestionService.addComplaintSuggestion(complaintSuggestionForm);
 		
 		if(i > 0) {
