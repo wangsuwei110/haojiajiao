@@ -371,7 +371,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		orderDemandTimeVoList.sort((a, b) -> a.getTime().compareTo(b.getTime()));
 		orderDemandTimeVoList.sort((a, b) -> a.getDate().compareTo(b.getDate()));
 		map.put("orderTime", orderDemandTimeVoList);
-		logger.info("caohuan********teacherList:{}", JSON.toJSONString(orderDemandTimeVoList));
+		logger.info("caohuan********teacherList:{}", JSON.toJSONString(list));
 		return ApiResponse.success(map);
 	}
 
