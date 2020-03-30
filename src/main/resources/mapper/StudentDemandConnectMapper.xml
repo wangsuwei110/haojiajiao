@@ -21,6 +21,7 @@
 	     	<result property="appraiseLevel" column="appraise_level"/>
 	     	<result property="telephone" column="telephone"/>
 	     	<result property="studentName" column="student_name"/>
+
     </resultMap>
 
 	<select id="load" resultMap="studentDemandConnectResultMap" parameterType="long">
