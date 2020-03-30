@@ -1097,7 +1097,7 @@ public final class DateUtil {
 
 		long year = between / (12 * 30 * 24 * 3600);
 		long month = between / (30 * 24 * 3600);
-		long day = between / (24 * 3600 * 30);
+		long day = between / (24 * 3600);
 
 		StringBuffer ab = new StringBuffer();
 

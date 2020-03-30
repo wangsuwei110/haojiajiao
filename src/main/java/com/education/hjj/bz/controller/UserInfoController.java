@@ -334,6 +334,11 @@ public class UserInfoController {
 			
 //暂时去掉路径替换   teacherVo.setPicture(teacherVo.getPicture().substring(teacherVo.getPicture().lastIndexOf('/')+1));
 			
+			//好评率
+			String appraiseRate = studentDemandConnectService.queryAppraiseCountByTeacherId(teacherId);
+			
+			teacherVo.setAppraise(appraiseRate);
+			
 			//基本信息
 			map.put("baseInfo", teacherVo);
 			
@@ -457,11 +462,6 @@ public class UserInfoController {
 				int serviceHours = demandCourseInfoService.queryServiceForHours(Integer.valueOf(teacherId));
 				
 				map.put("serviceHours", serviceHours);
-				
-				//好评率
-				String appraiseRate = studentDemandConnectService.queryAppraiseCountByTeacherId(teacherId);
-				
-				map.put("appraiseRate", appraiseRate);
 				
 				return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
 			} 
@@ -600,7 +600,7 @@ public class UserInfoController {
 		
 		TeacherPo teacher = new TeacherPo();
 		teacher.setTeacherId(Integer.valueOf(teacherInfoForm.getTeacherId()));
-		teacher.setAuditStatus(1);
+		teacher.setAuditStatus(teacherInfoForm.getAuditStatus());
 		teacher.setAuditDesc(teacherInfoForm.getAuditDesc());
 		teacher.setUpdateTime(new Date());
 		teacher.setUpdateUser(teacherInfoForm.getTeacherId());

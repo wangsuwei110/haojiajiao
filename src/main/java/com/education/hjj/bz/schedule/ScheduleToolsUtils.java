@@ -32,9 +32,6 @@ public class ScheduleToolsUtils {
 
 	@Autowired
 	private UserInfoMapper userInfoMapper;
-	
-	@Autowired
-	private StudentDemandMapper studentDemandMapper;
 
 	@Autowired
 	private StudentDemandConnectMapper connectMapper;
