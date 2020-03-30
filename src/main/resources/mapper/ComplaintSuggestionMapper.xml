@@ -14,6 +14,7 @@
 		<result column="telephone" property="telephone"/>
 		<result column="create_time" property="createTime"/>
 		<result column="name" property="name"/>
+
 	</resultMap>
      
     <!-- 新增一条未回复的投诉与建议 -->
