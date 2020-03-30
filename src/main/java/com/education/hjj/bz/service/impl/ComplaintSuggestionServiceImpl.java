@@ -62,6 +62,7 @@ public class ComplaintSuggestionServiceImpl implements ComplaintSuggestionServic
 		complaintSuggestionPo.setUpdateUser(complaintSuggestionForm.getPersonId());
 		
 		int i = complaintSuggestionMapper.updateComplaintSuggestion(complaintSuggestionPo);
+
 		return i;
 	}
 

@@ -42,6 +42,7 @@ public class StudentDemandsController {
 	@ApiOperation("学员发布需求信息")
 	@RequestMapping(value = "/addStudentDemand", method = RequestMethod.POST)
 	public ApiResponse addStudentDemandByTeacher(@RequestBody StudentDemandForm demandForm) {
+
 		return studentDemandsService.addStudentDemandByTeacher(demandForm);
 	}
 

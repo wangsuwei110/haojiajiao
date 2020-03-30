@@ -116,6 +116,7 @@ public class UserInfoController {
 	public ApiResponse updateUserInfoByParameter(@RequestBody TeacherInfoForm teacherInfoForm) {
 
 		int i = userInfoService.updateUserInfoByParameter(teacherInfoForm);
+
 		Map<String , Object> map = new HashMap<String, Object>(1);
 		
 		if(i > 0) {

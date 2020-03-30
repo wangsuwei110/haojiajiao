@@ -46,6 +46,7 @@ public class SendWXMessageUtils {
 	 */
 	public static JSONObject sendTemplateMessage(String touser, String template_id, String page, String formid,
 			Map<String, TemplateData> map) {
+
 		String accessToken = getAccessToken();
 		SendTemplateMessage sendTemplateMessage = new SendTemplateMessage();
 		// 拼接数据

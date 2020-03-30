@@ -29,6 +29,7 @@ public class StudentAdviseServiceImpl implements StudentAdviseService {
         studentAdvise.setType(1);
         studentAdvise.setParentPhoneNum("11111111111");
         studentAdviseMapper.insert(studentAdvise);
+
     }
 
     @Override

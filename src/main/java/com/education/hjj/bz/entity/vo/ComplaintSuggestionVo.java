@@ -95,5 +95,4 @@ public class ComplaintSuggestionVo extends BaseVo implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
 }

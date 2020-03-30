@@ -93,5 +93,4 @@ public class StudentAdviseForm implements Serializable{
 	public void setType(Integer type) {
 		this.type = type;
 	}
-    
 }
