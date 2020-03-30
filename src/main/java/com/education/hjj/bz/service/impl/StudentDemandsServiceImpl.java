@@ -322,6 +322,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 	@Override
 	public ApiResponse listTeacher(StudentDemandConnectForm demandForm) {
+
 		// 根据学员的id查找预约的教员列表信息
 		Map<String, Object> map = new HashMap<>();
 		List<TeacherVo> list = teacherMapper.listTeacherByStudentId(demandForm.getDemandId());
@@ -370,7 +371,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		orderDemandTimeVoList.sort((a, b) -> a.getTime().compareTo(b.getTime()));
 		orderDemandTimeVoList.sort((a, b) -> a.getDate().compareTo(b.getDate()));
 		map.put("orderTime", orderDemandTimeVoList);
-
+		logger.info("caohuan********teacherList:{}", JSON.toJSONString(list));
 		return ApiResponse.success(map);
 	}
 
