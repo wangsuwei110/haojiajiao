@@ -746,24 +746,51 @@ public class UserInfoServiceImpl implements UserInfoService {
 		TeacherVo t = userInfoMapper.queryTeacherHomeInfos(teacherId);
 		
 		if(i > 0) {
+			
 			//教员的报名被学员选中并确定试讲时间后发送订阅消息
 			JSONObject data2 = new JSONObject();
+			
+			if(teacher.getAuditStatus() == 1) {
+				
+				Map<String, Object> keyMap1 = new HashMap<String, Object>();
+				keyMap1.put("value", "恭喜，注册审核通过！");
+				// 审核结果
+				data2.put("thing1", keyMap1);
 
-			Map<String, Object> keyMap1 = new HashMap<String, Object>();
-			keyMap1.put("value", t.getName());
-			// 授课老师
-			data2.put("name1", keyMap1);
+				Map<String, Object> keyMap2 = new HashMap<String, Object>();
+				keyMap2.put("value", DateUtil.covertFromDateToShortString(new Date()));
+				// 授课时间
+				data2.put("date2", keyMap2);
+				
+				Map<String, Object> keyMap3 = new HashMap<String, Object>();
+				keyMap3.put("value", "感谢您对我们的关注和支持。");
+				// 备注
+				data2.put("thing3", keyMap3);
+			}
+			
+			if(teacher.getAuditStatus() == 2) {
+				
+				Map<String, Object> keyMap1 = new HashMap<String, Object>();
+				keyMap1.put("value", "拒绝");
+				// 审核结果
+				data2.put("thing1", keyMap1);
 
-			Map<String, Object> keyMap2 = new HashMap<String, Object>();
-			keyMap2.put("value", DateUtil.covertFromDateToShortString(t.getCreateTime()));
-			// 授课时间
-			data2.put("date2", keyMap2);
+				Map<String, Object> keyMap2 = new HashMap<String, Object>();
+				keyMap2.put("value", DateUtil.covertFromDateToShortString(new Date()));
+				// 授课时间
+				data2.put("date2", keyMap2);
+				
+				Map<String, Object> keyMap3 = new HashMap<String, Object>();
+				keyMap3.put("value", teacher.getAuditDesc());
+				// 备注
+				data2.put("thing3", keyMap3);
+			}
 
 			logger.info("教员ID = {} , 审核结果 = {} , 审核结果描述 = {} ", teacherId,
 					teacher.getAuditStatus(), teacher.getAuditDesc());
 
 			JSONObject sendRsult2 = SendWXMessageUtils.sendSubscribeMessage(t.getOpenId(),
-					Constant.AUDIT_REGIST_MESSAGE, data2);
+					Constant.AUDIT_REGIST_RESULT_MESSAGE, data2);
 
 			logger.info("注册教员的信息审核结果：  " + sendRsult2.getString("errcode") + " " 
 			+ sendRsult2.getString("errmsg"));

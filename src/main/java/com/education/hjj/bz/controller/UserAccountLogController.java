@@ -1,6 +1,9 @@
 package com.education.hjj.bz.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,19 +45,37 @@ public class UserAccountLogController {
 		Integer teacherId = teacherAccountLogForm.getTeacherId();
 		String paymentType = teacherAccountLogForm.getPaymentType();
 		
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		map.put("paymentPersonId", teacherId);
+		
+		List<Integer> demandStatusIntList = new ArrayList<Integer>();
+		
+		
+		
 		teacherAccountLogForm.setPaymentPersonId(teacherId);
 		
 		if(paymentType == null) {
-			teacherAccountLogForm.setPaymentType("0,1,3");
+			demandStatusIntList.add(0);
+			demandStatusIntList.add(1);
+			demandStatusIntList.add(3);
 		}
 		
 		if(paymentType != null && "0".equalsIgnoreCase(paymentType)) {
-			teacherAccountLogForm.setPaymentType("0,3");
+			demandStatusIntList.add(0);
+			demandStatusIntList.add(3);
 		}
+		
+		if(paymentType != null && "1".equalsIgnoreCase(paymentType)) {
+			demandStatusIntList.add(1);
+		}
+		
+		map.put("list", demandStatusIntList);
+		
 		
 		logger.info("教员ID： {} , 收支类型：{}" , teacherId , paymentType);
 		
-		List<TeacherAccountOperateLogVo>  teacherAccountOperateLogVo  = userAccountLogService.queryUserAccountLogList(teacherAccountLogForm);
+		List<TeacherAccountOperateLogVo>  teacherAccountOperateLogVo  = userAccountLogService.queryUserAccountLogList(map);
 		
 		p.setDataList(teacherAccountOperateLogVo);
 		p.setTotal(teacherAccountOperateLogVo.size());

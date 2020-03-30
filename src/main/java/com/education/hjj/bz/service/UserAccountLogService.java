@@ -1,6 +1,7 @@
 package com.education.hjj.bz.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
 import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
@@ -10,7 +11,7 @@ public interface UserAccountLogService {
 
 	int insertUserAccountLog(TeacherAccountOperateLogPo teacherAccountOperateLogPo);
 	
-	List<TeacherAccountOperateLogVo> queryUserAccountLogList(TeacherAccountLogForm teacherAccountLogForm);
+	List<TeacherAccountOperateLogVo> queryUserAccountLogList(Map<String, Object> map);
 	
 	TeacherAccountOperateLogVo queryUserAccountLogDetail(Integer paymentId);
 	

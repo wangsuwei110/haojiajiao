@@ -22,7 +22,7 @@
 	
     
     <!-- 查询用户账户变化日志列表 -->  
-    <select id="queryUserAccountLogList"  resultMap="teacherAccountLogResultMap" parameterType="com.education.hjj.bz.formBean.TeacherAccountLogForm">    
+    <select id="queryUserAccountLogList"  resultMap="teacherAccountLogResultMap" parameterType="java.util.Map">    
         	
        	select
        		payment_id, 
@@ -39,9 +39,15 @@
 			payment_person_id=#{paymentPersonId}
 		AND
 			status =1
-			<if test="paymentType != null">
-               and payment_type in (#{paymentType})
-            </if>
+			
+		<if test="list != null">
+			AND payment_type in 
+			
+			<foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+		       #{item}
+		   </foreach>
+		   
+     	</if>
        		
     </select>
     

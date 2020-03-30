@@ -1,6 +1,7 @@
 package com.education.hjj.bz.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -27,8 +28,8 @@ public class UserAccountLogServiceImpl implements UserAccountLogService{
 	}
 
 	@Override
-	public List<TeacherAccountOperateLogVo> queryUserAccountLogList(TeacherAccountLogForm teacherAccountLogForm) {
-		List<TeacherAccountOperateLogVo> teacherAccountOperateLogVo = userAccountLogMapper.queryUserAccountLogList(teacherAccountLogForm);
+	public List<TeacherAccountOperateLogVo> queryUserAccountLogList(Map<String, Object> map) {
+		List<TeacherAccountOperateLogVo> teacherAccountOperateLogVo = userAccountLogMapper.queryUserAccountLogList(map);
 		return teacherAccountOperateLogVo;
 	}
 

@@ -1,6 +1,7 @@
 package com.education.hjj.bz.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,7 +17,7 @@ public interface UserAccountLogMapper {
 	@Transactional
 	int insertUserAccountLog(TeacherAccountOperateLogPo teacherAccountOperateLogPo);
 	
-	List<TeacherAccountOperateLogVo> queryUserAccountLogList(TeacherAccountLogForm teacherAccountLogForm);
+	List<TeacherAccountOperateLogVo> queryUserAccountLogList(Map<String, Object> map);
 
 	List<TeacherAccountOperateLogVo> listPayLog(TeacherAccountOperateLogPo paymentStreamId);
 
