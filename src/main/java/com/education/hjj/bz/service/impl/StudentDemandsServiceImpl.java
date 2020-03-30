@@ -336,6 +336,8 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 	@Override
 	public ApiResponse listTeacher(StudentDemandConnectForm demandForm) {
+
+		demandForm.setDemandId(demandForm.getSid());
 		// 根据学员的id查找预约的教员列表信息
 		Map<String, Object> map = new HashMap<>();
 		List<TeacherVo> list = teacherMapper.listTeacherByStudentId(demandForm.getDemandId());
