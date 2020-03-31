@@ -156,13 +156,13 @@ public class TeacherServiceImpl implements TeacherService {
     public ApiResponse listSubject(TeachScreenForm form) {
         List<CodeVo> list = teachLevelMapper.listSubject(form);
 
-        list.forEach(f -> {
+        /*list.forEach(f -> {
             if (StringUtil.isNotBlank(f.getValue()) && f.getValue().length() > 2) {
                 f.setValue(f.getValue().replace("小学", ""));
                 f.setValue(f.getValue().replace("中学", ""));
                 f.setValue(f.getValue().replace("高中", ""));
             }
-        });
+        });*/
 
         Collections.sort(list, new Comparator<CodeVo>() {
             @Override
