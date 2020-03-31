@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.education.hjj.bz.entity.vo.ComplaintSuggestionVo;
+import com.education.hjj.bz.entity.vo.PageVo;
 import com.education.hjj.bz.formBean.ComplaintSuggestionForm;
 import com.education.hjj.bz.service.ComplaintSuggestionService;
 import com.education.hjj.bz.util.ApiResponse;
@@ -95,8 +96,15 @@ public class ComplaintSuggestionController {
 		
 		List<ComplaintSuggestionVo>  list = complaintSuggestionService.queryAllComplaintSuggestionByEducational(complaintSuggestionForm);
 		
+		PageVo pageVo = new PageVo();
+		
+		pageVo.setDataList(list);
+		pageVo.setTotal(list.size());
+		
+		
+		
 		if(list.size() > 0) {
-			return ApiResponse.success("操作成功！" , JSON.toJSON(list));
+			return ApiResponse.success("操作成功！" , JSON.toJSON(pageVo));
 		}
 
 		return ApiResponse.success("暂无数据！");

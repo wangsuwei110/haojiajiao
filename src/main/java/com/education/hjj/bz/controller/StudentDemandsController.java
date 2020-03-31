@@ -1,6 +1,7 @@
 package com.education.hjj.bz.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.education.hjj.bz.entity.vo.PageVo;
 import com.education.hjj.bz.entity.vo.StudentDemandVo;
 import com.education.hjj.bz.formBean.DemandCourseInfoForm;
 import com.education.hjj.bz.formBean.StudentDemandConnectForm;
@@ -146,8 +147,13 @@ public class StudentDemandsController {
 		
 		List<StudentDemandVo> list = studentDemandsService.queryAllWaitForTrailTimeDemandOrderList(studentDemandConnectForm);
 		
+		PageVo pageVo = new PageVo();
+		
+		pageVo.setDataList(list);
+		pageVo.setTotal(list.size());
+		
 		if(list.size() > 0) {
-			return ApiResponse.success("查询成功!" , list);
+			return ApiResponse.success("查询成功!" , JSON.toJSON(pageVo));
 		}else {
 			return ApiResponse.success("暂无数据！");
 		}

@@ -106,8 +106,13 @@ public class UserAccountLogController {
 		
 		List<TeacherAccountOperateLogVo> list  = userAccountLogService.queryUserAccountLogListByEducational(teacherAccountLogForm);
 		
+		PageVo pageVo = new PageVo();
+		
+		pageVo.setDataList(list);
+		pageVo.setTotal(list.size());
+		
 		if(list != null && list.size() > 0) {
-			return ApiResponse.success("查询成功", JSON.toJSON(list));
+			return ApiResponse.success("查询成功", JSON.toJSON(pageVo));
 		}else {
 			return ApiResponse.success("暂无数据！");
 		}

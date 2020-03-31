@@ -591,7 +591,12 @@ public class UserInfoController {
 		
 		List<Map<String, Object>>  list = userInfoService.queryAllTeacherInfosByEducational(studentTeacherInfoForm);
 		
-		return ApiResponse.success("操作成功！" , JSONObject.toJSON(list));
+		PageVo pageVo = new PageVo();
+		
+		pageVo.setDataList(list);
+		pageVo.setTotal(list.size());
+		
+		return ApiResponse.success("操作成功！" , JSONObject.toJSON(pageVo));
 	}
 	
 	@ApiOperation("教务端审核员审核待审核教员信息")
