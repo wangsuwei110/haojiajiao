@@ -145,8 +145,6 @@
         	status=1
         and
         	teacher_id = #{teacherId} 
-        and
-        	picture_type != 2
 
 		ORDER BY
 			picture_type
