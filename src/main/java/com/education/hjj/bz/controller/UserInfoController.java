@@ -338,7 +338,7 @@ public class UserInfoController {
 			//好评率
 			String appraiseRate = studentDemandConnectService.queryAppraiseCountByTeacherId(teacherId);
 			
-			teacherVo.setAppraise(appraiseRate);
+			teacherVo.setAppraiseRate(appraiseRate);
 			
 			//基本信息
 			map.put("baseInfo", teacherVo);
