@@ -10,6 +10,7 @@
 	     	<result property="adviseDesc" column="advise_desc"/>
 	     	<result property="createTime" column="create_time"/>
 	     	<result property="createUser" column="create_user"/>
+
     </resultMap>
 
 	<select id="load" resultMap="studentAdviseResultMap" parameterType="long">
@@ -102,6 +103,7 @@
     
     <select id="queryAllStudentAdviseByEducational" parameterType="com.education.hjj.bz.formBean.StudentAdviseForm"  resultMap="studentAdviseResultMap">
        SELECT 
+       		sa.sid,
 			s.student_name,
 			s.parent_phone_num,
 			sa.create_time,

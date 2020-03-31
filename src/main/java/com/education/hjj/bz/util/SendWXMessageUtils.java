@@ -46,6 +46,7 @@ public class SendWXMessageUtils {
 	 */
 	public static JSONObject sendTemplateMessage(String touser, String template_id, String page, String formid,
 			Map<String, TemplateData> map) {
+
 		String accessToken = getAccessToken();
 		SendTemplateMessage sendTemplateMessage = new SendTemplateMessage();
 		// 拼接数据
@@ -328,29 +329,44 @@ public class SendWXMessageUtils {
 	
 	
 	public static void main(String[] args) {
-		JSONObject result = getAllSubscribeMessageTemplates();
-		
-		System.out.println(result);
+//		JSONObject result = getAllSubscribeMessageTemplates();
+//		
+//		System.out.println(result);
 		
 		JSONObject data = new JSONObject();
 		
+		Integer isResumption = 0;
+		
 		Map<String, Object> keyMap1 = new HashMap<String, Object>();
-		keyMap1.put("value", "学员 ：黄同学 科目： 小学一年级数学");
+		keyMap1.put("value", "小学一年级数学"+"("+"黄同学"+","+1+"节课)");
 		// 课程名称
-		data.put("thing1", keyMap1);
+		data.put("thing2", keyMap1);
 		
-		Map<String, Object> keyMap2 = new HashMap<String, Object>();
-		keyMap2.put("value", "2020-03-23 12:00".substring(0, 16)+"上门试讲");
-		// 上课时间
-		data.put("thing5", keyMap2);
+		if(isResumption != null && isResumption == 0) {
+        	
+			Map<String, Object> keyMap2 = new HashMap<String, Object>();
+    		keyMap2.put("value", "¥"+0.01+"元");
+    		// 上课时间
+    		data.put("amount3", keyMap2);
+        }
 		
-		logger.info("教员ID = {} , 订单id = {} , 学员id = {} , 试讲时间  =  {}  , 课程内容 = {}", 75,
-				299, 131, "2020-03-23 12:00:00".substring(0, 16), 
-				"小学一年级数学");
-		
-		JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage(
-				"oWQvd4hQGST1gQz3hQLeEZhDjb8g", Constant.CHANGE_SIGN_STATUS_RESULT_MESSAGE, data);
 
+		
+		if(isResumption != null && isResumption == 1) {
+        	
+			Map<String, Object> keyMap2 = new HashMap<String, Object>();
+    		keyMap2.put("value", "¥"+0.01+"元");
+    		// 上课时间
+    		data.put("amount3", keyMap2);
+        }
+		
+		Map<String, Object> keyMap3 = new HashMap<String, Object>();
+		keyMap3.put("value", "2020-03-22 19:29");
+		// 上课地点
+		data.put("date4", keyMap3);
+			
+		JSONObject sendRedPackRsult = SendWXMessageUtils.sendSubscribeMessage("oWQvd4hQGST1gQz3hQLeEZhDjb8g", Constant.BUY_CLASS_SUCCESS_MESSAGE, data);
+		
 //		System.out.println(sendRsult);
 	}
 }

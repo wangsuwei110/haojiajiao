@@ -42,6 +42,7 @@ public class StudentDemandsController {
 	@ApiOperation("学员发布需求信息")
 	@RequestMapping(value = "/addStudentDemand", method = RequestMethod.POST)
 	public ApiResponse addStudentDemandByTeacher(@RequestBody StudentDemandForm demandForm) {
+
 		return studentDemandsService.addStudentDemandByTeacher(demandForm);
 	}
 
@@ -146,7 +147,7 @@ public class StudentDemandsController {
 		List<StudentDemandVo> list = studentDemandsService.queryAllWaitForTrailTimeDemandOrderList(studentDemandConnectForm);
 		
 		if(list.size() > 0) {
-			return ApiResponse.success("查询成功!");
+			return ApiResponse.success("查询成功!" , list);
 		}else {
 			return ApiResponse.success("暂无数据！");
 		}

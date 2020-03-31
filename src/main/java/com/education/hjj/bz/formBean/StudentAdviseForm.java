@@ -3,6 +3,7 @@ package com.education.hjj.bz.formBean;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
 
+import java.io.Serializable;
 import java.util.Date;
 /**
  * 校长邮箱(家长建议)表Form
@@ -10,9 +11,16 @@ import java.util.Date;
  * @创建者：sys
  * @创建时间：2019-10-8 22:03:47
  */
-public class StudentAdviseForm{
+public class StudentAdviseForm implements Serializable{
+	
+	
 
-    @ApiModelProperty(value = "学员id",required = true)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 864947199388530457L;
+
+	@ApiModelProperty(value = "学员id",required = true)
     @NotBlank(message = "学员id不能为空")
     private String studentId;
 
@@ -27,6 +35,10 @@ public class StudentAdviseForm{
     private String createUser;
     
     private Integer isContact;
+    
+    private String parentPhoneNum;
+    
+    private Integer type;
 
 
     public String getStudentId() {
@@ -65,5 +77,20 @@ public class StudentAdviseForm{
 	public void setIsContact(Integer isContact) {
 		this.isContact = isContact;
 	}
-    
+
+	public String getParentPhoneNum() {
+		return parentPhoneNum;
+	}
+
+	public void setParentPhoneNum(String parentPhoneNum) {
+		this.parentPhoneNum = parentPhoneNum;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
 }

@@ -116,6 +116,7 @@ public class UserInfoController {
 	public ApiResponse updateUserInfoByParameter(@RequestBody TeacherInfoForm teacherInfoForm) {
 
 		int i = userInfoService.updateUserInfoByParameter(teacherInfoForm);
+
 		Map<String , Object> map = new HashMap<String, Object>(1);
 		
 		if(i > 0) {
@@ -221,11 +222,11 @@ public class UserInfoController {
 		
 		map.put("certificate", teacherVo.getTeacherCertificate() == null?"0":teacherVo.getTeacherCertificate());
 		map.put("experience", teacherVo.getExperience() == null ? "0":teacherVo.getExperience());
-		
+		map.put("vacationStatus", teacherVo.getVacationStatus());
 		map.put("major", teacherVo.getMajor());
 		map.put("teacherTag", teacherVo.getTeacherTag());
 		map.put("teachTime", teacherVo.getTeachTime());
-		
+		map.put("createTime", teacherVo.getCreateTime());
 		
 		return ApiResponse.success("操作成功" , UtilTools.mapToJson(map));
 	}
@@ -337,7 +338,7 @@ public class UserInfoController {
 			//好评率
 			String appraiseRate = studentDemandConnectService.queryAppraiseCountByTeacherId(teacherId);
 			
-			teacherVo.setAppraise(appraiseRate);
+			teacherVo.setAppraiseRate(appraiseRate);
 			
 			//基本信息
 			map.put("baseInfo", teacherVo);

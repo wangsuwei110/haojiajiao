@@ -21,6 +21,7 @@
 	     	<result property="appraiseLevel" column="appraise_level"/>
 	     	<result property="telephone" column="telephone"/>
 	     	<result property="studentName" column="student_name"/>
+
     </resultMap>
 
 	<select id="load" resultMap="studentDemandConnectResultMap" parameterType="long">
@@ -374,7 +375,7 @@
 		<result column="sid" property="sid"/>
 		<result column="demand_id" property="demandId"/>
 		<result column="teachName" property="teachName"/>
-		<result column="telephone" property="telephone"/>
+		<result column="teacherPhone" property="teacherPhone"/>
 		<result column="student_name" property="studentName"/>
 		<result column="parent_phone_num" property="parentPhoneNum"/>
 		<result column="create_time" property="createTime"/>
@@ -395,9 +396,9 @@
     	SELECT
 			sd.sid,
 			t.`name` as teachName,
-			t.telephone,
+			t.telephone as teacherPhone,
 			s.student_name,
-			s.parent_phone_num,
+			s.parent_phone_num as teacherPhone,
 			s.openId,
 			sd.create_time,
 			tg.teach_grade_name,
@@ -555,7 +556,7 @@
     	UPDATE 
     		student_demand_connect
         SET 
-        	isContact = #{isContact},
+        	is_contact = #{isContact},
         	update_time  = #{updateTime}
         Where 
         	sid = #{sid}

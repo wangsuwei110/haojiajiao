@@ -8,21 +8,25 @@
 		<!-- column代表数据库列名，property代表实体类属性名 -->
 		<result column="complaint_suggestion_id" property="complaintSuggestionId"/>
 		<result column="person_id" property="personId"/>
+		<result column="person_type" property="personType"/>
 		<result column="type" property="type"/>
 		<result column="content" property="content"/>
 		<result column="telephone" property="telephone"/>
 		<result column="create_time" property="createTime"/>
+		<result column="name" property="name"/>
+
 	</resultMap>
      
     <!-- 新增一条未回复的投诉与建议 -->
     <insert id="addComplaintSuggestion" parameterType="com.education.hjj.bz.entity.ComplaintSuggestionPo"
         keyProperty="id" useGeneratedKeys="true">
-        insert INTO teacher_complaints_suggestions(
+        insert INTO complaints_suggestions(
 				person_id,
+				person_type,
 				type,
 				content,
 				telephone,
-				pictures,
+				name,
 				status,
 				create_time,
 				create_user,
@@ -31,10 +35,11 @@
 				)
 			VALUES (
 				#{personId},
+				#{personType},
 				#{type},
 				#{content},
 				#{telephone},
-				#{pictures},
+				#{name},
 				#{status},
 				#{createTime},
 				#{createUser},
@@ -47,7 +52,7 @@
     <update id="updateComplaintSuggestion" parameterType="com.education.hjj.bz.entity.ComplaintSuggestionPo">
         
         update
-        	teacher_complaints_suggestions
+        	complaints_suggestions
         set
         	
         	status = #{status},
@@ -64,6 +69,7 @@
     	select
     		complaint_suggestion_id,
     		person_id,
+    		person_type,
 			type,
 			content,
 			telephone,
@@ -71,7 +77,7 @@
 			status,
 			create_time
 		from
-			teacher_complaints_suggestions
+			complaints_suggestions
 		
 		GROUP BY
 			status
@@ -85,18 +91,15 @@
     <select id="queryAllComplaintSuggestionByEducational" resultMap="complaintSuggestionResultMap" parameterType="com.education.hjj.bz.formBean.ComplaintSuggestionForm">
     	SELECT 
 			tcs.complaint_suggestion_id,
-			t.name,
-			t.telephone,
+			tcs.name,
+			tcs.telephone,
 			tcs.content,
-			tcs.create_time
+			tcs.create_time,
+			tcs.person_type
 		
 		FROM
-			teacher_complaints_suggestions tcs
-		LEFT JOIN
-			teacher t
-		ON
-			tcs.person_id = t.teacher_id
-		where
+			complaints_suggestions tcs
+		WHERE
 			tcs.is_contact = 0
 		ORDER BY 
 			tcs.create_time ASC	
@@ -112,7 +115,7 @@
     <update id="updateComplaintSuggestionByEducational" parameterType="com.education.hjj.bz.formBean.ComplaintSuggestionForm">
         
         update
-        	teacher_complaints_suggestions
+        	complaints_suggestions
         set
         	
         	is_contact = #{isContact},
@@ -126,14 +129,15 @@
     	select
     		complaint_suggestion_id,
     		person_id,
+    		person_type,
 			type,
 			content,
 			telephone,
-			pictures,
+			name,
 			status,
 			create_time
 		from
-			teacher_complaints_suggestions
+			complaints_suggestions
 		where
 			status = 1
 		and

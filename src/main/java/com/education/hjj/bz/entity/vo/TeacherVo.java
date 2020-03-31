@@ -112,6 +112,8 @@ public class TeacherVo extends BaseVo implements Serializable {
 	private boolean passFlag;
 	
 	private Integer demandId;
+	
+	private String appraiseRate;
 
 	public Boolean getPassFlag() {
 		return passFlag;
@@ -504,6 +506,14 @@ public class TeacherVo extends BaseVo implements Serializable {
 
 	public void setDemandId(Integer demandId) {
 		this.demandId = demandId;
+	}
+
+	public String getAppraiseRate() {
+		return appraiseRate;
+	}
+
+	public void setAppraiseRate(String appraiseRate) {
+		this.appraiseRate = appraiseRate;
 	}
 
 }
