@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -147,13 +148,21 @@ public class StudentDemandsController {
 		
 		List<StudentDemandVo> list = studentDemandsService.queryAllWaitForTrailTimeDemandOrderList(studentDemandConnectForm);
 		
+		studentDemandConnectForm.setPageSize(Integer.MAX_VALUE);
+		
+		List<StudentDemandVo> listCount = studentDemandsService.queryAllWaitForTrailTimeDemandOrderList(studentDemandConnectForm);
+		
 		PageVo pageVo = new PageVo();
 		
 		pageVo.setDataList(list);
 		pageVo.setTotal(list.size());
 		
+		Map<String , Object> map = new HashMap<>();
+		map.put("dataInfo", pageVo);
+		map.put("count", listCount.size());
+		
 		if(list.size() > 0) {
-			return ApiResponse.success("查询成功!" , JSON.toJSON(pageVo));
+			return ApiResponse.success("查询成功!" , JSON.toJSON(map));
 		}else {
 			return ApiResponse.success("暂无数据！");
 		}

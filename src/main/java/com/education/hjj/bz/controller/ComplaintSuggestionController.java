@@ -1,6 +1,8 @@
 package com.education.hjj.bz.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,15 +98,21 @@ public class ComplaintSuggestionController {
 		
 		List<ComplaintSuggestionVo>  list = complaintSuggestionService.queryAllComplaintSuggestionByEducational(complaintSuggestionForm);
 		
+		complaintSuggestionForm.setPageSize(Integer.MAX_VALUE);
+		
+		List<ComplaintSuggestionVo>  listCount = complaintSuggestionService.queryAllComplaintSuggestionByEducational(complaintSuggestionForm);
+		
 		PageVo pageVo = new PageVo();
 		
 		pageVo.setDataList(list);
 		pageVo.setTotal(list.size());
 		
-		
-		
+		Map<String , Object> map = new HashMap<>();
+		map.put("dataInfo", pageVo);
+		map.put("count", listCount.size());
+				
 		if(list.size() > 0) {
-			return ApiResponse.success("操作成功！" , JSON.toJSON(pageVo));
+			return ApiResponse.success("操作成功！" , JSON.toJSON(map));
 		}
 
 		return ApiResponse.success("暂无数据！");

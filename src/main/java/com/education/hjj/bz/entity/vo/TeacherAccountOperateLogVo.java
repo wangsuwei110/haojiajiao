@@ -27,6 +27,8 @@ public class TeacherAccountOperateLogVo extends BaseVo implements Serializable{
 	private String teachBranchName;
 	
 	private String studentName;
+	
+	private String telephone;
 
 	public Integer getPaymentId() {
 		return paymentId;
@@ -98,6 +100,14 @@ public class TeacherAccountOperateLogVo extends BaseVo implements Serializable{
 
 	public void setStudentName(String studentName) {
 		this.studentName = studentName;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 	
 }

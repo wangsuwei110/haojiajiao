@@ -591,12 +591,20 @@ public class UserInfoController {
 		
 		List<Map<String, Object>>  list = userInfoService.queryAllTeacherInfosByEducational(studentTeacherInfoForm);
 		
+		studentTeacherInfoForm.setPageSize(Integer.MAX_VALUE);
+		
+		List<Map<String, Object>>  listCount = userInfoService.queryAllTeacherInfosByEducational(studentTeacherInfoForm);
+		
 		PageVo pageVo = new PageVo();
 		
 		pageVo.setDataList(list);
 		pageVo.setTotal(list.size());
 		
-		return ApiResponse.success("操作成功！" , JSONObject.toJSON(pageVo));
+		Map<String , Object> map = new HashMap<>();
+		map.put("dataInfo", pageVo);
+		map.put("count", listCount.size());
+		
+		return ApiResponse.success("操作成功！" , JSONObject.toJSON(map));
 	}
 	
 	@ApiOperation("教务端审核员审核待审核教员信息")

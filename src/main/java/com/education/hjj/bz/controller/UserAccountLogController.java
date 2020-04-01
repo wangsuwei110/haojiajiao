@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
-import com.education.hjj.bz.entity.TeacherAccountOperateLogPo;
 import com.education.hjj.bz.entity.vo.PageVo;
 import com.education.hjj.bz.entity.vo.TeacherAccountOperateLogVo;
 import com.education.hjj.bz.formBean.TeacherAccountLogForm;
@@ -106,13 +105,23 @@ public class UserAccountLogController {
 		
 		List<TeacherAccountOperateLogVo> list  = userAccountLogService.queryUserAccountLogListByEducational(teacherAccountLogForm);
 		
+		teacherAccountLogForm.setPageSize(Integer.MAX_VALUE);
+		
+		List<TeacherAccountOperateLogVo> listCount  = userAccountLogService.queryUserAccountLogListByEducational(teacherAccountLogForm);
+		
 		PageVo pageVo = new PageVo();
 		
 		pageVo.setDataList(list);
 		pageVo.setTotal(list.size());
 		
+		Map<String , Object> map = new HashMap<>();
+		map.put("dataInfo", pageVo);
+		map.put("count", listCount.size());
+		
+		
+		
 		if(list != null && list.size() > 0) {
-			return ApiResponse.success("查询成功", JSON.toJSON(pageVo));
+			return ApiResponse.success("查询成功", JSON.toJSON(map));
 		}else {
 			return ApiResponse.success("暂无数据！");
 		}
