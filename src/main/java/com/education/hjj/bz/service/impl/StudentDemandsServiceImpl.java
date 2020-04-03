@@ -547,6 +547,15 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		pointsLogPo.setUpdateUser(String.valueOf(courseInfoForm.getTeacherId()));
 
 		pointsLogMapper.addTeacherPointsLog(pointsLogPo);
+		
+		//增加教员积分
+		TeacherPo teacher = new TeacherPo();
+		teacher.setTeacherId(courseInfoForm.getTeacherId());
+		teacher.setTeacherPoints(teacherVo.getTeacherPoints() + 5);
+		teacher.setUpdateTime(new Date());
+		teacher.setUpdateUser(teacherVo.getName());
+		
+		userInfoMapper.updateUserInfo(teacher);
 
 		return ApiResponse.success("结课成功");
 	}
