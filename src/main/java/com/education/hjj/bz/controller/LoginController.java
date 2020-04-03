@@ -88,7 +88,21 @@ public class LoginController {
      */
     @Value("${refreshTokenExpireTime}")
     private String refreshTokenExpireTime;
+    
+    /**
+     * RefreshToken过期时间
+     */
+    @Value("${accessTokenEducationalExpireTime}")
+    private String accessTokenEducationalExpireTime;
+    
+    /**
+     * RefreshToken过期时间
+     */
+    @Value("${refreshTokenEducationalExpireTime}")
+    private String refreshTokenEducationalExpireTime;
 
+    
+    
 	@Autowired
 	private UserInfoService userInfoService;
 
@@ -633,7 +647,8 @@ public class LoginController {
         	
         	// 设置RefreshToken，时间戳为当前时间戳，直接设置即可(不用先删后设，会覆盖已有的RefreshToken)
             String currentTimeMillis = String.valueOf(System.currentTimeMillis());
-            JedisUtil.setObject(Constant.PREFIX_SHIRO_REFRESH_TOKEN + account, currentTimeMillis, Integer.parseInt(refreshTokenExpireTime));
+            JedisUtil.setObject(Constant.PREFIX_SHIRO_ACCESS_TOKEN + account, currentTimeMillis, Integer.parseInt(accessTokenEducationalExpireTime));
+            JedisUtil.setObject(Constant.PREFIX_SHIRO_REFRESH_TOKEN + account, currentTimeMillis, Integer.parseInt(refreshTokenEducationalExpireTime));
             // 从Header中Authorization返回AccessToken，时间戳为当前时间戳
             String token = JwtUtil.sign(account, currentTimeMillis);
             httpServletResponse.setHeader(Constant.TOKEN, token);
@@ -705,7 +720,8 @@ public class LoginController {
             
             // 设置RefreshToken，时间戳为当前时间戳，直接设置即可(不用先删后设，会覆盖已有的RefreshToken)
             String currentTimeMillis = String.valueOf(System.currentTimeMillis());
-            JedisUtil.setObject(Constant.PREFIX_SHIRO_REFRESH_TOKEN + account, currentTimeMillis, Integer.parseInt(refreshTokenExpireTime));
+            JedisUtil.setObject(Constant.PREFIX_SHIRO_ACCESS_TOKEN + account, currentTimeMillis, Integer.parseInt(accessTokenEducationalExpireTime));
+            JedisUtil.setObject(Constant.PREFIX_SHIRO_REFRESH_TOKEN + account, currentTimeMillis, Integer.parseInt(refreshTokenEducationalExpireTime));
             // 从Header中Authorization返回AccessToken，时间戳为当前时间戳
             String token = JwtUtil.sign(account, currentTimeMillis);
             httpServletResponse.setHeader(Constant.TOKEN, token);
