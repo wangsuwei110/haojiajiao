@@ -44,7 +44,7 @@
     	status	
     )
     values(
-    	#{username},
+    	#{account},
     	#{password},
     	#{username},
     	#{regTime},

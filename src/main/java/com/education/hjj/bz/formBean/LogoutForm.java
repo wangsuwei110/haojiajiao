@@ -15,6 +15,8 @@ public class LogoutForm implements Serializable{
 	private String userId;
 	
 	private Integer type;
+	
+	private String account;
 
 	public String getUserId() {
 		return userId;
@@ -32,6 +34,12 @@ public class LogoutForm implements Serializable{
 		this.type = type;
 	}
 
-	
-	
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
 }

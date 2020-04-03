@@ -216,6 +216,12 @@ public class ShiroConfig {
         
         // 学员端查询所有的评价信息
         put("/StudentDemand/queryGoodApprise", "anon");
+        
+        // 教务端登录
+        put("/user/educationalLogin", "anon");
+        
+        // 教务端注册
+        put("/user/educationalRegister", "anon");
 
     }};
 }

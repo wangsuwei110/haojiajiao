@@ -163,7 +163,8 @@
 			tpl.payment_type,
 			tpl.payment_account,
 			tpl.payment_desc,
-			tpl.create_time
+			DATE_FORMAT(tpl.create_time,'%Y-%m-%d %H:%i:%S') as create_time
+			
 		FROM
 			teacher_payments_log tpl
 		left join

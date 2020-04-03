@@ -94,7 +94,7 @@
 			tcs.name,
 			tcs.telephone,
 			tcs.content,
-			tcs.create_time,
+			DATE_FORMAT(tcs.create_time,'%Y-%m-%d %H:%i:%S') as create_time,
 			tcs.person_type
 		
 		FROM

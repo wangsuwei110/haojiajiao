@@ -370,7 +370,7 @@
 			t.picture,
 			t.sex,
 			t.telephone,
-			t.create_time,
+			DATE_FORMAT(t.create_time,'%Y-%m-%d %H:%i:%S') as create_time,
 			t.school,
 			t.major,
 			t.begin_school_time,

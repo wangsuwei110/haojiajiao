@@ -1,5 +1,7 @@
 package com.education.hjj.bz.controller;
 
+import static com.education.hjj.bz.service.WeChatService.getAccessToken;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,13 +9,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.education.hjj.bz.entity.StudentLogPo;
-import com.education.hjj.bz.entity.vo.UserIndentityVo;
-import com.education.hjj.bz.formBean.StudentDemandForm;
-import com.education.hjj.bz.formBean.StudentForm;
-import com.education.hjj.bz.mapper.StudentMapper;
-import com.education.hjj.bz.mapper.TeacherMapper;
-import com.education.hjj.bz.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -24,16 +19,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.education.hjj.bz.entity.StudentLogPo;
 import com.education.hjj.bz.entity.vo.StudentVo;
 import com.education.hjj.bz.entity.vo.TeacherVo;
+import com.education.hjj.bz.entity.vo.UserIndentityVo;
 import com.education.hjj.bz.enums.ErrorEnum;
 import com.education.hjj.bz.formBean.LoginForm;
 import com.education.hjj.bz.formBean.LogoutForm;
+import com.education.hjj.bz.formBean.StudentDemandForm;
+import com.education.hjj.bz.formBean.StudentForm;
+import com.education.hjj.bz.formBean.UserForm;
+import com.education.hjj.bz.mapper.StudentMapper;
+import com.education.hjj.bz.mapper.TeacherMapper;
 import com.education.hjj.bz.model.UserDto;
 import com.education.hjj.bz.model.common.ResponseBean;
+import com.education.hjj.bz.service.ISmsService;
+import com.education.hjj.bz.service.IUserService;
+import com.education.hjj.bz.service.LoginLogService;
+import com.education.hjj.bz.service.PointsLogService;
+import com.education.hjj.bz.service.StudentLogService;
+import com.education.hjj.bz.service.StudentService;
+import com.education.hjj.bz.service.UserInfoService;
 import com.education.hjj.bz.util.AesCipherUtil;
 import com.education.hjj.bz.util.ApiResponse;
 import com.education.hjj.bz.util.Constant;
@@ -48,8 +63,6 @@ import com.education.hjj.bz.util.UtilTools;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-
-import static com.education.hjj.bz.service.WeChatService.getAccessToken;
 
 @Api(tags = { "用户登录" })
 @RestController
@@ -277,7 +290,7 @@ public class LoginController {
 				j = userInfoService.insertTeacherInfo(LoginForm);
 				
 				if(j<=0) {
-					return ApiResponse.success("注册失败，请重新注册！");
+					return ApiResponse.error("注册失败，请重新注册！");
 				}
 				
 				UserDto userDto = new UserDto();
@@ -290,7 +303,7 @@ public class LoginController {
 		        //加入用户表user
 		        int count = userService.insertUser(userDto);
 		        if (count <= 0) {
-		        	return ApiResponse.success("注册失败，请检查网络...");
+		        	return ApiResponse.error("注册失败，请检查网络...");
 		        }
 		        
 		        //记录教员的登陆日志
@@ -359,7 +372,7 @@ public class LoginController {
 				j = studentService.add(LoginForm);
 
                 if(j<=0) {
-                    return ApiResponse.success("注册失败，请重新注册！");
+                    return ApiResponse.error("注册失败，请重新注册！");
                 }
 
                 UserDto userDto = new UserDto();
@@ -372,7 +385,7 @@ public class LoginController {
                 //加入用户表user
                 int count = userService.insertUser(userDto);
                 if (count <= 0) {
-                    return ApiResponse.success("注册失败，请检查网络...");
+                    return ApiResponse.error("注册失败，请检查网络...");
                 }
 
                 //记录学员的登陆日志，教员学员放一起
@@ -500,9 +513,10 @@ public class LoginController {
     	Subject subject = SecurityUtils.getSubject();
         String token = request.getHeader(Constant.TOKEN);
 
-    	String telephone = null;
+    	String telephone = "";
     	String userId = logoutForm.getUserId();
     	Integer type = logoutForm.getType();
+    	String account = logoutForm.getAccount();
 
     	//教员登出
     	if(type == Constant.TEACHER_CODE) {
@@ -516,6 +530,11 @@ public class LoginController {
     	//学员登出
     	if(type == Constant.STUDENT_CODE) {
 
+    	}
+    	
+    	//教务端登出
+    	if(type == Constant.ADMIN_CODE || type == Constant.AUDIT_CODE) {
+    		telephone = account;
     	}
 
 
@@ -588,5 +607,112 @@ public class LoginController {
 		}
         
         return ApiResponse.error("获取OpenId失败！");
+    }
+    
+    @ApiOperation("教务端用户登录")
+	@RequestMapping(value = "/educationalLogin", method = RequestMethod.POST)
+	@Transactional
+	public ApiResponse educationalLogin(@RequestBody UserForm userForm ,  HttpServletResponse httpServletResponse) throws Exception {
+    	
+    	String account = userForm.getAccount();
+    	
+    	String password = userForm.getPassword();
+    	
+    	//统一处理：如果是已经注册过的用户登录，教员和学生统一将认证信息和权限授权更新。
+		UserDto userDtoTemp = new UserDto();
+		
+		//账号即是手机号
+        userDtoTemp.setAccount(account);
+        userDtoTemp = userService.selectOne(userDtoTemp);
+        
+        // 密码进行AES解密
+        String key = AesCipherUtil.deCrypto(userDtoTemp.getPassword());
+        // 因为密码加密是以帐号+密码的形式进行加密的，所以解密后的对比是帐号+密码
+        
+        if (key.equals(account + password)) {
+        	
+        	// 设置RefreshToken，时间戳为当前时间戳，直接设置即可(不用先删后设，会覆盖已有的RefreshToken)
+            String currentTimeMillis = String.valueOf(System.currentTimeMillis());
+            JedisUtil.setObject(Constant.PREFIX_SHIRO_REFRESH_TOKEN + account, currentTimeMillis, Integer.parseInt(refreshTokenExpireTime));
+            // 从Header中Authorization返回AccessToken，时间戳为当前时间戳
+            String token = JwtUtil.sign(account, currentTimeMillis);
+            httpServletResponse.setHeader(Constant.TOKEN, token);
+            httpServletResponse.setHeader("Access-Control-Expose-Headers", Constant.TOKEN);
+
+        	
+            return ApiResponse.success("登录成功" , JSON.toJSON(userDtoTemp.getUsername()));
+            
+        } else {
+        	
+        	return ApiResponse.error("账号或密码错误,请重新输入...");
+        }
+    	
+    }
+    
+    @ApiOperation("教务端用户注册")
+	@RequestMapping(value = "/educationalRegister", method = RequestMethod.POST)
+	@Transactional
+	public ApiResponse educationalRegister(@RequestBody UserForm userForm ,  HttpServletResponse httpServletResponse) throws Exception {
+    	
+    	String account = userForm.getAccount();
+    	
+    	if(account == null || StringUtils.isBlank(account)) {
+    		
+    		return ApiResponse.error("输入的账号为空,请重新输入!");
+    	}
+    	
+    	String password = userForm.getPassword();
+    	
+    	if(password == null || StringUtils.isBlank(password)) {
+    		
+    		return ApiResponse.error("输入的密码为空,请重新输入!");
+    	}
+    	
+    	String userName = userForm.getUserName();
+    	
+    	if(userName == null || StringUtils.isBlank(userName)) {
+    		
+    		return ApiResponse.error("输入的用户名为空,请重新输入!");
+    	}
+    	
+    	//统一处理：如果是已经注册过的用户登录，教员和学生统一将认证信息和权限授权更新。
+		UserDto userDtoTemp = new UserDto();
+		
+		//账号即是手机号
+        userDtoTemp.setAccount(account);
+        userDtoTemp = userService.selectOne(userDtoTemp);
+        
+        if(userDtoTemp != null) {
+            	
+            return ApiResponse.error("账号已注册,请直接登陆...");
+            
+        }else {
+        	
+        	UserDto userDto = new UserDto();
+        	userDto.setAccount(account);
+        	// 密码以帐号+密码的形式进行AES加密
+            String key = AesCipherUtil.enCrypto(account + password);
+            userDto.setPassword(key);
+            userDto.setUsername(userName);
+            userDto.setRegTime(new Date());
+            userDto.setStatus(1);
+            
+            //加入用户表user
+            int count = userService.insertUser(userDto);
+            if (count <= 0) {
+                return ApiResponse.error("注册失败，请检查网络...");
+            }
+            
+            // 设置RefreshToken，时间戳为当前时间戳，直接设置即可(不用先删后设，会覆盖已有的RefreshToken)
+            String currentTimeMillis = String.valueOf(System.currentTimeMillis());
+            JedisUtil.setObject(Constant.PREFIX_SHIRO_REFRESH_TOKEN + account, currentTimeMillis, Integer.parseInt(refreshTokenExpireTime));
+            // 从Header中Authorization返回AccessToken，时间戳为当前时间戳
+            String token = JwtUtil.sign(account, currentTimeMillis);
+            httpServletResponse.setHeader(Constant.TOKEN, token);
+            httpServletResponse.setHeader("Access-Control-Expose-Headers", Constant.TOKEN);
+            
+            return ApiResponse.success("注册成功！");
+        }
+        
     }
 }
