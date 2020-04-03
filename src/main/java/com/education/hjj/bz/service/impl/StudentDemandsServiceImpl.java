@@ -2,7 +2,10 @@ package com.education.hjj.bz.service.impl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -377,7 +380,14 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 
 	@Override
 	@Transactional
-	public ApiResponse confirmTeacher(StudentDemandConnectForm demandForm) {
+	public ApiResponse confirmTeacher(StudentDemandConnectForm demandForm) throws ParseException {
+
+	    // 预约的时间不能≤当天
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        if (!DateUtil.getDayStart(new Date()).after(format.parse(demandForm.getConfirmDate()))) {
+            return ApiResponse.error("预约时间必须大于金天");
+        }
 
 		Integer teacherId = demandForm.getTeacherId();
 

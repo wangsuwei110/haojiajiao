@@ -8,6 +8,7 @@ import com.education.hjj.bz.formBean.StudentDemandConnectForm;
 import com.education.hjj.bz.formBean.StudentDemandForm;
 import com.education.hjj.bz.util.ApiResponse;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public interface StudentDemandsService {
 	/**
 	 * 确定教员，确定预约时间
 	 **/
-	ApiResponse confirmTeacher(StudentDemandConnectForm demandForm);
+	ApiResponse confirmTeacher(StudentDemandConnectForm demandForm) throws ParseException;
 
 	/**
 	 * 试讲通过或不通过

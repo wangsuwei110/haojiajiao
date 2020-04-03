@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,7 @@ public class StudentDemandsController {
 	@ApiOperation("确定预约教员与时间")
 	@RequestMapping(value = "/confirmTeacher", method = RequestMethod.POST)
 	@Transactional
-	public ApiResponse confirmTeacher(@RequestBody StudentDemandConnectForm demandForm) {
+	public ApiResponse confirmTeacher(@RequestBody StudentDemandConnectForm demandForm) throws ParseException {
 		return studentDemandsService.confirmTeacher(demandForm);
 	}
 
