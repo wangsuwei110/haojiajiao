@@ -85,8 +85,6 @@ public class ScheduleToolsUtils {
 					tPo.setChargesStandard("100.00元/每课时");
 				}
 				
-				
-				tPo.setUpdateTime(new Date());
 				tPo.setUpdateUser("admin");
 				teacherList.add(tPo);
 			}
