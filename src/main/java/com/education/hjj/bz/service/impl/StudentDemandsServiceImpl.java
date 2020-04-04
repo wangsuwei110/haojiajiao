@@ -367,9 +367,10 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		});
 
 		// 确定试讲试讲不能小于今天或以前的时间
-		List<OrderDemandTimeVo> orderDemandTimeVoList = orderDemandTimeVos.stream()
+		List<OrderDemandTimeVo> orderDemandTimeVoList = orderDemandTimeVos;
+                /*.stream()
 				.filter(f -> DateUtil.getDayStart(f.getDate()).compareTo(DateUtil.getDayStart(new Date())) > 0)
-				.collect(Collectors.toList());
+				.collect(Collectors.toList());*/
 
 		orderDemandTimeVoList.sort((a, b) -> a.getTime().compareTo(b.getTime()));
 		orderDemandTimeVoList.sort((a, b) -> a.getDate().compareTo(b.getDate()));
