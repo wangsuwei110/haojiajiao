@@ -308,7 +308,10 @@ public class PayController {
 				teacherPo.setTeacherId(teacherId);
 				// 记录当前支付时教员的费用(支付时的单价)
 				if (StringUtils.isNotEmpty(demandForm.getChargesStandard())) {
-					demandForm.setChargesStandard(demandForm.getChargesStandard());
+					// 判断订单是否已经有了订单的价格，如果有不需要修改
+					if (StringUtils.isEmpty(demandVo.getChargesStandard())) {
+						demandForm.setChargesStandard(demandForm.getChargesStandard());
+					}
 				} else {
 					demandForm.setChargesStandard(teacherVo.getChargesStandard());
 				}
