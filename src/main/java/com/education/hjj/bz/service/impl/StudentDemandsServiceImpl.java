@@ -278,7 +278,9 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 				f.setSubscribeStatus(op.get().getStatus());
 				f.setTeachName(op.get().getTeacherName());
 				f.setAppraise(op.get().getAppraise());
-				f.setChargesStandard(op.get().getChargesStandard());
+                if (StringUtils.isEmpty(f.getChargesStandard())) {
+                    f.setChargesStandard(op.get().getChargesStandard());
+                }
 				f.setOrderTeachTime(op.get().getOrderTeachTime());
 				f.setTeacherId(op.get().getTeacherId());
 				f.setAppraiseLevel(op.get().getAppraiseLevel());
@@ -305,7 +307,9 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 					f.setSubscribeStatus(3);
 					f.setTeachName(noPassop.get().getTeacherName());
 					f.setAppraise(noPassop.get().getAppraise());
-					f.setChargesStandard(noPassop.get().getChargesStandard());
+					if (StringUtils.isEmpty(f.getChargesStandard())) {
+                        f.setChargesStandard(noPassop.get().getChargesStandard());
+                    }
 					f.setOrderTeachTime(noPassop.get().getOrderTeachTime());
 					f.setTeacherId(noPassop.get().getTeacherId());
 					f.setAppraiseLevel(noPassop.get().getAppraiseLevel());
