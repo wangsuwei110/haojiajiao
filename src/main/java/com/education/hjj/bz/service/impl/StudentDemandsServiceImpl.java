@@ -391,7 +391,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	    // 预约的时间不能≤当天
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-        if (!DateUtil.getDayStart(new Date()).after(format.parse(demandForm.getConfirmDate()))) {
+        if (!format.parse(demandForm.getConfirmDate()).after(DateUtil.getDayStart(new Date()))) {
             return ApiResponse.error("预约时间必须大于金天");
         }
 

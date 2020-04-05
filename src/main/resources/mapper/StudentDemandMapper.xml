@@ -108,6 +108,7 @@
 		   sd.status,
            sd.demand_type,
 		   sd.payment_stream_id,
+		   sd.charges_standard,
 		   sd.order_type
 		from student_demand sd
 		inner join student st
