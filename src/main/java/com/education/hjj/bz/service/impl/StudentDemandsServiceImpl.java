@@ -367,14 +367,15 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		});
 
 		// 确定试讲试讲不能小于今天或以前的时间
-		List<OrderDemandTimeVo> orderDemandTimeVoList = orderDemandTimeVos;
-                /*.stream()
-				.filter(f -> DateUtil.getDayStart(f.getDate()).compareTo(DateUtil.getDayStart(new Date())) > 0)
-				.collect(Collectors.toList());*/
+		orderDemandTimeVos.forEach(f -> {
+            if (!DateUtil.getDayStart(f.getDate()).after(DateUtil.getDayStart(new Date()))) {
+                f.setDate(DateUtil.addDay(f.getDate(), 7));
+            }
+        });
 
-		orderDemandTimeVoList.sort((a, b) -> a.getTime().compareTo(b.getTime()));
-		orderDemandTimeVoList.sort((a, b) -> a.getDate().compareTo(b.getDate()));
-		map.put("orderTime", orderDemandTimeVoList);
+        orderDemandTimeVos.sort((a, b) -> a.getTime().compareTo(b.getTime()));
+        orderDemandTimeVos.sort((a, b) -> a.getDate().compareTo(b.getDate()));
+		map.put("orderTime", orderDemandTimeVos);
 		logger.info("caohuan********teacherList:{}", JSON.toJSONString(list));
 		return ApiResponse.success(map);
 	}
