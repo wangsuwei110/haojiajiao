@@ -36,7 +36,9 @@ public interface StudentDemandMapper {
 	StudentDemandVo findDemandByCourseId(Integer sid);
 
 	List<StudentDemandVo> queryAllStudentDemandList(StudentDemandForm form);
-	
+
+	String findOriginPrice(StudentDemandForm form);
+
 	List<StudentDemandVo> queryAllStudentDemandListBy10(StudentDemandForm form);
 	
 	StudentDemandVo queryStudentDemandDetailBySid(Integer sid);

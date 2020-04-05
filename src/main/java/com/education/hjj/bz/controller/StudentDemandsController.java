@@ -81,6 +81,13 @@ public class StudentDemandsController {
 		return studentDemandsService.payDemand(demandForm);
 	}
 
+    @ApiOperation("续课时获取订单的初始教员单价")
+    @RequestMapping(value = "/continuePay", method = RequestMethod.POST)
+    @Transactional
+    public ApiResponse continuePay(@RequestBody StudentDemandForm demandForm) {
+        return studentDemandsService.continuePay(demandForm);
+    }
+
 	@ApiOperation("结课")
 	@RequestMapping(value = "/conclusion", method = RequestMethod.POST)
 	@Transactional

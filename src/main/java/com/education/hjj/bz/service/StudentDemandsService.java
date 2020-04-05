@@ -40,6 +40,10 @@ public interface StudentDemandsService {
 	 * 支付或续课
 	 **/
 	ApiResponse payDemand(StudentDemandForm demandForm);
+	/**
+	 * 续课,获取教员的当时价格
+	 **/
+	ApiResponse continuePay(StudentDemandForm demandForm);
 
 	/**
 	 * 结课

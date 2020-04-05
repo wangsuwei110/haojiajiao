@@ -189,6 +189,12 @@
         ); select @@IDENTITY;
     </insert>
 
+	<select id="findOriginPrice" parameterType="java.lang.Integer" resultType="java.lang.String">
+		SELECT charges_standard
+		FROM student_demand
+		WHERE sid = #{sid}
+	</select>
+
 	<!-- 教员首页查询所有的需求订单 -->
 	<select id="queryAllStudentDemandList" parameterType="com.education.hjj.bz.formBean.StudentDemandForm" resultMap="studentDemandsResultMap">
     	SELECT

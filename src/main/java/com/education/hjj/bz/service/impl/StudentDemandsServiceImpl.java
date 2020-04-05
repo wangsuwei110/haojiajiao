@@ -572,6 +572,15 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 	}
 
 	/**
+	 * 续课获取当时教员的单价
+	 **/
+	@Override
+	public ApiResponse continuePay(StudentDemandForm demandForm) {
+		String originPrice = studentDemandMapper.findOriginPrice(demandForm);
+		return ApiResponse.success(Double.valueOf(originPrice.split("元")[0]));
+	}
+
+	/**
 	 * 支付或续课
 	 **/
 	@Override
