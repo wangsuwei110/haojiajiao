@@ -310,7 +310,7 @@ public class PayController {
 				if (StringUtils.isNotEmpty(demandForm.getChargesStandard())) {
 					// 判断订单是否已经有了订单的价格，如果有不需要修改
 					if (StringUtils.isEmpty(demandVo.getChargesStandard())) {
-						demandForm.setChargesStandard(demandForm.getChargesStandard());
+						demandForm.setChargesStandard(demandForm.getChargesStandard() + "元/每课时");
 					}
 				} else {
 					demandForm.setChargesStandard(teacherVo.getChargesStandard());
