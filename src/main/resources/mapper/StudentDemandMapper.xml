@@ -131,6 +131,7 @@
 	</selectKey>
 		UPDATE student_demand
 		SET demand_type = 2,
+			status = 1,
 			update_time = #{updateTime}
 		WHERE sid = #{demandId}
 	</update>

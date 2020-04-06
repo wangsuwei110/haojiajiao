@@ -314,6 +314,7 @@ public class LoginController {
 		        String key = AesCipherUtil.enCrypto(phoneNum + RESET_PASSWORD);
 		        userDto.setPassword(key);
 		        userDto.setStatus(1);
+		        userDto.setAccount(phoneNum);
 		        //加入用户表user
 		        int count = userService.insertUser(userDto);
 		        if (count <= 0) {
@@ -396,6 +397,7 @@ public class LoginController {
                 String key = AesCipherUtil.enCrypto(phoneNum + RESET_PASSWORD);
                 userDto.setPassword(key);
                 userDto.setStatus(1);
+                userDto.setAccount(phoneNum);
                 //加入用户表user
                 int count = userService.insertUser(userDto);
                 if (count <= 0) {
