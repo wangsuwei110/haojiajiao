@@ -393,7 +393,7 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 			return ApiResponse.error("已结束的订单不能再操作");
 		}
 
-
+		logger.info("caohuan************预约时间:", demandForm.getConfirmDate());
 	    // 预约的时间不能≤当天
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
