@@ -222,6 +222,6 @@ public class ShiroConfig {
         
         // 教务端注册
         put("/user/educationalRegister", "anon");
-
+        
     }};
 }
