@@ -378,7 +378,7 @@
 		<result column="teacherPhone" property="teacherPhone"/>
 		<result column="student_name" property="studentName"/>
 		<result column="parent_phone_num" property="parentPhoneNum"/>
-		<result column="create_time" property="createTime"/>
+		<result column="create_time" property="createTimeString"/>
 		<result column="teach_grade_name" property="teachGradeName"/>
 		<result column="teach_branch_name" property="teachBranchName"/>
 		<result column="time_range" property="timeRange"/>
@@ -398,7 +398,7 @@
 			t.`name` as teachName,
 			t.telephone as teacherPhone,
 			s.student_name,
-			s.parent_phone_num as parentPhoneNum,
+			s.parent_phone_num ,
 			s.openId,
 			DATE_FORMAT(sd.create_time,'%Y-%m-%d %H:%i:%S') as create_time,
 			tg.teach_grade_name,
