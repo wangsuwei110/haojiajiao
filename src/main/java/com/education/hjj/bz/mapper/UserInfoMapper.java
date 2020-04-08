@@ -64,4 +64,6 @@ public interface UserInfoMapper {
 
 	//查询所有教员信息
 	List<TeacherVo> queryAllTeacherInfosByEducational(StudentTeacherInfoForm studentTeacherInfoForm);
+	
+	int queryCountsTeacherInfosByEducational();
 }

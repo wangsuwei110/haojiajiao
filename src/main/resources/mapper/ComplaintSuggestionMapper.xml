@@ -111,6 +111,20 @@
     
     </select>
     
+     <!-- 教务端查询所有的未回复的投诉与建议 -->
+    <select id="queryCountsComplaintSuggestionByEducational" resultType ="java.lang.Integer" >
+    	SELECT 
+			count(complaint_suggestion_id)
+		
+		FROM
+			complaints_suggestions tcs
+		WHERE
+			tcs.is_contact = 0
+		ORDER BY 
+			tcs.create_time ASC	
+    
+    </select>
+    
     <!--教务端处理投诉与建议 -->
     <update id="updateComplaintSuggestionByEducational" parameterType="com.education.hjj.bz.formBean.ComplaintSuggestionForm">
         

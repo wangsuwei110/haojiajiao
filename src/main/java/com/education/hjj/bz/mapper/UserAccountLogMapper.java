@@ -25,5 +25,7 @@ public interface UserAccountLogMapper {
 	
 	List<TeacherAccountOperateLogVo> queryUserAccountLogListByEducational(TeacherAccountLogForm teacherAccountLogForm);
 	
+	int queryCountsUserAccountLogListByEducational();
+	
 	List<TeacherAccountOperateLogVo> queryStudentDemandAccountLogList(TeacherAccountOperateLogPo teacherAccountOperateLogPo);
 }

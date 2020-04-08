@@ -55,5 +55,7 @@ public interface UserInfoService {
 	//查询所有教员信息
 	List<Map<String , Object>> queryAllTeacherInfosByEducational(StudentTeacherInfoForm studentTeacherInfoForm);
 	
+	int queryCountsTeacherInfosByEducational();
+	
 	int updateUserInfo(TeacherPo teacher);
 }

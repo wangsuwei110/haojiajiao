@@ -158,7 +158,7 @@ public class StudentDemandsController {
 		
 		studentDemandConnectForm.setPageSize(Integer.MAX_VALUE);
 		
-		List<StudentDemandVo> listCount = studentDemandsService.queryAllWaitForTrailTimeDemandOrderList(studentDemandConnectForm);
+		int listCount = studentDemandsService.queryCountsWaitForTrailTimeDemandOrderList(studentDemandConnectForm);
 		
 		PageVo pageVo = new PageVo();
 		
@@ -167,7 +167,7 @@ public class StudentDemandsController {
 		
 		Map<String , Object> map = new HashMap<>();
 		map.put("dataInfo", pageVo);
-		map.put("count", listCount.size());
+		map.put("count", listCount);
 		
 		if(list.size() > 0) {
 			return ApiResponse.success("查询成功!" , JSON.toJSON(map));

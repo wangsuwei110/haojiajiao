@@ -105,9 +105,8 @@ public class UserAccountLogController {
 		
 		List<TeacherAccountOperateLogVo> list  = userAccountLogService.queryUserAccountLogListByEducational(teacherAccountLogForm);
 		
-		teacherAccountLogForm.setPageSize(Integer.MAX_VALUE);
 		
-		List<TeacherAccountOperateLogVo> listCount  = userAccountLogService.queryUserAccountLogListByEducational(teacherAccountLogForm);
+		int listCount  = userAccountLogService.queryCountsUserAccountLogListByEducational();
 		
 		PageVo pageVo = new PageVo();
 		
@@ -116,7 +115,7 @@ public class UserAccountLogController {
 		
 		Map<String , Object> map = new HashMap<>();
 		map.put("dataInfo", pageVo);
-		map.put("count", listCount.size());
+		map.put("count", listCount);
 		
 		
 		

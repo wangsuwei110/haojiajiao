@@ -98,9 +98,9 @@ public class ComplaintSuggestionController {
 		
 		List<ComplaintSuggestionVo>  list = complaintSuggestionService.queryAllComplaintSuggestionByEducational(complaintSuggestionForm);
 		
-		complaintSuggestionForm.setPageSize(Integer.MAX_VALUE);
+//		complaintSuggestionForm.setPageSize(Integer.MAX_VALUE);
 		
-		List<ComplaintSuggestionVo>  listCount = complaintSuggestionService.queryAllComplaintSuggestionByEducational(complaintSuggestionForm);
+		int  listCount = complaintSuggestionService.queryCountsComplaintSuggestionByEducational();
 		
 		PageVo pageVo = new PageVo();
 		
@@ -109,7 +109,7 @@ public class ComplaintSuggestionController {
 		
 		Map<String , Object> map = new HashMap<>();
 		map.put("dataInfo", pageVo);
-		map.put("count", listCount.size());
+		map.put("count", listCount);
 				
 		if(list.size() > 0) {
 			return ApiResponse.success("操作成功！" , JSON.toJSON(map));

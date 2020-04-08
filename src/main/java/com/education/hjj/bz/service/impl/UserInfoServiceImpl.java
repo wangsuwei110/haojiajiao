@@ -798,4 +798,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 		return i;
 	}
 
+	@Override
+	public int queryCountsTeacherInfosByEducational() {
+		int i = userInfoMapper.queryCountsTeacherInfosByEducational();
+		return i;
+	}
+
 }

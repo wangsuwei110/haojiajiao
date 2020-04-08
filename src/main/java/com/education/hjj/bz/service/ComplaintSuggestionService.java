@@ -17,5 +17,7 @@ public interface ComplaintSuggestionService {
 	
 	List<ComplaintSuggestionVo> queryAllComplaintSuggestionByEducational(ComplaintSuggestionForm complaintSuggestionForm);
 	
+	int queryCountsComplaintSuggestionByEducational();
+	
 	int updateComplaintSuggestionByEducational(ComplaintSuggestionForm complaintSuggestionForm);
 }

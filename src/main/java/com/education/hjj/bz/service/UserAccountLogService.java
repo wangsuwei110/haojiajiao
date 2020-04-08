@@ -16,4 +16,6 @@ public interface UserAccountLogService {
 	TeacherAccountOperateLogVo queryUserAccountLogDetail(Integer paymentId);
 	
 	List<TeacherAccountOperateLogVo> queryUserAccountLogListByEducational(TeacherAccountLogForm teacherAccountLogForm);
+	
+	int queryCountsUserAccountLogListByEducational();
 }

@@ -1682,4 +1682,10 @@ public class StudentDemandsServiceImpl implements StudentDemandsService {
 		int i = connectMapper.updateStudentDemandConnectByStatus(studentDemandConnectForm);
 		return i;
 	}
+
+	@Override
+	public int queryCountsWaitForTrailTimeDemandOrderList(StudentDemandConnectForm studentDemandConnectForm) {
+		int i = connectMapper.queryCountsWaitForTrailTimeDemandOrderList(studentDemandConnectForm);
+		return i;
+	}
 }

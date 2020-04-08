@@ -593,7 +593,7 @@ public class UserInfoController {
 		
 		studentTeacherInfoForm.setPageSize(Integer.MAX_VALUE);
 		
-		List<Map<String, Object>>  listCount = userInfoService.queryAllTeacherInfosByEducational(studentTeacherInfoForm);
+		int  listCount = userInfoService.queryCountsTeacherInfosByEducational();
 		
 		PageVo pageVo = new PageVo();
 		
@@ -602,7 +602,7 @@ public class UserInfoController {
 		
 		Map<String , Object> map = new HashMap<>();
 		map.put("dataInfo", pageVo);
-		map.put("count", listCount.size());
+		map.put("count", listCount);
 		
 		return ApiResponse.success("操作成功！" , JSONObject.toJSON(map));
 	}

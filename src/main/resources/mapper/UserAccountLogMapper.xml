@@ -189,4 +189,27 @@
        		
     </select>
     
+    <!-- 教务端查询用户账户变化日志列表,单日提现大于800的 总数-->  
+    <select id="queryCountsUserAccountLogListByEducational"  resultType ="java.lang.Integer">    
+        	
+       	select
+			count(tpl.payment_id)
+		FROM
+			teacher_payments_log tpl
+		left join
+			teacher t
+		ON	
+			tpl.payment_person_id = t.teacher_id
+		WHERE
+			tpl.status =1
+		AND
+			tpl.payment_type = 1
+		AND
+			tpl.payment_account <![CDATA[>]]> 800
+			
+		ORDER BY
+				tpl.create_time desc
+       		
+    </select>
+    
 </mapper>

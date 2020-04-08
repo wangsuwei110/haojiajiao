@@ -102,6 +102,8 @@ public interface StudentDemandsService {
 	
 	//教务端确定待试讲的订单未确定试讲时间超过一小时的订单
 	List<StudentDemandVo> queryAllWaitForTrailTimeDemandOrderList(StudentDemandConnectForm studentDemandConnectForm);
+	
+	int queryCountsWaitForTrailTimeDemandOrderList(StudentDemandConnectForm studentDemandConnectForm);
 
 	ApiResponse queryGoodApprise();
 	

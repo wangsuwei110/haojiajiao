@@ -398,6 +398,26 @@
         </if>
         
     </select>
+    
+    <!-- 教务段查询所有待审核的教员信息列表总数 -->
+    <select id="queryCountsTeacherInfosByEducational" resultType ="java.lang.Integer" >
+    	select
+			count(t.teacher_id)
+			
+		from 
+			teacher t
+		where 
+			t.status = 1
+		and
+			t.audit_status = 0
+		and
+			t.idcard is not null
+		and
+			t.major is not null
+		
+		order by  t.create_time desc
+		
+    </select>
 
 	<select id="queryAllTeacherCount" resultType="java.lang.Integer" parameterType="com.education.hjj.bz.formBean.StudentTeacherInfoForm">
 		SELECT count(*)

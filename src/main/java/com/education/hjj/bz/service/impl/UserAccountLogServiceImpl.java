@@ -48,4 +48,10 @@ public class UserAccountLogServiceImpl implements UserAccountLogService{
 		return list;
 	}
 
+	@Override
+	public int queryCountsUserAccountLogListByEducational() {
+		int i = userAccountLogMapper.queryCountsUserAccountLogListByEducational();
+		return i;
+	}
+
 }

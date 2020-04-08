@@ -96,4 +96,10 @@ public class ComplaintSuggestionServiceImpl implements ComplaintSuggestionServic
 		return i;
 	}
 
+	@Override
+	public int queryCountsComplaintSuggestionByEducational() {
+		int i = complaintSuggestionMapper.queryCountsComplaintSuggestionByEducational();
+		return i;
+	}
+
 }
