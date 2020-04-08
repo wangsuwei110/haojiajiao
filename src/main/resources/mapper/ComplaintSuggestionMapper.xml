@@ -14,7 +14,7 @@
 		<result column="telephone" property="telephone"/>
 		<result column="create_time" property="createTime"/>
 		<result column="name" property="name"/>
-
+		<result column="createTimeString" property="createTimeString"/>
 	</resultMap>
      
     <!-- 新增一条未回复的投诉与建议 -->
@@ -94,7 +94,7 @@
 			tcs.name,
 			tcs.telephone,
 			tcs.content,
-			DATE_FORMAT(tcs.create_time,'%Y-%m-%d %H:%i:%S') as create_time,
+			DATE_FORMAT(tcs.create_time,'%Y-%m-%d %H:%i:%S') as createTimeString,
 			tcs.person_type
 		
 		FROM

@@ -18,6 +18,7 @@
 		<result column="telephone" property="telephone"/>
 		<result column="teach_branch_name" property="teachBranchName"/>
 		<result column="student_name" property="studentName"/>
+		<result column="createTimeString" property="createTimeString"/>
 	</resultMap>
 	
     
@@ -163,7 +164,7 @@
 			tpl.payment_type,
 			tpl.payment_account,
 			tpl.payment_desc,
-			DATE_FORMAT(tpl.create_time,'%Y-%m-%d %H:%i:%S') as create_time
+			DATE_FORMAT(tpl.create_time,'%Y-%m-%d %H:%i:%S') as createTimeString
 			
 		FROM
 			teacher_payments_log tpl

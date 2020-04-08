@@ -48,6 +48,7 @@
 		<result column="create_time" property="createTime"/>
 		<result column="update_time" property="updateTime"/>
 		<result column="demand_id" property="demandId"/>
+		<result column="createTimeString" property="createTimeString"/>
 	</resultMap>
 	
 	
@@ -370,7 +371,7 @@
 			t.picture,
 			t.sex,
 			t.telephone,
-			DATE_FORMAT(t.create_time,'%Y-%m-%d %H:%i:%S') as create_time,
+			DATE_FORMAT(t.create_time,'%Y-%m-%d %H:%i:%S') as createTimeString,
 			t.school,
 			t.major,
 			t.begin_school_time,

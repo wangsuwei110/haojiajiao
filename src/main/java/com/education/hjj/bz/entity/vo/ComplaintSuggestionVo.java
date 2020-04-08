@@ -31,6 +31,8 @@ public class ComplaintSuggestionVo extends BaseVo implements Serializable {
 	
 	//投诉人员姓名
   	private String name;
+  	
+  	private String createTimeString;
 
 	public Integer getComplaintSuggestionId() {
 		return complaintSuggestionId;
@@ -95,4 +97,14 @@ public class ComplaintSuggestionVo extends BaseVo implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public String getCreateTimeString() {
+		return createTimeString;
+	}
+
+	public void setCreateTimeString(String createTimeString) {
+		this.createTimeString = createTimeString;
+	}
+	
+	
 }

@@ -114,6 +114,8 @@ public class TeacherVo extends BaseVo implements Serializable {
 	private Integer demandId;
 	
 	private String appraiseRate;
+	
+	private String createTimeString;
 
 	public Boolean getPassFlag() {
 		return passFlag;
@@ -514,6 +516,14 @@ public class TeacherVo extends BaseVo implements Serializable {
 
 	public void setAppraiseRate(String appraiseRate) {
 		this.appraiseRate = appraiseRate;
+	}
+
+	public String getCreateTimeString() {
+		return createTimeString;
+	}
+
+	public void setCreateTimeString(String createTimeString) {
+		this.createTimeString = createTimeString;
 	}
 
 }
