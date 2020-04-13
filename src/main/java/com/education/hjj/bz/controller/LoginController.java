@@ -19,11 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
@@ -625,9 +628,12 @@ public class LoginController {
         return ApiResponse.error("获取OpenId失败！");
     }
     
+    
+    @CrossOrigin
     @ApiOperation("教务端用户登录")
 	@RequestMapping(value = "/educationalLogin", method = RequestMethod.POST)
 	@Transactional
+	@ResponseBody
 	public ApiResponse educationalLogin(@RequestBody UserForm userForm ,  HttpServletResponse httpServletResponse) throws Exception {
     	
     	String account = userForm.getAccount();
