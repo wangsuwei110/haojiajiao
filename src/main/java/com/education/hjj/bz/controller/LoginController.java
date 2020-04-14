@@ -671,10 +671,12 @@ public class LoginController {
         }
     	
     }
-    
+
+	@CrossOrigin
     @ApiOperation("教务端用户注册")
 	@RequestMapping(value = "/educationalRegister", method = RequestMethod.POST)
 	@Transactional
+	@ResponseBody
 	public ApiResponse educationalRegister(@RequestBody UserForm userForm ,  HttpServletResponse httpServletResponse) throws Exception {
     	
     	String account = userForm.getAccount();

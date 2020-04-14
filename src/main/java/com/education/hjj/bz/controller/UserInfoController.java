@@ -591,7 +591,6 @@ public class UserInfoController {
 		
 		List<Map<String, Object>>  list = userInfoService.queryAllTeacherInfosByEducational(studentTeacherInfoForm);
 		
-		studentTeacherInfoForm.setPageSize(Integer.MAX_VALUE);
 		
 		int  listCount = userInfoService.queryCountsTeacherInfosByEducational();
 		
