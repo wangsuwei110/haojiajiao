@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,6 +96,7 @@ public class ComplaintSuggestionController {
 	
 	@ApiOperation("教务端查找所有的建议与投诉")
 	@RequestMapping(value = "/queryAllComplaintSuggestionByEducational", method = RequestMethod.POST)
+	@RequiresPermissions(logical = Logical.AND, value = {"admin:view","audit:view"})
 	public ApiResponse queryAllComplaintSuggestionByEducational(@RequestBody ComplaintSuggestionForm complaintSuggestionForm) {
 		
 		List<ComplaintSuggestionVo>  list = complaintSuggestionService.queryAllComplaintSuggestionByEducational(complaintSuggestionForm);
@@ -120,6 +123,7 @@ public class ComplaintSuggestionController {
 	
 	@ApiOperation("教务端更新建议与投诉")
 	@RequestMapping(value = "/updateComplaintSuggestionByEducational", method = RequestMethod.POST)
+	@RequiresPermissions(logical = Logical.AND, value = {"admin:edit","audit:edit"})
 	public ApiResponse updateComplaintSuggestionByEducational(@RequestBody ComplaintSuggestionForm complaintSuggestionForm) {
 		
 		int i = complaintSuggestionService.updateComplaintSuggestionByEducational(complaintSuggestionForm);

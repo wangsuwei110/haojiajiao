@@ -151,6 +151,7 @@ public class StudentDemandsController {
 	
 	@ApiOperation("教务端教员未确定订单试讲时间超过一小时订单列表")
 	@RequestMapping(value = "/queryAllNewTrialDemandTimeOut", method = RequestMethod.POST)
+	@RequiresPermissions(logical = Logical.AND, value = {"admin:view","audit:view"})
 	@Transactional
 	public ApiResponse queryAllNewTrialDemandTimeOut(@RequestBody StudentDemandConnectForm studentDemandConnectForm) {
 		
@@ -178,6 +179,7 @@ public class StudentDemandsController {
 	
 	@ApiOperation("教务端确定待试讲的订单是否联系")
 	@RequestMapping(value = "/updateStudentDemandConnectByStatus", method = RequestMethod.POST)
+	@RequiresPermissions(logical = Logical.AND, value = {"admin:edit","audit:edit"})
 	@Transactional
 	public ApiResponse updateStudentDemandConnectByStatus(@RequestBody StudentDemandConnectForm studentDemandConnectForm) {
 		

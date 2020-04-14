@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,6 +101,7 @@ public class UserAccountLogController {
 	@ResponseBody
 	@RequestMapping(value = "/queryUserAccountLogListByEducational", method = RequestMethod.POST)
 	@ApiOperation("教务端教员收支明细查询")
+	@RequiresPermissions(logical = Logical.AND, value = {"admin:view","audit:view"})
 	public ApiResponse queryUserAccountLogListByEducational(@RequestBody TeacherAccountLogForm teacherAccountLogForm) {
 		
 		

@@ -587,6 +587,7 @@ public class UserInfoController {
 	@ApiOperation("教务端查询所有待审核教员信息")
 	@RequestMapping(value = "/queryAllTeacherInfosByEducational", method = RequestMethod.POST)
 	@ResponseBody
+	@RequiresPermissions(logical = Logical.AND, value = {"admin:view","audit:view"})
 	public ApiResponse queryAllTeacherInfosByEducational(@RequestBody StudentTeacherInfoForm studentTeacherInfoForm) {
 		
 		List<Map<String, Object>>  list = userInfoService.queryAllTeacherInfosByEducational(studentTeacherInfoForm);
@@ -608,6 +609,7 @@ public class UserInfoController {
 	
 	@ApiOperation("教务端审核员审核待审核教员信息")
 	@RequestMapping(value = "/auditTeacherInfosByEducational", method = RequestMethod.POST)
+	@RequiresPermissions(logical = Logical.AND, value = {"admin:edit","audit:edit"})
 	@ResponseBody
 	public ApiResponse auditTeacherInfosByEducational(@RequestBody TeacherInfoForm teacherInfoForm) {
 		
