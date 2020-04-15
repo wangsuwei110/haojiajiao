@@ -638,7 +638,15 @@ public class LoginController {
     	
     	String account = userForm.getAccount();
     	
+    	if(account == null || StringUtils.isBlank(account)) {
+    		return ApiResponse.error("账号输入为空,请重新输入！");
+    	}
+    	
     	String password = userForm.getPassword();
+    	
+    	if(password == null || StringUtils.isBlank(password)) {
+    		return ApiResponse.error("密码输入为空,请重新输入！");
+    	}
     	
     	//统一处理：如果是已经注册过的用户登录，教员和学生统一将认证信息和权限授权更新。
 		UserDto userDtoTemp = new UserDto();
@@ -646,6 +654,10 @@ public class LoginController {
 		//账号即是手机号
         userDtoTemp.setAccount(account);
         userDtoTemp = userService.selectOne(userDtoTemp);
+        
+        if(userDtoTemp == null ) {
+        	return ApiResponse.error("账号未注册,请注册后重新登陆！");
+        }
         
         // 密码进行AES解密
         String key = AesCipherUtil.deCrypto(userDtoTemp.getPassword());
@@ -667,7 +679,7 @@ public class LoginController {
             
         } else {
         	
-        	return ApiResponse.error("账号或密码错误,请重新输入...");
+        	return ApiResponse.error("账号或密码错误,请重新输入！");
         }
     	
     }
@@ -709,7 +721,7 @@ public class LoginController {
         
         if(userDtoTemp != null) {
             	
-            return ApiResponse.error("账号已注册,请直接登陆...");
+            return ApiResponse.error("账号已注册,请直接登陆！");
             
         }else {
         	
