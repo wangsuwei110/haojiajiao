@@ -394,7 +394,7 @@
     <select id="queryAllWaitForTrailTimeDemandOrderList" parameterType="com.education.hjj.bz.formBean.StudentDemandConnectForm" resultMap="waitForTrailTimeDemandOrdersResultMap">
     
     	SELECT
-			sd.sid,
+			sdc.sid,
 			t.`name` as teachName,
 			t.telephone as teacherPhone,
 			s.student_name,
