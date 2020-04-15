@@ -387,7 +387,7 @@
 		<result column="teacher_id" property="teacherId"/>
 		<result column="teacherOpenId" property="teacherOpenId"/>
 		<result column="demand_address" property="demandAddress"/>
-		
+		<result column="is_contact" property="isContact"/>
 	</resultMap>
     
     <!-- 教务段查询超过一小时未确认试讲时间的订单 -->
@@ -406,7 +406,8 @@
 			sd.time_range,
 			sdc.order_teach_time,
 			sdc.teacher_id,
-			t.openId as teacherOpenId
+			t.openId as teacherOpenId,
+			sdc.is_contact
 	
 		FROM
 			student_demand_connect sdc

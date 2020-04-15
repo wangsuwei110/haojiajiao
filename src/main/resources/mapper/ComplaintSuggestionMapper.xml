@@ -15,6 +15,7 @@
 		<result column="create_time" property="createTime"/>
 		<result column="name" property="name"/>
 		<result column="createTimeString" property="createTimeString"/>
+		<result column="is_contact" property="isContact"/>
 	</resultMap>
      
     <!-- 新增一条未回复的投诉与建议 -->
@@ -95,7 +96,8 @@
 			tcs.telephone,
 			tcs.content,
 			DATE_FORMAT(tcs.create_time,'%Y-%m-%d %H:%i:%S') as createTimeString,
-			tcs.person_type
+			tcs.person_type,
+			tcs.is_contact
 		
 		FROM
 			complaints_suggestions tcs

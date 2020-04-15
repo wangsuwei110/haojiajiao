@@ -33,6 +33,16 @@ public class ComplaintSuggestionVo extends BaseVo implements Serializable {
   	private String name;
   	
   	private String createTimeString;
+  	
+  	private Integer isContact;
+
+	public Integer getIsContact() {
+		return isContact;
+	}
+
+	public void setIsContact(Integer isContact) {
+		this.isContact = isContact;
+	}
 
 	public Integer getComplaintSuggestionId() {
 		return complaintSuggestionId;

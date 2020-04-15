@@ -3,6 +3,7 @@ package com.education.hjj.bz.entity.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -12,7 +13,12 @@ import java.util.Date;
  * @创建者：sys @创建时间：2019-9-26 0:51:18
  */
 @ApiModel(value = "StudentDemand")
-public class StudentDemandVo {
+public class StudentDemandVo implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3574459214894463339L;
 
 	@ApiModelProperty(value = "需求主键id")
 	private Integer sid;
@@ -166,6 +172,16 @@ public class StudentDemandVo {
 	
 	//教员OpenId
 	private String teacherOpenId;
+	
+	private Integer isContact;
+
+	public Integer getIsContact() {
+		return isContact;
+	}
+
+	public void setIsContact(Integer isContact) {
+		this.isContact = isContact;
+	}
 
 	public String getTeacherName() {
 		return teacherName;
