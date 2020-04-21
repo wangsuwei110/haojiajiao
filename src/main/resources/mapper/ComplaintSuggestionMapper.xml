@@ -79,9 +79,7 @@
 			create_time
 		from
 			complaints_suggestions
-		
-		GROUP BY
-			status
+
 		ORDER BY
 			status desc,
 			create_time desc	
