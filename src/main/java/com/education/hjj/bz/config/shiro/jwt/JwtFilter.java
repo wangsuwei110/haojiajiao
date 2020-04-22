@@ -88,11 +88,8 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
             String requestURI = httpServletRequest.getRequestURI();
             logger.info("当前请求 {} Authorization属性(Token)为空 请求类型 {}", requestURI, httpMethod);
             // mustLoginFlag = true 开启任何请求必须登录才可访问
-            Boolean mustLoginFlag = false;
-            if (mustLoginFlag) {
                 this.response401(response, "请先登录");
                 return false;
-            }
         }
         return true;
     }
